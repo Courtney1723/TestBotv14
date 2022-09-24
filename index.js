@@ -31,8 +31,19 @@ const keepAlive = require('./server');
 	
 // });
 
-//prevents unhandled promise rejections from shutting the bot off
-client.on("unhandledRejection", error => console.error("Promise rejection:", error));
+//prevents errors from shutting the bot off
+process.on("unhandledRejection", async (err) => {
+  console.error("Unhandled Promise Rejection:\n", err);
+});
+process.on("uncaughtException", async (err) => {
+  console.error("Uncaught Promise Exception:\n", err);
+});
+process.on("uncaughtExceptionMonitor", async (err) => {
+  console.error("Uncaught Promise Exception (Monitor):\n", err);
+});
+process.on("multipleResolves", async (type, promise, reason) => {
+  console.error("Multiple Resolves:\n", type, promise, reason);
+});
 
 //Access Command Files
 const fs = require('node:fs');
@@ -81,26 +92,26 @@ for (const file of eventFiles) {
 }
 
 //sends a kill 1 command to the child node if there is a 429 error
-errorArray = [];
-client.on("debug", function(info){
-	//console.log(`info -> ${check429error}`); //debugger
-			errorArray.push(info);
-		setTimeout(() => {
-		  if (errorArray.length >= 3) {
-				//console.log(`successfully connected`);
-				//console.log(`errorArray length: ${errorArray.length}`);
-			} else {
-				console.log(`Caught a 429 error!`); 
-					exec('kill 1', (err) => {
-					    if (err) {
-					        console.error("could not execute command: ", err);
-					        return
-					    }
-					  console.log(`Kill 1 command succeeded`); //probably wont work
-					});					
-			}
-		}, 10000);
-});
+// errorArray = [];
+// client.on("debug", function(info){
+// 	//console.log(`info -> ${check429error}`); //debugger
+// 			errorArray.push(info);
+// 		setTimeout(() => {
+// 		  if (errorArray.length >= 3) {
+// 				//console.log(`successfully connected`);
+// 				//console.log(`errorArray length: ${errorArray.length}`);
+// 			} else {
+// 				console.log(`Caught a 429 error!`); 
+// 					exec('kill 1', (err) => {
+// 					    if (err) {
+// 					        console.error("could not execute command: ", err);
+// 					        return
+// 					    }
+// 					  console.log(`Kill 1 command succeeded`); //probably wont work
+// 					});					
+// 			}
+// 		}, 10000);
+// });
 
 
 keepAlive();

@@ -30,13 +30,5 @@ module.exports = {
 		}
 		}
 			
-		else if (interaction.isButton()) {
-			console.log(`You triggered the ${interaction.customId} button`); //FIXME
-		}
-			
-		else if (interaction.isSelectMenu()) {
-			console.log(`You triggered the ${interaction.values} select menu`); //FIXME
-
-		}
 	},
 };

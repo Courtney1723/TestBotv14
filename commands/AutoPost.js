@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, SelectMenuBuilder } = require('discord.js');
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
+const { exec } = require('node:child_process');
 
 
 module.exports = {
@@ -8,7 +9,6 @@ module.exports = {
 		.setDescription('Configure and Confirm Auto Post Settings')
 		.setDMPermission(false),
 	async execute(interaction) {
-		await interaction.deferReply();
 
 		const initialEmbed = new EmbedBuilder()
 			.setColor(`0xFF008B`) //Pink
@@ -40,7 +40,7 @@ note: only Admins can start or stop auto posts by default.`)
 			);
 
 //Initial Embed + Buttons (start, stop, confirm, configure)
-		await interaction.editReply({embeds: [initialEmbed], components: [initialButtons]});
+		await interaction.reply({embeds: [initialEmbed], components: [initialButtons]});
 
 
 		
@@ -128,7 +128,7 @@ Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for every first Tu
 \nIf you believe this is an error you can report it in the [Rockstar Weekly Support Server](${process.env.support_link}).`)	
 											
 											await i.deferUpdate();
-											await i.editReply({ embeds: [gtaDuplicateEmbed], components: [] });	
+												await i.editReply({ embeds: [gtaDuplicateEmbed], components: [] });	
 									} 
 									else {
 
@@ -138,7 +138,7 @@ Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for every first Tu
 												.setDescription(`You will now get Grand Theft Auto V Auto Posts to the <#${i.values}> channel every Thursday at 2:00 PM EST.`)	
 											
 											await i.deferUpdate();
-											await i.editReply({ embeds: [gtaConfirmEmbed], components: [] });		
+												await i.editReply({ embeds: [gtaConfirmEmbed], components: [] });	
 
 										//Appends the GTADataBase.txt file with guildID, Channel ID, and choice of rdo of gta
 							       fs.appendFile(`GTADataBase.txt`,`guild:${guildIdDB} - channel:${channelIdDB} - rdo_gta:${rdo_gta_DB} - \n`, err => {
@@ -191,7 +191,7 @@ rdoCollector.on('collect', async i => {
 	
     if (i.customId === 'rdostart') {
         await i.deferUpdate();
-        await i.editReply({ embeds: [rdoStartEmbed], components: [rdoStartMenu] });
+        	await i.editReply({ embeds: [rdoStartEmbed], components: [rdoStartMenu] });
 
             const rdoValueFilter = i => i.values;
             const rdoValueCollector = interaction.channel.createMessageComponentCollector({ rdoValueFilter, time: 30000 });
@@ -212,7 +212,7 @@ rdoCollector.on('collect', async i => {
 \nIf you believe this is an error you can report it in the [Rockstar Weekly Support Server](${process.env.support_link}).`)	
                                     
                                     await i.deferUpdate();
-                                    await i.editReply({ embeds: [rdoDuplicateEmbed], components: [] });	
+                                    	await i.editReply({ embeds: [rdoDuplicateEmbed], components: [] });
                             } 
                             else {
 
@@ -222,7 +222,7 @@ rdoCollector.on('collect', async i => {
                                         .setDescription(`You will now get Red Dead Redemption II Auto Posts to the <#${i.values}> channel every Thursday at 2:00 PM EST.`)	
                                     
                                     await i.deferUpdate();
-                                    await i.editReply({ embeds: [rdoConfirmEmbed], components: [] });		
+                                    	await i.editReply({ embeds: [rdoConfirmEmbed], components: [] });	
 
                                 //Appends the RDODataBase.txt file with guildID, Channel ID, and choice of rdo of rdo
                            fs.appendFile(`RDODataBase.txt`,`guild:${guildIdDB} - channel:${channelIdDB} - rdo_gta:${rdo_gta_DB} - \n`, err => {
@@ -276,11 +276,11 @@ const stopButtons = new ActionRowBuilder()
 		stopCollector.on('collect', async i => {
 			if (i.customId === 'stop') {
 				await i.deferUpdate();
-				await i.editReply({ embeds: [stopEmbed], components: [stopButtons] });
+					await i.editReply({ embeds: [stopEmbed], components: [stopButtons] });
 			}
 		});	
 
-
+//BEGIN GTA STOP//
 const gtaStopEmbed = new EmbedBuilder()
     .setColor(`Red`) 
     .setTitle(`Stop Auto Posting GTAV`)
@@ -360,7 +360,90 @@ fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
 
 	});
 	});
+	//EDND GTA STOP//
 
+
+
+const rdoStopEmbed = new EmbedBuilder()
+.setColor(`Red`) 
+.setTitle(`Stop Auto Posting RDR2`)
+.setDescription(`Select any channel(s) from the dropdown menu to unsubscribe.`)        
+    
+let rdoStopMenu = new ActionRowBuilder()
+.addComponents(
+new SelectMenuBuilder()
+.setCustomId('rdoStopMenu')
+.setPlaceholder('Select a Channel')
+.addOptions([{
+    label: `No Channel Selected`,
+    description: 'No Channel Selected',
+    value: 'undefinedchannel',
+}])
+)
+
+fs.readFile('./RDODataBase.txt', 'utf8', async function (err, data) {
+if (err) {console.log(`Error: ${err}`)} //If an error, console.log
+else {
+    interaction.guild.channels.cache.forEach(channel => {
+        if ( (channel.type === 0) && (data.includes(`${channel.id}`)) ) {
+                        rdoStopMenu.components[0].addOptions([{
+                            label: `${channel.name}`,
+                            description: `${channel.name}`,
+                            value: `${channel.id}`,
+                        }]);
+                    }
+                })
+
+                //console.log(`channelIDArray at ${i}: ${channelIDArray[i]}`);
+                //console.log(`RDOStopString at ${i}: ${RDOStopString}`);	
+} 
+
+    //Confirmation rdoStop embed + Menu (ch1 + ch2 + ch3...)	
+    const rdoFilter = i => i.customId === 'rdostop';
+    const rdoCollector = interaction.channel.createMessageComponentCollector({ rdoFilter, time: 30000 });
+    rdoCollector.on('collect', async i => {
+        if (i.customId === 'rdostop') {
+            await i.deferUpdate();
+            await i.editReply({ embeds: [rdoStopEmbed], components: [rdoStopMenu] });  
+
+            const rdoValueFilter = i => i.values;
+                const rdoValueCollector = interaction.channel.createMessageComponentCollector({ rdoValueFilter, time: 30000 });
+                rdoValueCollector.on('collect', async i => {	
+
+                        let guildIdDB = `${interaction.guild.id}`;		
+                            let channelIdDB = `${i.values}`;
+                            let rdo_gta_DB = `${i.customId}`;
+
+                    fs.readFile('./RDODataBase.txt', 'utf8', async function (err, data) {
+                        if (err) {console.log(`Error: ${err}`)} //If an error, console.log
+                        else {
+                            //FIXME... how to remove i.values from RDODataBase.txt ??
+                            console.log(`i values: ${i.values}`);
+                            let rdoStopChannelIDs = i.values;
+                            console.log(`data: ${data.replace(`guild:${guildIdDB} - channel:${i.values} - rdo_gta:rdoStartMenu -`, "")}`);
+
+                            fs.writeFile('./RDODataBase.txt', `${data.replace(`guild:${guildIdDB} - channel:${i.values} - rdo_gta:rdoStartMenu -`, "")}`, function (err) {
+                                  if (err) throw err;
+                                  console.log('A user unsubscribed from RDR2 auto posts.');
+                                });
+
+                        const rdoStopConfirmEmbed = new EmbedBuilder()
+                            .setColor(`Green`) 
+                            .setTitle(`Success!`)
+                            .setDescription(`You have successfully unsubscribed <#${i.values}> from recieving RDR2 online auto posts.`)
+                            await i.deferUpdate();
+                            await i.editReply({ embeds: [rdoStopConfirmEmbed], components: [] });
+                    
+                        }
+                    });
+
+                }); //end collecting for rdoStopMenu Values
+
+        } // end collecting for rdostop
+
+});
+});
+//EDND RDO STOP//
 		
 		
 //------------------------------END STOP BUTTON------------------------------//
@@ -385,8 +468,6 @@ fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
 			if (!GTAConfirmString.includes('• ')) {
 				GTAConfirmString += `• There are no channels in this guild subscribed to GTAV auto posts.\n`;
 			}
-
-		
 		
 		let RDOConfirmString = "";
 		fs.readFile('./RDODataBase.txt', 'utf8', async function (err, data) {
@@ -408,25 +489,24 @@ fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
 			
 
 		const confirmEmbed = new EmbedBuilder()
-			.setColor(`Green`) 
-			.setTitle(`Confirm Your Current Auto Post Channels`)
+			.setColor(`Blue`) 
+			.setTitle(`Your Current Auto Post Channels:`)
 			.setDescription(`
 **Grand Theft Auto V:**
 ${GTAConfirmString}
 **Red Dead Redemption II:**
-${RDOConfirmString}`)								
+${RDOConfirmString}`)			
+			
 		const confirmFilter = i => i.customId === 'confirm'; 
 		const confirmCollector = interaction.channel.createMessageComponentCollector({ confirmFilter, time: 30000 });
 		confirmCollector.on('collect', async i => {
 			if (i.customId === 'confirm') {
 				await i.deferUpdate();
-				await i.editReply({ embeds: [confirmEmbed], components: [] });
+					await i.editReply({ embeds: [confirmEmbed], components: [] });
 			}
 		});	
-
 	});
-			
-});
+	});
 				
 
 //------------------------------END CONFIRM BUTTON------------------------------//
