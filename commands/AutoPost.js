@@ -1,6 +1,7 @@
-const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, SelectMenuBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, SelectMenuBuilder, PermissionsBitField } = require('discord.js');
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
 const { exec } = require('node:child_process');
+
 
 
 module.exports = {
@@ -8,16 +9,16 @@ module.exports = {
 		.setName('autopost')
 		.setDescription('Configure and Confirm Auto Post Settings')
 		.setDMPermission(false),
-	async execute(interaction) {
+	async execute(interaction, member) {
 
 		const initialEmbed = new EmbedBuilder()
 			.setColor(`0xFF008B`) //Pink
 			.setTitle(`Auto Post Settings`)
-			.setDescription(`Click **\'Start\'** to set up an Auto Post.
-Click **\'Stop\'** to remove an Auto Post
-Click **\'Confirm\'** to view channels in this guild with Auto Posts set up
-Click **\'Configure\'** to add a role that can configure Auto Post Settings.
-note: only Admins can start or stop auto posts by default.`)
+			.setDescription(`Click **\'Start\'** to set up an auto post.
+Click **\'Stop\'** to remove an auto post.
+Click **\'Confirm\'** to view channels in this guild with auto posts set up.
+Click **\'Configure\'** to add a role that can configure auto post settings.`)
+			.setFooter({text: `note: only Admins can start, stop, or configure autoposts by default.`})
 
 		const initialButtons = new ActionRowBuilder()
 			.addComponents(
@@ -50,7 +51,7 @@ note: only Admins can start or stop auto posts by default.`)
 			.setTitle(`Start Auto Posting`)
 			.setDescription(`Click **\'GTA\'** to set up Grand Theft Auto V Online Auto Posts for every Thursday at 2:00 PM EST.
 
-Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for every first Tuesday of the month at 2:00 PM EST`)		
+Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for the first Tuesday of every month at 2:00 PM EST.`)		
 
 		const startButtons = new ActionRowBuilder()
 			.addComponents(
@@ -70,9 +71,16 @@ Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for every first Tu
 		startCollector.on('collect', async i => {
 			if (i.customId === 'start') {
 				await i.deferUpdate();
-				await i.editReply({ embeds: [startEmbed], components: [startButtons] });
+				if (i.user.id === interaction.user.id) {
+					await i.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`Login Error: ${err}`));
+				} else {
+					i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+				}
 			}
 		});	
+		startCollector.on('end', collected => {
+			//console.log(`Collected ${collected.size} items`);
+		});
 
 		//BEGIN GTA START//
 		const gtaStartEmbed = new EmbedBuilder()
@@ -107,7 +115,12 @@ Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for every first Tu
 		gtaCollector.on('collect', async i => {
 			if (i.customId === 'gtastart') {
 				await i.deferUpdate();
-				await i.editReply({ embeds: [gtaStartEmbed], components: [gtaStartMenu] });
+				if (i.user.id === interaction.user.id) {
+					await i.editReply({ embeds: [gtaStartEmbed], components: [gtaStartMenu] })
+					.catch(err => console.log(`gtaStartEmbed+Menu Error: ${err}`));
+				} else {
+					i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+				}
 
 					const gtaValueFilter = i => i.values;
 					const gtaValueCollector = interaction.channel.createMessageComponentCollector({ gtaValueFilter, time: 30000 });
@@ -128,7 +141,12 @@ Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for every first Tu
 \nIf you believe this is an error you can report it in the [Rockstar Weekly Support Server](${process.env.support_link}).`)	
 											
 											await i.deferUpdate();
-												await i.editReply({ embeds: [gtaDuplicateEmbed], components: [] });	
+											if (i.user.id === interaction.user.id) {
+												await i.editReply({ embeds: [gtaDuplicateEmbed], components: [] })
+												.catch(err => console.log(`Login Error: ${err}`));
+											} else {
+												i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+											}
 									} 
 									else {
 
@@ -136,9 +154,15 @@ Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for every first Tu
 												.setColor(`Green`) 
 												.setTitle(`Success!`)
 												.setDescription(`You will now get Grand Theft Auto V Auto Posts to the <#${i.values}> channel every Thursday at 2:00 PM EST.`)	
+												.setFooter({ text: 'It can take up to 30 seconds for changes to take effect.' });
 											
 											await i.deferUpdate();
-												await i.editReply({ embeds: [gtaConfirmEmbed], components: [] });	
+											if (i.user.id === interaction.user.id) {
+												await i.editReply({ embeds: [gtaConfirmEmbed], components: [] })
+												.catch(err => console.log(`Login Error: ${err}`));
+											} else {
+												i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+											}
 
 										//Appends the GTADataBase.txt file with guildID, Channel ID, and choice of rdo of gta
 							       fs.appendFile(`GTADataBase.txt`,`guild:${guildIdDB} - channel:${channelIdDB} - rdo_gta:${rdo_gta_DB} - \n`, err => {
@@ -151,17 +175,23 @@ Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for every first Tu
 			
 		})
 					});
+							gtaValueCollector.on('end', collected => {
+								//console.log(`Collected ${collected.size} items`);
+							});
 
 				
 			}
 		});	
+		gtaCollector.on('end', collected => {
+			//console.log(`Collected ${collected.size} items`);
+		});
 
 
 //BEGIN RDO START//
 const rdoStartEmbed = new EmbedBuilder()
     .setColor(`Green`) 
     .setTitle(`Start Auto Posting RDOV Online Bonuses & Discounts`)
-    .setDescription(`Click **the dropdown menu** to confirm the channel you want to send Red Dead Redemption II Auto Posts to every Thursday at 2:00 PM EST`)	
+    .setDescription(`Click **the dropdown menu** to confirm the channel you want to send Red Dead Redemption II Auto Posts to the first Tuesday of every month at 2:00 PM EST.`)	
 
     let rdoStartMenu = new ActionRowBuilder()
         .addComponents(
@@ -191,15 +221,19 @@ rdoCollector.on('collect', async i => {
 	
     if (i.customId === 'rdostart') {
         await i.deferUpdate();
-        	await i.editReply({ embeds: [rdoStartEmbed], components: [rdoStartMenu] });
+					if (i.user.id === interaction.user.id) {
+        	await i.editReply({ embeds: [rdoStartEmbed], components: [rdoStartMenu] }).catch(err => console.log(`Login Error: ${err}`));
+					} else {
+						i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+					}
 
             const rdoValueFilter = i => i.values;
             const rdoValueCollector = interaction.channel.createMessageComponentCollector({ rdoValueFilter, time: 30000 });
             rdoValueCollector.on('collect', async i => {							
 
                     let guildIdDB = `${interaction.guild.id}`;
-                        let channelIdDB = `${i.values}`;
-                        let rdo_gta_DB = `${i.customId}`;
+                    let channelIdDB = `${i.values}`;
+                    let rdo_gta_DB = `${i.customId}`;
 
                         fs.readFile('./RDODataBase.txt', 'utf8', async function (err, data) {
                           if (err) {console.log(`Error: ${err}`)} //If an error, console.log
@@ -212,19 +246,28 @@ rdoCollector.on('collect', async i => {
 \nIf you believe this is an error you can report it in the [Rockstar Weekly Support Server](${process.env.support_link}).`)	
                                     
                                     await i.deferUpdate();
-                                    	await i.editReply({ embeds: [rdoDuplicateEmbed], components: [] });
+																		if (i.user.id === interaction.user.id) {
+                                    	await i.editReply({ embeds: [rdoDuplicateEmbed], components: [] }).catch(err => console.log(`Login Error: ${err}`));
+																		} else {
+																			i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+																		}
                             } 
                             else {
 
                                     const rdoConfirmEmbed = new EmbedBuilder()
                                         .setColor(`Green`) 
                                         .setTitle(`Success!`)
-                                        .setDescription(`You will now get Red Dead Redemption II Auto Posts to the <#${i.values}> channel every Thursday at 2:00 PM EST.`)	
+                                        .setDescription(`You will now get Red Dead Redemption II Auto Posts to the <#${i.values}> channel the first Tuesday of every month at 2:00 PM EST.`)
+																				.setFooter({ text: 'It can take up to 30 seconds for changes to take effect.' });
                                     
-                                    await i.deferUpdate();
-                                    	await i.editReply({ embeds: [rdoConfirmEmbed], components: [] });	
+                                    	await i.deferUpdate();
+																			if (i.user.id === interaction.user.id) {
+                                    	await i.editReply({ embeds: [rdoConfirmEmbed], components: [] }).catch(err => console.log(`Login Error: ${err}`));
+																			} else {
+																				i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+																			}
 
-                                //Appends the RDODataBase.txt file with guildID, Channel ID, and choice of rdo of rdo
+                            //Appends the RDODataBase.txt file with guildID, Channel ID, and choice of rdo of rdo
                            fs.appendFile(`RDODataBase.txt`,`guild:${guildIdDB} - channel:${channelIdDB} - rdo_gta:${rdo_gta_DB} - \n`, err => {
                              if (err) {
                                console.error(err)
@@ -233,10 +276,17 @@ rdoCollector.on('collect', async i => {
                                     })											
                                 }
     
-												});
+												})
             });
+						rdoValueCollector.on('end', collected => {
+							//console.log(`Collected ${collected.size} items`);
+						});
 		}
-});        
+}); 
+		rdoCollector.on('end', collected => {
+			//console.log(`Collected ${collected.size} items`);
+		});
+//END RDO START//
 
 				
 //------------------------------END START BUTTON------------------------------//
@@ -276,7 +326,11 @@ const stopButtons = new ActionRowBuilder()
 		stopCollector.on('collect', async i => {
 			if (i.customId === 'stop') {
 				await i.deferUpdate();
-					await i.editReply({ embeds: [stopEmbed], components: [stopButtons] });
+				if (i.user.id === interaction.user.id) {
+					await i.editReply({ embeds: [stopEmbed], components: [stopButtons] }).catch(err => console.log(`Login Error: ${err}`));
+				} else {
+					i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+				}
 			}
 		});	
 
@@ -321,7 +375,11 @@ fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
 		gtaCollector.on('collect', async i => {
 			if (i.customId === 'gtastop') {
 				await i.deferUpdate();
-				await i.editReply({ embeds: [gtaStopEmbed], components: [gtaStopMenu] });  
+				if (i.user.id === interaction.user.id) {
+					await i.editReply({ embeds: [gtaStopEmbed], components: [gtaStopMenu] }).catch(err => console.log(`Login Error: ${err}`));
+				} else {
+					i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+				}
 
 				const gtaValueFilter = i => i.values;
 					const gtaValueCollector = interaction.channel.createMessageComponentCollector({ gtaValueFilter, time: 30000 });
@@ -334,32 +392,43 @@ fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
 						fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
 							if (err) {console.log(`Error: ${err}`)} //If an error, console.log
 							else {
-								//FIXME... how to remove i.values from GTADataBase.txt ??
-								console.log(`i values: ${i.values}`);
+								//console.log(`i values: ${i.values}`);
 								let gtaStopChannelIDs = i.values;
-								console.log(`data: ${data.replace(`guild:${guildIdDB} - channel:${i.values} - rdo_gta:gtaStartMenu -`, "")}`);
+								//console.log(`data: ${data.replace(`guild:${guildIdDB} - channel:${i.values} - rdo_gta:gtaStartMenu -`, "")}`);
 
 								fs.writeFile('./GTADataBase.txt', `${data.replace(`guild:${guildIdDB} - channel:${i.values} - rdo_gta:gtaStartMenu -`, "")}`, function (err) {
 									  if (err) throw err;
 									  console.log('A user unsubscribed from GTAV auto posts.');
-									});
+									})
 
 							const gtaStopConfirmEmbed = new EmbedBuilder()
 								.setColor(`Green`) 
 								.setTitle(`Success!`)
 								.setDescription(`You have successfully unsubscribed <#${i.values}> from recieving GTAV online auto posts.`)
+								.setFooter({ text: 'It can take up to 30 seconds for changes to take effect.' })
+								
 								await i.deferUpdate();
-								await i.editReply({ embeds: [gtaStopConfirmEmbed], components: [] });
+								if (i.user.id === interaction.user.id) {
+									await i.editReply({ embeds: [gtaStopConfirmEmbed], components: [] }).catch(err => console.log(`Login Error: ${err}`));
+								} else {
+									i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+								}
 						
 							}
-						});
+						})
 
 					}); //end collecting for gtaStopMenu Values
+					rdoCollector.on('end', collected => {
+						//console.log(`Collected ${collected.size} items`);
+					});
 
 			} // end collecting for gtastop
 
-	});
-	});
+		});
+		gtaCollector.on('end', collected => {
+			//console.log(`Collected ${collected.size} items`);
+		});
+	})
 	//EDND GTA STOP//
 
 
@@ -404,7 +473,11 @@ else {
     rdoCollector.on('collect', async i => {
         if (i.customId === 'rdostop') {
             await i.deferUpdate();
-            await i.editReply({ embeds: [rdoStopEmbed], components: [rdoStopMenu] });  
+						if (i.user.id === interaction.user.id) {
+            	await i.editReply({ embeds: [rdoStopEmbed], components: [rdoStopMenu] }).catch(err => console.log(`Login Error: ${err}`)); 
+						} else {
+							i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+						}
 
             const rdoValueFilter = i => i.values;
                 const rdoValueCollector = interaction.channel.createMessageComponentCollector({ rdoValueFilter, time: 30000 });
@@ -425,24 +498,36 @@ else {
                             fs.writeFile('./RDODataBase.txt', `${data.replace(`guild:${guildIdDB} - channel:${i.values} - rdo_gta:rdoStartMenu -`, "")}`, function (err) {
                                   if (err) throw err;
                                   console.log('A user unsubscribed from RDR2 auto posts.');
-                                });
+                                })
 
                         const rdoStopConfirmEmbed = new EmbedBuilder()
                             .setColor(`Green`) 
                             .setTitle(`Success!`)
                             .setDescription(`You have successfully unsubscribed <#${i.values}> from recieving RDR2 online auto posts.`)
+														.setFooter({ text: 'It can take up to 30 seconds for changes to take effect.' });
+													
                             await i.deferUpdate();
-                            await i.editReply({ embeds: [rdoStopConfirmEmbed], components: [] });
+														if (i.user.id === interaction.user.id) {
+                            	await i.editReply({ embeds: [rdoStopConfirmEmbed], components: [] }).catch(err => console.log(`Login Error: ${err}`));
+														} else {
+															i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+														}
                     
                         }
-                    });
+                    })
 
                 }); //end collecting for rdoStopMenu Values
+								rdoValueCollector.on('end', collected => {
+									//console.log(`Collected ${collected.size} items`);
+								});
 
-        } // end collecting for rdostop
+        } 
 
+});// end collecting for rdostop
+rdoCollector.on('end', collected => {
+	//console.log(`Collected ${collected.size} items`);
 });
-});
+})
 //EDND RDO STOP//
 		
 		
@@ -486,6 +571,35 @@ else {
 			if (!RDOConfirmString.includes('• ')) {
 				RDOConfirmString += `• There are no channels in this guild subscribed to RDR2 auto posts.\n`;
 			}
+
+			let roleIDArray = [];
+			interaction.guild.roles.cache.forEach(role => {
+			    roleIDArray.push(`${role.id}`);
+			});
+			roleIDArray.shift(); //removes the @everyone role
+			//console.log(`roleIDArray[]: ${roleIDArray}`);
+			
+			let ConfigureConfirmString = "";
+			fs.readFile('./rolesDataBase.txt', 'utf8', async function (err, data) {
+			    if (err) {console.log(`Error: ${err}`)} //If an error, console.log
+			    else {
+            //console.log(`data: ${data}`);
+						if (data.includes(`guild:${interaction.guild.id} - admin:yes`)) {
+							ConfigureConfirmString += `• Administrators\n`;
+						}
+            for (i = 0; i <= roleIDArray.length - 1; i++) {
+                if (data.includes(`${roleIDArray[i]}`)) { //If the GTADataBase.txt contains a channel in the interaction guild
+                    ConfigureConfirmString += `• <@&${roleIDArray[i]}>\n`;
+                    //console.log(`channelIDArray at ${i}: ${channelIDArray[i]}`);
+                    //console.log(`ConfigureConfirmString at ${i}: ${ConfigureConfirmString}`);	
+                } 
+            }
+        }
+    //console.log(`ConfigureConfirmString: ${ConfigureConfirmString}`);	
+    if (!ConfigureConfirmString.includes('• ')) {
+        ConfigureConfirmString += `• There are no roles in this guild that are allowed to configure auto posts.\n`;
+    }	
+			
 			
 
 		const confirmEmbed = new EmbedBuilder()
@@ -495,18 +609,29 @@ else {
 **Grand Theft Auto V:**
 ${GTAConfirmString}
 **Red Dead Redemption II:**
-${RDOConfirmString}`)			
+${RDOConfirmString}
+**Roles Allowed to Configure Auto Posts**
+${ConfigureConfirmString}`)	
+			.setFooter({ text: 'It can take up to 30 seconds for changes to take effect.' });
 			
 		const confirmFilter = i => i.customId === 'confirm'; 
 		const confirmCollector = interaction.channel.createMessageComponentCollector({ confirmFilter, time: 30000 });
 		confirmCollector.on('collect', async i => {
 			if (i.customId === 'confirm') {
 				await i.deferUpdate();
-					await i.editReply({ embeds: [confirmEmbed], components: [] });
+				if (i.user.id === interaction.user.id) {
+					await i.editReply({ embeds: [confirmEmbed], components: [] }).catch(err => console.log(`confirmEmbed [] Error: ${err}`));
+				} else {
+					i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+				}
 			}
-		});	
+		});
+		confirmCollector.on('end', collected => {
+			//console.log(`Collected ${collected.size} items`);
+		});
 	});
-	});
+	}); //end fs.readFile rolesDataBase
+	})
 				
 
 //------------------------------END CONFIRM BUTTON------------------------------//
@@ -514,7 +639,243 @@ ${RDOConfirmString}`)
 
 //------------------------------BEGIN CONFIGURE BUTTON------------------------------//
 
-//FIXME...
+		const configureEmbed = new EmbedBuilder()
+			.setColor(`0x00FFFF`) //Teal
+			.setTitle(`Add or Remove a Role`)
+			.setDescription(`Click **\'Add\'** to add a role that can start and stop auto posts.
+
+Click **\'Remove\'** to remove a role that can start and stop auto posts.`)		
+
+		const configureButtons = new ActionRowBuilder()
+			.addComponents(
+				new ButtonBuilder()
+					.setCustomId('configureadd')
+					.setLabel('Add')
+					.setStyle(ButtonStyle.Success),
+				new ButtonBuilder()
+					.setCustomId('configureremove')
+					.setLabel('Remove')
+					.setStyle(ButtonStyle.Danger),								
+			);	
+
+		//Initial Configure embed + Buttons (Add + Remove)	
+				const configureFilter = i => i.customId === 'configure'; 
+				const configureCollector = interaction.channel.createMessageComponentCollector({ configureFilter, time: 30000 });
+				configureCollector.on('collect', async i => {
+					if (i.customId === 'configure') {
+						await i.deferUpdate();
+						if ( (i.user.id === interaction.user.id) && (interaction.member.permissions.has(PermissionsBitField.Flags.ADMINISTRATOR)) ) {
+							await i.editReply({ embeds: [configureEmbed], components: [configureButtons] }).catch(err => console.log(`ConfigureEmbed Error: ${err}`));
+						} else {
+							i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+						}
+					}
+				}); // end configureCollector	
+				configureCollector.on('end', collected => {
+				    //console.log(`Collected ${collected.size} items`);
+				}); 
+
+//BEGIN CONFIGURE ADD//
+let roleIDArray = [];
+interaction.guild.roles.cache.forEach(role => {
+    roleIDArray.push(`${role.id}`);
+});
+roleIDArray.shift(); //removes the @everyone role
+//console.log(`roleIDArray[]: ${roleIDArray}`);
+		
+	let ConfigureConfirmString = "";
+	let AdminName = "";
+	let AdminYesNo = "";
+	fs.readFile('./rolesDataBase.txt', 'utf8', async function (err, data) {
+		if (err) {console.log(`Error: ${err}`)} //If an error, console.log
+		else {
+				//console.log(`data: ${data}`);
+				let adminRoleBoolean = data.split(`guild:${interaction.guild.id} - admin:`);
+				if (adminRoleBoolean[1].startsWith("yes")) {
+						ConfigureConfirmString += `• Administrators\n`;
+						AdminName += 'No Role Selected';
+						AdminYesNo += 'undefinedrole';
+				}		else {
+					AdminName += 'Administrators';
+					AdminYesNo += 'yes';
+				}
+				for (i = 0; i <= roleIDArray.length - 1; i++) {		
+					if (data.includes(`${roleIDArray[i]}`)) { //If the rolesDataBase.txt contains a role in the interaction guild
+						ConfigureConfirmString += `• <@&${roleIDArray[i]}>\n`;
+						//console.log(`roleIDArray at ${i}: ${roleIDArray[i]}`);
+						//console.log(`ConfigureConfirmString at ${i}: ${ConfigureConfirmString}`);	
+					}  
+						
+					}
+				}
+
+		//console.log(`ConfigureConfirmString: ${ConfigureConfirmString}`);
+			
+const configureAddEmbed = new EmbedBuilder()
+.setColor(`0x00FFFF`) //Teal
+.setTitle(`Add a Role`)
+.setDescription(`Click **the dropdown menu** to add a role that will be able to control auto posts.
+
+**These are your current allowed roles:**
+${ConfigureConfirmString}`)	
+
+
+let configureAddMenu = new ActionRowBuilder()
+    .addComponents(
+        new SelectMenuBuilder()
+        .setCustomId('configuremaddmenu')
+        .setPlaceholder('Select a Role')
+        .addOptions([{
+            label: AdminName,
+            description: AdminName,
+            value: AdminYesNo,
+        }])
+    )
+interaction.guild.roles.cache.forEach(role => {
+	console.log(`role names: ${role.name}`)
+	if (role.name != "@everyone") {
+		configureAddMenu.components[0].addOptions([{
+				label: `${role.name}`,
+				description: `${role.name}`,
+				value: `${role.id}`,
+		}]);
+	}
+});
+
+//Configure Role embed + Menu (role1 + rol2 + role3...)	
+const configureAddFilter = i => i.customId === 'configureadd';
+const configureAddCollector = interaction.channel.createMessageComponentCollector({ configureAddFilter, time: 30000 });
+configureAddCollector.on('collect', async i => {
+    if (i.customId === 'configureadd') {
+        await i.deferUpdate();
+        if (i.user.id === interaction.user.id) {
+            await i.editReply({ embeds: [configureAddEmbed], components: [configureAddMenu] })
+            .catch(err => console.log(`confirmAddEmbed+Menu Error: ${err}`));
+        } else {
+            i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+        }
+		}
+});
+configureAddCollector.on('end', collected => {
+    //console.log(`Collected ${collected.size} items`);
+});  
+
+
+const configureValueFilter = i => i.values;
+const configureValueCollector = interaction.channel.createMessageComponentCollector({ configureValueFilter, time: 30000 });
+configureValueCollector.on('collect', async i => {							
+
+        let guildIdDB = `${interaction.guild.id}`;
+            let roleIdDB = `${i.values}`;
+
+            fs.readFile('./rolesDataBase.txt', 'utf8', async function (err, data) {
+              if (err) {console.log(`Error: ${err}`)} //If an error, console.log
+								if (roleIdDB === `yes`) {
+												if (AdminName === `Administrators`) { //If Administrators do not have permission
+
+                        const configureAdminConfirmEmbed = new EmbedBuilder()
+                            .setColor(`Green`) 
+                            .setTitle(`Success!`)
+                            .setDescription(`Anyone with the Administrator permission can configure auto post settings now.`)	
+                            .setFooter({ text: 'It can take up to 30 seconds for changes to take effect.' });
+                        
+                        await i.deferUpdate();
+                        if (i.user.id === interaction.user.id) {
+                            await i.editReply({ embeds: [configureAdminConfirmEmbed], components: [] })
+                            .catch(err => console.log(`configureConfirmEmbed Error: ${err}`));
+                        } else {
+                            i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+                        }
+
+											//console.log(`datareplace: ${data.replace(`guild:${guildIdDB} - admin:no -`, `guild:${guildIdDB} - admin:yes -`)}`);
+													
+			                //Replaces the rolesDataBase.txt file with Admin permission for the guild
+			               fs.writeFile(`./rolesDataBase.txt`,`${data.replace(`guild:${guildIdDB} - admin:no -`, `guild:${guildIdDB} - admin:yes -`)}`, err => {
+			                 if (err) {
+			                   console.error(err)
+			                   return
+			                     }					
+			               }) //end fs.appendFile														
+													
+									} else {
+                        const configureAdminDuplicateEmbed = new EmbedBuilder()
+                            .setColor(`0x00FFFF`) //Teal
+                            .setTitle(`Please Try Again`)
+                            .setDescription(`Administrators are already set up to control auto posts.
+\nTry the /autopost command again and click \'Confirm\' to see what role(s) are whitelisted.
+\nIf you believe this is an error you can report it in the [Rockstar Weekly Support Server](${process.env.support_link}).`)	
+                        
+                        await i.deferUpdate();
+                        if (i.user.id === interaction.user.id) {
+                            await i.editReply({ embeds: [configureAdminDuplicateEmbed], components: [] })
+                            .catch(err => console.log(`configureAdminDuplicateEmbed Error: ${err}`));
+                        } else {
+                            i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+                        }
+									} //end if Administrators already have permission
+								} //end if roleIdDb === yes
+                else if (data.includes(`${roleIdDB}`)) { //if the role is already listed in rolesDataBase.txt
+                        const configureDuplicateEmbed = new EmbedBuilder()
+                            .setColor(`0x00FFFF`) //Teal
+                            .setTitle(`Please Try Again`)
+                            .setDescription(`The <@&${i.values}> role is already set up to control auto posts.
+\nTry the /autopost command again and click \'Confirm\' to see what role(s) are whitelisted.
+\nIf you believe this is an error you can report it in the [Rockstar Weekly Support Server](${process.env.support_link}).`)	
+                        
+                        await i.deferUpdate();
+                        if (i.user.id === interaction.user.id) {
+                            await i.editReply({ embeds: [configureDuplicateEmbed], components: [] })
+                            .catch(err => console.log(`configureDuplicateEmbed Error: ${err}`));
+                        } else {
+                            i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+                        }
+                } 
+                else { //if the role is not listed in rolesDataBase.txt
+
+                        const configureConfirmEmbed = new EmbedBuilder()
+                            .setColor(`Green`) 
+                            .setTitle(`Success!`)
+                            .setDescription(`Anyone who has the <@&${i.values}> role can configure auto post settings now.`)	
+                            .setFooter({ text: 'It can take up to 30 seconds for changes to take effect.' });
+                        
+                        await i.deferUpdate();
+                        if (i.user.id === interaction.user.id) {
+                            await i.editReply({ embeds: [configureConfirmEmbed], components: [] })
+                            .catch(err => console.log(`configureConfirmEmbed Error: ${err}`));
+                        } else {
+                            i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+                        }
+									
+								//console.log(`data: ${data}`);
+								let adminRoleBoolean = data.split(`guild:${interaction.guild.id} - admin:`);
+									let YesNo = "";
+									let YesNo01 = adminRoleBoolean[1].split("- role:");
+									YesNo += YesNo01[0];
+                //Appends the rolesDataBase.txt file with guildID, AdminYesNo, and choice of role to add
+               fs.appendFile(`./rolesDataBase.txt`,`guild:${guildIdDB} - admin:${YesNo01[0]} - role:${i.values} - \n`, err => {
+                 if (err) {
+                   console.error(err)
+                   return
+                     }					
+               }) //end fs.appendFile											
+					
+}// end else if the role is not listed in rolesDataBase.txt send Success Embed
+}); // end fs.readFile for configureValueCollector
+									
+}); // end configureValueCollector  
+configureValueCollector.on('end', collected => {
+    //console.log(`Collected ${collected.size} items`);
+});
+}); // end fs.readFile	
+
+//END CONFIGURE ADD//
+
+
+//BEGIN CONFIGURE REMOVE//
+
+
+//END CONFIGURE REMOVE//
+		
 
 //------------------------------END CONFIGURE BUTTON------------------------------//
 		

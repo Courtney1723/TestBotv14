@@ -41,9 +41,6 @@ process.on("uncaughtException", async (err) => {
 process.on("uncaughtExceptionMonitor", async (err) => {
   console.error("Uncaught Promise Exception (Monitor):\n", err);
 });
-process.on("multipleResolves", async (type, promise, reason) => {
-  console.error("Multiple Resolves:\n", type, promise, reason);
-});
 
 //Access Command Files
 const fs = require('node:fs');
@@ -71,9 +68,12 @@ client.on('interactionCreate', async interaction => {
 	try {
 		await command.execute(interaction);
 	} catch (error) {
-		console.error(error);
-		await interaction.editReply({ content: 'There was an error while executing this command!', ephemeral: true });
-		console.log(`error: ${error}`);
+			console.log(`interaction error: ${error.stack}`);
+		if (error.toString().includes("InteractionNotReplied")) {
+			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+		} else {
+			await interaction.editReply({ content: 'There was an error while executing this command!', ephemeral: true });
+		}
 	}
 });
 
