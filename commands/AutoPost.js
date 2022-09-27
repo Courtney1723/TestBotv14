@@ -122,7 +122,7 @@ Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for the first Tues
 					i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
 				}
 
-					const gtaValueFilter = i => i.values;
+					const gtaValueFilter = i => i.customId === 'gtastart';
 					const gtaValueCollector = interaction.channel.createMessageComponentCollector({ gtaValueFilter, time: 30000 });
 					gtaValueCollector.on('collect', async i => {							
 
@@ -170,7 +170,7 @@ Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for the first Tues
 							           console.error(err)
 							           return
 							         	}					
-											})											
+											}); // end fs:appendFile to add a channel for gta autop posts											
 										}
 			
 		})
@@ -227,7 +227,7 @@ rdoCollector.on('collect', async i => {
 						i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
 					}
 
-            const rdoValueFilter = i => i.values;
+            const rdoValueFilter = i => i.customId === 'rdostart';
             const rdoValueCollector = interaction.channel.createMessageComponentCollector({ rdoValueFilter, time: 30000 });
             rdoValueCollector.on('collect', async i => {							
 
@@ -381,7 +381,7 @@ fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
 					i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
 				}
 
-				const gtaValueFilter = i => i.values;
+				const gtaValueFilter = i => i.customId === 'gtastop';
 					const gtaValueCollector = interaction.channel.createMessageComponentCollector({ gtaValueFilter, time: 30000 });
 					gtaValueCollector.on('collect', async i => {	
 
@@ -479,7 +479,7 @@ else {
 							i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
 						}
 
-            const rdoValueFilter = i => i.values;
+            const rdoValueFilter = i => i.customId === 'rdostop';
                 const rdoValueCollector = interaction.channel.createMessageComponentCollector({ rdoValueFilter, time: 30000 });
                 rdoValueCollector.on('collect', async i => {	
 
@@ -524,9 +524,9 @@ else {
         } 
 
 });// end collecting for rdostop
-rdoCollector.on('end', collected => {
-	//console.log(`Collected ${collected.size} items`);
-});
+		rdoCollector.on('end', collected => {
+			//console.log(`Collected ${collected.size} items`);
+		});
 })
 //EDND RDO STOP//
 		
@@ -639,86 +639,61 @@ ${ConfigureConfirmString}`)
 
 //------------------------------BEGIN CONFIGURE BUTTON------------------------------//
 
-		const configureEmbed = new EmbedBuilder()
-			.setColor(`0x00FFFF`) //Teal
-			.setTitle(`Add or Remove a Role`)
-			.setDescription(`Click **\'Add\'** to add a role that can start and stop auto posts.
+const configureEmbed = new EmbedBuilder()
+.setColor(`0x00FFFF`) //Teal
+.setTitle(`Add or Remove a Role`)
+.setDescription(`Click **\'Add\'** to add a role that can start and stop auto posts.
 
 Click **\'Remove\'** to remove a role that can start and stop auto posts.`)		
 
-		const configureButtons = new ActionRowBuilder()
-			.addComponents(
-				new ButtonBuilder()
-					.setCustomId('configureadd')
-					.setLabel('Add')
-					.setStyle(ButtonStyle.Success),
-				new ButtonBuilder()
-					.setCustomId('configureremove')
-					.setLabel('Remove')
-					.setStyle(ButtonStyle.Danger),								
-			);	
+const configureButtons = new ActionRowBuilder()
+.addComponents(
+    new ButtonBuilder()
+        .setCustomId('configureadd')
+        .setLabel('Add')
+        .setStyle(ButtonStyle.Success),
+    new ButtonBuilder()
+        .setCustomId('configureremove')
+        .setLabel('Remove')
+        .setStyle(ButtonStyle.Danger),								
+);	
 
-		//Initial Configure embed + Buttons (Add + Remove)	
-				const configureFilter = i => i.customId === 'configure'; 
-				const configureCollector = interaction.channel.createMessageComponentCollector({ configureFilter, time: 30000 });
-				configureCollector.on('collect', async i => {
-					if (i.customId === 'configure') {
-						await i.deferUpdate();
-						if ( (i.user.id === interaction.user.id) && (interaction.member.permissions.has(PermissionsBitField.Flags.ADMINISTRATOR)) ) {
-							await i.editReply({ embeds: [configureEmbed], components: [configureButtons] }).catch(err => console.log(`ConfigureEmbed Error: ${err}`));
-						} else {
-							i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
-						}
-					}
-				}); // end configureCollector	
-				configureCollector.on('end', collected => {
-				    //console.log(`Collected ${collected.size} items`);
-				}); 
+//Initial Configure embed + Buttons (Add + Remove)	
+    const configureFilter = i => i.customId === 'configure'; 
+    const configureCollector = interaction.channel.createMessageComponentCollector({ configureFilter, time: 30000 });
+    configureCollector.on('collect', async i => {
+        if (i.customId === 'configure') {
+            await i.deferUpdate();
+            if ( (i.user.id === interaction.user.id) && (interaction.member.permissions.has(PermissionsBitField.Flags.ADMINISTRATOR)) ) {
+                await i.editReply({ embeds: [configureEmbed], components: [configureButtons] }).catch(err => console.log(`ConfigureEmbed Error: ${err}`));
+            } else {
+                i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+            }
+        }
 
 //BEGIN CONFIGURE ADD//
-let roleIDArray = [];
-interaction.guild.roles.cache.forEach(role => {
-    roleIDArray.push(`${role.id}`);
-});
-roleIDArray.shift(); //removes the @everyone role
-//console.log(`roleIDArray[]: ${roleIDArray}`);
-		
-	let ConfigureConfirmString = "";
-	let AdminName = "";
-	let AdminYesNo = "";
-	fs.readFile('./rolesDataBase.txt', 'utf8', async function (err, data) {
-		if (err) {console.log(`Error: ${err}`)} //If an error, console.log
-		else {
-				//console.log(`data: ${data}`);
-				let adminRoleBoolean = data.split(`guild:${interaction.guild.id} - admin:`);
-				if (adminRoleBoolean[1].startsWith("yes")) {
-						ConfigureConfirmString += `• Administrators\n`;
-						AdminName += 'No Role Selected';
-						AdminYesNo += 'undefinedrole';
-				}		else {
-					AdminName += 'Administrators';
-					AdminYesNo += 'yes';
-				}
-				for (i = 0; i <= roleIDArray.length - 1; i++) {		
-					if (data.includes(`${roleIDArray[i]}`)) { //If the rolesDataBase.txt contains a role in the interaction guild
-						ConfigureConfirmString += `• <@&${roleIDArray[i]}>\n`;
-						//console.log(`roleIDArray at ${i}: ${roleIDArray[i]}`);
-						//console.log(`ConfigureConfirmString at ${i}: ${ConfigureConfirmString}`);	
-					}  
-						
-					}
-				}
 
-		//console.log(`ConfigureConfirmString: ${ConfigureConfirmString}`);
-			
+let AdminNameAdd = "";
+let AdminYesNoAdd = "";
+fs.readFile('./rolesDataBase.txt', 'utf8', async function (err, data) {
+    if (err) {console.log(`Error: ${err}`)} //If an error, console.log
+    else {
+        //console.log(`data: ${data}`);
+        let adminRoleBoolean = data.split(`guild:${interaction.guild.id} - admin:`);
+        if (adminRoleBoolean[1].startsWith("yes")) { //If Admin permissions are required
+                AdminNameAdd += 'No Role Selected';
+                AdminYesNoAdd += 'undefinedrole';
+        }		
+        else {
+            AdminNameAdd += 'Administrators';
+            AdminYesNoAdd += 'yes';
+        }
+    }
+
 const configureAddEmbed = new EmbedBuilder()
 .setColor(`0x00FFFF`) //Teal
 .setTitle(`Add a Role`)
-.setDescription(`Click **the dropdown menu** to add a role that will be able to control auto posts.
-
-**These are your current allowed roles:**
-${ConfigureConfirmString}`)	
-
+.setDescription(`Click **the dropdown menu** to add a role that will be able to control auto posts.`)	
 
 let configureAddMenu = new ActionRowBuilder()
     .addComponents(
@@ -726,14 +701,14 @@ let configureAddMenu = new ActionRowBuilder()
         .setCustomId('configuremaddmenu')
         .setPlaceholder('Select a Role')
         .addOptions([{
-            label: AdminName,
-            description: AdminName,
-            value: AdminYesNo,
+            label: AdminNameAdd,
+            description: AdminNameAdd,
+            value: AdminYesNoAdd,
         }])
     )
 interaction.guild.roles.cache.forEach(role => {
-	console.log(`role names: ${role.name}`)
-	if (role.name != "@everyone") {
+	//console.log(`role names: ${role.name}`)
+	if ((role.name != "@everyone") && (!data.includes(`${role.id}`)) ) {
 		configureAddMenu.components[0].addOptions([{
 				label: `${role.name}`,
 				description: `${role.name}`,
@@ -751,131 +726,133 @@ configureAddCollector.on('collect', async i => {
         if (i.user.id === interaction.user.id) {
             await i.editReply({ embeds: [configureAddEmbed], components: [configureAddMenu] })
             .catch(err => console.log(`confirmAddEmbed+Menu Error: ${err}`));
-        } else {
+            } else {
             i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
         }
-		}
-});
+    } 
+
+const configureStartValueFilter = i => i.customId === 'configureadd';
+const configureStartValueCollector = interaction.channel.createMessageComponentCollector({ configureStartValueFilter, time: 30000, max: 1 });
+configureStartValueCollector.on('collect', async i => {		
+
+let guildIdDB = `${interaction.guild.id}`;
+
+  if (i.values === `undefinedrole`) { //if the Admin role is already required - error
+
+    const configureDuplicateEmbed = new EmbedBuilder()
+    .setColor(`Red`) 
+    .setTitle(`Please Try Again`)
+    .setDescription(`You selected an invalid response "No Role Selected".
+\nTry the /autopost command again and click \'Confirm\' to see what role(s) are subscribed.
+\nIf you believe this is an error you can report it in the [Rockstar Weekly Support Server](${process.env.support_link}).`)	
+    
+    await i.deferUpdate();
+    if (i.user.id === interaction.user.id) {
+        await i.editReply({ embeds: [configureDuplicateEmbed], components: [] })
+        .catch(err => console.log(`configureDuplicateEmbed Error: ${err}`));
+        } else {
+        i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+    }
+
+  }
+  else if (i.values.includes('yes')) { //Make the Admin permission required
+		//console.log(`adding admin role for ${guildIdDB}`);
+    const configureConfirmAddEmbed = new EmbedBuilder()
+        .setColor(`Green`) 
+        .setTitle(`Success!`)
+        .setDescription(`Administrator privileges are now required to configure autoposts.`)	
+        .setFooter({ text: 'It can take up to 30 seconds for changes to take effect.' });
+
+    await i.deferUpdate();
+    if (i.user.id === interaction.user.id) {
+        await i.editReply({ embeds: [configureConfirmAddEmbed], components: [] })
+        .catch(err => console.log(`configureConfirmAddEmbed Error: ${err}`));
+    } else {
+        i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+    }
+
+		guildCount = data.split(`guild:${guildIdDB}`).length - 1;
+			console.log(`guildCount: ${guildCount}`);
+
+		const find = `${guildIdDB} - admin:no`;
+		const replace = `${guildIdDB} - admin:yes`;
+		let newData = data;
+			for (i=0;i<=guildCount-1;i++) { //iterates through every instance of required roles by guild
+				newData = newData.replace(new RegExp(find, 'g'), replace);
+			}
+		//console.log(`newData: ${newData}`);
+                                        
+    //Replaces the rolesDataBase.txt file with Admin permission for the guild
+    fs.writeFile(`./rolesDataBase.txt`,`${newData}`, err => {
+        if (err) {
+            console.error(err)
+            return
+            }					
+        }); //end fs.writeFile to change the admin priveleges	
+
+    }    // end adding Admins as a required permission 
+		else {
+
+			const configureAddEmbed = new EmbedBuilder()
+				.setColor(`Green`) 
+				.setTitle(`Success!`)
+				.setDescription(`The <@&${i.values}> role is now required to configure auto posts.`)	
+				.setFooter({ text: 'It can take up to 30 seconds for changes to take effect.' });		
+
+	    await i.deferUpdate();
+	    if (i.user.id === interaction.user.id) {
+	        await i.editReply({ embeds: [configureAddEmbed], components: [] })
+	        .catch(err => console.log(`configureAddEmbed Error: ${err}`));
+	    } else {
+	        i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+	    }		
+
+			function AdminYesNo() {
+				if (AdminYesNoAdd === 'undefinedrole') {
+					return 'yes';
+				}
+				else {
+					return 'no';
+				}
+			}
+
+			fs.appendFile(`rolesDataBase.txt`,`guild:${guildIdDB} - admin:${AdminYesNo()} - role:${i.values} - \n`, err => {
+			 if (err) {
+				 console.error(err)
+				 return
+				}					
+			}); // end fs:appendFile to add a channel for gta autop posts	
+		} // end adding a new role to rolesDataBase.txt
+
+}); //end configureStartValueCollector
+configureStartValueCollector.on('end', collected => {
+    //console.log(`Collected ${collected.size} items`);
+}); 
+
+}); //end configureAddCollector
 configureAddCollector.on('end', collected => {
     //console.log(`Collected ${collected.size} items`);
-});  
+}); 
 
+}); // end configureCollector	
+configureCollector.on('end', collected => {
+		//console.log(`Collected ${collected.size} items`);
+}); 
 
-const configureValueFilter = i => i.values;
-const configureValueCollector = interaction.channel.createMessageComponentCollector({ configureValueFilter, time: 30000 });
-configureValueCollector.on('collect', async i => {							
-
-        let guildIdDB = `${interaction.guild.id}`;
-            let roleIdDB = `${i.values}`;
-
-            fs.readFile('./rolesDataBase.txt', 'utf8', async function (err, data) {
-              if (err) {console.log(`Error: ${err}`)} //If an error, console.log
-								if (roleIdDB === `yes`) {
-												if (AdminName === `Administrators`) { //If Administrators do not have permission
-
-                        const configureAdminConfirmEmbed = new EmbedBuilder()
-                            .setColor(`Green`) 
-                            .setTitle(`Success!`)
-                            .setDescription(`Anyone with the Administrator permission can configure auto post settings now.`)	
-                            .setFooter({ text: 'It can take up to 30 seconds for changes to take effect.' });
-                        
-                        await i.deferUpdate();
-                        if (i.user.id === interaction.user.id) {
-                            await i.editReply({ embeds: [configureAdminConfirmEmbed], components: [] })
-                            .catch(err => console.log(`configureConfirmEmbed Error: ${err}`));
-                        } else {
-                            i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
-                        }
-
-											//console.log(`datareplace: ${data.replace(`guild:${guildIdDB} - admin:no -`, `guild:${guildIdDB} - admin:yes -`)}`);
-													
-			                //Replaces the rolesDataBase.txt file with Admin permission for the guild
-			               fs.writeFile(`./rolesDataBase.txt`,`${data.replace(`guild:${guildIdDB} - admin:no -`, `guild:${guildIdDB} - admin:yes -`)}`, err => {
-			                 if (err) {
-			                   console.error(err)
-			                   return
-			                     }					
-			               }) //end fs.appendFile														
-													
-									} else {
-                        const configureAdminDuplicateEmbed = new EmbedBuilder()
-                            .setColor(`0x00FFFF`) //Teal
-                            .setTitle(`Please Try Again`)
-                            .setDescription(`Administrators are already set up to control auto posts.
-\nTry the /autopost command again and click \'Confirm\' to see what role(s) are whitelisted.
-\nIf you believe this is an error you can report it in the [Rockstar Weekly Support Server](${process.env.support_link}).`)	
-                        
-                        await i.deferUpdate();
-                        if (i.user.id === interaction.user.id) {
-                            await i.editReply({ embeds: [configureAdminDuplicateEmbed], components: [] })
-                            .catch(err => console.log(`configureAdminDuplicateEmbed Error: ${err}`));
-                        } else {
-                            i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
-                        }
-									} //end if Administrators already have permission
-								} //end if roleIdDb === yes
-                else if (data.includes(`${roleIdDB}`)) { //if the role is already listed in rolesDataBase.txt
-                        const configureDuplicateEmbed = new EmbedBuilder()
-                            .setColor(`0x00FFFF`) //Teal
-                            .setTitle(`Please Try Again`)
-                            .setDescription(`The <@&${i.values}> role is already set up to control auto posts.
-\nTry the /autopost command again and click \'Confirm\' to see what role(s) are whitelisted.
-\nIf you believe this is an error you can report it in the [Rockstar Weekly Support Server](${process.env.support_link}).`)	
-                        
-                        await i.deferUpdate();
-                        if (i.user.id === interaction.user.id) {
-                            await i.editReply({ embeds: [configureDuplicateEmbed], components: [] })
-                            .catch(err => console.log(`configureDuplicateEmbed Error: ${err}`));
-                        } else {
-                            i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
-                        }
-                } 
-                else { //if the role is not listed in rolesDataBase.txt
-
-                        const configureConfirmEmbed = new EmbedBuilder()
-                            .setColor(`Green`) 
-                            .setTitle(`Success!`)
-                            .setDescription(`Anyone who has the <@&${i.values}> role can configure auto post settings now.`)	
-                            .setFooter({ text: 'It can take up to 30 seconds for changes to take effect.' });
-                        
-                        await i.deferUpdate();
-                        if (i.user.id === interaction.user.id) {
-                            await i.editReply({ embeds: [configureConfirmEmbed], components: [] })
-                            .catch(err => console.log(`configureConfirmEmbed Error: ${err}`));
-                        } else {
-                            i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
-                        }
-									
-								//console.log(`data: ${data}`);
-								let adminRoleBoolean = data.split(`guild:${interaction.guild.id} - admin:`);
-									let YesNo = "";
-									let YesNo01 = adminRoleBoolean[1].split("- role:");
-									YesNo += YesNo01[0];
-                //Appends the rolesDataBase.txt file with guildID, AdminYesNo, and choice of role to add
-               fs.appendFile(`./rolesDataBase.txt`,`guild:${guildIdDB} - admin:${YesNo01[0]} - role:${i.values} - \n`, err => {
-                 if (err) {
-                   console.error(err)
-                   return
-                     }					
-               }) //end fs.appendFile											
-					
-}// end else if the role is not listed in rolesDataBase.txt send Success Embed
-}); // end fs.readFile for configureValueCollector
-									
-}); // end configureValueCollector  
-configureValueCollector.on('end', collected => {
-    //console.log(`Collected ${collected.size} items`);
-});
-}); // end fs.readFile	
+}); //end fs:readFile for Admin credentials check	
 
 //END CONFIGURE ADD//
 
 
-//BEGIN CONFIGURE REMOVE//
 
 
-//END CONFIGURE REMOVE//
-		
+//BEGIN CONFIGURE STOP//
+
+
+
+
+//END CONFIGURE STOP//
+
 
 //------------------------------END CONFIGURE BUTTON------------------------------//
 		

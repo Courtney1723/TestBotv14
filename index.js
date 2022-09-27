@@ -92,26 +92,26 @@ for (const file of eventFiles) {
 }
 
 //sends a kill 1 command to the child node if there is a 429 error
-// errorArray = [];
-// client.on("debug", function(info){
-// 	//console.log(`info -> ${check429error}`); //debugger
-// 			errorArray.push(info);
-// 		setTimeout(() => {
-// 		  if (errorArray.length >= 3) {
-// 				//console.log(`successfully connected`);
-// 				//console.log(`errorArray length: ${errorArray.length}`);
-// 			} else {
-// 				console.log(`Caught a 429 error!`); 
-// 					exec('kill 1', (err) => {
-// 					    if (err) {
-// 					        console.error("could not execute command: ", err);
-// 					        return
-// 					    }
-// 					  console.log(`Kill 1 command succeeded`); //probably wont work
-// 					});					
-// 			}
-// 		}, 10000);
-// });
+errorArray = [];
+client.on("debug", function(info){
+	//console.log(`info -> ${info}`); //debugger
+			errorArray.push(info);
+		setTimeout(() => {
+		  if (errorArray.length >= 3) {
+				//console.log(`successfully connected`);
+				//console.log(`errorArray length: ${errorArray.length}`);
+			} else {
+				console.log(`Caught a 429 error!`); 
+					exec('kill 1', (err) => {
+					    if (err) {
+					        console.error("could not execute command: ", err);
+					        return
+					    }
+					  console.log(`Kill 1 command succeeded`); //probably wont work
+					});					
+			}
+		}, 10000);
+});
 
 
 keepAlive();
