@@ -46,249 +46,262 @@ Click **\'Configure\'** to add a role that can configure auto post settings.`)
 
 		
 //------------------------------BEGIN START BUTTON------------------------------//		
-		const startEmbed = new EmbedBuilder()
-			.setColor(`Green`) 
-			.setTitle(`Start Auto Posting`)
-			.setDescription(`Click **\'GTA\'** to set up Grand Theft Auto V Online Auto Posts for every Thursday at 2:00 PM EST.
+const startEmbed = new EmbedBuilder()
+.setColor(`Green`) 
+.setTitle(`Start Auto Posting`)
+.setDescription(`Click **\'GTA\'** to set up Grand Theft Auto V Online Auto Posts for every Thursday at 2:00 PM EST.
 
 Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for the first Tuesday of every month at 2:00 PM EST.`)		
 
-		const startButtons = new ActionRowBuilder()
-			.addComponents(
-				new ButtonBuilder()
-					.setCustomId('gtastart')
-					.setLabel('GTA')
-					.setStyle(ButtonStyle.Success),
-				new ButtonBuilder()
-					.setCustomId('rdostart')
-					.setLabel('RDO')
-					.setStyle(ButtonStyle.Danger),								
-			);	
+const startButtons = new ActionRowBuilder()
+.addComponents(
+    new ButtonBuilder()
+        .setCustomId('gtastart')
+        .setLabel('GTA')
+        .setStyle(ButtonStyle.Success),
+    new ButtonBuilder()
+        .setCustomId('rdostart')
+        .setLabel('RDO')
+        .setStyle(ButtonStyle.Danger),								
+);	
 
 //Initial Start embed + Buttons (gtastart + rdostart)	
-		const startFilter = i => i.customId === 'start'; 
-		const startCollector = interaction.channel.createMessageComponentCollector({ startFilter, time: 30000 });
-		startCollector.on('collect', async i => {
-			if (i.customId === 'start') {
-				await i.deferUpdate();
-				if (i.user.id === interaction.user.id) {
-					await i.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`Login Error: ${err}`));
-				} else {
-					i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
-				}
-			}
-		});	
-		startCollector.on('end', collected => {
-			//console.log(`Collected ${collected.size} items`);
-		});
+const startFilter = i => i.customId === 'start'; 
+const startCollector = interaction.channel.createMessageComponentCollector({ startFilter, time: 30000 });
+startCollector.on('collect', async i => {
+if (i.customId === 'start') {
+    await i.deferUpdate();
+    if (i.user.id === interaction.user.id) {
+        await i.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`Login Error: ${err}`));
+    } else {
+        i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+    }
 
-		//BEGIN GTA START//
-		const gtaStartEmbed = new EmbedBuilder()
-			.setColor(`Green`) 
-			.setTitle(`Start Auto Posting GTAV Online Bonuses & Discounts`)
-			.setDescription(`Click **the dropdown menu** to confirm the channel you want to send Grand Theft Auto V Auto Posts to every Thursday at 2:00 PM EST`)	
-		
-			let gtaStartMenu = new ActionRowBuilder()
-			    .addComponents(
-			        new SelectMenuBuilder()
-			        .setCustomId('gtaStartMenu')
-			        .setPlaceholder('Select a Channel')
-			        .addOptions([{
-			            label: `No Channel Selected`,
-			            description: 'No Channel Selected',
-			            value: 'undefinedchannel',
-			        }])
-			    )
-			interaction.guild.channels.cache.forEach(channel => {
-			    if (channel.type === 0) {
-			        gtaStartMenu.components[0].addOptions([{
-			            label: `${channel.name}`,
-			            description: `${channel.name}`,
-			            value: `${channel.id}`,
-			        }]);
-			    }
-			})
-				
-		//Confirmation gtaStart embed + Menu (ch1 + ch2 + ch3...)	
-		const gtaFilter = i => i.customId === 'gtastart';
-		const gtaCollector = interaction.channel.createMessageComponentCollector({ gtaFilter, time: 30000 });
-		gtaCollector.on('collect', async i => {
-			if (i.customId === 'gtastart') {
-				await i.deferUpdate();
-				if (i.user.id === interaction.user.id) {
-					await i.editReply({ embeds: [gtaStartEmbed], components: [gtaStartMenu] })
-					.catch(err => console.log(`gtaStartEmbed+Menu Error: ${err}`));
-				} else {
-					i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
-				}
 
-					const gtaValueFilter = i => i.customId === 'gtastart';
-					const gtaValueCollector = interaction.channel.createMessageComponentCollector({ gtaValueFilter, time: 30000 });
-					gtaValueCollector.on('collect', async i => {							
+//BEGIN GTA START//
+fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
+    if (err) {console.log(`Error: ${err}`)} //If an error, console.log
+const gtaStartEmbed = new EmbedBuilder()
+.setColor(`Green`) 
+.setTitle(`Start Auto Posting GTAV Online Bonuses & Discounts`)
+.setDescription(`Click **the dropdown menu** to confirm the channel you want to send Grand Theft Auto V Auto Posts to every Thursday at 2:00 PM EST`)	
 
-						    let guildIdDB = `${interaction.guild.id}`;
-								let channelIdDB = `${i.values}`;
-								let rdo_gta_DB = `${i.customId}`;
+let gtaStartMenu = new ActionRowBuilder()
+    .addComponents(
+        new SelectMenuBuilder()
+        .setCustomId('gtaStartMenu')
+        .setPlaceholder('Select a Channel')
+        .addOptions([{
+            label: `No Channel Selected`,
+            description: 'No Channel Selected',
+            value: 'undefinedchannel',
+        }])
+    )
+interaction.guild.channels.cache.forEach(channel => {
+    if ((channel.type === 0) && (!data.includes(channel.id))) {
+        gtaStartMenu.components[0].addOptions([{
+            label: `${channel.name}`,
+            description: `${channel.name}`,
+            value: `${channel.id}`,
+        }]);
+    }
+})
 
-								fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
-								  if (err) {console.log(`Error: ${err}`)} //If an error, console.log
-									else if (data.includes(`${channelIdDB}`)) { 
-											const gtaDuplicateEmbed = new EmbedBuilder()
-												.setColor(`Red`) 
-												.setTitle(`Please Try Again`)
-												.setDescription(`The <#${i.values}> channel is already set up to get Grand Theft Auto V Auto Posts.
+//Confirmation gtaStart embed + Menu (ch1 + ch2 + ch3...)	
+const gtaFilter = i => i.customId === 'gtastart';
+const gtaCollector = interaction.channel.createMessageComponentCollector({ gtaFilter, time: 30000 });
+gtaCollector.on('collect', async i => {
+if (i.customId === 'gtastart') {
+    await i.deferUpdate();
+    if (i.user.id === interaction.user.id) {
+        await i.editReply({ embeds: [gtaStartEmbed], components: [gtaStartMenu] })
+        .catch(err => console.log(`gtaStartEmbed+Menu Error: ${err}`));
+    } else {
+        i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+    }
+
+const gtaValueFilter = i => i.customId === 'gtaStartMenu';
+        const gtaValueCollector = interaction.channel.createMessageComponentCollector({ gtaValueFilter, time: 30000, max: 1 });
+        gtaValueCollector.on('collect', async i => {
+					//console.log(`i.values: ${i.values}`)
+					if (i.customId === 'gtaStartMenu') {
+					if (i.values.includes(`undefinedchannel`)) { //i.values === `undefinedchannel` does not work?
+
+						const gtaDuplicateEmbed = new EmbedBuilder()
+								.setColor(`Red`) 
+								.setTitle(`Please Try Again`)
+								.setDescription(`You have selected an invalid response "No channel selected".
 \nTry the /autopost command again and click \'Confirm\' to see what channel(s) are subscribed.
 \nIf you believe this is an error you can report it in the [Rockstar Weekly Support Server](${process.env.support_link}).`)	
-											
-											await i.deferUpdate();
-											if (i.user.id === interaction.user.id) {
-												await i.editReply({ embeds: [gtaDuplicateEmbed], components: [] })
-												.catch(err => console.log(`Login Error: ${err}`));
-											} else {
-												i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
-											}
-									} 
-									else {
+						
+						await i.deferUpdate();
+						if (i.user.id === interaction.user.id) {
+								await i.editReply({ embeds: [gtaDuplicateEmbed], components: [] })
+								.catch(err => console.log(`Login Error: ${err}`));
+						} else {
+								i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+						}
+						
+					} 
+					else { //add new channel to GTADataBase.txt
 
-											const gtaConfirmEmbed = new EmbedBuilder()
-												.setColor(`Green`) 
-												.setTitle(`Success!`)
-												.setDescription(`You will now get Grand Theft Auto V Auto Posts to the <#${i.values}> channel every Thursday at 2:00 PM EST.`)	
-												.setFooter({ text: 'It can take up to 30 seconds for changes to take effect.' });
-											
-											await i.deferUpdate();
-											if (i.user.id === interaction.user.id) {
-												await i.editReply({ embeds: [gtaConfirmEmbed], components: [] })
-												.catch(err => console.log(`Login Error: ${err}`));
-											} else {
-												i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
-											}
+						const gtaConfirmEmbed = new EmbedBuilder()
+								.setColor(`Green`) 
+								.setTitle(`Success!`)
+								.setDescription(`You will now get Grand Theft Auto V Auto Posts to the <#${i.values}> channel every Thursday at 2:00 PM EST.`)	
+								.setFooter({ text: 'It can take up to 30 seconds for changes to take effect.' });
+						
+						await i.deferUpdate();
+						if (i.user.id === interaction.user.id) {
+								await i.editReply({ embeds: [gtaConfirmEmbed], components: [] })
+								.catch(err => console.log(`Login Error: ${err}`));
+						} else {
+								i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+						}
 
-										//Appends the GTADataBase.txt file with guildID, Channel ID, and choice of rdo of gta
-							       fs.appendFile(`GTADataBase.txt`,`guild:${guildIdDB} - channel:${channelIdDB} - rdo_gta:${rdo_gta_DB} - \n`, err => {
-							         if (err) {
-							           console.error(err)
-							           return
-							         	}					
-											}); // end fs:appendFile to add a channel for gta autop posts											
-										}
-			
-		})
-					});
-							gtaValueCollector.on('end', collected => {
-								//console.log(`Collected ${collected.size} items`);
-							});
+					//Appends the GTADataBase.txt file with guildID, Channel ID, and choice of rdo of gta
+					fs.appendFile(`GTADataBase.txt`,`guild:${interaction.guild.id} - channel:${i.values} - rdo_gta:${i.customId} - \n`, err => {
+						 if (err) {
+							 console.error(err)
+							 return
+								 }					
+					}); // end fs:appendFile to add a channel for gta autop posts	
+						
+					} //end add new channel
+					}// end if i.customId === 'gtaStartMenu'
 
-				
-			}
-		});	
-		gtaCollector.on('end', collected => {
-			//console.log(`Collected ${collected.size} items`);
-		});
+});//end gtaValueCollector
+gtaValueCollector.on('end', collected => {
+//console.log(`Collected ${collected.size} items`);
+});	
+					
+} //end if customId == gtastart
+}); //end gtaCollector
+gtaCollector.on('end', collected => {
+//console.log(`Collected ${collected.size} items`);
+});
+
+});//end fs:readFile for gta channel matching
+
+//END GTA START//
 
 
+	
 //BEGIN RDO START//
+fs.readFile('./RDODataBase.txt', 'utf8', async function (err, data) {
+    if (err) {console.log(`Error: ${err}`)} //If an error, console.log
 const rdoStartEmbed = new EmbedBuilder()
-    .setColor(`Green`) 
-    .setTitle(`Start Auto Posting RDOV Online Bonuses & Discounts`)
-    .setDescription(`Click **the dropdown menu** to confirm the channel you want to send Red Dead Redemption II Auto Posts to the first Tuesday of every month at 2:00 PM EST.`)	
+.setColor(`Green`) 
+.setTitle(`Start Auto Posting RDR2 Online Bonuses & Discounts`)
+.setDescription(`Click **the dropdown menu** to confirm the channel you want to send Red Dead Redemption II Auto Posts to every Thursday at 2:00 PM EST`)	
 
-    let rdoStartMenu = new ActionRowBuilder()
-        .addComponents(
-            new SelectMenuBuilder()
-            .setCustomId('rdoStartMenu')
-            .setPlaceholder('Select a Channel')
-            .addOptions([{
-                label: `No Channel Selected`,
-                description: 'No Channel Selected',
-                value: 'undefinedchannel',
-            }])
-        )
-    interaction.guild.channels.cache.forEach(channel => {
-        if (channel.type === 0) {
-            rdoStartMenu.components[0].addOptions([{
-                label: `${channel.name}`,
-                description: `${channel.name}`,
-                value: `${channel.id}`,
-            }]);
-        }
-    });
-        
+let rdoStartMenu = new ActionRowBuilder()
+    .addComponents(
+        new SelectMenuBuilder()
+        .setCustomId('rdoStartMenu')
+        .setPlaceholder('Select a Channel')
+        .addOptions([{
+            label: `No Channel Selected`,
+            description: 'No Channel Selected',
+            value: 'undefinedchannel',
+        }])
+    )
+interaction.guild.channels.cache.forEach(channel => {
+    if ((channel.type === 0) && (!data.includes(channel.id))) {
+        rdoStartMenu.components[0].addOptions([{
+            label: `${channel.name}`,
+            description: `${channel.name}`,
+            value: `${channel.id}`,
+        }]);
+    }
+})
+
 //Confirmation rdoStart embed + Menu (ch1 + ch2 + ch3...)	
 const rdoFilter = i => i.customId === 'rdostart';
 const rdoCollector = interaction.channel.createMessageComponentCollector({ rdoFilter, time: 30000 });
 rdoCollector.on('collect', async i => {
-	
-    if (i.customId === 'rdostart') {
-        await i.deferUpdate();
-					if (i.user.id === interaction.user.id) {
-        	await i.editReply({ embeds: [rdoStartEmbed], components: [rdoStartMenu] }).catch(err => console.log(`Login Error: ${err}`));
-					} else {
-						i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
-					}
+if (i.customId === 'rdostart') {
+    await i.deferUpdate();
+    if (i.user.id === interaction.user.id) {
+        await i.editReply({ embeds: [rdoStartEmbed], components: [rdoStartMenu] })
+        .catch(err => console.log(`rdoStartEmbed+Menu Error: ${err}`));
+    } else {
+        i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+    }
 
-            const rdoValueFilter = i => i.customId === 'rdostart';
-            const rdoValueCollector = interaction.channel.createMessageComponentCollector({ rdoValueFilter, time: 30000 });
-            rdoValueCollector.on('collect', async i => {							
+const rdoValueFilter = i => i.customId === 'rdoStartMenu';
+        const rdoValueCollector = interaction.channel.createMessageComponentCollector({ rdoValueFilter, time: 30000, max: 1 });
+        rdoValueCollector.on('collect', async i => {
+					//console.log(`i.values: ${i.values}`)
+					if (i.customId === 'rdoStartMenu') {
+					if (i.values.includes(`undefinedchannel`)) { //i.values === `undefinedchannel` does not work?
 
-                    let guildIdDB = `${interaction.guild.id}`;
-                    let channelIdDB = `${i.values}`;
-                    let rdo_gta_DB = `${i.customId}`;
-
-                        fs.readFile('./RDODataBase.txt', 'utf8', async function (err, data) {
-                          if (err) {console.log(`Error: ${err}`)} //If an error, console.log
-                            else if (data.includes(`${channelIdDB}`)) { 
-                                    const rdoDuplicateEmbed = new EmbedBuilder()
-                                        .setColor(`Red`) 
-                                        .setTitle(`Please Try Again`)
-                                        .setDescription(`The <#${i.values}> channel is already set up to get Red Dead Redemption II Auto Posts.
+						const rdoDuplicateEmbed = new EmbedBuilder()
+								.setColor(`Red`) 
+								.setTitle(`Please Try Again`)
+								.setDescription(`You have selected an invalid response "No channel selected".
 \nTry the /autopost command again and click \'Confirm\' to see what channel(s) are subscribed.
 \nIf you believe this is an error you can report it in the [Rockstar Weekly Support Server](${process.env.support_link}).`)	
-                                    
-                                    await i.deferUpdate();
-																		if (i.user.id === interaction.user.id) {
-                                    	await i.editReply({ embeds: [rdoDuplicateEmbed], components: [] }).catch(err => console.log(`Login Error: ${err}`));
-																		} else {
-																			i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
-																		}
-                            } 
-                            else {
+						
+						await i.deferUpdate();
+						if (i.user.id === interaction.user.id) {
+								await i.editReply({ embeds: [rdoDuplicateEmbed], components: [] })
+								.catch(err => console.log(`Login Error: ${err}`));
+						} else {
+								i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+						}
+						
+					} 
+					else { //add new channel to RDODataBase.txt
 
-                                    const rdoConfirmEmbed = new EmbedBuilder()
-                                        .setColor(`Green`) 
-                                        .setTitle(`Success!`)
-                                        .setDescription(`You will now get Red Dead Redemption II Auto Posts to the <#${i.values}> channel the first Tuesday of every month at 2:00 PM EST.`)
-																				.setFooter({ text: 'It can take up to 30 seconds for changes to take effect.' });
-                                    
-                                    	await i.deferUpdate();
-																			if (i.user.id === interaction.user.id) {
-                                    	await i.editReply({ embeds: [rdoConfirmEmbed], components: [] }).catch(err => console.log(`Login Error: ${err}`));
-																			} else {
-																				i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
-																			}
+						const rdoConfirmEmbed = new EmbedBuilder()
+								.setColor(`Green`) 
+								.setTitle(`Success!`)
+								.setDescription(`You will now get Red Dead Redemption II Auto Posts to the <#${i.values}> channel the first Tuesday of every month at 2:00 PM EST.`)	
+								.setFooter({ text: 'It can take up to 30 seconds for changes to take effect.' });
+						
+						await i.deferUpdate();
+						if (i.user.id === interaction.user.id) {
+								await i.editReply({ embeds: [rdoConfirmEmbed], components: [] })
+								.catch(err => console.log(`Login Error: ${err}`));
+						} else {
+								i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+						}
 
-                            //Appends the RDODataBase.txt file with guildID, Channel ID, and choice of rdo of rdo
-                           fs.appendFile(`RDODataBase.txt`,`guild:${guildIdDB} - channel:${channelIdDB} - rdo_gta:${rdo_gta_DB} - \n`, err => {
-                             if (err) {
-                               console.error(err)
-                               return
-                                 }					
-                                    })											
-                                }
-    
-												})
-            });
-						rdoValueCollector.on('end', collected => {
-							//console.log(`Collected ${collected.size} items`);
-						});
-		}
-}); 
-		rdoCollector.on('end', collected => {
-			//console.log(`Collected ${collected.size} items`);
-		});
+					//Appends the RDODataBase.txt file with guildID, Channel ID, and choice of rdo or gta
+					fs.appendFile(`RDODataBase.txt`,`guild:${interaction.guild.id} - channel:${i.values} - rdo_gta:${i.customId} - \n`, err => {
+						 if (err) {
+							 console.error(err)
+							 return
+								 }					
+					}); // end fs:appendFile to add a channel for rdo autoposts	
+						
+					} //end add new channel
+					}// end if i.customId === 'rdoStartMenu'
+
+
+});//end rdoValueCollector
+rdoValueCollector.on('end', collected => {
+//console.log(`Collected ${collected.size} items`);
+});	
+					
+} //end if customId == rdostart
+}); //end rdoCollector
+rdoCollector.on('end', collected => {
+//console.log(`Collected ${collected.size} items`);
+});
+
+});//end fs:readFile for rdo channel matching
+
 //END RDO START//
 
-				
+	
+} //end if customId === start
+});	//end startCollector
+startCollector.on('end', collected => {
+//console.log(`Collected ${collected.size} items`);
+});
+    
 //------------------------------END START BUTTON------------------------------//
 
 
@@ -376,30 +389,26 @@ fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
 			if (i.customId === 'gtastop') {
 				await i.deferUpdate();
 				if (i.user.id === interaction.user.id) {
-					await i.editReply({ embeds: [gtaStopEmbed], components: [gtaStopMenu] }).catch(err => console.log(`Login Error: ${err}`));
+					await i.editReply({ embeds: [gtaStopEmbed], components: [gtaStopMenu] }).catch(err => console.log(`gtaStopEmbed Error: ${err}`));
 				} else {
 					i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
 				}
 
-				const gtaValueFilter = i => i.customId === 'gtastop';
+				const gtaValueFilter = i => i.customId === 'gtaStopMenu';
 					const gtaValueCollector = interaction.channel.createMessageComponentCollector({ gtaValueFilter, time: 30000 });
 					gtaValueCollector.on('collect', async i => {	
-
-						    let guildIdDB = `${interaction.guild.id}`;		
-								let channelIdDB = `${i.values}`;
-								let rdo_gta_DB = `${i.customId}`;
 
 						fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
 							if (err) {console.log(`Error: ${err}`)} //If an error, console.log
 							else {
-								//console.log(`i values: ${i.values}`);
-								let gtaStopChannelIDs = i.values;
-								//console.log(`data: ${data.replace(`guild:${guildIdDB} - channel:${i.values} - rdo_gta:gtaStartMenu -`, "")}`);
+								if (!i.values.includes(`undefinedchannel`)) {
+								console.log(`data.replace: ${data.replace(`guild:${interaction.guild.id} - channel:${i.values} - rdo_gta:gtaStartMenu -`, "")}`);
 
-								fs.writeFile('./GTADataBase.txt', `${data.replace(`guild:${guildIdDB} - channel:${i.values} - rdo_gta:gtaStartMenu -`, "")}`, function (err) {
+								
+								fs.writeFile('./GTADataBase.txt', `${data.replace(`guild:${interaction.guild.id} - channel:${i.values} - rdo_gta:gtaStartMenu -`, "")}`, function (err) {
 									  if (err) throw err;
 									  console.log('A user unsubscribed from GTAV auto posts.');
-									})
+									}); //end fs:writeFile to remove channel from autoposts
 
 							const gtaStopConfirmEmbed = new EmbedBuilder()
 								.setColor(`Green`) 
@@ -414,11 +423,15 @@ fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
 									i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
 								}
 						
+							}// end remove channel
+							else {
+								console.log(`error`);
+							}
 							}
 						})
 
 					}); //end collecting for gtaStopMenu Values
-					rdoCollector.on('end', collected => {
+					gtaCollector.on('end', collected => {
 						//console.log(`Collected ${collected.size} items`);
 					});
 
@@ -429,106 +442,106 @@ fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
 			//console.log(`Collected ${collected.size} items`);
 		});
 	})
-	//EDND GTA STOP//
+	//END GTA STOP//
 
 
-
+//BEGIN RDO STOP//
 const rdoStopEmbed = new EmbedBuilder()
-.setColor(`Red`) 
-.setTitle(`Stop Auto Posting RDR2`)
-.setDescription(`Select any channel(s) from the dropdown menu to unsubscribe.`)        
-    
+    .setColor(`Red`) 
+    .setTitle(`Stop Auto Posting RDR2`)
+    .setDescription(`Select any channel(s) from the dropdown menu to unsubscribe.`)        
+		
 let rdoStopMenu = new ActionRowBuilder()
 .addComponents(
-new SelectMenuBuilder()
-.setCustomId('rdoStopMenu')
-.setPlaceholder('Select a Channel')
-.addOptions([{
-    label: `No Channel Selected`,
-    description: 'No Channel Selected',
-    value: 'undefinedchannel',
-}])
+    new SelectMenuBuilder()
+    .setCustomId('rdoStopMenu')
+    .setPlaceholder('Select a Channel')
+    .addOptions([{
+        label: `No Channel Selected`,
+        description: 'No Channel Selected',
+        value: 'undefinedchannel',
+    }])
 )
 
 fs.readFile('./RDODataBase.txt', 'utf8', async function (err, data) {
-if (err) {console.log(`Error: ${err}`)} //If an error, console.log
-else {
-    interaction.guild.channels.cache.forEach(channel => {
-        if ( (channel.type === 0) && (data.includes(`${channel.id}`)) ) {
-                        rdoStopMenu.components[0].addOptions([{
-                            label: `${channel.name}`,
-                            description: `${channel.name}`,
-                            value: `${channel.id}`,
-                        }]);
-                    }
-                })
-
-                //console.log(`channelIDArray at ${i}: ${channelIDArray[i]}`);
-                //console.log(`RDOStopString at ${i}: ${RDOStopString}`);	
-} 
-
-    //Confirmation rdoStop embed + Menu (ch1 + ch2 + ch3...)	
-    const rdoFilter = i => i.customId === 'rdostop';
-    const rdoCollector = interaction.channel.createMessageComponentCollector({ rdoFilter, time: 30000 });
-    rdoCollector.on('collect', async i => {
-        if (i.customId === 'rdostop') {
-            await i.deferUpdate();
-						if (i.user.id === interaction.user.id) {
-            	await i.editReply({ embeds: [rdoStopEmbed], components: [rdoStopMenu] }).catch(err => console.log(`Login Error: ${err}`)); 
-						} else {
-							i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
-						}
-
-            const rdoValueFilter = i => i.customId === 'rdostop';
-                const rdoValueCollector = interaction.channel.createMessageComponentCollector({ rdoValueFilter, time: 30000 });
-                rdoValueCollector.on('collect', async i => {	
-
-                        let guildIdDB = `${interaction.guild.id}`;		
-                            let channelIdDB = `${i.values}`;
-                            let rdo_gta_DB = `${i.customId}`;
-
-                    fs.readFile('./RDODataBase.txt', 'utf8', async function (err, data) {
-                        if (err) {console.log(`Error: ${err}`)} //If an error, console.log
-                        else {
-                            //FIXME... how to remove i.values from RDODataBase.txt ??
-                            console.log(`i values: ${i.values}`);
-                            let rdoStopChannelIDs = i.values;
-                            console.log(`data: ${data.replace(`guild:${guildIdDB} - channel:${i.values} - rdo_gta:rdoStartMenu -`, "")}`);
-
-                            fs.writeFile('./RDODataBase.txt', `${data.replace(`guild:${guildIdDB} - channel:${i.values} - rdo_gta:rdoStartMenu -`, "")}`, function (err) {
-                                  if (err) throw err;
-                                  console.log('A user unsubscribed from RDR2 auto posts.');
-                                })
-
-                        const rdoStopConfirmEmbed = new EmbedBuilder()
-                            .setColor(`Green`) 
-                            .setTitle(`Success!`)
-                            .setDescription(`You have successfully unsubscribed <#${i.values}> from recieving RDR2 online auto posts.`)
-														.setFooter({ text: 'It can take up to 30 seconds for changes to take effect.' });
-													
-                            await i.deferUpdate();
-														if (i.user.id === interaction.user.id) {
-                            	await i.editReply({ embeds: [rdoStopConfirmEmbed], components: [] }).catch(err => console.log(`Login Error: ${err}`));
-														} else {
-															i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
-														}
-                    
+    if (err) {console.log(`Error: ${err}`)} //If an error, console.log
+    else {
+        interaction.guild.channels.cache.forEach(channel => {
+            if ( (channel.type === 0) && (data.includes(`${channel.id}`)) ) {
+                            rdoStopMenu.components[0].addOptions([{
+                                label: `${channel.name}`,
+                                description: `${channel.name}`,
+                                value: `${channel.id}`,
+                            }]);
                         }
                     })
 
-                }); //end collecting for rdoStopMenu Values
-								rdoValueCollector.on('end', collected => {
-									//console.log(`Collected ${collected.size} items`);
-								});
+                    //console.log(`channelIDArray at ${i}: ${channelIDArray[i]}`);
+                    //console.log(`RDOStopString at ${i}: ${RDOStopString}`);	
+    } 
 
-        } 
+		//Confirmation rdoStop embed + Menu (ch1 + ch2 + ch3...)	
+		const rdoFilter = i => i.customId === 'rdostop';
+		const rdoCollector = interaction.channel.createMessageComponentCollector({ rdoFilter, time: 30000 });
+		rdoCollector.on('collect', async i => {
+			if (i.customId === 'rdostop') {
+				await i.deferUpdate();
+				if (i.user.id === interaction.user.id) {
+					await i.editReply({ embeds: [rdoStopEmbed], components: [rdoStopMenu] }).catch(err => console.log(`rdoStopEmbed Error: ${err}`));
+				} else {
+					i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+				}
 
-});// end collecting for rdostop
+				const rdoValueFilter = i => i.customId === 'rdoStopMenu';
+					const rdoValueCollector = interaction.channel.createMessageComponentCollector({ rdoValueFilter, time: 30000 });
+					rdoValueCollector.on('collect', async i => {	
+
+						fs.readFile('./RDODataBase.txt', 'utf8', async function (err, data) {
+							if (err) {console.log(`Error: ${err}`)} //If an error, console.log
+							else {
+								if (!i.values.includes(`undefinedchannel`)) {
+								console.log(`i.values: ${i.values}`)
+								console.log(`data.replace: ${data.replace(`guild:${interaction.guild.id} - channel:${i.values} - rdo_gta:rdoStartMenu -`, "")}`);
+
+								
+								fs.writeFile('./RDODataBase.txt', `${data.replace(`guild:${interaction.guild.id} - channel:${i.values} - rdo_gta:rdoStartMenu -`, "")}`, function (err) {
+									  if (err) throw err;
+									  console.log('A user unsubscribed from RDR2 auto posts.');
+									}); //end fs:writeFile to remove channel from autoposts
+
+							const rdoStopConfirmEmbed = new EmbedBuilder()
+								.setColor(`Green`) 
+								.setTitle(`Success!`)
+								.setDescription(`You have successfully unsubscribed <#${i.values}> from recieving RDR2 online auto posts.`)
+								.setFooter({ text: 'It can take up to 30 seconds for changes to take effect.' })
+								
+								await i.deferUpdate();
+								if (i.user.id === interaction.user.id) {
+									await i.editReply({ embeds: [rdoStopConfirmEmbed], components: [] }).catch(err => console.log(`Login Error: ${err}`));
+								} else {
+									i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+								}
+						
+							}// end remove channel
+							else {
+								console.log(`error`);
+							}
+							}
+						})
+
+					}); //end collecting for rdoStopMenu Values
+					rdoCollector.on('end', collected => {
+						//console.log(`Collected ${collected.size} items`);
+					});
+
+			} // end collecting for rdostop
+
+		});
 		rdoCollector.on('end', collected => {
 			//console.log(`Collected ${collected.size} items`);
 		});
-})
-//EDND RDO STOP//
+	})
+	//END RDO STOP//
 		
 		
 //------------------------------END STOP BUTTON------------------------------//
@@ -653,7 +666,7 @@ const configureButtons = new ActionRowBuilder()
         .setLabel('Add')
         .setStyle(ButtonStyle.Success),
     new ButtonBuilder()
-        .setCustomId('configureremove')
+        .setCustomId('configurestop')
         .setLabel('Remove')
         .setStyle(ButtonStyle.Danger),								
 );	
@@ -677,7 +690,6 @@ let AdminNameAdd = "";
 let AdminYesNoAdd = "";
 fs.readFile('./rolesDataBase.txt', 'utf8', async function (err, data) {
     if (err) {console.log(`Error: ${err}`)} //If an error, console.log
-    else {
         //console.log(`data: ${data}`);
         let adminRoleBoolean = data.split(`guild:${interaction.guild.id} - admin:`);
         if (adminRoleBoolean[1].startsWith("yes")) { //If Admin permissions are required
@@ -688,7 +700,6 @@ fs.readFile('./rolesDataBase.txt', 'utf8', async function (err, data) {
             AdminNameAdd += 'Administrators';
             AdminYesNoAdd += 'yes';
         }
-    }
 
 const configureAddEmbed = new EmbedBuilder()
 .setColor(`0x00FFFF`) //Teal
@@ -731,12 +742,12 @@ configureAddCollector.on('collect', async i => {
         }
     } 
 
-const configureStartValueFilter = i => i.customId === 'configureadd';
+const configureStartValueFilter = i => i.customId === 'configuremaddmenu';
 const configureStartValueCollector = interaction.channel.createMessageComponentCollector({ configureStartValueFilter, time: 30000, max: 1 });
 configureStartValueCollector.on('collect', async i => {		
 
 let guildIdDB = `${interaction.guild.id}`;
-
+	if (i.customId === 'configuremaddmenu') {
   if (i.values === `undefinedrole`) { //if the Admin role is already required - error
 
     const configureDuplicateEmbed = new EmbedBuilder()
@@ -754,7 +765,7 @@ let guildIdDB = `${interaction.guild.id}`;
         i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
     }
 
-  }
+  } //end if i.values === `undefinedrole`
   else if (i.values.includes('yes')) { //Make the Admin permission required
 		//console.log(`adding admin role for ${guildIdDB}`);
     const configureConfirmAddEmbed = new EmbedBuilder()
@@ -824,6 +835,7 @@ let guildIdDB = `${interaction.guild.id}`;
 			}); // end fs:appendFile to add a channel for gta autop posts	
 		} // end adding a new role to rolesDataBase.txt
 
+	}//end i.customId === 'configureadd'
 }); //end configureStartValueCollector
 configureStartValueCollector.on('end', collected => {
     //console.log(`Collected ${collected.size} items`);
@@ -833,13 +845,9 @@ configureStartValueCollector.on('end', collected => {
 configureAddCollector.on('end', collected => {
     //console.log(`Collected ${collected.size} items`);
 }); 
-
-}); // end configureCollector	
-configureCollector.on('end', collected => {
-		//console.log(`Collected ${collected.size} items`);
-}); 
-
+	
 }); //end fs:readFile for Admin credentials check	
+
 
 //END CONFIGURE ADD//
 
@@ -848,11 +856,176 @@ configureCollector.on('end', collected => {
 
 //BEGIN CONFIGURE STOP//
 
+let AdminNameStop = "";
+let AdminYesNoStop = "";
+fs.readFile('./rolesDataBase.txt', 'utf8', async function (err, data) {
+    if (err) {console.log(`Error: ${err}`)} //If an error, console.log
+        //console.log(`data: ${data}`);
+        let adminRoleBoolean = data.split(`guild:${interaction.guild.id} - admin:`);
+        if (adminRoleBoolean[1].startsWith("yes")) { //If Admin permissions are required //opposite of confirm add
+                AdminNameStop += 'Administrators';
+                AdminYesNoStop += 'yes';
+        }		
+        else {
+            AdminNameStop += 'No Role Selected';
+            AdminYesNoStop += 'undefinedrole';
+        }
 
+const configureStopEmbed = new EmbedBuilder()
+.setColor(`0x00FFFF`) //Teal
+.setTitle(`Stop a Role`)
+.setDescription(`Click **the dropdown menu** to remove a role from being able to configure auto posts.`)	
+
+let configureStopMenu = new ActionRowBuilder()
+    .addComponents(
+        new SelectMenuBuilder()
+        .setCustomId('configuremstopmenu')
+        .setPlaceholder('Select a Role')
+        .addOptions([{
+            label: AdminNameStop,
+            description: AdminNameStop,
+            value: AdminYesNoStop,
+        }])
+    )
+interaction.guild.roles.cache.forEach(role => {
+	//console.log(`role names: ${role.name}`)
+	if ((role.name != "@everyone") && (data.includes(`${role.id}`)) ) {
+		configureStopMenu.components[0].addOptions([{
+				label: `${role.name}`,
+				description: `${role.name}`,
+				value: `${role.id}`,
+		}]);
+	}
+});
+
+//Configure Role embed + Menu (role1 + rol2 + role3...)	
+const configureStopFilter = i => i.customId === 'configurestop';
+const configureStopCollector = interaction.channel.createMessageComponentCollector({ configureStopFilter, time: 30000 });
+configureStopCollector.on('collect', async i => {
+    if (i.customId === 'configurestop') {
+        await i.deferUpdate();
+        if (i.user.id === interaction.user.id) {
+            await i.editReply({ embeds: [configureStopEmbed], components: [configureStopMenu] })
+            .catch(err => console.log(`confirmStopEmbed+Menu Error: ${err}`));
+            } else {
+            i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+        }
+    } 
+
+const configureStopValueFilter = i => i.customId === 'configuremstopmenu';
+const configureStopValueCollector = interaction.channel.createMessageComponentCollector({ configureStopValueFilter, time: 30000, max: 1 });
+configureStopValueCollector.on('collect', async i => {		
+
+let guildIdDB = `${interaction.guild.id}`;
+	if (i.customId === 'configuremstopmenu') {
+  if (i.values === `undefinedrole`) { //if the Admin role is already required - error
+
+    const configureDuplicateEmbed = new EmbedBuilder()
+    .setColor(`Red`) 
+    .setTitle(`Please Try Again`)
+    .setDescription(`You selected an invalid response "No Role Selected".
+\nTry the /autopost command again and click \'Confirm\' to see what role(s) are subscribed.
+\nIf you believe this is an error you can report it in the [Rockstar Weekly Support Server](${process.env.support_link}).`)	
+    
+    await i.deferUpdate();
+    if (i.user.id === interaction.user.id) {
+        await i.editReply({ embeds: [configureDuplicateEmbed], components: [] })
+        .catch(err => console.log(`configureDuplicateEmbed Error: ${err}`));
+        } else {
+        i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+    }
+
+  } //end if i.values === `undefinedrole`
+  else if (i.values.includes('yes')) { //Make the Admin permission required
+		//console.log(`stopping admin role for ${guildIdDB}`);
+    const configureConfirmStopEmbed = new EmbedBuilder()
+        .setColor(`Green`) 
+        .setTitle(`Success!`)
+        .setDescription(`Administrator privileges are now required to configure autoposts.`)	
+        .setFooter({ text: 'It can take up to 30 seconds for changes to take effect.' });
+
+    await i.deferUpdate();
+    if (i.user.id === interaction.user.id) {
+        await i.editReply({ embeds: [configureConfirmStopEmbed], components: [] })
+        .catch(err => console.log(`configureConfirmStopEmbed Error: ${err}`));
+    } else {
+        i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+    }
+
+		guildCount = data.split(`guild:${guildIdDB}`).length - 1;
+			console.log(`guildCount: ${guildCount}`);
+
+		const find = `${guildIdDB} - admin:no`;
+		const replace = `${guildIdDB} - admin:yes`;
+		let newData = data;
+			for (i=0;i<=guildCount-1;i++) { //iterates through every instance of required roles by guild
+				newData = newData.replace(new RegExp(find, 'g'), replace);
+			}
+		//console.log(`newData: ${newData}`);
+                                        
+    //Replaces the rolesDataBase.txt file with Admin permission for the guild
+    fs.writeFile(`./rolesDataBase.txt`,`${newData}`, err => {
+        if (err) {
+            console.error(err)
+            return
+            }					
+        }); //end fs.writeFile to change the admin priveleges	
+
+    }    // end stopping Admins as a required permission 
+		else {
+
+			const configureStopEmbed = new EmbedBuilder()
+				.setColor(`Green`) 
+				.setTitle(`Success!`)
+				.setDescription(`The <@&${i.values}> role is no longer required to configure auto posts.`)	
+				.setFooter({ text: 'It can take up to 30 seconds for changes to take effect.' });		
+
+	    await i.deferUpdate();
+	    if (i.user.id === interaction.user.id) {
+	        await i.editReply({ embeds: [configureStopEmbed], components: [] })
+	        .catch(err => console.log(`configureStopEmbed Error: ${err}`));
+	    } else {
+	        i.editReply({ content: `These buttons aren't for you!`, ephemeral: true });
+	    }		
+
+			function AdminYesNo() { //opposite of confirm add
+				if (AdminYesNoStop === 'undefinedrole') {
+					return 'no';
+				}
+				else {
+					return 'yes';
+				}
+			}
+			console.log(`role:${i.values}`);
+			console.log(`AdminYesNo(): ${AdminYesNo()}`);
+			console.log(`data.replace: ${data.replace(`guild:${interaction.guild.id} - admin:${AdminYesNo()} - role:${i.values} -`, "")}`)
+
+			fs.writeFile('./rolesDataBase.txt', `${data.replace(`guild:${interaction.guild.id} - admin:${AdminYesNo()} - role:${i.values} -`, "")}`, function (err) {
+				if (err) throw err;
+				console.log('A user removed a role from auto posts.');
+			}); //end fs:writeFile to remove a role from autoposts
+		} // end stopping a new role to rolesDataBase.txt
+
+	}//end i.customId === 'configurestop'
+}); //end configureStopValueCollector
+configureStopValueCollector.on('end', collected => {
+    //console.log(`Collected ${collected.size} items`);
+}); 
+
+}); //end configureStopCollector
+configureStopCollector.on('end', collected => {
+    //console.log(`Collected ${collected.size} items`);
+}); 
+	
+}); //end fs:readFile for Admin credentials check	 
 
 
 //END CONFIGURE STOP//
-
+			
+}); // end configureCollector	
+configureCollector.on('end', collected => {
+		//console.log(`Collected ${collected.size} items`);
+}); 
 
 //------------------------------END CONFIGURE BUTTON------------------------------//
 		
