@@ -54,7 +54,7 @@ module.exports = {
 				            value: `configureStartMenu - u:${AdminYesNoAdd} - r:${AdminYesNoAdd}`,
 				        }])
 				    )
-				interaction.guild.roles.cache.forEach(role => {
+				interaction.guild.roles.cache.first(24).forEach(role => {
 					//console.log(`role names: ${role.name}`)
 					if ((role.name != "@everyone") && (!data.includes(`${role.id}`)) ) {
 						configureStartMenu.components[0].addOptions([{
@@ -65,8 +65,16 @@ module.exports = {
 					}
 				});	
 
+			const backButton = new ActionRowBuilder()
+			.addComponents(
+					new ButtonBuilder()
+							.setCustomId(`configurestartback - ${interaction.user.id}`)
+							.setLabel('Go Back')
+							.setStyle(ButtonStyle.Secondary),	
+			);				
+
 		if (interaction.user.id === buttonUserID) { 
-        await interaction.editReply({ embeds: [configureStartEmbed], components: [configureStartMenu] })
+        await interaction.editReply({ embeds: [configureStartEmbed], components: [configureStartMenu, backButton] })
         .catch(err => console.log(`configureStartEmbed+Menu Error: ${err.stack}`));
     } else {
        interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });

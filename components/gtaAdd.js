@@ -12,9 +12,14 @@ module.exports = {
 
 		if (!interaction.isSelectMenu()) {return};
 		if (interaction.customId.startsWith(`gtaStartMenu`)) {
-			//console.log(`begin gtaStartMenu: '${interaction.customId}'`);		
+			//console.log(`begin gtaStartMenu: '${interaction.customId}'`);	
 
-		let menuUserID02 = (interaction.customId).split("gtaStartMenu - u:");
+		let startMenu2 = "";
+			if (interaction.customId.startsWith(`gtaStartMenu2`)) {
+				startMenu2 += "2";
+			}
+
+		let menuUserID02 = (interaction.customId).split(`gtaStartMenu${startMenu2} - u:`);
 		let menuUserID01 = menuUserID02[1].split(" - ");
 		let menuUserID = menuUserID01[0];
 			//console.log(`gtaStartMenu menuUserID: ${menuUserID}`);
@@ -90,6 +95,10 @@ module.exports = {
 
 						
 					} //end add new channel
+
+		setTimeout(() => {
+			interaction.editReply({components: []})
+		}, (60000 * 2))
 
 		});//end fs:readFile	
 		}// end if interaction.customId === 'gtaStartMenu'

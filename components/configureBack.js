@@ -11,10 +11,16 @@ module.exports = {
 	async execute(interaction) {
 
 		if (!interaction.isButton()) {return};
-		if (interaction.customId.startsWith(`configure - `)) {
-			//console.log(`begin start: '${interaction.customId}'`);		
+		if ( (interaction.customId.startsWith(`configurestartback -`)) ||  (interaction.customId.startsWith(`configurestopback -`)) ) {
 
-		let buttonUserID01 = (interaction.customId).split("configure - ");
+		let start_stop = "";
+		if (interaction.customId.startsWith(`configurestartback -`)) {
+			start_stop += "configurestartback";
+		} else {
+			start_stop += "configurestopback";
+		}
+			
+		let buttonUserID01 = (interaction.customId).split(`${start_stop} - `);
 		let buttonUserID = buttonUserID01[1];
 			//console.log(`buttonUserID: ${buttonUserID}`);
 			//console.log(`interaction.user.id === buttonUserID? ${interaction.user.id === buttonUserID}`)
@@ -123,12 +129,10 @@ const configureButtons = new ActionRowBuilder()
                 } //end checking for permissions
 	
 		}); //end fs:readFile for guildID and Admin check
-		
-		} //end if configure
+			
+
+			
+		} //end if interaction starts with startback
+
 	},
-};
-
-
-
-
-	
+}

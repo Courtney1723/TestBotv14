@@ -11,7 +11,7 @@ module.exports = {
 	async execute(interaction) {
 
 		if (!interaction.isButton()) {return};
-		if (interaction.customId.startsWith(`confirm`)) {
+		if (interaction.customId.startsWith(`confirm - `)) {
 			//console.log(`begin start: '${interaction.customId}'`);		
 
 		let buttonUserID01 = (interaction.customId).split("confirm - ");
@@ -143,7 +143,9 @@ ${ConfigureConfirmString}`)
 	}); //end fs.readFile GTADataBase
 	}); //end fs.readFile RDODataBase
 	}) //end fs.readFile rolesDataBase
-	
+		setTimeout(() => {
+			interaction.editReply({components: []})
+		}, (60000 * 2))
 	
 		}); //end fs:readFile for guildID and Admin check
 		

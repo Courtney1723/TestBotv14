@@ -14,7 +14,7 @@ module.exports = {
     if (err) {console.log(`Error: ${err}`)} //If an error, console.log
 
 			if (!interaction.isButton()) {return};
-			if (interaction.customId.includes(`gtastop`)) {
+			if (interaction.customId.includes(`gtastop - `)) {
 						await interaction.deferUpdate();	
 
 			let buttonUserID01 = (interaction.customId).split("stop - ");
@@ -40,7 +40,7 @@ module.exports = {
 			            value: `gtaStopMenu - u:${interaction.user.id} - c:undefinedchannel`,
 			        }])
 			    )
-			interaction.guild.channels.cache.forEach(channel => {
+			interaction.guild.channels.cache.first(24).forEach(channel => {
 			    if ((channel.type === 0) && (data.includes(channel.id))) {
 			        gtaStopMenu.components[0].addOptions([{
 			            label: `${channel.name}`,
@@ -48,10 +48,18 @@ module.exports = {
 			            value: `gtaStopMenu - u:${interaction.user.id} - c:${channel.id}`,
 			        }]);
 			    }
-			})		
+			})	
+
+		const backButton = new ActionRowBuilder()
+			.addComponents(
+					new ButtonBuilder()
+			        .setCustomId(`gtastopback - ${interaction.user.id}`)
+			        .setLabel('Go Back')
+			        .setStyle(ButtonStyle.Secondary),	
+			);					
 
 		if (interaction.user.id === buttonUserID) { 
-        await interaction.editReply({ embeds: [gtaStopEmbed], components: [gtaStopMenu] })
+        await interaction.editReply({ embeds: [gtaStopEmbed], components: [backButton, gtaStopMenu] })
         .catch(err => console.log(`gtaStopEmbed+Menu Error: ${err.stack}`));
     } else {
        interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });

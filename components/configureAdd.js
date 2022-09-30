@@ -39,7 +39,7 @@ module.exports = {
 
 			function AdminRequired() {
 				let AdminRequiredBoolean = data.split(`guild:${interaction.guild.id} - admin:`);
-				if (AdminRequiredBoolean[1].includes(`yes`)) {
+				if (AdminRequiredBoolean[1].startsWith(`yes`)) {
 					return "AdminRequiredYes";
 				}
 				else {
@@ -71,7 +71,7 @@ if (menuRoleID === `undefinedrole`) { //if the Admin role is already required - 
         .setColor(`Green`) 
         .setTitle(`Success!`)
         .setDescription(`Administrator privileges are now **required** to configure autoposts.
-				\n• Any user who does not have administrator privleges may not configure auto posts \n**even if they have a whitelisted role.**`)	
+				\n• Any user who does not have administrator privileges may not configure auto posts \n**even if they have a whitelisted role.**`)	
 
 		    await interaction.deferUpdate();
 		    if (interaction.user.id === menuUserID) {
@@ -156,6 +156,10 @@ if (menuRoleID === `undefinedrole`) { //if the Admin role is already required - 
 
 
 		} // end adding a new role to rolesDataBase.txt
+
+		setTimeout(() => {
+			interaction.editReply({components: []})
+		}, (60000 * 2))
 			
 
 		});//end fs:readFile	

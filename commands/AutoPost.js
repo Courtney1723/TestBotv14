@@ -7,8 +7,8 @@ const { exec } = require('node:child_process');
 				new ButtonBuilder()
 					.setCustomId(`initialTimeout`)
 					.setLabel('This interaction timed out.')
-					.setStyle(ButtonStyle.Success)
-					.setEmoji(':Franklin_:1025232576526418061')
+					.setStyle(ButtonStyle.Secondary)
+					.setEmoji(':RSWeekly:1025248227248848940')
 					.setDisabled(true),
 				)
 
@@ -23,10 +23,10 @@ module.exports = {
 		const initialEmbed = new EmbedBuilder()
 			.setColor(`0xFF008B`) //Pink
 			.setTitle(`Auto Post Settings`)
-			.setDescription(`Click **\'Start\'** to set up an auto post.
-Click **\'Stop\'** to remove an auto post.
-Click **\'Configure\'** to add a role that can configure auto post settings.
-Click **\'Confirm\'** to view channels in this guild with auto posts set up and \n   roles with the ability to configure auto posts.`)
+			.setDescription(`Click **\'Start\'** to add an auto post channel.
+Click **\'Stop\'** to remove an auto post channel.
+Click **\'Configure\'** to add or remove a role that can configure auto post settings.
+Click **\'Confirm\'** to view current settings.`)
 			.setFooter({text: `note: only Admins can start, stop, or configure auto posts by default.`})
 
 		const initialButtons = new ActionRowBuilder()

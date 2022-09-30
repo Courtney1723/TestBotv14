@@ -184,6 +184,10 @@ if (menuRoleID === `undefinedrole`) { //if the Admin role is already required - 
 
 
 		} // end adding a new role to rolesDataBase.txt
+
+		setTimeout(() => {
+			interaction.editReply({components: []})
+		}, (60000 * 2))
 			
 
 		});//end fs:readFile	

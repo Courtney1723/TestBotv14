@@ -424,6 +424,8 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 		    .setColor('0x00CD06') //Green
 		    .setDescription(`These bonuses & discounts may be expired. \nRockstar typically releases the latest weekly bonuses & discounts every \nThursday after 1:00 PM EST.`)
 
+//-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
+		
 		for (d = 0; d <= channelIDArray.length - 2; d++) { //last element will always be blank
     //if ( (aDay === 3) ) { //Test for today 0 = Sunday, 1 = Monday ... 6 = Saturday
 		if ( (aDay === 4) && (aHour > 3) && (aHour < 17) ) { //If it's Thursday(4) before 1:00PM EST (3<17)

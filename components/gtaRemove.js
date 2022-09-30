@@ -96,6 +96,10 @@ module.exports = {
 						
 					} //end remove channel
 
+		setTimeout(() => {
+			interaction.editReply({components: []})
+		}, (60000 * 2))	
+
 		});//end fs:readFile	
 		}// end if interaction.customId === 'gtaStopMenu'
 		

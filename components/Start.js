@@ -11,7 +11,7 @@ module.exports = {
 	async execute(interaction) {
 
 		if (!interaction.isButton()) {return};
-		if (interaction.customId.startsWith(`start`)) {
+		if (interaction.customId.startsWith(`start -`)) {
 			//console.log(`begin start: '${interaction.customId}'`);		
 
 		let buttonUserID01 = (interaction.customId).split("start - ");
@@ -58,7 +58,11 @@ Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for **the first Tu
 			    new ButtonBuilder()
 			        .setCustomId(`rdostart - ${interaction.user.id}`)
 			        .setLabel('RDO')
-			        .setStyle(ButtonStyle.Danger),								
+			        .setStyle(ButtonStyle.Danger),		
+					new ButtonBuilder()
+			        .setCustomId(`startback - ${interaction.user.id}`)
+			        .setLabel('Go Back')
+			        .setStyle(ButtonStyle.Secondary),	
 			);	
 
 //begin checking for permissions

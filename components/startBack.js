@@ -11,10 +11,16 @@ module.exports = {
 	async execute(interaction) {
 
 		if (!interaction.isButton()) {return};
-		if (interaction.customId.startsWith(`stop - `)) {
-			//console.log(`begin stop: '${interaction.customId}'`);		
+		if ( (interaction.customId.startsWith(`rdostartback -`)) || (interaction.customId.startsWith(`gtastartback -`)) ) {
 
-		let buttonUserID01 = (interaction.customId).split("stop - ");
+		let rdo_gta = "";
+			if (interaction.customId.startsWith(`rdostartback -`)) {
+				rdo_gta += 'rdo';
+			} else {
+				rdo_gta += 'gta';
+			}
+
+		let buttonUserID01 = (interaction.customId).split(`${rdo_gta}startback - `);
 		let buttonUserID = buttonUserID01[1];
 			//console.log(`buttonUserID: ${buttonUserID}`);
 			//console.log(`interaction.user.id === buttonUserID? ${interaction.user.id === buttonUserID}`)
@@ -42,26 +48,27 @@ module.exports = {
 			}		
 
 
-		const stopEmbed = new EmbedBuilder()
-			.setColor(`Red`) 
-			.setTitle(`Stop Auto Posting`)
-			.setDescription(`Click **\'GTA\'** to remove a channel from receiving Grand Theft Auto V Online Auto Posts.
-\nClick **\'RDO\'** to remove a channel from receiving Red Dead Redemption II Online Auto Posts.`)		
+		const startEmbed = new EmbedBuilder()
+			.setColor(`Green`) 
+			.setTitle(`Start Auto Posting`)
+			.setDescription(`Click **\'GTA\'** to set up Grand Theft Auto V Online Auto Posts for **every Thursday at 2:00 PM EST**.
 
-		const stopButtons = new ActionRowBuilder()
+Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for **the first Tuesday of every month at 2:00 PM EST**.`)		
+
+		const startButtons = new ActionRowBuilder()
 			.addComponents(
 			    new ButtonBuilder()
-			        .setCustomId(`gtastop - ${interaction.user.id}`)
+			        .setCustomId(`gtastart - ${interaction.user.id}`)
 			        .setLabel('GTA')
 			        .setStyle(ButtonStyle.Success),
 			    new ButtonBuilder()
-			        .setCustomId(`rdostop - ${interaction.user.id}`)
+			        .setCustomId(`rdostart - ${interaction.user.id}`)
 			        .setLabel('RDO')
-			        .setStyle(ButtonStyle.Danger),			
+			        .setStyle(ButtonStyle.Danger),		
 					new ButtonBuilder()
-			        .setCustomId(`stopback - ${interaction.user.id}`)
+			        .setCustomId(`startback - ${interaction.user.id}`)
 			        .setLabel('Go Back')
-			        .setStyle(ButtonStyle.Secondary),			
+			        .setStyle(ButtonStyle.Secondary),	
 			);	
 
 //begin checking for permissions
@@ -69,7 +76,7 @@ module.exports = {
 		//console.log(`AdminRequired(): ${AdminRequired()}`)
 		if (AdminRequired() === "AdminRequiredYes") { //if admin permissions are required
 			if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) {
-				await interaction.editReply({ embeds: [stopEmbed], components: [stopButtons] }).catch(err => console.log(`stopEmbed Error: ${err}`));
+				await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`startEmbed Error: ${err}`));
 			} 
 			else if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
 				await interaction.followUp({content: `You do not have the required permissions to do that.`, ephemeral: true})
@@ -91,14 +98,14 @@ module.exports = {
 				} //end loop to check for hasARole
 				//console.log(`hasARole: ${hasARole} && required roles:${guildRoleIds.length}`)
 				if (guildRoleIds.length === 0) { //no role required
-					await interaction.editReply({ embeds: [stopEmbed], components: [stopButtons] }).catch(err => console.log(`stopButtons Error: ${err.stack}`));
+					await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`startButtons Error: ${err.stack}`));
 				}
 				else if (hasARole >= 1) { //if the user has at least one role listed
-					await interaction.editReply({ embeds: [stopEmbed], components: [stopButtons] }).catch(err => console.log(`stopButtons Error: ${err.stack}`));
+					await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`startButtons Error: ${err.stack}`));
 				}
 				else if ((interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID)) {
-					await interaction.editReply({ embeds: [stopEmbed], components: [stopButtons] }).catch(err => console.log(`stopButtons Error: ${err.stack}`));
-				}						
+					await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`startButtons Error: ${err.stack}`));
+				}					
 				else {
 					await interaction.followUp({content: `You do not have the required permissions to do that.`, ephemeral: true})
 				}
@@ -111,16 +118,11 @@ module.exports = {
 			await interaction.followUp({ content: `There was an error executing this button.`, ephemeral: true });
 		} //end checking for permissions		
 
-		
 		}); //end fs:readFile			
-	
-	} //end if stop
+			
 
-		
+			
+		} //end if interaction starts with rdostartback - gtastartback
+
 	},
-};
-
-
-
-
-	
+}

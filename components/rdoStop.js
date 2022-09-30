@@ -14,7 +14,7 @@ module.exports = {
     if (err) {console.log(`Error: ${err}`)} //If an error, console.log
 
 			if (!interaction.isButton()) {return};
-			if (interaction.customId.includes(`rdostop`)) {
+			if (interaction.customId.includes(`rdostop -`)) {
 						await interaction.deferUpdate();	
 
 			let buttonUserID01 = (interaction.customId).split("stop - ");
@@ -40,7 +40,7 @@ module.exports = {
 			            value: `rdoStopMenu - u:${interaction.user.id} - c:undefinedchannel`,
 			        }])
 			    )
-			interaction.guild.channels.cache.forEach(channel => {
+			interaction.guild.channels.cache.first(24).forEach(channel => {
 			    if ((channel.type === 0) && (data.includes(channel.id))) {
 			        rdoStopMenu.components[0].addOptions([{
 			            label: `${channel.name}`,
@@ -50,8 +50,16 @@ module.exports = {
 			    }
 			})		
 
+		const backButton = new ActionRowBuilder()
+			.addComponents(
+					new ButtonBuilder()
+			        .setCustomId(`rdostopback - ${interaction.user.id}`)
+			        .setLabel('Go Back')
+			        .setStyle(ButtonStyle.Secondary),	
+			);					
+
 		if (interaction.user.id === buttonUserID) { 
-        await interaction.editReply({ embeds: [rdoStopEmbed], components: [rdoStopMenu] })
+        await interaction.editReply({ embeds: [rdoStopEmbed], components: [backButton, rdoStopMenu] })
         .catch(err => console.log(`rdoStopEmbed+Menu Error: ${err.stack}`));
     } else {
        interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });

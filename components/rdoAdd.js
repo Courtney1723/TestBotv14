@@ -14,8 +14,13 @@ module.exports = {
 		if (interaction.customId.startsWith(`rdoStartMenu`)) {
 			//console.log(`begin rdoStartMenu: '${interaction.customId}'`);		
 
-		let menuUserID02 = (interaction.customId).split("rdoStartMenu - u:");
-		let menuUserID01 = menuUserID02[1].split(" - ");
+			let startMenu2 = "";
+			if (interaction.customId.startsWith(`rdoStartMenu2`)) {
+				startMenu2 += "2";
+			}	
+
+		let menuUserID02 = (interaction.customId).split(`rdoStartMenu${startMenu2} - u:`);
+		let menuUserID01 = menuUserID02[1].split(" -");
 		let menuUserID = menuUserID01[0];
 			//console.log(`rdoStartMenu menuUserID: ${menuUserID}`);
 			//console.log(`rdoStartMenu interaction.user.id === menuUserID?: ${interaction.user.id === menuUserID}`)	
@@ -88,6 +93,10 @@ module.exports = {
 						}
 						
 					} //end add new channel
+
+		setTimeout(() => {
+			interaction.editReply({components: []})
+		}, (60000 * 2))
 
 		});//end fs:readFile	
 
