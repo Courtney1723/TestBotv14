@@ -92,7 +92,11 @@ Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for **the first Tu
 				}
 				else if (hasARole >= 1) { //if the user has at least one role listed
 					await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`startButtons Error: ${err.stack}`));
-				} else {
+				}
+				else if ((interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID)) {
+					await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`startButtons Error: ${err.stack}`));
+				}					
+				else {
 					await interaction.followUp({content: `You do not have the required permissions to do that.`, ephemeral: true})
 				}
 			} 
@@ -104,11 +108,7 @@ Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for **the first Tu
 			await interaction.followUp({ content: `There was an error executing this button.`, ephemeral: true });
 		} //end checking for permissions		
 
-		
 		}); //end fs:readFile			
-	
-	
-	
 	
 	} //end if start
 	},

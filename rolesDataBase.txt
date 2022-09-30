@@ -1,1 +1,3 @@
 guild:981688162382413946 - admin:no - role:undefined - 
+guild:981688162382413946 - admin:no - role:1024428426343501834 - 
+guild:822761002546364417 - admin:yes - role:undefined - 

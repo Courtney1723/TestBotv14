@@ -1,10 +1,11 @@
-const { Client, GatewayIntentBits, PermissionsBitField, Collection, Partials, EmbedBuilder, ActionRowBuilder, ButtonBuilder, optionstyle, SelectMenuBuilder } = require('discord.js');
+const { Client, GatewayIntentBits, PermissionsBitField, Collection, Partials, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, optionstyle, SelectMenuBuilder } = require('discord.js');
 const client = new Client({
 	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions],
 	partials: [Partials.Message, Partials.Role, Partials.Reaction],
 });
 
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
+
 
 module.exports = {
 	name: 'interactionCreate',
@@ -56,7 +57,7 @@ if (menuRoleID === `undefinedrole`) { //if the Admin role is already required - 
     .setDescription(`You selected an invalid response "No Role Selected".\nPlease Try again. || ¡ʎɐp poob ɐ ǝʌɐɥ ||`)	
     
     await interaction.deferUpdate();
-    if (interaction.user.id === interaction.user.id) {
+    if (interaction.user.id === menuUserID) {
         await interaction.followUp({ embeds: [configureDuplicateEmbed], components: [], ephemeral: true })
         .catch(err => console.log(`configureDuplicateEmbed Error: ${err}`));
         } else {
@@ -72,33 +73,35 @@ if (menuRoleID === `undefinedrole`) { //if the Admin role is already required - 
         .setDescription(`Administrator privileges are now **required** to configure autoposts.
 				\n• Any user who does not have administrator privleges may not configure auto posts \n**even if they have a whitelisted role.**`)	
 
-    await interaction.deferUpdate();
-    if (interaction.user.id === interaction.user.id) {
-        await interaction.editReply({ embeds: [configureConfirmAddEmbed], components: [] })
-        .catch(err => console.log(`configureConfirmAddEmbed Error: ${err}`));
+		    await interaction.deferUpdate();
+		    if (interaction.user.id === menuUserID) {
+		        await interaction.editReply({ embeds: [configureConfirmAddEmbed], components: [] })
+		        .catch(err => console.log(`configureConfirmAddEmbed Error: ${err}`));
+		
+				let guildIdDB = `${interaction.guild.id}`;
+				guildCount = data.split(`guild:${guildIdDB}`).length - 1;
+					//console.log(`guildCount: ${guildCount}`);
+		
+				const find = `${guildIdDB} - admin:no`;
+				const replace = `${guildIdDB} - admin:yes`;
+				let newData = data;
+					for (i=0;i<=guildCount-1;i++) { //iterates through every instance of required roles by guild
+						newData = newData.replace(new RegExp(find, 'g'), replace);
+					}
+				//console.log(`newData: ${newData}`);
+		                                        
+		    //Replaces the rolesDataBase.txt file with Admin permission for the guild
+		    fs.writeFile(`./rolesDataBase.txt`,`${newData}`, err => {
+		        if (err) {
+		            console.error(err)
+		            return
+		            }					
+		        }); //end fs.writeFile to change the admin privileges				
+			
     } else {
        interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
     }
 
-		let guildIdDB = `${interaction.guild.id}`;
-		guildCount = data.split(`guild:${guildIdDB}`).length - 1;
-			//console.log(`guildCount: ${guildCount}`);
-
-		const find = `${guildIdDB} - admin:no`;
-		const replace = `${guildIdDB} - admin:yes`;
-		let newData = data;
-			for (i=0;i<=guildCount-1;i++) { //iterates through every instance of required roles by guild
-				newData = newData.replace(new RegExp(find, 'g'), replace);
-			}
-		//console.log(`newData: ${newData}`);
-                                        
-    //Replaces the rolesDataBase.txt file with Admin permission for the guild
-    fs.writeFile(`./rolesDataBase.txt`,`${newData}`, err => {
-        if (err) {
-            console.error(err)
-            return
-            }					
-        }); //end fs.writeFile to change the admin privileges	
 
     }    // end adding Admins as a required permission 
 		else {
@@ -114,43 +117,45 @@ if (menuRoleID === `undefinedrole`) { //if the Admin role is already required - 
 				.setDescription(`Anyone with the <@&${menuRoleID}> role can now configure auto posts.\n${AdminCheck}`)	
 
 	    await interaction.deferUpdate();
-	    if (interaction.user.id === interaction.user.id) {
+	    if (interaction.user.id === menuUserID) {
 	        await interaction.editReply({ embeds: [configureAddEmbed], components: [] })
 	        .catch(err => console.log(`configureAddEmbed Error: ${err}`));
+
+					let guildIdDB = `${interaction.guild.id}`;
+					let AdminNameAdd = "";
+					let AdminYesNoAdd = "";
+		        let adminRoleBoolean = data.split(`guild:${interaction.guild.id} - admin:`);
+		        if (adminRoleBoolean[1].startsWith("yes")) { //If Admin permissions are required
+		                AdminNameAdd += 'No Role Selected';
+		                AdminYesNoAdd += 'undefinedrole';
+		        }		
+		        else {
+		            AdminNameAdd += 'Administrators';
+		            AdminYesNoAdd += 'yes';
+		        }
+					function AdminYesNo() {
+						if (AdminYesNoAdd === 'undefinedrole') {
+							return 'yes';
+						}
+						else {
+							return 'no';
+						}
+					}
+		
+					fs.appendFile(`rolesDataBase.txt`,`guild:${guildIdDB} - admin:${AdminYesNo()} - role:${menuRoleID} - \n`, err => {
+					 if (err) {
+						 console.error(err)
+						 return
+						}					
+					}); // end fs:appendFile to add a channel for gta autop posts	
+
+				
 	    } else {
 	       interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
 	    }		
 
-			let guildIdDB = `${interaction.guild.id}`;
-			let AdminNameAdd = "";
-			let AdminYesNoAdd = "";
-        let adminRoleBoolean = data.split(`guild:${interaction.guild.id} - admin:`);
-        if (adminRoleBoolean[1].startsWith("yes")) { //If Admin permissions are required
-                AdminNameAdd += 'No Role Selected';
-                AdminYesNoAdd += 'undefinedrole';
-        }		
-        else {
-            AdminNameAdd += 'Administrators';
-            AdminYesNoAdd += 'yes';
-        }
-			function AdminYesNo() {
-				if (AdminYesNoAdd === 'undefinedrole') {
-					return 'yes';
-				}
-				else {
-					return 'no';
-				}
-			}
 
-			fs.appendFile(`rolesDataBase.txt`,`guild:${guildIdDB} - admin:${AdminYesNo()} - role:${menuRoleID} - \n`, err => {
-			 if (err) {
-				 console.error(err)
-				 return
-				}					
-			}); // end fs:appendFile to add a channel for gta autop posts	
 		} // end adding a new role to rolesDataBase.txt
-
-
 			
 
 		});//end fs:readFile	

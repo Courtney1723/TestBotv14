@@ -54,24 +54,14 @@ module.exports = {
         await interaction.editReply({ embeds: [rdoStopEmbed], components: [rdoStopMenu] })
         .catch(err => console.log(`rdoStopEmbed+Menu Error: ${err.stack}`));
     } else {
-       interaction.channel.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
+       interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
     }
 
-			
-		
-		
-		
-		
 		
 		} // end if rdostop button
 		
 		}); //end fs:readFile
 				
-		
-		
-		
-			
-		
 		
 	},
 };

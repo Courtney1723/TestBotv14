@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, PermissionsBitField, Collection, Partials, EmbedBuilder, ActionRowBuilder, ButtonBuilder, optionstyle, SelectMenuBuilder } = require('discord.js');
+const { Client, GatewayIntentBits, PermissionsBitField, Collection, Partials, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, optionstyle, SelectMenuBuilder } = require('discord.js');
 const client = new Client({
 	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions],
 	partials: [Partials.Message, Partials.Channel, Partials.Reaction],
@@ -70,30 +70,34 @@ module.exports = {
 								.setDescription(`You will now no longer get Red Dead Redemption II Auto Posts to the <#${menuChannelID}> channel.`)	
 						
 						await interaction.deferUpdate();
-						if (interaction.user.id === menuUserID) {
+						if (interaction.user.id === menuUserID) { //begin removing an rdo channel
 								await interaction.editReply({ embeds: [rdoConfirmEmbed], components: [] })
 								.catch(err => console.log(`rdoConfirmEmbed Error: ${err}`));
+								console.log('A user unsubscribed from RDR2 auto posts.');
+
+								fs.readFile('./RDODataBase.txt', 'utf8', async function (err, data) {
+									if (err) {console.log(`Error: ${err}`)} //If an error, console.log
+		
+										// console.log(`interaction.guild.id: ${interaction.guild.id}`)
+										// console.log(`menuChannelID: ${menuChannelID}`)
+										// console.log(`data.replace: ${data.replace(`\nguild:${interaction.guild.id} - channel:${menuChannelID} - rdo_gta:rdoStartMenu - `, "")}`);
+		
+		
+										fs.writeFile('./RDODataBase.txt', `${data.replace(`\nguild:${interaction.guild.id} - channel:${menuChannelID} - rdo_gta:rdoStartMenu - `, "")}`, function (err) {
+											  if (err) throw err;
+											}); //end fs:writeFile to remove channel from autoposts
+		
+									}); //end fs:readFile RDODataBase.txt
+							
 						} else {
 								interaction.followUp({ content: `These options aren't for you!`, ephemeral: true });
 						}
-						fs.readFile('./RDODataBase.txt', 'utf8', async function (err, data) {
-							if (err) {console.log(`Error: ${err}`)} //If an error, console.log
 
-								// console.log(`interaction.guild.id: ${interaction.guild.id}`)
-								// console.log(`menuChannelID: ${menuChannelID}`)
-								// console.log(`data.replace: ${data.replace(`\nguild:${interaction.guild.id} - channel:${menuChannelID} - rdo_gta:rdoStartMenu - `, "")}`);
-
-
-								fs.writeFile('./RDODataBase.txt', `${data.replace(`\nguild:${interaction.guild.id} - channel:${menuChannelID} - rdo_gta:rdoStartMenu - `, "")}`, function (err) {
-									  if (err) throw err;
-									  console.log('A user unsubscribed from RDR2 auto posts.');
-									}); //end fs:writeFile to remove channel from autoposts
-
-							}); //end fs:readFile RDODataBase.txt
 						
 					} //end remove channel
 
 		});//end fs:readFile	
+			
 		}// end if interaction.customId === 'rdoStopMenu'
 		
 

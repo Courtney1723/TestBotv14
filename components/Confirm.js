@@ -145,7 +145,6 @@ ${ConfigureConfirmString}`)
 	}) //end fs.readFile rolesDataBase
 	
 	
-	
 		}); //end fs:readFile for guildID and Admin check
 		
 		} //end if start

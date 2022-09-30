@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, PermissionsBitField, Collection, Partials, EmbedBuilder, ActionRowBuilder, ButtonBuilder, optionstyle, SelectMenuBuilder } = require('discord.js');
+const { Client, GatewayIntentBits, PermissionsBitField, Collection, Partials, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, optionstyle, SelectMenuBuilder } = require('discord.js');
 const client = new Client({
 	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions],
 	partials: [Partials.Message, Partials.Channel, Partials.Reaction],
@@ -54,7 +54,7 @@ module.exports = {
 								.setDescription(`You selected an invalid response "No Channel Selected".\nPlease Try again. || (◕ᴥ◕ʋ) ||`)	
 						
 						await interaction.deferUpdate();
-						if (interaction.user.id === menuUserID) {
+						if (interaction.user.id === menuUserID) { //begin removing a gta channel
 								await interaction.followUp({ embeds: [gtaDuplicateEmbed], components: [], ephemeral: true })
 								.catch(err => console.log(`gtaDuplicateEmbed Error: ${err}`));
 						} else {
@@ -70,26 +70,29 @@ module.exports = {
 								.setDescription(`You will now no longer get Grand Theft Auto V Auto Posts to the <#${menuChannelID}> channel.`)	
 						
 						await interaction.deferUpdate();
-						if (interaction.user.id === menuUserID) {
+						if (interaction.user.id === menuUserID) { //begin removing channel
 								await interaction.editReply({ embeds: [gtaConfirmEmbed], components: [] })
 								.catch(err => console.log(`gtaConfirmEmbed Error: ${err}`));
+								console.log('A user unsubscribed from GTAV auto posts.');
+
+								fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
+									if (err) {console.log(`Error: ${err}`)} //If an error, console.log
+		
+										// console.log(`interaction.guild.id: ${interaction.guild.id}`)
+										// console.log(`menuChannelID: ${menuChannelID}`)
+										// console.log(`data.replace: ${data.replace(`\nguild:${interaction.guild.id} - channel:${menuChannelID} - rdo_gta:gtaStartMenu - `, "")}`);
+		
+		
+										fs.writeFile('./GTADataBase.txt', `${data.replace(`\nguild:${interaction.guild.id} - channel:${menuChannelID} - rdo_gta:gtaStartMenu - `, "")}`, function (err) {
+											  if (err) throw err;
+											}); //end fs:writeFile to remove channel from autoposts
+		
+									}); //end fs:readFile GTADataBase.txt
+							
 						} else {
 								interaction.followUp({ content: `These options aren't for you!`, ephemeral: true });
 						}
-						fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
-							if (err) {console.log(`Error: ${err}`)} //If an error, console.log
 
-								// console.log(`interaction.guild.id: ${interaction.guild.id}`)
-								// console.log(`menuChannelID: ${menuChannelID}`)
-								// console.log(`data.replace: ${data.replace(`\nguild:${interaction.guild.id} - channel:${menuChannelID} - rdo_gta:gtaStartMenu - `, "")}`);
-
-
-								fs.writeFile('./GTADataBase.txt', `${data.replace(`\nguild:${interaction.guild.id} - channel:${menuChannelID} - rdo_gta:gtaStartMenu - `, "")}`, function (err) {
-									  if (err) throw err;
-									  console.log('A user unsubscribed from GTAV auto posts.');
-									}); //end fs:writeFile to remove channel from autoposts
-
-							}); //end fs:readFile GTADataBase.txt
 						
 					} //end remove channel
 

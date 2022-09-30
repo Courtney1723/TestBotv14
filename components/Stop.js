@@ -57,7 +57,11 @@ module.exports = {
 			    new ButtonBuilder()
 			        .setCustomId(`rdostop - ${interaction.user.id}`)
 			        .setLabel('RDO')
-			        .setStyle(ButtonStyle.Danger),								
+			        .setStyle(ButtonStyle.Danger),			
+			    new ButtonBuilder()
+			        .setCustomId(`stopgoback - ${interaction.user.id}`)
+			        .setLabel('Go Back')
+			        .setStyle(ButtonStyle.Danger),				
 			);	
 
 //begin checking for permissions
@@ -91,7 +95,11 @@ module.exports = {
 				}
 				else if (hasARole >= 1) { //if the user has at least one role listed
 					await interaction.editReply({ embeds: [stopEmbed], components: [stopButtons] }).catch(err => console.log(`stopButtons Error: ${err.stack}`));
-				} else {
+				}
+				else if ((interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID)) {
+					await interaction.editReply({ embeds: [stopEmbed], components: [stopButtons] }).catch(err => console.log(`stopButtons Error: ${err.stack}`));
+				}						
+				else {
 					await interaction.followUp({content: `You do not have the required permissions to do that.`, ephemeral: true})
 				}
 			} 
@@ -106,10 +114,9 @@ module.exports = {
 		
 		}); //end fs:readFile			
 	
-	
-	
-	
 	} //end if stop
+
+		
 	},
 };
 

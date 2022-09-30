@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, PermissionsBitField, Collection, Partials, EmbedBuilder, ActionRowBuilder, ButtonBuilder, optionstyle, SelectMenuBuilder } = require('discord.js');
+const { Client, GatewayIntentBits, PermissionsBitField, Collection, Partials, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, optionstyle, SelectMenuBuilder } = require('discord.js');
 const client = new Client({
 	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions],
 	partials: [Partials.Message, Partials.Channel, Partials.Reaction],
@@ -73,18 +73,21 @@ module.exports = {
 						if (interaction.user.id === menuUserID) {
 								await interaction.editReply({ embeds: [gtaConfirmEmbed], components: [] })
 								.catch(err => console.log(`gtaConfirmEmbed Error: ${err}`));
-						} else {
+
+						//Appends the GTADataBase.txt file with guildID, Channel ID, and choice of rdo of gta
+						fs.appendFile(`./GTADataBase.txt`,`guild:${interaction.guild.id} - channel:${menuChannelID} - rdo_gta:gtaStartMenu - \n`, err => {
+							 if (err) {
+								 console.error(err)
+								 return
+									 }		
+							console.log(`A user added a channel for GTA auto posts.`);
+						}); // end fs:appendFile to add a channel for gta autop posts	
+							
+						} 
+						else {
 								interaction.followUp({ content: `These options aren't for you!`, ephemeral: true });
 						}
 
-					//Appends the GTADataBase.txt file with guildID, Channel ID, and choice of rdo of gta
-					fs.appendFile(`./GTADataBase.txt`,`guild:${interaction.guild.id} - channel:${menuChannelID} - rdo_gta:gtaStartMenu - \n`, err => {
-						 if (err) {
-							 console.error(err)
-							 return
-								 }		
-						console.log(`A user added a channel for GTA auto posts.`)
-					}); // end fs:appendFile to add a channel for gta autop posts	
 						
 					} //end add new channel
 

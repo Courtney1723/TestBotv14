@@ -54,24 +54,14 @@ module.exports = {
         await interaction.editReply({ embeds: [rdoStartEmbed], components: [rdoStartMenu] })
         .catch(err => console.log(`rdoStartEmbed+Menu Error: ${err.stack}`));
     } else {
-       interaction.channel.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
+       interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
     }
-
-			
-		
-		
-		
 		
 		
 		} // end if rdostart button
 		
 		}); //end fs:readFile
 				
-		
-		
-		
-			
-		
 		
 	},
 };

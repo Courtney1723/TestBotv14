@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, PermissionsBitField, Collection, Partials, EmbedBuilder, ActionRowBuilder, ButtonBuilder, optionstyle, SelectMenuBuilder } = require('discord.js');
+const { Client, GatewayIntentBits, PermissionsBitField, Collection, Partials, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, optionstyle, SelectMenuBuilder } = require('discord.js');
 const client = new Client({
 	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions],
 	partials: [Partials.Message, Partials.Channel, Partials.Reaction],
@@ -73,22 +73,25 @@ module.exports = {
 						if (interaction.user.id === menuUserID) {
 								await interaction.editReply({ embeds: [rdoConfirmEmbed], components: [] })
 								.catch(err => console.log(`rdoConfirmEmbed Error: ${err}`));
+
+						//Appends the RDODataBase.txt file with guildID, Channel ID, and choice of rdo of rdo
+						fs.appendFile(`./RDODataBase.txt`,`guild:${interaction.guild.id} - channel:${menuChannelID} - rdo_gta:rdoStartMenu - \n`, err => {
+							 if (err) {
+								 console.error(err)
+								 return
+									 }		
+							console.log(`A user added a channel for RDO auto posts.`)
+						}); // end fs:appendFile to add a channel for rdo autop posts	
+							
 						} else {
 								interaction.followUp({ content: `These options aren't for you!`, ephemeral: true });
 						}
-
-					//Appends the RDODataBase.txt file with guildID, Channel ID, and choice of rdo of rdo
-					fs.appendFile(`./RDODataBase.txt`,`guild:${interaction.guild.id} - channel:${menuChannelID} - rdo_gta:rdoStartMenu - \n`, err => {
-						 if (err) {
-							 console.error(err)
-							 return
-								 }		
-						console.log(`A user added a channel for RDO auto posts.`)
-					}); // end fs:appendFile to add a channel for rdo autop posts	
 						
 					} //end add new channel
 
 		});//end fs:readFile	
+
+			
 		}// end if interaction.customId === 'rdoStartMenu'
 		
 

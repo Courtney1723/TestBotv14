@@ -54,24 +54,14 @@ module.exports = {
         await interaction.editReply({ embeds: [gtaStartEmbed], components: [gtaStartMenu] })
         .catch(err => console.log(`gtaStartEmbed+Menu Error: ${err.stack}`));
     } else {
-       interaction.channel.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
+       interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
     }
-
-			
-		
-		
-		
 		
 		
 		} // end if gtastart button
 		
 		}); //end fs:readFile
-				
-		
-		
-		
-			
-		
+
 		
 	},
 };

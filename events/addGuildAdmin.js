@@ -15,7 +15,7 @@ const { SlashCommandBuilder, EmbedBuilder, ActivityType } = require('discord.js'
  						Guilds += GuildIDs[i];
 
  						if (!data.includes(GuildIDs[i])) {
- 						fs.appendFile(`./rolesDataBase.txt`,`guild:${GuildIDs[i]} - admin:yes - role: - \n`, err => {
+ 						fs.appendFile(`./rolesDataBase.txt`,`guild:${GuildIDs[i]} - admin:yes - role:undefined - \n`, err => {
  							if (err) {
  								console.error(err)
  								return

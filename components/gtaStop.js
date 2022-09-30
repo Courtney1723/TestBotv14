@@ -54,24 +54,14 @@ module.exports = {
         await interaction.editReply({ embeds: [gtaStopEmbed], components: [gtaStopMenu] })
         .catch(err => console.log(`gtaStopEmbed+Menu Error: ${err.stack}`));
     } else {
-       interaction.channel.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
+       interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
     }
 
-			
-		
-		
-		
-		
 		
 		} // end if gtastop button
 		
 		}); //end fs:readFile
-				
-		
-		
-		
-			
-		
+
 		
 	},
 };

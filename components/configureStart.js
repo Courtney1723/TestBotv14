@@ -6,6 +6,7 @@ const client = new Client({
 
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
 
+
 module.exports = {
 	name: 'interactionCreate',
 	async execute(interaction) {
@@ -68,14 +69,11 @@ module.exports = {
         await interaction.editReply({ embeds: [configureStartEmbed], components: [configureStartMenu] })
         .catch(err => console.log(`configureStartEmbed+Menu Error: ${err.stack}`));
     } else {
-       interaction.roles.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
+       interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
     }
 
-			
 		
-		
-		
-		
+
 		
 		} // end if configurestart button
 		

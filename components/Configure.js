@@ -102,11 +102,15 @@ const configureButtons = new ActionRowBuilder()
                         }
                         else if (hasARole >= 1) { //if the user has at least one role listed
                             await interaction.editReply({ embeds: [configureEmbed], components: [configureButtons] }).catch(err => console.log(`configureEmbed Error: ${err}`));
-                        } else {
+                        } 
+												else if ((interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID)) {
+													await interaction.editReply({ embeds: [configureEmbed], components: [configureButtons] }).catch(err => console.log(`configureEmbed Error: ${err}`));
+												}
+												else {
                             await interaction.followUp({content: `You do not have the required permissions to do that.`, ephemeral: true})
                         }
                     } //end if admin permission not required
-                    else if (!interaction.user.id === buttonUserID) {
+                    else {
                         await interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
                     }
                 }	
