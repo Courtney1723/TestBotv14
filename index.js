@@ -41,6 +41,7 @@ process.on("uncaughtException", async (err) => {
 process.on("uncaughtExceptionMonitor", async (err) => {
   console.error("Uncaught Promise Exception (Monitor):\n", err);
 });
+client.setMaxListeners(30); // prevents max listeners error for buttons (DO NOT SET OVER 100)
 
 //Access Command Files
 const fs = require('node:fs');
@@ -90,6 +91,21 @@ for (const file of eventFiles) {
 		client.on(event.name, (...args) => event.execute(...args));
 	}
 }
+
+//Access Component files
+const componentsPath = path.join(__dirname, 'components');
+const componentsFiles = fs.readdirSync(componentsPath).filter(file => file.endsWith('.js'));
+
+for (const file of componentsFiles) {
+	const filePath = path.join(componentsPath, file);
+	const component = require(filePath);
+	if (component.once) {
+		client.once(component.name, (...args) => component.execute(...args));
+	} else {
+		client.on(component.name, (...args) => component.execute(...args));
+	}
+}
+
 
 //sends a kill 1 command to the child node if there is a 429 error
 errorArray = [];
