@@ -69,9 +69,7 @@ if (menuRoleID === `undefinedrole`) { //if the Admin role is already required - 
     const configureConfirmAddEmbed = new EmbedBuilder()
         .setColor(`Green`) 
         .setTitle(`Success!`)
-        .setDescription(`Administrator privileges are now **required** to configure autoposts.
-				\n• Any user who does not have administrator privleges may not configure auto posts \n**even if they have a whitelisted role.**`)	
-        .setFooter({ text: 'It can take up to 30 seconds for changes to take effect.', iconURL: process.env.logo_link });
+        .setDescription(`Administrator privileges are no longer required to configure auto posts.`)	
 
     await interaction.deferUpdate();
     if (interaction.user.id === menuUserID) {
@@ -91,7 +89,7 @@ if (menuRoleID === `undefinedrole`) { //if the Admin role is already required - 
 			for (i=0;i<=guildCount-1;i++) { //iterates through every instance of required roles by guild
 				newData = newData.replace(new RegExp(find, 'g'), replace);
 			}
-		//console.log(`newData: ${newData}`);
+		console.log(`newData: ${newData}`);
                                         
     //Replaces the rolesDataBase.txt file with Admin permission for the guild
     fs.writeFile(`./rolesDataBase.txt`,`${newData}`, err => {
@@ -104,10 +102,27 @@ if (menuRoleID === `undefinedrole`) { //if the Admin role is already required - 
     }    // end adding Admins as a required permission 
 		else {
 
+			let roleIDArray = [];
+			interaction.guild.roles.cache.forEach(role => {
+				if (data.includes(`${role.id}`)) {
+					roleIDArray.push(`${role.id}`);
+				}
+			});
+			roleIDArray.shift(); //removes the @everyone role
+			//console.log(`roleIDArray[]: ${roleIDArray}`);
+
+			let everyoneCheck = "";
+			if (roleIDArray.length <= 1) {
+				if (AdminRequired() === `AdminRequiredNo`) {
+					everyoneCheck += `\n• @everyone can configure auto posts now!\n• Try the **\'/autopost\'** command again and click **\'Configure\'** to add a role.`;
+				}
+				
+			}
+
 			const configureAddEmbed = new EmbedBuilder()
 				.setColor(`Green`) 
 				.setTitle(`Success!`)
-				.setDescription(`Anyone with the <@&${menuRoleID}> role is now no longer allowed to configure auto posts.`)	
+				.setDescription(`Anyone with the <@&${menuRoleID}> role is now no longer allowed to configure auto posts.\n${everyoneCheck}`)	
 
 	    await interaction.deferUpdate();
 	    if (interaction.user.id === menuUserID) {

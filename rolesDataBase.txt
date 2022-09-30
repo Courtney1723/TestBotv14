@@ -1,2 +1,1 @@
-guild:981688162382413946 - admin:yes - role:undefined - 
-guild:981688162382413946 - admin:yes - role:983593026389692416 - 
+guild:981688162382413946 - admin:no - role:undefined - 

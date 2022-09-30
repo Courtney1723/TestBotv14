@@ -103,10 +103,15 @@ if (menuRoleID === `undefinedrole`) { //if the Admin role is already required - 
     }    // end adding Admins as a required permission 
 		else {
 
+			let AdminCheck = "";
+			if (AdminRequired() === `AdminRequiredYes`) {
+				AdminCheck += `\n• The Administrator privilege is required! \n• Any user with the <@&${menuRoleID}> role must also have administrator privileges in order to configure auto posts.\n• Try the **\'/autopost\'** comand again and click **\'Configure\'** to remove the administrator requirement.`;
+			}
+
 			const configureAddEmbed = new EmbedBuilder()
 				.setColor(`Green`) 
 				.setTitle(`Success!`)
-				.setDescription(`Anyone with the <@&${menuRoleID}> role can now configure auto posts.`)	
+				.setDescription(`Anyone with the <@&${menuRoleID}> role can now configure auto posts.\n${AdminCheck}`)	
 
 	    await interaction.deferUpdate();
 	    if (interaction.user.id === interaction.user.id) {
