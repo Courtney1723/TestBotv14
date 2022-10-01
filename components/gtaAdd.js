@@ -73,6 +73,8 @@ module.exports = {
 								.setColor(`Green`) 
 								.setTitle(`Success!`)
 								.setDescription(`You will now get Grand Theft Auto V Auto Posts to the <#${menuChannelID}> channel \n**every Thursday at 2:00 PM EST**.`)	
+								.setFooter({ text: 'note: This bot must have permission to send messages in subscribed channels.', iconURL: process.env.logo_link });
+
 						
 						await interaction.deferUpdate();
 						if (interaction.user.id === menuUserID) {

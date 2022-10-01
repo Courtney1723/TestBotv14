@@ -28,6 +28,26 @@ module.exports = {
 			.setColor(`Green`) 
 			.setTitle(`Start Auto Posting GTAV Online Bonuses & Discounts`)
 			.setDescription(`Click **the dropdown menu** to confirm the channel you want to send Grand Theft Auto V Auto Posts to \n**every Thursday at 2:00 PM EST**.`)	
+			.setFooter({ text: 'note: auto posts can only be sent to text channels.', iconURL: process.env.logo_link });
+
+			let gtaChannelCount = 0;
+				interaction.guild.channels.cache.forEach(channel => {
+					if ( (channel.type === 0) && (!data.includes(channel.id)) && (channel.permissionsFor(process.env.CLIENT_ID).has(PermissionsBitField.Flags.SendMessages)) ) { 
+						gtaChannelCount += 1;
+					}
+				})
+			var gtaChannelNames = new Array(gtaChannelCount);
+			var gtaChannelIDs = new Array(gtaChannelCount);
+			var gtaChannelTypes = new Array(gtaChannelCount);
+			interaction.guild.channels.cache.forEach(channel => {
+				if ( (channel.type === 0) && (!data.includes(channel.id)) && (channel.permissionsFor(process.env.CLIENT_ID).has(PermissionsBitField.Flags.SendMessages)) ) { 
+					gtaChannelNames.splice((channel.rawPosition), 1, channel.name);   //gtaChannelNames.push(channel.name); 
+					gtaChannelIDs.splice((channel.rawPosition), 1, channel.id); 	//gtaChannelIDs.push(channel.id);
+					gtaChannelTypes.splice((channel.rawPosition), 1, channel.type);	//gtaChannelTypes.push(channel.type);
+				}
+			});
+			//console.log(`gtaChannelCount: ${gtaChannelCount}`)
+			//console.log(`gtaChannelNames[23]: ${gtaChannelNames[23]}`)
 
 			let gtaStartMenu = new ActionRowBuilder()
 			    .addComponents(
@@ -40,15 +60,16 @@ module.exports = {
 			            value: `gtaStartMenu - u:${interaction.user.id} - c:undefinedchannel`,
 			        }])
 			    )
-			interaction.guild.channels.cache.first(24).forEach(channel => {
-			    if ((channel.type === 0) && (!data.includes(channel.id))) {
+				for (i = 0; i <= 23; i++) {
+			    if ( (gtaChannelNames[i] != undefined) ) {
+						//console.log(`gtaChannelNames at ${i}: ${gtaChannelNames[i]}`);
 			        gtaStartMenu.components[0].addOptions([{
-			            label: `${channel.name}`,
-			            description: `${channel.name}`,
-			            value: `gtaStartMenu - u:${interaction.user.id} - c:${channel.id}`,
+			            label: `${gtaChannelNames[i]}`,
+			            description: `${gtaChannelNames[i]}`,
+			            value: `gtaStartMenu2 - u:${interaction.user.id} - c:${gtaChannelIDs[i]}`,
 			        }]);
 			    }
-			})	
+				}
 			const backButton = new ActionRowBuilder()
 				.addComponents(
 					new ButtonBuilder()
@@ -56,21 +77,6 @@ module.exports = {
 			        .setLabel('Go Back')
 			        .setStyle(ButtonStyle.Secondary),	
 			);	
-							
-
-			let channelCount = "";
-			let channelNames = [];
-			let channelIDs = [];
-			let channelTypes = [];
-			interaction.guild.channels.cache.forEach(channel => {
-				if ((channel.type === 0) && (!data.includes(channel.id))) {
-					channelCount += 1;
-					channelNames.push(channel.name);
-					channelIDs.push(channel.id);
-					channelTypes.push(channel.type)
-				}
-			});
-
 			let gtaStartMenu2 = new ActionRowBuilder()
 			    .addComponents(
 			        new SelectMenuBuilder()
@@ -82,15 +88,15 @@ module.exports = {
 			            value: `gtaStartMenu - u:${interaction.user.id} - c:undefinedchannel`,
 			        }])
 			    )	
-			if (channelCount >= 24) {	
+			if (gtaChannelCount >= 24) {	
 				
-				for (i = 21; i <= 44; i++) {
-			    if ( (channelNames[i] != undefined) ) {
-						//console.log(`channelNames at ${i}: ${channelNames[i]}`);
+				for (i = 24; i <= 47; i++) {
+			    if ( (gtaChannelNames[i] != undefined) ) {
+						//console.log(`gtaChannelNames at ${i}: ${gtaChannelNames[i]}`);
 			        gtaStartMenu2.components[0].addOptions([{
-			            label: `${channelNames[i]}`,
-			            description: `${channelNames[i]}`,
-			            value: `gtaStartMenu2 - u:${interaction.user.id} - c:${channelIDs[i]}`,
+			            label: `${gtaChannelNames[i]}`,
+			            description: `${gtaChannelNames[i]}`,
+			            value: `gtaStartMenu2 - u:${interaction.user.id} - c:${gtaChannelIDs[i]}`,
 			        }]);
 			    }
 				}
@@ -102,8 +108,8 @@ module.exports = {
 		       interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
 		    }				
 				
-			} //end if channelCount >24
-			else { //if there are 24 channels or fewer
+			} //end if gtaChannelCount >24
+			else if (gtaChannelCount <= 23) { //if there are 23 channels or fewer
 				
 
 		if (interaction.user.id === buttonUserID) { 
@@ -113,7 +119,7 @@ module.exports = {
        interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
     }
 				
-		} //end if there are fewer than 25 channels
+		} //end if there are fewer than 23 channels
 		
 		} // end if gtastart button
 		

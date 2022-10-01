@@ -39,7 +39,7 @@ module.exports = {
 
 			function AdminRequired() {
 				let AdminRequiredBoolean = data.split(`guild:${interaction.guild.id} - admin:`);
-				if (AdminRequiredBoolean[1].includes(`yes`)) {
+				if (AdminRequiredBoolean[1].startsWith(`yes`)) {
 					return "AdminRequiredYes";
 				}
 				else {
@@ -74,7 +74,10 @@ Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for **the first Tu
 //begin checking for permissions
 					await interaction.deferUpdate();
 		//console.log(`AdminRequired(): ${AdminRequired()}`)
-		if (AdminRequired() === "AdminRequiredYes") { //if admin permissions are required
+		if (interaction.user.id != buttonUserID) {
+			await interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
+		}				
+		else if (AdminRequired() === "AdminRequiredYes") { //if admin permissions are required
 			if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) {
 				await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`startEmbed Error: ${err}`));
 			} 

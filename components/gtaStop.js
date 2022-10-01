@@ -40,7 +40,7 @@ module.exports = {
 			            value: `gtaStopMenu - u:${interaction.user.id} - c:undefinedchannel`,
 			        }])
 			    )
-			interaction.guild.channels.cache.first(24).forEach(channel => {
+			interaction.guild.channels.cache.forEach(channel => {
 			    if ((channel.type === 0) && (data.includes(channel.id))) {
 			        gtaStopMenu.components[0].addOptions([{
 			            label: `${channel.name}`,
@@ -59,7 +59,7 @@ module.exports = {
 			);					
 
 		if (interaction.user.id === buttonUserID) { 
-        await interaction.editReply({ embeds: [gtaStopEmbed], components: [backButton, gtaStopMenu] })
+        await interaction.editReply({ embeds: [gtaStopEmbed], components: [gtaStopMenu, backButton] })
         .catch(err => console.log(`gtaStopEmbed+Menu Error: ${err.stack}`));
     } else {
        interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });

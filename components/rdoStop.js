@@ -40,7 +40,7 @@ module.exports = {
 			            value: `rdoStopMenu - u:${interaction.user.id} - c:undefinedchannel`,
 			        }])
 			    )
-			interaction.guild.channels.cache.first(24).forEach(channel => {
+			interaction.guild.channels.cache.forEach(channel => {
 			    if ((channel.type === 0) && (data.includes(channel.id))) {
 			        rdoStopMenu.components[0].addOptions([{
 			            label: `${channel.name}`,
@@ -59,7 +59,7 @@ module.exports = {
 			);					
 
 		if (interaction.user.id === buttonUserID) { 
-        await interaction.editReply({ embeds: [rdoStopEmbed], components: [backButton, rdoStopMenu] })
+        await interaction.editReply({ embeds: [rdoStopEmbed], components: [rdoStopMenu, backButton] })
         .catch(err => console.log(`rdoStopEmbed+Menu Error: ${err.stack}`));
     } else {
        interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });

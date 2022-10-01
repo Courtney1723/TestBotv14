@@ -8,22 +8,23 @@ const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.r
 
 module.exports = {
 	name: 'interactionCreate',
-	async execute(interaction) {
+	async execute(interaction, user) {
 
 		if (!interaction.isButton()) {return};
 		if ( (interaction.customId.startsWith(`rdostartback -`)) || (interaction.customId.startsWith(`gtastartback -`)) ) {
 
-		let rdo_gta = "";
+			let rdo_gta = "";
 			if (interaction.customId.startsWith(`rdostartback -`)) {
 				rdo_gta += 'rdo';
 			} else {
 				rdo_gta += 'gta';
-			}
+			} 
 
 		let buttonUserID01 = (interaction.customId).split(`${rdo_gta}startback - `);
 		let buttonUserID = buttonUserID01[1];
-			//console.log(`buttonUserID: ${buttonUserID}`);
-			//console.log(`interaction.user.id === buttonUserID? ${interaction.user.id === buttonUserID}`)
+			console.log(`startBack buttonUserID: ${buttonUserID}`);
+			console.log(`startBack interaction.user.id === buttonUserID? ${interaction.user.id === buttonUserID}`);
+			console.log(`startBack interaction.user.id: ${interaction.user.id} && buttonUserID: ${buttonUserID}`);
 
 		let guildRoleIds = [];
 		fs.readFile('./rolesDataBase.txt', 'utf8', async function (err, data) {
@@ -39,14 +40,14 @@ module.exports = {
 
 			function AdminRequired() {
 				let AdminRequiredBoolean = data.split(`guild:${interaction.guild.id} - admin:`);
-				if (AdminRequiredBoolean[1].includes(`yes`)) {
+				if (AdminRequiredBoolean[1].startsWith(`yes`)) {
 					return "AdminRequiredYes";
 				}
 				else {
 					return "AdminRequiredNo";
 				}
 			}		
-
+				//console.log(`AdminRequired(): ${AdminRequired()}`)
 
 		const startEmbed = new EmbedBuilder()
 			.setColor(`Green`) 
@@ -73,8 +74,11 @@ Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for **the first Tu
 
 //begin checking for permissions
 					await interaction.deferUpdate();
-		//console.log(`AdminRequired(): ${AdminRequired()}`)
-		if (AdminRequired() === "AdminRequiredYes") { //if admin permissions are required
+		//console.log(`AdminRequired(): ${AdminRequired()}`)	
+			if ((interaction.user.id != buttonUserID) )  {
+				await interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
+			}			
+		else if (AdminRequired() === "AdminRequiredYes") { //if admin permissions are required
 			if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) {
 				await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`startEmbed Error: ${err}`));
 			} 
@@ -85,6 +89,7 @@ Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for **the first Tu
 				await interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
 			}
 		}
+			
 		else if (AdminRequired() === "AdminRequiredNo") { //if admin permissions are NOT required
 			if ((interaction.user.id === buttonUserID) ) { 
 
@@ -110,9 +115,6 @@ Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for **the first Tu
 					await interaction.followUp({content: `You do not have the required permissions to do that.`, ephemeral: true})
 				}
 			} 
-			else  {
-				await interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
-			}
 		}
 		else {
 			await interaction.followUp({ content: `There was an error executing this button.`, ephemeral: true });

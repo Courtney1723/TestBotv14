@@ -1,6 +1,8 @@
 const { SlashCommandBuilder, EmbedBuilder, ActivityType } = require('discord.js');
  const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
 
+//FIXME... How to add functionality for when the bot is added to a new guild?
+
  module.exports = {
  	name: 'ready',
  	once: true,

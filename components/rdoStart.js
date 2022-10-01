@@ -28,6 +28,24 @@ module.exports = {
 			.setColor(`Green`) 
 			.setTitle(`Start Auto Posting RDR2 Online Bonuses & Discounts`)
 			.setDescription(`Click **the dropdown menu** to confirm the channel you want to send Red Dead Redemption II Auto Posts to \n**the first Tuesday of every month at 2:00 PM EST**.`)	
+			.setFooter({ text: 'note: auto posts can only be sent to text channels.', iconURL: process.env.logo_link });
+
+			let rdoChannelCount = 0;
+				interaction.guild.channels.cache.forEach(channel => {
+					rdoChannelCount += 1;
+				})
+			var rdoChannelNames = new Array(rdoChannelCount);
+			var rdoChannelIDs = new Array(rdoChannelCount);
+			var rdoChannelTypes = new Array(rdoChannelCount);
+			interaction.guild.channels.cache.forEach(channel => {
+				if ( (channel.type === 0) && (!data.includes(channel.id)) && (channel.permissionsFor(process.env.CLIENT_ID).has(PermissionsBitField.Flags.SendMessages)) ) { 
+					rdoChannelNames.splice((channel.rawPosition), 1, channel.name);   //rdoChannelNames.push(channel.name); 
+					rdoChannelIDs.splice((channel.rawPosition), 1, channel.id); 	//rdoChannelIDs.push(channel.id);
+					rdoChannelTypes.splice((channel.rawPosition), 1, channel.type);	//rdoChannelTypes.push(channel.type);
+				}
+			});
+			//console.log(`rdoChannelCount: ${rdoChannelCount}`)
+			//console.log(`rdoChannelNames[23]: ${rdoChannelNames[23]}`)
 
 			let rdoStartMenu = new ActionRowBuilder()
 			    .addComponents(
@@ -40,37 +58,23 @@ module.exports = {
 			            value: `rdoStartMenu - u:${interaction.user.id} - c:undefinedchannel`,
 			        }])
 			    )
-			interaction.guild.channels.cache.first(24).forEach(channel => {
-			    if ((channel.type === 0) && (!data.includes(channel.id))) {
+				for (i = 0; i <= 23; i++) {
+			    if ( (rdoChannelNames[i] != undefined) ) {
+						//console.log(`rdoChannelNames at ${i}: ${rdoChannelNames[i]}`);
 			        rdoStartMenu.components[0].addOptions([{
-			            label: `${channel.name}`,
-			            description: `${channel.name}`,
-			            value: `rdoStartMenu - u:${interaction.user.id} - c:${channel.id}`,
+			            label: `${rdoChannelNames[i]}`,
+			            description: `${rdoChannelNames[i]}`,
+			            value: `rdoStartMenu2 - u:${interaction.user.id} - c:${rdoChannelIDs[i]}`,
 			        }]);
 			    }
-			})	
-
-		const backButton = new ActionRowBuilder()
-			.addComponents(
+				}
+			const backButton = new ActionRowBuilder()
+				.addComponents(
 					new ButtonBuilder()
 			        .setCustomId(`rdostartback - ${interaction.user.id}`)
 			        .setLabel('Go Back')
 			        .setStyle(ButtonStyle.Secondary),	
-			);		
-
-				let channelCount = "";
-			let channelNames = [];
-			let channelIDs = [];
-			let channelTypes = [];
-			interaction.guild.channels.cache.forEach(channel => {
-				if ((channel.type === 0) && (!data.includes(channel.id))) {
-					channelCount += 1;
-					channelNames.push(channel.name);
-					channelIDs.push(channel.id);
-					channelTypes.push(channel.type)
-				}
-			});
-
+			);	
 			let rdoStartMenu2 = new ActionRowBuilder()
 			    .addComponents(
 			        new SelectMenuBuilder()
@@ -82,15 +86,27 @@ module.exports = {
 			            value: `rdoStartMenu - u:${interaction.user.id} - c:undefinedchannel`,
 			        }])
 			    )	
-			if (channelCount >= 24) {	
+
+		if (rdoChannelCount <= 23) { //if there are 23 channels or fewer
 				
-				for (i = 21; i <= 44; i++) {
-			    if ( (channelNames[i] != undefined) ) {
-						//console.log(`channelNames at ${i}: ${channelNames[i]}`);
+
+		if (interaction.user.id === buttonUserID) { 
+        await interaction.editReply({ embeds: [rdoStartEmbed], components: [rdoStartMenu, backButton] })
+        .catch(err => console.log(`rdoStartEmbed+Menu Error: ${err.stack}`));
+    } else {
+       interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
+    }
+				
+		} //end if there are fewer than 23 channels
+			else if (rdoChannelCount >= 24) {	
+				
+				for (i = 24; i <= 47; i++) {
+			    if ( (rdoChannelNames[i] != undefined) ) {
+						//console.log(`rdoChannelNames at ${i}: ${rdoChannelNames[i]}`);
 			        rdoStartMenu2.components[0].addOptions([{
-			            label: `${channelNames[i]}`,
-			            description: `${channelNames[i]}`,
-			            value: `rdoStartMenu2 - u:${interaction.user.id} - c:${channelIDs[i]}`,
+			            label: `${rdoChannelNames[i]}`,
+			            description: `${rdoChannelNames[i]}`,
+			            value: `rdoStartMenu2 - u:${interaction.user.id} - c:${rdoChannelIDs[i]}`,
 			        }]);
 			    }
 				}
@@ -102,17 +118,8 @@ module.exports = {
 		       interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
 		    }				
 				
-			} //end if channelCount >24
-			else { //if there are 24 channels or fewer			
+			} //end if rdoChannelCount >24
 
-		if (interaction.user.id === buttonUserID) { 
-        await interaction.editReply({ embeds: [rdoStartEmbed], components: [rdoStartMenu, backButton] })
-        .catch(err => console.log(`rdoStartEmbed+Menu Error: ${err.stack}`));
-    } else {
-       interaction.followUp({ content: `These options aren't for you!`, ephemeral: true });
-    }
-		
-			}//end if only one select Menu needed
 				
 		} // end if rdostart button
 

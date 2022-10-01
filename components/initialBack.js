@@ -23,6 +23,22 @@ module.exports = {
 		if (!interaction.isButton()) {return};
 		if ( (interaction.customId.startsWith(`startback -`)) || (interaction.customId.startsWith(`stopback -`)) || (interaction.customId.startsWith(`configureback -`)) ) {
 
+		let start_stop_configure = "";
+			if (interaction.customId.startsWith(`startback -`)) {
+				start_stop_configure += 'start';
+			} else if (interaction.customId.startsWith(`stopback -`)) {
+				start_stop_configure += 'stop';
+			} else {
+				start_stop_configure += 'configure';
+			}
+
+		let buttonUserID01 = (interaction.customId).split(`${start_stop_configure}back - `);
+		let buttonUserID = buttonUserID01[1];
+			console.log(`startBack buttonUserID: ${buttonUserID}`);
+			console.log(`startBack interaction.user.id === buttonUserID? ${interaction.user.id === buttonUserID}`);
+			console.log(`startBack interaction.user.id: ${interaction.user.id} && buttonUserID: ${buttonUserID}`);			
+
+
 		const initialEmbed = new EmbedBuilder()
 			.setColor(`0xFF008B`) //Pink
 			.setTitle(`Auto Post Settings`)
@@ -54,11 +70,15 @@ Click **\'Confirm\'** to view current settings.`)
 
 //Initial Embed + Buttons (start, stop, confirm, configure)
 	await interaction.deferUpdate();
-	interaction.editReply({ embeds: [initialEmbed], components:[initialButtons] });
-		setTimeout(() => {
-			interaction.editReply({components: [timeoutButton]})
-		}, (60000 * 2))			
-			
+			if (interaction.user.id === buttonUserID) {
+				interaction.editReply({ embeds: [initialEmbed], components:[initialButtons] });
+					setTimeout(() => {
+						interaction.editReply({components: [timeoutButton]})
+					}, (60000 * 2))			
+			}
+			else {
+				await interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
+			}
 
 			
 		} //end if interaction starts with startback - stopback - configureback

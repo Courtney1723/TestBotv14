@@ -11,7 +11,7 @@ module.exports = {
 	async execute(interaction) {
 
 		if (!interaction.isSelectMenu()) {return};
-		if (interaction.customId.startsWith(`rdoStartMenu`)) {
+		if (interaction.customId.startsWith(`rdoStartMenu -`)) {
 			//console.log(`begin rdoStartMenu: '${interaction.customId}'`);		
 
 			let startMenu2 = "";
@@ -51,7 +51,11 @@ module.exports = {
 				}
 			}		
 
-					if (menuChannelID.includes(`undefinedchannel`)) { //interaction.values === `undefinedchannel` does not work?
+
+					if (interaction.user.id != menuUserID) {
+						interaction.reply({ content: `These options aren't for you!`, ephemeral: true });
+					}
+					else if (menuChannelID.includes(`undefinedchannel`)) { //interaction.values === `undefinedchannel` does not work?
 
 						const rdoDuplicateEmbed = new EmbedBuilder()
 								.setColor(`Red`) 
@@ -73,6 +77,8 @@ module.exports = {
 								.setColor(`Green`) 
 								.setTitle(`Success!`)
 								.setDescription(`You will now get Red Dead Redemption II Auto Posts to the <#${menuChannelID}> channel \n**the first Tuesday of every month at 2:00 PM EST**.`)	
+								.setFooter({ text: 'note: This bot must have permission to send messages in subscribed channels.', iconURL: process.env.logo_link });
+
 						
 						await interaction.deferUpdate();
 						if (interaction.user.id === menuUserID) {

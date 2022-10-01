@@ -47,8 +47,10 @@ module.exports = {
 			}		
 
 
-
-if (menuRoleID === `undefinedrole`) { //if the Admin role is already required - error
+if (interaction.user.id != menuUserID) {
+	interaction.reply({ content: `These options aren't for you!`, ephemeral: true });
+}
+else if (menuRoleID === `undefinedrole`) { //if the Admin role is already required - error
 
     const configureDuplicateEmbed = new EmbedBuilder()
     .setColor(`Red`) 
@@ -85,7 +87,7 @@ if (menuRoleID === `undefinedrole`) { //if the Admin role is already required - 
     const configureConfirmAddEmbed = new EmbedBuilder()
         .setColor(`Green`) 
         .setTitle(`Success!`)
-        .setDescription(`Administrator privileges are no longer required to configure auto posts.`)	
+        .setDescription(`Administrator privileges are no longer required to configure auto posts.\n${everyoneCheck}`)	
 
     await interaction.deferUpdate();
 		
@@ -143,7 +145,10 @@ if (menuRoleID === `undefinedrole`) { //if the Admin role is already required - 
 						.setDescription(`Anyone with the <@&${menuRoleID}> role is now no longer allowed to configure auto posts.\n${everyoneCheck}`)	
 		
 			    await interaction.deferUpdate();
-			    if (interaction.user.id === menuUserID) {
+					if (interaction.user.id != menuUserID) {
+						interaction.followUp({ content: `These options aren't for you!`, ephemeral: true });
+					}					
+			    else if (interaction.user.id === menuUserID) {
 			        await interaction.editReply({ embeds: [configureAddEmbed], components: [] })
 			        .catch(err => console.log(`configureAddEmbed Error: ${err}`));
 		

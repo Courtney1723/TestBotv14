@@ -33,7 +33,7 @@ module.exports = {
 
 			function AdminRequired() {
 				let AdminRequiredBoolean = data.split(`guild:${interaction.guild.id} - admin:`);
-				if (AdminRequiredBoolean[1].includes(`yes`)) {
+				if (AdminRequiredBoolean[1].startsWith(`yes`)) {
 					return "AdminRequiredYes";
 				}
 				else {
@@ -78,7 +78,10 @@ const configureButtons = new ActionRowBuilder()
                 //begin checking for permissions
                 await interaction.deferUpdate();
                 //console.log(`AdminRequired(): ${AdminRequired()}`)
-                if (AdminRequired() === "AdminRequiredYes") { //if admin permissions are required
+								if (interaction.user.id != buttonUserID) {
+									await interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
+								}				
+                else if (AdminRequired() === "AdminRequiredYes") { //if admin permissions are required
                     if ((interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) {
                         await interaction.editReply({ embeds: [configureEmbed], components: [configureButtons] }).catch(err => console.log(`configureEmbed Error: ${err}`));
                     } 
@@ -110,7 +113,7 @@ const configureButtons = new ActionRowBuilder()
 												else if ((interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID)) {
 													await interaction.editReply({ embeds: [configureEmbed], components: [configureButtons] }).catch(err => console.log(`configureEmbed Error: ${err}`));
 												}
-												else {
+												else if (hasARole <= 0) {
                             await interaction.followUp({content: `You do not have the required permissions to do that.`, ephemeral: true})
                         }
                     } //end if admin permission not required
