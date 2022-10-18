@@ -6,6 +6,15 @@ const client = new Client({
 
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
 
+const expiredButton = new ActionRowBuilder()
+	.addComponents(
+		new ButtonBuilder()
+			.setCustomId(`expired`)
+			.setLabel('This interaction timed out.')
+			.setStyle(ButtonStyle.Secondary)
+			.setEmoji(':RSWeekly:1025248227248848940')
+			.setDisabled(true),			
+	);
 
 module.exports = {
 	name: 'interactionCreate',
@@ -37,11 +46,25 @@ module.exports = {
             AdminYesNoStop += 'undefinedrole';
         }
 
+			let userRoles = "";
+				interaction.member.roles.cache.forEach(role => {
+						userRoles += `${role.id} - `;					
+				});
+					//console.log(`userRoles: ${userRoles}`);
+				
+			let userHighestRoleRawPosition = 0;
+				interaction.guild.roles.cache.forEach(role => {
+					if ((userRoles.includes(role.id)) && (role.rawPosition >= userHighestRoleRawPosition)) {
+						userHighestRoleRawPosition = role.rawPosition;
+					}
+				});
+					//console.log(`userHighestRoleRawPosition: ${userHighestRoleRawPosition}`);
 				
 				const configureStopEmbed = new EmbedBuilder()
 				.setColor(`0x00FFFF`) //Teal
 				.setTitle(`Remove a Role`)
-				.setDescription(`Click **the dropdown menu** to remove a role that from being able to control auto posts.`)	
+				.setDescription(`Click **the dropdown menu** to remove a role from being able to configure auto posts.`)	
+				.setFooter({text: `Administrators can always configure auto posts.`, iconURL: process.env.logo_link })
 				
 				let configureStopMenu = new ActionRowBuilder()
 				    .addComponents(
@@ -56,7 +79,8 @@ module.exports = {
 				    )
 				interaction.guild.roles.cache.first(24).forEach(role => {
 					//console.log(`role names: ${role.name}`)
-					if ((role.name != "@everyone") && (data.includes(`${role.id}`)) ) {
+					if ((role.name != "@everyone") && (data.includes(`${role.id}`)) && (role.rawPosition <= userHighestRoleRawPosition) ) {
+							//console.log(`role.rawPosition:${role.rawPosition}`);
 						configureStopMenu.components[0].addOptions([{
 								label: `${role.name}`,
 								description: `${role.name}`,
@@ -80,6 +104,10 @@ module.exports = {
        interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
     }
 
+
+				setTimeout(() => {
+					interaction.editReply({components: [expiredButton]})
+				}, (60000 * 2))					
 				
 		} // end if configureStop button
 		

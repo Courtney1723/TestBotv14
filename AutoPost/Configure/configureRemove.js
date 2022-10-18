@@ -17,12 +17,12 @@ module.exports = {
 		let menuUserID02 = (interaction.customId).split("configurestopmenu - u:");
 		let menuUserID01 = menuUserID02[1].split(" - ");
 		let menuUserID = menuUserID01[0];
-			console.log(`configureStartMenu menuUserID: ${menuUserID}`);
-			console.log(`configureStartMenu interaction.user.id === menuUserID?: ${interaction.user.id === menuUserID}`)	
+			//console.log(`configureStartMenu menuUserID: ${menuUserID}`);
+			//console.log(`configureStartMenu interaction.user.id === menuUserID?: ${interaction.user.id === menuUserID}`)	
 
 		let menuRoleID01 = (interaction.values).toString().split(`r:`);
 		let menuRoleID = menuRoleID01[1];
-				console.log(`configureStartMenu menuRoleID: ${menuRoleID}`)
+				//console.log(`configureStartMenu menuRoleID: ${menuRoleID}`)
 
 		let guildRoleIds = [];
 		fs.readFile('./rolesDataBase.txt', 'utf8', async function (err, data) {
@@ -53,9 +53,9 @@ if (interaction.user.id != menuUserID) {
 else if (menuRoleID === `undefinedrole`) { //if the Admin role is already required - error
 
     const configureDuplicateEmbed = new EmbedBuilder()
-    .setColor(`Red`) 
+    .setColor(`Orange`) 
     .setTitle(`Please Try Again`)
-    .setDescription(`You selected an invalid response "No Role Selected".\nPlease Try again. || ¡ʎɐp poob ɐ ǝʌɐɥ ||`)	
+    .setDescription(`You selected an invalid response "No Role Selected".\nPlease Try again. || have a good day! ||`)	
     
     await interaction.deferUpdate();
     if (interaction.user.id === menuUserID) {
@@ -66,7 +66,7 @@ else if (menuRoleID === `undefinedrole`) { //if the Admin role is already requir
     }
 
   } //end if menuRoleID === `undefinedrole`
-  else if (menuRoleID.includes('yes')) { //Make the Admin permission required
+  else if (menuRoleID.includes('yes')) { //Make the Admin permission not required
 		//console.log(`adding admin role for ${guildIdDB}`);
 
 			let roleIDArray = [];
@@ -79,10 +79,11 @@ else if (menuRoleID === `undefinedrole`) { //if the Admin role is already requir
 			//console.log(`roleIDArray[]: ${roleIDArray}`);
 
 			let everyoneCheck = "";
-			if (roleIDArray.length <= 1) {
-					everyoneCheck += `\n• @everyone can configure auto posts now!\n• Try the **\'/autopost\'** command again and click **\'Configure\'** to add a role.`;
+			if (roleIDArray.length <= 0) {
+					everyoneCheck += `\n• @everyone can configure auto posts now!\n• Try the **/autopost** command again and click **\'Configure\'** to add a role.`;
 				
 			}
+			console.log(`roleIDArray length: ${roleIDArray.length}`);
 		
     const configureConfirmAddEmbed = new EmbedBuilder()
         .setColor(`Green`) 
@@ -134,7 +135,7 @@ else if (menuRoleID === `undefinedrole`) { //if the Admin role is already requir
 					let everyoneCheck = "";
 					if (roleIDArray.length <= 1) {
 						if (AdminRequired() === `AdminRequiredNo`) {
-							everyoneCheck += `\n• @everyone can configure auto posts now!\n• Try the **\'/autopost\'** command again and click **\'Configure\'** to add a role.`;
+							everyoneCheck += `\n• @everyone can configure auto posts now!\n• Try the **/autopost** command again and click **\'Configure\'** to add a role.`;
 						}
 						
 					}
@@ -142,7 +143,7 @@ else if (menuRoleID === `undefinedrole`) { //if the Admin role is already requir
 					const configureAddEmbed = new EmbedBuilder()
 						.setColor(`Green`) 
 						.setTitle(`Success!`)
-						.setDescription(`Anyone with the <@&${menuRoleID}> role is now no longer allowed to configure auto posts.\n${everyoneCheck}`)	
+						.setDescription(`The <@&${menuRoleID}> role is now no longer allowed to configure auto posts.\n${everyoneCheck}`)	
 		
 			    await interaction.deferUpdate();
 					if (interaction.user.id != menuUserID) {
@@ -189,13 +190,14 @@ else if (menuRoleID === `undefinedrole`) { //if the Admin role is already requir
 
 
 		} // end adding a new role to rolesDataBase.txt
+			
+
+		});//end fs:readFile	
 
 		setTimeout(() => {
 			interaction.editReply({components: []})
 		}, (60000 * 2))
 			
-
-		});//end fs:readFile	
 		}// end if interaction.customId === 'configureStartMenu'
 		
 

@@ -6,6 +6,16 @@ const client = new Client({
 
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
 
+const expiredButton = new ActionRowBuilder()
+	.addComponents(
+		new ButtonBuilder()
+			.setCustomId(`expired`)
+			.setLabel('This interaction timed out.')
+			.setStyle(ButtonStyle.Secondary)
+			.setEmoji(':RSWeekly:1025248227248848940')
+			.setDisabled(true),			
+	);
+
 module.exports = {
 	name: 'interactionCreate',
 	async execute(interaction) {
@@ -56,18 +66,41 @@ module.exports = {
 			        .setCustomId(`rdostopback - ${interaction.user.id}`)
 			        .setLabel('Go Back')
 			        .setStyle(ButtonStyle.Secondary),	
-			);					
+			);	
+
+		let rdoChannelIds = [];
+		fs.readFile('./RDODataBase.txt', 'utf8', async function (err, data) {
+		    if (err) {console.log(`Error: ${err}`)} //If an error, console.log
+		
+					interaction.guild.channels.cache.forEach(channel => {
+							if (data.includes(channel.id)) {
+								rdoChannelIds.push(channel.id);
+							}
+					});
+			//console.log(`rdoChannelIds: ${rdoChannelIds}`);					
+				
 
 		if (interaction.user.id === buttonUserID) { 
+			if (rdoChannelIds.length <= 0) {
+				interaction.followUp({ content: `You do not have any channels subscribed to Red Dead Redemption II Online auto posts.`, ephemeral: true });
+			} 
+			else {
         await interaction.editReply({ embeds: [rdoStopEmbed], components: [rdoStopMenu, backButton] })
         .catch(err => console.log(`rdoStopEmbed+Menu Error: ${err.stack}`));
+			}
     } else {
        interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
     }
 
-		
+				}); // end checking for if no channels are subscribed
+
+				setTimeout(() => {
+					interaction.editReply({components: [expiredButton]})
+				}, (60000 * 2))	
+				
 		} // end if rdostop button
-		
+
+			
 		}); //end fs:readFile
 				
 		

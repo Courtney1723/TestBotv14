@@ -12,10 +12,15 @@ module.exports = {
 	async execute(interaction) {
 
 		if (!interaction.isSelectMenu()) {return};
-		if (interaction.customId.startsWith(`configureaddmenu -`)) {
+		if ((interaction.customId.startsWith(`configureStartMenu -`)) || (interaction.customId.startsWith(`configureStartMenu2 -`))) {
 			//console.log(`begin configureStartMenu: '${interaction.customId}'`);		
 
-		let menuUserID02 = (interaction.customId).split("configureaddmenu - u:");
+		let oneOrTwo = "";
+			if (interaction.customId.startsWith(`configureStartMenu2 -`)) {
+				oneOrTwo += "2";
+			}
+
+		let menuUserID02 = (interaction.customId).split(`configureStartMenu${oneOrTwo} - u:`);
 		let menuUserID01 = menuUserID02[1].split(" - ");
 		let menuUserID = menuUserID01[0];
 			//console.log(`configureStartMenu menuUserID: ${menuUserID}`);
@@ -54,9 +59,9 @@ if (interaction.user.id != menuUserID) {
 else if (menuRoleID === `undefinedrole`) { //if the Admin role is already required - error
 
     const configureDuplicateEmbed = new EmbedBuilder()
-    .setColor(`Red`) 
+    .setColor(`Orange`) 
     .setTitle(`Please Try Again`)
-    .setDescription(`You selected an invalid response "No Role Selected".\nPlease Try again. || ¡ʎɐp poob ɐ ǝʌɐɥ ||`)	
+    .setDescription(`You selected an invalid response "No Role Selected".\nPlease Try again. || ♪♬ ||`)	
     
     await interaction.deferUpdate();
     if (interaction.user.id === menuUserID) {
@@ -69,6 +74,10 @@ else if (menuRoleID === `undefinedrole`) { //if the Admin role is already requir
   } //end if menuRoleID === `undefinedrole`
   else if (menuRoleID.includes('yes')) { //Make the Admin permission required
 		//console.log(`adding admin role for ${guildIdDB}`);
+		if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
+			interaction.reply({ content: `You do not have the required permissions to do that.`, ephemeral: true });
+		} 
+		else  if (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) { 
     const configureConfirmAddEmbed = new EmbedBuilder()
         .setColor(`Green`) 
         .setTitle(`Success!`)
@@ -104,13 +113,13 @@ else if (menuRoleID === `undefinedrole`) { //if the Admin role is already requir
        interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
     }
 
-
+			} //end if user has admin privileges
     }    // end adding Admins as a required permission 
 		else {
 
 			let AdminCheck = "";
 			if (AdminRequired() === `AdminRequiredYes`) {
-				AdminCheck += `\n• The Administrator privilege is required! \n• Any user with the <@&${menuRoleID}> role must also have administrator privileges in order to configure auto posts.\n• Try the **\'/autopost\'** comand again and click **\'Configure\'** to remove the administrator requirement.`;
+				AdminCheck += `\n• The Administrator privilege is required! \n• Any user with the <@&${menuRoleID}> role must also have administrator privileges in order to configure auto posts.\n• Try the **/autopost** comand again and click **\'Configure\'** to remove the administrator requirement.`;
 			}
 
 			const configureAddEmbed = new EmbedBuilder()
@@ -161,13 +170,14 @@ else if (menuRoleID === `undefinedrole`) { //if the Admin role is already requir
 
 
 		} // end adding a new role to rolesDataBase.txt
+			
+
+		});//end fs:readFile	
 
 		setTimeout(() => {
 			interaction.editReply({components: []})
 		}, (60000 * 2))
 			
-
-		});//end fs:readFile	
 		}// end if interaction.customId === 'configureStartMenu'
 		
 

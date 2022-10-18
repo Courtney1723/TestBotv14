@@ -6,6 +6,16 @@ const client = new Client({
 
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
 
+const expiredButton = new ActionRowBuilder()
+	.addComponents(
+		new ButtonBuilder()
+			.setCustomId(`expired`)
+			.setLabel('This interaction timed out.')
+			.setStyle(ButtonStyle.Secondary)
+			.setEmoji(':RSWeekly:1025248227248848940')
+			.setDisabled(true),			
+	);
+
 module.exports = {
 	name: 'interactionCreate',
 	async execute(interaction) {
@@ -28,11 +38,11 @@ module.exports = {
 			.setColor(`Green`) 
 			.setTitle(`Start Auto Posting GTAV Online Bonuses & Discounts`)
 			.setDescription(`Click **the dropdown menu** to confirm the channel you want to send Grand Theft Auto V Auto Posts to \n**every Thursday at 2:00 PM EST**.`)	
-			.setFooter({ text: 'note: auto posts can only be sent to text channels.', iconURL: process.env.logo_link });
+			.setFooter({ text: 'Auto posts can only be sent to text channels.', iconURL: process.env.logo_link });
 
 			let gtaChannelCount = 0;
 				interaction.guild.channels.cache.forEach(channel => {
-					if ( (channel.type === 0) && (!data.includes(channel.id)) && (channel.permissionsFor(process.env.CLIENT_ID).has(PermissionsBitField.Flags.SendMessages)) ) { 
+					if ( (channel.type === 0) && (!data.includes(channel.id)) && (channel.permissionsFor(process.env.CLIENT_ID).has(PermissionsBitField.Flags.SendMessages)) && (channel.permissionsFor(interaction.user.id).has(PermissionsBitField.Flags.ViewChannel)) ) { 
 						gtaChannelCount += 1;
 					}
 				})
@@ -40,7 +50,7 @@ module.exports = {
 			var gtaChannelIDs = new Array(gtaChannelCount);
 			var gtaChannelTypes = new Array(gtaChannelCount);
 			interaction.guild.channels.cache.forEach(channel => {
-				if ( (channel.type === 0) && (!data.includes(channel.id)) && (channel.permissionsFor(process.env.CLIENT_ID).has(PermissionsBitField.Flags.SendMessages)) ) { 
+				if ( (channel.type === 0) && (!data.includes(channel.id)) && (channel.permissionsFor(process.env.CLIENT_ID).has(PermissionsBitField.Flags.SendMessages)) && (channel.permissionsFor(interaction.user.id).has(PermissionsBitField.Flags.ViewChannel)) ) { 
 					gtaChannelNames.splice((channel.rawPosition), 1, channel.name);   //gtaChannelNames.push(channel.name); 
 					gtaChannelIDs.splice((channel.rawPosition), 1, channel.id); 	//gtaChannelIDs.push(channel.id);
 					gtaChannelTypes.splice((channel.rawPosition), 1, channel.type);	//gtaChannelTypes.push(channel.type);
@@ -120,6 +130,10 @@ module.exports = {
     }
 				
 		} //end if there are fewer than 23 channels
+
+				setTimeout(() => {
+					interaction.editReply({components: [expiredButton]})
+				}, (60000 * 2))					
 		
 		} // end if gtastart button
 		

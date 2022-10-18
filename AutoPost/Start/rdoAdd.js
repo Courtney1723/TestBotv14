@@ -11,7 +11,7 @@ module.exports = {
 	async execute(interaction) {
 
 		if (!interaction.isSelectMenu()) {return};
-		if (interaction.customId.startsWith(`rdoStartMenu -`)) {
+		if ((interaction.customId.startsWith(`rdoStartMenu -`)) || (interaction.customId.startsWith(`rdoStartMenu2 -`)) ) {
 			//console.log(`begin rdoStartMenu: '${interaction.customId}'`);		
 
 			let startMenu2 = "";
@@ -58,7 +58,7 @@ module.exports = {
 					else if (menuChannelID.includes(`undefinedchannel`)) { //interaction.values === `undefinedchannel` does not work?
 
 						const rdoDuplicateEmbed = new EmbedBuilder()
-								.setColor(`Red`) 
+								.setColor(`Orange`) 
 								.setTitle(`Please Try Again`)
 								.setDescription(`You selected an invalid response "No Channel Selected".\nPlease Try again. || (◕ᴥ◕ʋ) ||`)	
 						
@@ -77,8 +77,6 @@ module.exports = {
 								.setColor(`Green`) 
 								.setTitle(`Success!`)
 								.setDescription(`You will now get Red Dead Redemption II Auto Posts to the <#${menuChannelID}> channel \n**the first Tuesday of every month at 2:00 PM EST**.`)	
-								.setFooter({ text: 'note: This bot must have permission to send messages in subscribed channels.', iconURL: process.env.logo_link });
-
 						
 						await interaction.deferUpdate();
 						if (interaction.user.id === menuUserID) {
@@ -100,12 +98,11 @@ module.exports = {
 						
 					} //end add new channel
 
+		});//end fs:readFile	
+			
 		setTimeout(() => {
 			interaction.editReply({components: []})
 		}, (60000 * 2))
-
-		});//end fs:readFile	
-
 			
 		}// end if interaction.customId === 'rdoStartMenu'
 		

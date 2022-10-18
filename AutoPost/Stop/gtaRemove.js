@@ -11,7 +11,7 @@ module.exports = {
 	async execute(interaction) {
 
 		if (!interaction.isSelectMenu()) {return};
-		if (interaction.customId.startsWith(`gtaStopMenu`)) {
+		if (interaction.customId.startsWith(`gtaStopMenu -`)) {
 			//console.log(`begin gtaStopMenu: '${interaction.customId}'`);		
 
 		let menuUserID02 = (interaction.customId).split("gtaStopMenu - u:");
@@ -36,6 +36,8 @@ module.exports = {
 			guildRoleIds.shift(1); //removes the @everyone role
 				//console.log(`guildRoleIds: ${guildRoleIds}`);
 
+			
+
 			function AdminRequired() {
 				let AdminRequiredBoolean = data.split(`guild:${interaction.guild.id} - admin:`);
 				if (AdminRequiredBoolean[1].includes(`yes`)) {
@@ -49,7 +51,7 @@ module.exports = {
 					if (menuChannelID.includes(`undefinedchannel`)) { //interaction.values === `undefinedchannel` does not work?
 
 						const gtaDuplicateEmbed = new EmbedBuilder()
-								.setColor(`Red`) 
+								.setColor(`Orange`) 
 								.setTitle(`Please Try Again`)
 								.setDescription(`You selected an invalid response "No Channel Selected".\nPlease Try again. || (◕ᴥ◕ʋ) ||`)	
 						
@@ -67,7 +69,7 @@ module.exports = {
 						const gtaConfirmEmbed = new EmbedBuilder()
 								.setColor(`Green`) 
 								.setTitle(`Success!`)
-								.setDescription(`You will now no longer get Grand Theft Auto V Auto Posts to the <#${menuChannelID}> channel.`)	
+								.setDescription(`You will now no longer get Grand Theft Auto V auto posts in the <#${menuChannelID}> channel.`)	
 						
 						await interaction.deferUpdate();
 						if (interaction.user.id === menuUserID) { //begin removing channel
@@ -78,9 +80,9 @@ module.exports = {
 								fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
 									if (err) {console.log(`Error: ${err}`)} //If an error, console.log
 		
-										// console.log(`interaction.guild.id: ${interaction.guild.id}`)
-										// console.log(`menuChannelID: ${menuChannelID}`)
-										// console.log(`data.replace: ${data.replace(`\nguild:${interaction.guild.id} - channel:${menuChannelID} - rdo_gta:gtaStartMenu - `, "")}`);
+										 //console.log(`interaction.guild.id: ${interaction.guild.id}`)
+										 //console.log(`menuChannelID: ${menuChannelID}`)
+										 //console.log(`data.replace: ${data.replace(`guild:${interaction.guild.id} - channel:${menuChannelID} - rdo_gta:gtaStartMenu - `, "")}`);
 		
 		
 										fs.writeFile('./GTADataBase.txt', `${data.replace(`\nguild:${interaction.guild.id} - channel:${menuChannelID} - rdo_gta:gtaStartMenu - `, "")}`, function (err) {
@@ -96,11 +98,13 @@ module.exports = {
 						
 					} //end remove channel
 
-		setTimeout(() => {
-			interaction.editReply({components: []})
-		}, (60000 * 2))	
 
 		});//end fs:readFile	
+
+		setTimeout(() => {
+			interaction.editReply({components: []})
+		}, (60000 * 2))			
+			
 		}// end if interaction.customId === 'gtaStopMenu'
 		
 

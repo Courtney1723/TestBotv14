@@ -6,6 +6,16 @@ const client = new Client({
 
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
 
+const expiredButton = new ActionRowBuilder()
+	.addComponents(
+		new ButtonBuilder()
+			.setCustomId(`expired`)
+			.setLabel('This interaction timed out.')
+			.setStyle(ButtonStyle.Secondary)
+			.setEmoji(':RSWeekly:1025248227248848940')
+			.setDisabled(true),			
+	);
+
 module.exports = {
 	name: 'interactionCreate',
 	async execute(interaction) {
@@ -56,17 +66,38 @@ module.exports = {
 			        .setCustomId(`gtastopback - ${interaction.user.id}`)
 			        .setLabel('Go Back')
 			        .setStyle(ButtonStyle.Secondary),	
-			);					
+			);	
 
-		if (interaction.user.id === buttonUserID) { 
+		let gtaChannelIds = [];
+		fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
+		    if (err) {console.log(`Error: ${err}`)} //If an error, console.log
+		
+					interaction.guild.channels.cache.forEach(channel => {
+							if (data.includes(channel.id)) {
+								gtaChannelIds.push(channel.id);
+							}
+					});
+			//console.log(`gtaChannelIds: ${gtaChannelIds}`);				
+
+		if (interaction.user.id === buttonUserID) {
+			if (gtaChannelIds.length <= 0) {
+				interaction.followUp({ content: `You do not have any channels subscribed to Grand Theft Auto V Online auto posts.`, ephemeral: true });
+			} 
+			else {
         await interaction.editReply({ embeds: [gtaStopEmbed], components: [gtaStopMenu, backButton] })
         .catch(err => console.log(`gtaStopEmbed+Menu Error: ${err.stack}`));
+			}
     } else {
        interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
     }
 
+					}); //end checking if there are not gta channels subscribed
+
+				setTimeout(() => {
+					interaction.editReply({components: [expiredButton]})
+				}, (60000 * 2))			
 		
-		} // end if gtastop button
+		} // end if gtastop button			
 		
 		}); //end fs:readFile
 

@@ -8,8 +8,9 @@ module.exports = {
 	name: 'ready',
 	async execute(client) {
 
-		cron.schedule('0 12 * * 4', () => { //(second),minute,hour,date,month,weekday '0 12 * * 4' = 12:00 PM on Thursday
-		  //console.log('running a task');
+		//cron.schedule('*/1 * * * *', () => { //(second),minute,hour,date,month,weekday '0 12 * * 4' = 12:00 PM on Thursday
+		cron.schedule('00 12 * * 4', () => { //(second),minute,hour,date,month,weekday '0 12 * * 4' = 12:00 PM on Thursday
+		  console.log('sending GTA Auto Posts...');
 
 //----------Begin Formatting GuildIds, ChannelIds, and rdo_gtaIDs-----------//	
 			fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
@@ -63,7 +64,11 @@ module.exports = {
 					
 
 //Begin GTA Formatting		
-		let gtaURL = process.env.SOCIAL_URL_GTA;
+
+let gtaURL = process.env.SOCIAL_URL_GTA2;
+
+		//await interaction.editReply(`Console Logged 👍`).catch(console.error);
+	
 		const instance = await phantom.create();
 		const page = await instance.createPage();
 
@@ -71,6 +76,26 @@ module.exports = {
 		const status = await page.open(gtaURL);
 			//console.log(`Page opened with status [${status}].`);
 	if (status === `success`) { //checks if Rockstar Social Club website is down
+		const content = await page.property('content'); // Gets the latest gta updates
+			//console.log(content); 
+
+		let baseURL = "https://socialclub.rockstargames.com/events/";
+		
+		let urlHash02 = content.split("urlHash\":\"");
+		let urlHash01 = urlHash02[1].split("\"");
+		let urlHash = urlHash01[0];
+			//console.log(`urlHash: ${urlHash}`);
+
+		let urlSlug02 = content.split("slug\":\"");
+		let urlSlug01 = urlSlug02[1].split("\"");
+		let urlSlug = urlSlug01[0];
+			//console.log(`urlSlug: ${urlSlug}`);
+
+		let url = `${baseURL}${urlHash}/${urlSlug}`;
+			//console.log(`url: ${url}`);
+
+		const gtaStatus = await page.open(url);
+		if (gtaStatus === `success`) { //checks if Rockstar Social Club website is down
 		const content = await page.property('content'); // Gets the latest gta updates
 			//console.log(content); 
 		let gtaString001 = content.toString(); //converts HTML to string (necessary? not sure.);
@@ -223,7 +248,7 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 						gtaTitleString += `${Titles2[j].charAt(0)}${Titles2[j].toLowerCase().slice(1)} `; 
 					}
 	//returns all caps if title is GTA, GTA$, or XP							
-					else if ( (Titles2[j].includes("GTA")) || (Titles2[j] === "XP") || (Titles2[j] === "RP") || (Titles2[j] === "GT")  || (Titles2[j] === "LD") || (Titles2[j] === "LSPD") || (Titles2[j] === "HSW") ||  (Titles2[j] === "LS") ) { 
+					else if ( (Titles2[j].includes("GTA")) || (Titles2[j] === "XP") || (Titles2[j] === "RP") || (Titles2[j] === "GT")  || (Titles2[j] === "LD") || (Titles2[j] === "LSPD") || (Titles2[j] === "HSW") ||  (Titles2[j] === "LS") || (Titles2[j] === "X|S") ) { 
 							gtaTitleString += `${Titles2[j]} `;
 					}
 	//returns all lowercase if not a title word					
@@ -286,14 +311,14 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 	}	
 	else if (i === 0) { //if the bonus is an intro paragraph.
 		let introParas = GTA_Title.split("<p>")
-		gtaFinalString01 += `• ${introParas[2]}\n`;
+		gtaFinalString01 += `• ${introParas[1]}\n`;
 	}
 	else if (GTA_Bonus != null) {
 			let gtaParas = GTA_Bonus.split("<p>");
 			//console.log(`gtaParas at ${i}: ${gtaParas}`);
 			//console.log(`gtaParas length at ${i}: ${gtaParas.length}`);		
-		if (GTA_Title.toLowerCase().includes("announcing the winner")) {
-			gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[3]}\n`;
+		if (GTA_Title.toLowerCase().includes("series updates")) {
+			gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n• ${gtaParas[2]}\n`;
 		}	
 		else if (GTA_Title.toLowerCase().includes("motorsport showroom")) {
 			gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
@@ -348,18 +373,18 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 										  .replace(/<\/b>/g, "")
 										  .replace(/<b>/g, "")
 											.replace(/\n\n• /g, "\n• ") //removes spaces before a list item
-											.replace(/.\n\*\*/g, ".\n\n**")
+											.replace(/.\n\*\*/g, "\n\n**")
 											.replace(/\n\n\n/g, "\n\n")
 											.replace(/• undefined/g, "• ")
 
 			//console.log(`gtaFinalString: ${gtaFinalString}`);
     function gtaPost() {
-        return gtaFinalString.slice(0, 3745); //FIXME: adjust this for the best break - up to 4000
+        return gtaFinalString.slice(0, 3768); //FIXME: adjust this for the best break - up to 4000
     }
     //console.log(`1: ${gtaFinalString.length}\n`) 
     function gtaPost2() {
       if (gtaFinalString.length > 4000) {
-        let post02 = gtaFinalString.substr(3745, 2099); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
+        let post02 = gtaFinalString.substr(3768, 2099); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
         return post02;
       } else {
         return "";
@@ -374,14 +399,14 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
     }		
     function gtaFooterMax() {
       if (gtaFinalString.length > 4000) {
-        return `\n** [click here](${gtaURL}) for more details**`;
+        return `\n** [click here](${url}) for more details**`;
       } else {
         return "";
       }
     }
     function gtaFooterMin() { 
       if (gtaFinalString.length <= 4000) {
-        return `\n** [click here](${gtaURL}) for more details**`;
+        return `\n** [click here](${url}) for more details**`;
       } else {
         return "";
       }
@@ -402,47 +427,44 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 		 // console.log(`gtaEmbed length: ${gtaEmbed.length}`); //no more than 4096 (line 199)
 		 // console.log(`gtaEmbed2 length: ${gtaEmbed2.length}`); //no more than 6000 - gtaEmbed.length (line 204)
 
-		let channelIDArray = channelIDs.split('-');
+
+
+//-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
+//-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//		
+//-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
+
+		
+		let channelIDArray = channelIDs.split(' - ');
 			//console.log(`channelIDArray length: ${channelIDArray.length}`);
 			//console.log(`channelIDArray: ${channelIDArray}`);
 		for (c = 0; c <= channelIDArray.length - 2; c++) { //last element will always be blank
-			//console.log(`channelIDArray at ${c}: ${channelIDArray[c]}`);
-		if (gtaFinalString.length <= 4000) {
-			client.channels.fetch(channelIDArray[c]).then(channel => channel.send(({embeds: [gtaImageEmbed, gtaEmbed]}))).catch(err => console.log(`Min Error: ${err}`));
-		} else {
-			client.channels.fetch(channelIDArray[c]).then(channel => channel.send({embeds: [gtaImageEmbed, gtaEmbed, gtaEmbed2]})).catch(err => console.log(`Max Error: ${err}`));
-		}
-		}
+			if (channelIDArray[c].includes("undefined")) {}
+			else {
+				if (gtaFinalString.length <= 4000) {
+					client.channels.fetch(channelIDArray[c]).then(channel => channel.send(({embeds: [gtaImageEmbed, gtaEmbed]}))).catch(err => console.log(`Min Error: ${err}`));
+				} 
+				else {
+					client.channels.fetch(channelIDArray[c]).then(channel => channel.send({embeds: [gtaImageEmbed, gtaEmbed, gtaEmbed2]})).catch(err => console.log(`Max Error: ${err}`));
+				}
+			} //end if not undefined channel
+		} //end c loop
 
-		const aDate = new Date();
-		const aDay = aDate.getDay(); //Day of the Week
-		    //console.log(`aDay: ${aDay}`);
-		const aHour = aDate.getHours(); //Time of Day UTC (+6 MST; +4 EST)
-		    //console.log(`aHour: ${aHour}`);
-		
-		 let gtaExpiredEmbed = new EmbedBuilder()
-		    .setColor('0x00CD06') //Green
-		    .setDescription(`These bonuses & discounts may be expired. \nRockstar typically releases the latest weekly bonuses & discounts every \nThursday after 1:00 PM EST.`)
-
-//-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
-		
-		for (d = 0; d <= channelIDArray.length - 2; d++) { //last element will always be blank
-    //if ( (aDay === 3) ) { //Test for today 0 = Sunday, 1 = Monday ... 6 = Saturday
-		if ( (aDay === 4) && (aHour > 3) && (aHour < 17) ) { //If it's Thursday(4) before 1:00PM EST (3<17)
-			client.channels.fetch(channelIDArray[d]).then(channel => channel.send({embeds: [gtaExpiredEmbed], ephemeral:true})).catch(err => console.log(`Ephemeral Error: ${err}`));
-		}	
-		}
-
-	} else {
+	} 
+	else {
 			let RStarDownEmbed = new EmbedBuilder()
 				.setColor('0xFF0000') //RED
-				.setDescription(`The Rockstar Social Club website is down. \nPlease try again later. \nSorry for the inconvenience.`)
-			client.channels.fetch(channelIDs03).then(channel => channel.send({embeds: [RStarDownEmbed], ephemeral: true}));
+				.setDescription(`The Rockstar Social Club website is down. \nPlease try again later.`)
+			client.channels.fetch(process.env.logChannel2).then(channel => channel.send({embeds: [RStarDownEmbed], ephemeral: true}));
 			console.log(`The Rockstar Social Club website is down.`);	
-	}		
-		
-
-					
+	}	
+	} 
+	else {
+			let RStarDownEmbed = new EmbedBuilder()
+				.setColor('0xFF0000') //RED
+				.setDescription(`The Rockstar Social Club website is down. \nPlease try again later.`)
+			client.channels.fetch(process.env.logChannel2).then(channel => channel.send({embeds: [RStarDownEmbed], ephemeral: true}));
+			console.log(`The Rockstar Social Club website is down.`);	
+	}					
 				}
 			});
 		}, {

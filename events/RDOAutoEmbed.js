@@ -8,7 +8,8 @@ module.exports = {
 	name: 'ready',
 	async execute(client) {
 
-		cron.schedule('0 12 1-7 * 2', () => { //(second),minute,hour,date,month,weekday '0 12 1-7 * 2' = 12:00 PM on 1st Tuesday
+		//cron.schedule('*/1 * * * *', () => { //(second),minute,hour,date,month,weekday '0 12 * * 4' = 12:00 PM on Thursday
+		cron.schedule('00 12 1-7 * 2', () => { //(second),minute,hour,date,month,weekday '0 12 1-7 * 2' = 12:00 PM on 1st Tuesday
 		  //console.log('running a task');
 
 //----------Begin Formatting GuildIds, ChannelIds, and rdo_gtaIDs-----------//	
@@ -282,6 +283,9 @@ for (i = 1; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 	if (RDO_Title.toLowerCase().includes("discounts")) {
 			rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
 	}	
+	if (RDO_Title.toLowerCase().includes("triple rewards")) {
+		rdoFinalString01 += `**${RDO_Title}**\n\n`;
+	}		
 	else if (RDO_Bonus.includes("• ")) { // If the bonus includes a list
 
 		for (c = 1; c <= rdoParas.length - 1; c++) {
@@ -316,19 +320,19 @@ for (i = 1; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 											.replace(/<\/p>/g, "")
 										  .replace(/<\/b>/g, "")
 										  .replace(/<b>/g, "")
-											.replace(/\n\n• /g, "\n• ") //removes spaces before a list item
+											.replace(/\n• /g, "\n• ") //removes spaces before a list item
 											.replace(/\n\n\n/g, "\n")
 											.replace(/• undefined/g, "• ")
 											.replace(/\)• /g, ")\n• ") //adds a newline between link lists
 
 			//console.log(`rdoFinalString: ${rdoFinalString}`);
     function rdoPost() {
-        return rdoFinalString.slice(0, 3901); //FIXME: adjust this for the best break - up to 4000
+        return rdoFinalString.slice(0, 3896); //FIXME: adjust this for the best break - up to 4000
     }
     //console.log(`1: ${rdoFinalString.length}\n`) 
     function rdoPost2() {
       if (rdoFinalString.length > 4000) {
-        let post02 = rdoFinalString.substr(3901, 2099); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
+        let post02 = rdoFinalString.substr(3896, 2000); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
         return post02;
       } else {
         return "";
@@ -372,41 +376,33 @@ for (i = 1; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 		 // console.log(`rdoEmbed2 length: ${rdoEmbed2.length}`); //no more than 6000 - rdoEmbed.length (line 204)
 
 
-//----------BELOW THIS DIFFERS FROM ./commands/RDO.js----------//
-		let channelIDArray = channelIDs.split('-');
+		
+//-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
+//-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//		
+//-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
+
+		
+		let channelIDArray = channelIDs.split(' - ');
 			//console.log(`channelIDArray length: ${channelIDArray.length}`);
 			//console.log(`channelIDArray: ${channelIDArray}`);
 		for (c = 0; c <= channelIDArray.length - 2; c++) { //last element will always be blank
 			//console.log(`channelIDArray at ${c}: ${channelIDArray[c]}`);
-		if (rdoFinalString.length <= 4000) {
-			client.channels.fetch(channelIDArray[c]).then(channel => channel.send(({embeds: [rdoImageEmbed, rdoEmbed]}))).catch(err => console.log(`Min Error: ${err}`));
-		} else {
-			client.channels.fetch(channelIDArray[c]).then(channel => channel.send({embeds: [rdoImageEmbed, rdoEmbed, rdoEmbed2]})).catch(err => console.log(`Max Error: ${err}`));
-		}
-		}
-
-		const aDate = new Date();
-		const aDay = aDate.getDay(); //Day of the Week
-		    //console.log(`aDay: ${aDay}`);
-		const aHour = aDate.getHours(); //Time of Day UTC (+6 MST; +4 EST)
-		    //console.log(`aHour: ${aHour}`);
-		
-		 let rdoExpiredEmbed = new EmbedBuilder()
-		    .setColor('0x00CD06') //Green
-		    .setDescription(`These bonuses & discounts may be expired. \nRockstar typically releases the latest weekly bonuses & discounts every \nThursday after 1:00 PM EST.`)
-
-		for (d = 0; d <= channelIDArray.length - 2; d++) { //last element will always be blank
-    //if ( (aDay === 3) ) { //Test for today 0 = Sunday, 1 = Monday ... 6 = Saturday
-		if ( (aDay === 4) && (aHour > 3) && (aHour < 17) ) { //If it's Thursday(4) before 1:00PM EST (3<17)
-			client.channels.fetch(channelIDArray[d]).then(channel => channel.send({embeds: [rdoExpiredEmbed], ephemeral:true})).catch(err => console.log(`Ephemeral Error: ${err}`));
-		}		
-		}
+			if (channelIDArray[c].startsWith("undefined")) {}
+			else {			
+				if (rdoFinalString.length <= 4000) {
+					client.channels.fetch(channelIDArray[c]).then(channel => channel.send(({embeds: [rdoImageEmbed, rdoEmbed]}))).catch(err => console.log(`Min Error: ${err}`));
+				} 
+				else {
+					client.channels.fetch(channelIDArray[c]).then(channel => channel.send({embeds: [rdoImageEmbed, rdoEmbed, rdoEmbed2]})).catch(err => console.log(`Max Error: ${err}`));
+				}
+			}
+		} //end c loop
 
 	} else {
 			let RStarDownEmbed = new EmbedBuilder()
 				.setColor('0xFF0000') //RED
 				.setDescription(`The Rockstar Social Club website is down. \nPlease try again later. \nSorry for the inconvenience.`)
-			client.channels.fetch(channelIDs03).then(channel => channel.send({embeds: [RStarDownEmbed], ephemeral: true}));
+			client.channels.fetch(process.env.logChannel).then(channel => channel.send({embeds: [RStarDownEmbed], ephemeral: true}));
 			console.log(`The Rockstar Social Club website is down.`);	
 	}		
 		

@@ -6,6 +6,16 @@ const client = new Client({
 
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
 
+const expiredButton = new ActionRowBuilder()
+	.addComponents(
+		new ButtonBuilder()
+			.setCustomId(`expired`)
+			.setLabel('This interaction timed out.')
+			.setStyle(ButtonStyle.Secondary)
+			.setEmoji(':RSWeekly:1025248227248848940')
+			.setDisabled(true),			
+	);
+
 module.exports = {
 	name: 'interactionCreate',
 	async execute(interaction) {
@@ -28,11 +38,13 @@ module.exports = {
 			.setColor(`Green`) 
 			.setTitle(`Start Auto Posting RDR2 Online Bonuses & Discounts`)
 			.setDescription(`Click **the dropdown menu** to confirm the channel you want to send Red Dead Redemption II Auto Posts to \n**the first Tuesday of every month at 2:00 PM EST**.`)	
-			.setFooter({ text: 'note: auto posts can only be sent to text channels.', iconURL: process.env.logo_link });
+			.setFooter({ text: 'Auto posts can only be sent to text channels.', iconURL: process.env.logo_link });
 
 			let rdoChannelCount = 0;
 				interaction.guild.channels.cache.forEach(channel => {
-					rdoChannelCount += 1;
+					if ( (channel.type === 0) && (!data.includes(channel.id)) && (channel.permissionsFor(process.env.CLIENT_ID).has(PermissionsBitField.Flags.SendMessages)) ) { 
+						rdoChannelCount += 1;
+					}
 				})
 			var rdoChannelNames = new Array(rdoChannelCount);
 			var rdoChannelIDs = new Array(rdoChannelCount);
@@ -119,6 +131,10 @@ module.exports = {
 		    }				
 				
 			} //end if rdoChannelCount >24
+
+				setTimeout(() => {
+					interaction.editReply({components: [expiredButton]})
+				}, (60000 * 2))					
 
 				
 		} // end if rdostart button

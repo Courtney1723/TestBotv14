@@ -6,6 +6,16 @@ const client = new Client({
 
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
 
+const expiredButton = new ActionRowBuilder()
+	.addComponents(
+		new ButtonBuilder()
+			.setCustomId(`expired`)
+			.setLabel('This interaction timed out.')
+			.setStyle(ButtonStyle.Secondary)
+			.setEmoji(':RSWeekly:1025248227248848940')
+			.setDisabled(true),			
+	);				
+
 module.exports = {
 	name: 'interactionCreate',
 	async execute(interaction) {
@@ -134,7 +144,9 @@ const configureButtons = new ActionRowBuilder()
 	
 		}); //end fs:readFile for guildID and Admin check
 			
-
+				setTimeout(() => {
+					interaction.editReply({components: [expiredButton]})
+				}, (60000 * 2))	
 			
 		} //end if interaction starts with startback
 

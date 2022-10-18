@@ -5,26 +5,29 @@ const client = new Client({
 });
 const { exec } = require('node:child_process');
 const keepAlive = require('./server');
+var cron = require('node-cron'); //https://github.com/node-cron/node-cron
+
 
 // node deploy-commands.js 
 //^^ type in shell to register a command
 
+//Logs all console logs in Discord - uncomment for main bot
 // client.on("ready", () => {
-
-// 		//Logs all console logs in Discord - uncomment for main bot
 // 		console.log = function(log) {
-// 			if ((log.includes(`guilds`)) || (log.includes(`Logged in`)) || (log.includes(`You triggered`)) ) {
+// 			if ((log.includes(`guilds`)) || (log.includes(`Logged in`)) || (log.includes(`You triggered`)) || (log.includes(`You clicked`)) ) {
 // 				const logChannel = client.channels.cache.get(process.env.logChannel2);	
 // 				let logEmbed = new EmbedBuilder()
 // 					.setColor('0xFF008B') //Pink
-// 					.setDescription(`${log}`);
+// 					.setDescription(`${log}`)
+// 					.setTimestamp(Date.now());
 // 				logChannel.send({embeds: [logEmbed]});
 // 			} 
 // 			else {
 // 				const logChannel = client.channels.cache.get(process.env.logChannel);	
 // 				let logEmbed = new EmbedBuilder()
 // 					.setColor('0xFF008B') //Pink
-// 					.setDescription(`${log}`);
+// 					.setDescription(`${log}`)
+// 					.setTimestamp(Date.now());
 // 				logChannel.send({embeds: [logEmbed]});
 // 			}
 // 		}
@@ -71,9 +74,9 @@ client.on('interactionCreate', async interaction => {
 	} catch (error) {
 			console.log(`interaction error: ${error.stack}`);
 		if (error.toString().includes("InteractionNotReplied")) {
-			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+			await interaction.reply({ content: `There was an error while executing this command!\nThe error has been sent to the developer and will be fixed as soon as possible.\nPlease try again.\n\nIf the problem persists you can try [re-inviting the bot](<${process.env.invite_link}>) or \nYou can report it in the [Rockstar Weekly Support Server](<${proces.env.support_link}>)`, ephemeral: true });
 		} else {
-			await interaction.editReply({ content: 'There was an error while executing this command!', ephemeral: true });
+			await interaction.editReply({ content: `There was an error while executing this command!\nThe error has been sent to the developer and will be fixed as soon as possible.\nPlease try again.\n\nIf the problem persists you can try [re-inviting the bot](<${process.env.invite_link}>) or \nYou can report it in the [Rockstar Weekly Support Server](<${process.env.support_link}>)`, ephemeral: true });
 		}
 	}
 });
@@ -97,7 +100,83 @@ const componentsPath = path.join(__dirname, 'components');
 const componentsFiles = fs.readdirSync(componentsPath).filter(file => file.endsWith('.js'));
 
 for (const file of componentsFiles) {
+	
 	const filePath = path.join(componentsPath, file);
+	const component = require(filePath);
+	if (component.once) {
+		client.once(component.name, (...args) => component.execute(...args));
+	} else {
+		client.on(component.name, (...args) => component.execute(...args));
+	}
+}
+
+//Access Start files
+const StartPath = path.join(__dirname, 'AutoPost/Start');
+const StartFiles = fs.readdirSync(StartPath).filter(file => file.endsWith('.js'));
+
+for (const file of StartFiles) {
+	
+	const filePath = path.join(StartPath, file);
+	const component = require(filePath);
+	if (component.once) {
+		client.once(component.name, (...args) => component.execute(...args));
+	} else {
+		client.on(component.name, (...args) => component.execute(...args));
+	}
+}
+
+//Access Stop files
+const StopPath = path.join(__dirname, 'AutoPost/Stop');
+const StopFiles = fs.readdirSync(StopPath).filter(file => file.endsWith('.js'));
+
+for (const file of StopFiles) {
+	
+	const filePath = path.join(StopPath, file);
+	const component = require(filePath);
+	if (component.once) {
+		client.once(component.name, (...args) => component.execute(...args));
+	} else {
+		client.on(component.name, (...args) => component.execute(...args));
+	}
+}
+
+//Access Configure files
+const ConfigurePath = path.join(__dirname, 'AutoPost/Configure');
+const ConfigureFiles = fs.readdirSync(ConfigurePath).filter(file => file.endsWith('.js'));
+
+for (const file of ConfigureFiles) {
+	
+	const filePath = path.join(ConfigurePath, file);
+	const component = require(filePath);
+	if (component.once) {
+		client.once(component.name, (...args) => component.execute(...args));
+	} else {
+		client.on(component.name, (...args) => component.execute(...args));
+	}
+}
+
+//Access Confirm files
+const ConfirmPath = path.join(__dirname, 'AutoPost/Confirm');
+const ConfirmFiles = fs.readdirSync(ConfirmPath).filter(file => file.endsWith('.js'));
+
+for (const file of ConfirmFiles) {
+	
+	const filePath = path.join(ConfirmPath, file);
+	const component = require(filePath);
+	if (component.once) {
+		client.once(component.name, (...args) => component.execute(...args));
+	} else {
+		client.on(component.name, (...args) => component.execute(...args));
+	}
+}
+
+//Access backButton files
+const backButtonPath = path.join(__dirname, 'AutoPost/backButtons');
+const backButtonFiles = fs.readdirSync(backButtonPath).filter(file => file.endsWith('.js'));
+
+for (const file of backButtonFiles) {
+	
+	const filePath = path.join(backButtonPath, file);
 	const component = require(filePath);
 	if (component.once) {
 		client.once(component.name, (...args) => component.execute(...args));
@@ -110,25 +189,39 @@ for (const file of componentsFiles) {
 //sends a kill 1 command to the child node if there is a 429 error
 errorArray = [];
 client.on("debug", function(info){
-	//console.log(`info -> ${info}`); //debugger
+//console.log(`info -> ${info}`); //debugger
+	if (errorArray.length <= 3) {
 			errorArray.push(info);
+		}
 		setTimeout(() => {
-		  if (errorArray.length >= 3) {
+			if (errorArray.length >= 3) {
 				//console.log(`successfully connected`);
 				//console.log(`errorArray length: ${errorArray.length}`);
-			} else {
+			} 
+			else {
 				console.log(`Caught a 429 error!`); 
 					exec('kill 1', (err) => {
-					    if (err) {
-					        console.error("could not execute command: ", err);
-					        return
-					    }
-					  console.log(`Kill 1 command succeeded`); //probably wont work
+							if (err) {
+									console.error("could not execute command: ", err.stack);
+									return
+							}
+						console.log(`Kill 1 command succeeded`);
 					});					
 			}
 		}, 10000);
-});
+}); // end debug function
 
+//restarts the bot every two hours - uncomment for main bot
+// cron.schedule('00 */2 * * *', () => { //(second),minute,hour,date,month,weekday //restarts the bot every two hours
+// 		console.log(`resarting the bot...`);
+// 		exec('kill 1', (err) => {
+// 				if (err) {
+// 						console.error("could not execute command: ", err);
+// 						return
+// 				}
+// 			console.log(`Kill 1 command succeeded`);
+// 		});	
+// }); //end cron.schedule
 
 keepAlive();
 client.login(process.env.DISCORD_TOKEN).catch(err => console.log(`Login Error: ${err}`));

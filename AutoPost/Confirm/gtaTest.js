@@ -1,16 +1,73 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+const { Client, GatewayIntentBits, PermissionsBitField, Collection, Partials, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, SelectMenuBuilder } = require('discord.js');
+const client = new Client({
+	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions],
+	partials: [Partials.Message, Partials.Channel, Partials.Reaction],
+});
 const phantom = require('phantom'); //https://github.com/amir20/phantomjs-node
 		let errorText = `There was an error while executing this command!\nThe error has been sent to the developer and it will be fixed as soon as possible. \nIf the error persists you can try re-inviting the Rockstar Weekly bot by [clicking here](<${process.env.invite_link}>). \nReport the error by joining the Rockstar Weekly bot support server: [click here](<${process.env.support_link}>).`;
 
+const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
+
 module.exports = {
-	data: new SlashCommandBuilder()
-		.setName('gta')
-		.setDescription('Latest GTA V online bonuses and discounts')
-		.setDMPermission(true),
+	name: 'interactionCreate',
 	async execute(interaction) {
-		await interaction.deferReply().catch(console.error);
-		
+
+		if (!interaction.isButton()) {return};
+		if (interaction.customId.startsWith(`gtaTest -`)) {
+
+			
+function gtaTest() {
+//-------------------Begin GTA TEST POST---------------------//	
+			fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
+			  if (err) {console.log(`Error: ${err}`)} 
+				else {
+			  	//console.log(`data: ${data}`);
+					let guildIDs01 = data.split(`guild:${interaction.guild.id} - `);
+						//console.log(`guildIDs01[1]: ${guildIDs01[1]}\n`);
+						//console.log(`guildIDs01[2]: ${guildIDs01[2]}\n`);
+
+					let channelIDs01 = data.split(`guild:${interaction.guild.id} - channel:`);
+						//console.log(`channelIDs01[1]: ${channelIDs01[1]}\n`);		
+						//console.log(`channelIDs01[2]: ${channelIDs01[2]}\n`);	
+
+					let rdo_gtaIDs01 = data.split("rdo_gta:");
+						//console.log(`rdo_gtaIDs01[1]: ${rdo_gtaIDs01[1]}\n`);		
+						//console.log(`rdo_gtaIDs01[2]: ${rdo_gtaIDs01[2]}\n`);	
+
+					let guildIDs = [];
+					let channelIDs = [];
+					let rdo_gtaIDs = [];
+					for (i = 1; i <= guildIDs01.length - 1; i++) {
+						let guildIDs02 = guildIDs01[i].split("-");
+						let guildIDs03 = guildIDs02[0];
+							//console.log(`guildIDs at ${i}: ${guildIDs03}`);
+
+							guildIDs += `${guildIDs03} - `;
+
+						let channelIDs02 = channelIDs01[i].split("-");
+						let channelIDs03 = channelIDs02[0];
+							//console.log(`channelIDs at ${i}: ${channelIDs03}`);
+							channelIDs += `${channelIDs03} - `;		
+
+						let rdo_gtaIDs02 = rdo_gtaIDs01[i].split("-");
+						let rdo_gtaIDs03 = rdo_gtaIDs02[0];
+							//console.log(`rdo_gtaIDs at ${i}: ${rdo_gtaIDs03}\n`);
+
+							rdo_gtaIDs += `${rdo_gtaIDs03} - `;
+
+
+						//client.channels.fetch(channelIDs03).then(channel => channel.send('<content>')) //example DO NOT UNCOMMENT
+
+					}
+
+					//console.log(`guildIDs: ${guildIDs}`);
+					//console.log(`channelIDs: ${channelIDs}`); //do not comment out - no idea why
+					//console.log(`rdo_gtaIDs: ${rdo_gtaIDs}`);
+//----------END Formatting GuildIds, ChannelIds, and rdo_gtaIDs-----------//	
+
+					
+
+//Begin GTA Formatting		
 		let gtaURL = process.env.SOCIAL_URL_GTA2;
 
 		//await interaction.editReply(`Console Logged 👍`).catch(console.error);
@@ -42,10 +99,9 @@ module.exports = {
 
 		const gtaStatus = await page.open(url);
 		if (gtaStatus === `success`) {
-
-		const gtaContent = await page.property('content'); // Gets the latest gta updates
+		const content = await page.property('content'); // Gets the latest gta updates
 			//console.log(content); 
-		let gtaString001 = gtaContent.toString(); //converts HTML to string (necessary? not sure.);
+		let gtaString001 = content.toString(); //converts HTML to string (necessary? not sure.);
 			//console.log(`gtaString001: ${gtaString001}`);	
 		let gtaString01 = gtaString001.split("cm-content\">"); //splits the header from the body
 		let gtaHeader = gtaString01[0];
@@ -260,7 +316,7 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 		let introParas = GTA_Title.split("<p>")
 		gtaFinalString01 += `• ${introParas[1]}\n`;
 	}
-	else if (GTA_Bonus != null) { //if the bonus is not an intro paraghraph
+	else if (GTA_Bonus != null) {
 			let gtaParas = GTA_Bonus.split("<p>");
 			//console.log(`gtaParas at ${i}: ${gtaParas}`);
 			//console.log(`gtaParas length at ${i}: ${gtaParas.length}`);		
@@ -275,7 +331,7 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 		}	
 		else if (GTA_Title.toLowerCase().includes("gta+")) {
 			gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n${gtaParas[2]}\n`;
-		}		
+		}				
 		else if (GTA_Title.toLowerCase().includes("discount")) {
 			gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
 		}				
@@ -374,72 +430,169 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 		 // console.log(`gtaEmbed length: ${gtaEmbed.length}`); //no more than 4096 (line 199)
 		 // console.log(`gtaEmbed2 length: ${gtaEmbed2.length}`); //no more than 6000 - gtaEmbed.length (line 204)
 
-		if (gtaFinalString.length <= 4000) {
-			await interaction.editReply({embeds: [gtaImageEmbed, gtaEmbed]}).catch(err => 
-				interaction.editReply({content: `${errorText}\nError Code: *${err.code}*`, ephemeral: true }).then( 
-				console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`))
-				);
-		} else {
-			await interaction.editReply({embeds: [gtaImageEmbed, gtaEmbed, gtaEmbed2]}).catch(err => 
-				interaction.editReply({content: `${errorText}\nError Code: *${err.code}*`, ephemeral: true }).then( 
-				console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`) )
-				);
-		}
 
-		const aDate = new Date();
-		const aDay = aDate.getDay(); //Day of the Week
-		    //console.log(`aDay: ${aDay}`);
-		const aHour = aDate.getHours(); //Time of Day UTC (+6 MST; +4 EST)
-		    //console.log(`aHour: ${aHour}`);		
 
-		var estDate = aDate.toLocaleString("en-US", {
-		  timeZone: "America/New_York"
-		});
-		var estTime = estDate.split(", ");
-		var estHourMinute = estTime[1].split(":");
+//-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
+//-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//		
+//-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
+
 		
-		var estHour = estHourMinute[0];
-		var estMinute = estHourMinute[1];
+		let channelIDArray = channelIDs.split('  - ');
+			//console.log(`channelIDArray length: ${channelIDArray.length}`);
+			//console.log(`channelIDArray: ${channelIDArray}`);
+		for (c = 0; c <= channelIDArray.length - 2; c++) { //last element will always be blank
+			//console.log(`channelIDArray at ${c}: ${channelIDArray[c]}`);
+			if (channelIDArray[c].startsWith("undefined")) {return}
+			else if (!channelIDArray[c].startsWith("undefined")) {
 
-		var amPM01 = estHourMinute[2].split(" ");
-		var amPM = amPM01[1];
-		
-		//console.log(`${estHour}:${estMinute} ${amPM}`);
-		
-		 let gtaExpiredEmbed = new EmbedBuilder()
-		    .setColor('0x00CD06') //Green
-		    .setDescription(`These bonuses & discounts may be expired. \nRockstar typically releases the latest weekly bonuses & discounts every \nThursday after 1:00 PM EST.`)
-				.setFooter({text:`It is ${estHour}:${estMinute} ${amPM} EST now.`, iconURL:process.env.logo_link})
 
-  	//   if ( (aDay === 0) ) { //Test for today 0 = Sunday, 1 = Monday ... 6 = Saturday
-		// //if ( (aDay === 4) && (aHour > 3) && (aHour < 17) ) { //If it's Thursday(4) before 1:00PM EST (3<17)
-		// 	await interaction.followUp({embeds: [gtaExpiredEmbed], ephemeral:true}).catch(err => console.log(`gtaExpiredEmbed Error: ${err.stack}`));
-		// }			
+			//BELOW THIS DIFFERS FROM ALL OTHER GTA POSTS
+			if (gtaFinalString.length <= 4000) {
+				interaction.guild.channels.fetch(channelIDArray[c]).then(channel => channel.send(({embeds: [gtaImageEmbed, gtaEmbed]}))).catch(err => console.log(`Min Error: ${err.stack}`));
+			} else {
+				interaction.guild.channels.fetch(channelIDArray[c]).then(channel => channel.send({embeds: [gtaImageEmbed, gtaEmbed, gtaEmbed2]})).catch(err => console.log(`Max Error: ${err.stack}`));
+			}
+			} //end if not undefined channel
+		} //end c loop
 
-			//interaction.editReply(`Console logged! 👍`);
-
-			
-		}
-		else {
+	} 
+	else {
 			let RStarDownEmbed = new EmbedBuilder()
 				.setColor('0xFF0000') //RED
-				.setDescription(`The Rockstar Social Club website is down. \nPlease try again later. \nSorry for the inconvenience.`)
-			interaction.editReply({embeds: [RStarDownEmbed], ephemeral: true});
+				.setDescription(`The Rockstar Social Club website is down. \nPlease try again later.`)
+			client.channels.fetch(process.env.logChannel2).then(channel => channel.send({embeds: [RStarDownEmbed], ephemeral: true}));
 			console.log(`The Rockstar Social Club website is down.`);	
-	}
-
-		
-	}
+	}	
+}
 	else {
 			let RStarDownEmbed = new EmbedBuilder()
 				.setColor('0xFF0000') //RED
 				.setDescription(`The Rockstar Social Club website is down. \nPlease try again later. \nSorry for the inconvenience.`)
 			interaction.editReply({embeds: [RStarDownEmbed], ephemeral: true});
 			console.log(`The Rockstar Social Club website is down.`);	
-	}
+	}		
+				}
+			});
+
+
 	
+//----------------------------------END GTA TEST POST----------------------------------//
+		}		
 
+		let buttonUserID01 = (interaction.customId).split("gtaTest - ");
+		let buttonUserID = buttonUserID01[1];
+			//console.log(`start buttonUserID: ${buttonUserID}`);
+			//console.log(`start interaction.user.id === buttonUserID? ${interaction.user.id === buttonUserID}`);
+			//console.log(`start interaction.user.id: ${interaction.user.id} && buttonUserID: ${buttonUserID}`);
+
+		let guildRoleIds = [];
+		fs.readFile('./rolesDataBase.txt', 'utf8', async function (err, data) {
+		    if (err) {console.log(`Error: ${err}`)} //If an error, console.log
 		
-    },
-};
+					interaction.guild.roles.cache.forEach(role => {
+							if (data.includes(role.id)) {
+								guildRoleIds.push(role.id);
+							}
+					});
+			guildRoleIds.shift(1); //removes the @everyone role
+				//console.log(`guildRoleIds: ${guildRoleIds}`);
 
+
+		let gtaChannelIds = [];
+		fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
+		    if (err) {console.log(`Error: ${err}`)} //If an error, console.log
+		
+					interaction.guild.channels.cache.forEach(channel => {
+							if (data.includes(channel.id)) {
+								gtaChannelIds.push(channel.id);
+							}
+					});
+			});
+			//console.log(`gtaChannelIds: ${gtaChannelIds}`);					
+
+			function AdminRequired() {
+				let AdminRequiredBoolean = data.split(`guild:${interaction.guild.id} - admin:`);
+				if (AdminRequiredBoolean[1] === undefined) {
+					 	fs.appendFile(`./rolesDataBase.txt`,`guild:${interaction.guild.id} - admin:yes - role:undefined - \n`, err => {
+ 							if (err) {
+ 								console.error(err)
+ 								return
+ 							}					
+ 						}); //end fs.appendFile	
+				}
+				else if (AdminRequiredBoolean[1].startsWith(`yes`)) {
+					return "AdminRequiredYes";
+				}
+				else {
+					return "AdminRequiredNo";
+				}
+			}		
+				//console.log(`AdminRequired(): ${AdminRequired()}`)			
+
+		const testEmbed = new EmbedBuilder()
+			.setColor(`Green`) 
+			.setTitle(`Success!`)
+			.setDescription(`• Posts have been sent to your subscribed channels!\n• If a channel you are subscribed to did not get a test post check to make sure the bot has the **\'View Channel\'**, **\'Send Messages\'**, and **\'Embed Links\'** permissions.`)
+
+
+//begin checking for permissions
+					await interaction.deferUpdate();
+		console.log(`AdminRequired(): ${AdminRequired()}`)
+				if (interaction.user.id != buttonUserID) {
+					await interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
+				}	
+		else if (gtaChannelIds.length <= 0) {
+			await interaction.followUp({ content: `You do not have any channels subscribed to GTAV auto posts.`, ephemeral: true });
+		}			
+		else if (AdminRequired() === undefined) { //uncessary because confirm already checked? 
+			await interaction.followUp({ content: `It looks like this is your first time using this command. Please try the Test button again. :) `, ephemeral: true });
+		}
+		else if (AdminRequired() === "AdminRequiredYes") { //if admin permissions are required
+			if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) {
+				gtaTest();
+				await interaction.followUp({ embeds: [testEmbed], components: [], ephemeral: true }).catch(err => console.log(`testEmbed Error: ${err}`));
+			} 
+			else if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
+				await interaction.followUp({content: `You do not have the required permissions to do that.`, ephemeral: true})
+			}
+			else if (!interaction.user.id === buttonUserID)  {
+				await interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
+			}
+		}
+		else if (AdminRequired() === "AdminRequiredNo") { //if admin permissions are NOT required
+
+				//console.log(`guildRoleIds.length: ${guildRoleIds.length}`)
+				let hasARole = 0;
+				for (a=1;a<=guildRoleIds.length - 1;a++) { //iterates through each role - 0 is @everyone
+					//console.log(`guildRoleIds at ${i}: ${guildRoleIds[i]}`);
+					if (interaction.member.roles.cache.has(guildRoleIds[a])) {
+						hasARole += 1;
+					}
+				} //end loop to check for hasARole
+					//console.log(`hasARole: ${hasARole} && required roles:${guildRoleIds.length}`)
+				if ( (guildRoleIds.length === 0) && (interaction.user.id === buttonUserID) ) { //no role required
+					gtaTest();
+					await interaction.followUp({ embeds: [testEmbed], components: [], ephemeral: true }).catch(err => console.log(` Error: ${err.stack}`));
+				}
+				else if ( (hasARole >= 1) && (interaction.user.id === buttonUserID) ) { //if the user has at least one role listed
+					gtaTest();
+					await interaction.followUp({ embeds: [testEmbed], components: [], ephemeral: true }).catch(err => console.log(` Error: ${err.stack}`));
+				}
+				else if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) { //user is an admin
+					gtaTest();
+					await interaction.followUp({ embeds: [testEmbed], components: [], ephemeral: true }).catch(err => console.log(` Error: ${err.stack}`));
+				}		
+				else if (hasARole <= 0) {
+					await interaction.followUp({content: `You do not have the required permissions to do that.`, ephemeral: true})
+				}											
+		}
+		else {
+			await interaction.followUp({ content: `There was an error executing this button.`, ephemeral: true });
+		} //end checking for permissions	
+
+		});
+		}
+
+},
+
+}

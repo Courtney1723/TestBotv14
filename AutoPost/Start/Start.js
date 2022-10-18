@@ -6,24 +6,29 @@ const client = new Client({
 
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
 
+const expiredButton = new ActionRowBuilder()
+	.addComponents(
+		new ButtonBuilder()
+			.setCustomId(`expired`)
+			.setLabel('This interaction timed out.')
+			.setStyle(ButtonStyle.Secondary)
+			.setEmoji(':RSWeekly:1025248227248848940')
+			.setDisabled(true),			
+	);
+
 module.exports = {
 	name: 'interactionCreate',
 	async execute(interaction) {
 
 		if (!interaction.isButton()) {return};
-		if ( (interaction.customId.startsWith(`rdostopback -`)) || (interaction.customId.startsWith(`gtastopback -`)) ) {
+		if (interaction.customId.startsWith(`start -`)) {
+			//console.log(`begin start: '${interaction.customId}'`);		
 
-		let rdo_gta = "";
-			if (interaction.customId.startsWith(`rdostopback -`)) {
-				rdo_gta += 'rdo';
-			} else {
-				rdo_gta += 'gta';
-			}
-
-		let buttonUserID01 = (interaction.customId).split(`${rdo_gta}stopback - `);
+		let buttonUserID01 = (interaction.customId).split("start - ");
 		let buttonUserID = buttonUserID01[1];
-			//console.log(`buttonUserID: ${buttonUserID}`);
-			//console.log(`interaction.user.id === buttonUserID? ${interaction.user.id === buttonUserID}`)
+			//console.log(`start buttonUserID: ${buttonUserID}`);
+			//console.log(`start interaction.user.id === buttonUserID? ${interaction.user.id === buttonUserID}`);
+			//console.log(`start interaction.user.id: ${interaction.user.id} && buttonUserID: ${buttonUserID}`);
 
 		let guildRoleIds = [];
 		fs.readFile('./rolesDataBase.txt', 'utf8', async function (err, data) {
@@ -39,14 +44,22 @@ module.exports = {
 
 			function AdminRequired() {
 				let AdminRequiredBoolean = data.split(`guild:${interaction.guild.id} - admin:`);
-				if (AdminRequiredBoolean[1].startsWith(`yes`)) {
+				if (AdminRequiredBoolean[1] === undefined) {
+					 	fs.appendFile(`./rolesDataBase.txt`,`guild:${interaction.guild.id} - admin:yes - role:undefined - \n`, err => {
+ 							if (err) {
+ 								console.error(err)
+ 								return
+ 							}					
+ 						}); //end fs.appendFile	
+				}
+				else if (AdminRequiredBoolean[1].startsWith(`yes`)) {
 					return "AdminRequiredYes";
 				}
 				else {
 					return "AdminRequiredNo";
 				}
 			}		
-
+				//console.log(`AdminRequired(): ${AdminRequired()}`)
 
 		const startEmbed = new EmbedBuilder()
 			.setColor(`Green`) 
@@ -66,7 +79,7 @@ Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for **the first Tu
 			        .setLabel('RDO')
 			        .setStyle(ButtonStyle.Danger),		
 					new ButtonBuilder()
-			        .setCustomId(`stopback - ${interaction.user.id}`)
+			        .setCustomId(`startback - ${interaction.user.id}`)
 			        .setLabel('Go Back')
 			        .setStyle(ButtonStyle.Secondary),	
 			);	
@@ -74,9 +87,12 @@ Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for **the first Tu
 //begin checking for permissions
 					await interaction.deferUpdate();
 		//console.log(`AdminRequired(): ${AdminRequired()}`)
-		if (interaction.user.id != buttonUserID) {
-			await interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
-		}				
+				if (interaction.user.id != buttonUserID) {
+					await interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
+				}	
+		else if (AdminRequired() === undefined) {
+			await interaction.followUp({ content: `It looks like this is your first time using this command. Please try the start button again. :) `, ephemeral: true });
+		}
 		else if (AdminRequired() === "AdminRequiredYes") { //if admin permissions are required
 			if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) {
 				await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`startEmbed Error: ${err}`));
@@ -89,43 +105,44 @@ Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for **the first Tu
 			}
 		}
 		else if (AdminRequired() === "AdminRequiredNo") { //if admin permissions are NOT required
-			if ((interaction.user.id === buttonUserID) ) { 
 
 				//console.log(`guildRoleIds.length: ${guildRoleIds.length}`)
 				let hasARole = 0;
-				for (a=0;a<=guildRoleIds.length - 1;a++) { //iterates through each role
+				for (a=1;a<=guildRoleIds.length - 1;a++) { //iterates through each role
 					//console.log(`guildRoleIds at ${i}: ${guildRoleIds[i]}`);
 					if (interaction.member.roles.cache.has(guildRoleIds[a])) {
 						hasARole += 1;
 					}
 				} //end loop to check for hasARole
-				//console.log(`hasARole: ${hasARole} && required roles:${guildRoleIds.length}`)
-				if (guildRoleIds.length === 0) { //no role required
+					//console.log(`hasARole: ${hasARole} && required roles:${guildRoleIds.length}`)
+				if ( (guildRoleIds.length === 0) && (interaction.user.id === buttonUserID) ) { //no role required
 					await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`startButtons Error: ${err.stack}`));
 				}
-				else if (hasARole >= 1) { //if the user has at least one role listed
+				else if ( (hasARole >= 1) && (interaction.user.id === buttonUserID) ) { //if the user has at least one role listed
 					await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`startButtons Error: ${err.stack}`));
 				}
-				else if ((interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID)) {
+				else if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) {
 					await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`startButtons Error: ${err.stack}`));
-				}					
-				else {
+				}		
+				else if (hasARole <= 0) {
 					await interaction.followUp({content: `You do not have the required permissions to do that.`, ephemeral: true})
-				}
-			} 
-			else  {
-				await interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
-			}
+				}											
 		}
 		else {
 			await interaction.followUp({ content: `There was an error executing this button.`, ephemeral: true });
 		} //end checking for permissions		
 
-		}); //end fs:readFile			
-			
+		}); //end fs:readFile		
 
-			
-		} //end if interaction starts with rdostartback - gtastartback
-
+				setTimeout(() => {
+					interaction.editReply({components: [expiredButton]})
+				}, (60000 * 2))				
+	
+	} //end if start
 	},
-}
+};
+
+
+
+
+	
