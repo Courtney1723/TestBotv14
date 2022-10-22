@@ -1,3 +1,7 @@
 ./GTADataBase.txt
 ./RDODataBase.txt
 ./rolesDataBase.txt
+node_modules/
+.upm/
+.replit
+replit.nix
