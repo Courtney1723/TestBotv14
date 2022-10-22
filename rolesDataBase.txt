@@ -2,3 +2,4 @@ guild:undefined - channel:undefined - role:undefined -
 guild:981688162382413946 - admin:yes - role:undefined - 
 guild:822761002546364417 - admin:yes - role:undefined - 
 guild:822761002546364417 - admin:yes - role:1002265084099313836 - 
+guild:981688162382413946 - admin:yes - role:1024428426343501834 - 

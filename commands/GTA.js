@@ -273,6 +273,12 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 		else if (GTA_Title.toLowerCase().includes("simeon's showroom")) {
 			gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
 		}	
+		else if (GTA_Title.toLowerCase().includes("2x")) {
+			gtaFinalString01 += `**${GTA_Title}** \n`;
+		}	
+		else if (GTA_Title.toLowerCase().includes("3x")) {
+			gtaFinalString01 += `**${GTA_Title}** \n`;
+		}				
 		else if (GTA_Title.toLowerCase().includes("gta+")) {
 			gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n${gtaParas[2]}\n`;
 		}		
@@ -353,7 +359,7 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
     }
     function gtaFooterMin() { 
       if (gtaFinalString.length <= 4000) {
-        return `\n** [click here](${url}) for more details**`;
+        return `** [click here](${url}) for more details**`;
       } else {
         return "";
       }
