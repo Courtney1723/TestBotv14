@@ -6,7 +6,7 @@ const client = new Client({
 const { exec } = require('node:child_process');
 const keepAlive = require('./server');
 var cron = require('node-cron'); //https://github.com/node-cron/node-cron
-
+const { get } = require("https");
 
 // node deploy-commands.js 
 //^^ type in shell to register a command
@@ -14,20 +14,34 @@ var cron = require('node-cron'); //https://github.com/node-cron/node-cron
 //Logs all console logs in Discord - uncomment for main bot
 // client.on("ready", () => {
 // 		console.log = function(log) {
+
+// 		const aDate = new Date();
+// 		var mstDate = aDate.toLocaleString("en-US", {
+// 		  timeZone: "America/Denver" //https://momentjs.com/timezone/docs/#/data-loading/
+// 		});
+// 		var mstTime = mstDate.split(", ");
+// 		var mstHourMinute = mstTime[1].split(":");
+		
+// 		var mstHour = mstHourMinute[0];
+// 		var mstMinute = mstHourMinute[1];
+
+// 		var amPM01 = mstHourMinute[2].split(" ");
+// 		var amPM = amPM01[1];
+
+// 				//console.log(`${mstHour}:${mstMinute} ${amPM}`);			
+			
 // 			if ((log.includes(`guilds`)) || (log.includes(`Logged in`)) || (log.includes(`You triggered`)) || (log.includes(`You clicked`)) ) {
 // 				const logChannel = client.channels.cache.get(process.env.logChannel2);	
 // 				let logEmbed = new EmbedBuilder()
 // 					.setColor('0xFF008B') //Pink
-// 					.setDescription(`${log}`)
-// 					.setTimestamp(Date.now());
+// 					.setDescription(`${log}\n${mstHour}:${mstMinute} ${amPM}`)
 // 				logChannel.send({embeds: [logEmbed]});
 // 			} 
 // 			else {
 // 				const logChannel = client.channels.cache.get(process.env.logChannel);	
 // 				let logEmbed = new EmbedBuilder()
 // 					.setColor('0xFF008B') //Pink
-// 					.setDescription(`${log}`)
-// 					.setTimestamp(Date.now());
+// 					.setDescription(`${log}\n${mstHour}:${mstMinute} ${amPM}`)
 // 				logChannel.send({embeds: [logEmbed]});
 // 			}
 // 		}
@@ -185,43 +199,14 @@ for (const file of backButtonFiles) {
 	}
 }
 
-
-//sends a kill 1 command to the child node if there is a 429 error
-errorArray = [];
-client.on("debug", function(info){
-//console.log(`info -> ${info}`); //debugger
-	if (errorArray.length <= 3) {
-			errorArray.push(info);
-		}
-		setTimeout(() => {
-			if (errorArray.length >= 3) {
-				//console.log(`successfully connected`);
-				//console.log(`errorArray length: ${errorArray.length}`);
-			} 
-			else {
-				console.log(`Caught a 429 error!`); 
-					exec('kill 1', (err) => {
-							if (err) {
-									console.error("could not execute command: ", err.stack);
-									return
-							}
-						console.log(`Kill 1 command succeeded`);
-					});					
-			}
-		}, 10000);
-}); // end debug function
-
-//restarts the bot every two hours - uncomment for main bot
-// cron.schedule('00 */2 * * *', () => { //(second),minute,hour,date,month,weekday //restarts the bot every two hours
-// 		console.log(`resarting the bot...`);
-// 		exec('kill 1', (err) => {
-// 				if (err) {
-// 						console.error("could not execute command: ", err);
-// 						return
-// 				}
-// 			console.log(`Kill 1 command succeeded`);
-// 		});	
-// }); //end cron.schedule
+//checks for 429 errors at startup and every 5 minutes
+function handleRateLimit() {
+  get(`https://discord.com/api/v10/gateway`, ({ statusCode }) => {
+	  if (statusCode == 429) { process.kill(1) }
+	});
+};
+handleRateLimit();
+setInterval(handleRateLimit, 3e5); //3e5 = 300000 (3 w/ 5 zeros)
 
 keepAlive();
-client.login(process.env.DISCORD_TOKEN).catch(err => console.log(`Login Error: ${err}`));
+client.login(process.env.DISCORD_TOKEN).catch(err => console.log(`Login Error: ${err.stack}`));

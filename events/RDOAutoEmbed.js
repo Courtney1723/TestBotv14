@@ -8,7 +8,7 @@ module.exports = {
 	name: 'ready',
 	async execute(client) {
 
-		//cron.schedule('*/1 * * * *', () => { //(second),minute,hour,date,month,weekday '0 12 * * 4' = 12:00 PM on Thursday
+		//cron.schedule('* * * * *', () => { //every minute - testbench
 		cron.schedule('00 12 1-7 * 2', () => { //(second),minute,hour,date,month,weekday '0 12 1-7 * 2' = 12:00 PM on 1st Tuesday
 		  //console.log('running a task');
 
@@ -63,8 +63,12 @@ module.exports = {
 
 					
 
-//Begin RDO Formatting		
-		let rdoURL = process.env.SOCIAL_URL_RDO;
+//Begin RDO Formatting	
+
+				let rdoURL = process.env.SOCIAL_URL_RDO2;
+
+		//await interaction.editReply(`Console Logged 👍`).catch(console.error);
+	
 		const instance = await phantom.create();
 		const page = await instance.createPage();
 
@@ -72,6 +76,21 @@ module.exports = {
 		const status = await page.open(rdoURL);
 			//console.log(`Page opened with status [${status}].`);
 	if (status === `success`) { //checks if Rockstar Social Club website is down
+		const content = await page.property('content'); // Gets the latest gta updates
+			//console.log(content); 
+
+		let baseURL = "https://socialclub.rockstargames.com/";
+		
+		let urlHash02 = content.split("linkToUrl\":\"");
+		let urlHash01 = urlHash02[1].split("\"");
+		let urlHash = urlHash01[0];
+			//console.log(`urlHash: ${urlHash}`);
+
+		let url = `${baseURL}${urlHash}`;
+			//console.log(`url: ${url}`);
+
+		const rdoStatus = await page.open(url);
+		if (rdoStatus === `success`) {				
 		const content = await page.property('content'); // Gets the latest rdo updates
 			//console.log(content); 
 		let rdoString001 = content.toString(); //converts HTML to string (necessary? not sure.);
@@ -103,6 +122,7 @@ module.exports = {
 			.replace(/<\/ul>/g, "")
 			.replace(/&amp;/g, "&")
 			.replace(/&nbsp;/g, " ") //Non breaking space
+			.replace(/\n\n/g, "\n")
 			.replace(/<ul style="line-height:1.5;">/g, "\n")
 			//.replace(/\n<p>/g, "<p>") //Removes spaces after a bonus
 			//console.log(`rdoString: ${rdoString}`);
@@ -283,7 +303,7 @@ for (i = 1; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 	if (RDO_Title.toLowerCase().includes("discounts")) {
 			rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
 	}	
-	if (RDO_Title.toLowerCase().includes("triple rewards")) {
+	else if (RDO_Title.toLowerCase().includes("triple rewards")) {
 		rdoFinalString01 += `**${RDO_Title}**\n\n`;
 	}		
 	else if (RDO_Bonus.includes("• ")) { // If the bonus includes a list
@@ -300,9 +320,23 @@ for (i = 1; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 	else if (RDO_Title.toLowerCase().includes("featured series")) {
 		
 		if (RDOBonuses[2] != null) {
-			rdoFinalString01 += `**${RDO_Title}**\n${RDO_Bonus}\n${RDOBonuses[2]}\n\n`;
+			rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}${RDOBonuses[2].replace(/\n•/g, "•")}`;
 		}
-	}		
+		if (RDOBonuses[3] != null) {
+			rdoFinalString01 += `${RDOBonuses[3].replace(/\n•/g, "•")}`;
+		}
+		if (RDOBonuses[4] != null) {
+			rdoFinalString01 += `${RDOBonuses[4].replace(/\n•/g, "•")}`;
+		}		
+		if (RDOBonuses[5] != null) {
+			rdoFinalString01 += `${RDOBonuses[5].replace(/\n•/g, "•")}`;
+		}		
+		if (RDOBonuses[6] != null) {
+			rdoFinalString01 += `${RDOBonuses[6].replace(/\n•/g, "•")}`;
+		}	
+		
+		rdoFinalString01 += "\n";
+	}	
 	else {
 
 		for (c = 1; c <= rdoParas.length - 1; c++) {
@@ -320,8 +354,9 @@ for (i = 1; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 											.replace(/<\/p>/g, "")
 										  .replace(/<\/b>/g, "")
 										  .replace(/<b>/g, "")
-											.replace(/\n• /g, "\n• ") //removes spaces before a list item
-											.replace(/\n\n\n/g, "\n")
+											.replace(/\n\n• /g, "\n• ") //removes spaces before a list item
+											.replace(/\n\n/g, "\n")
+											.replace(/\*\*\n\*\*/g, "**\n\n**")
 											.replace(/• undefined/g, "• ")
 											.replace(/\)• /g, ")\n• ") //adds a newline between link lists
 
@@ -405,8 +440,9 @@ for (i = 1; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 			client.channels.fetch(process.env.logChannel).then(channel => channel.send({embeds: [RStarDownEmbed], ephemeral: true}));
 			console.log(`The Rockstar Social Club website is down.`);	
 	}		
+		}
+	}
 		
-				}
 			});
 		}, {
    scheduled: true,

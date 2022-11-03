@@ -70,7 +70,10 @@ module.exports = {
 					
 
 //Begin RDO Formatting		
-		let rdoURL = process.env.SOCIAL_URL_RDO;
+	let rdoURL = process.env.SOCIAL_URL_RDO2;
+
+		//await interaction.editReply(`Console Logged 👍`).catch(console.error);
+	
 		const instance = await phantom.create();
 		const page = await instance.createPage();
 
@@ -78,6 +81,21 @@ module.exports = {
 		const status = await page.open(rdoURL);
 			//console.log(`Page opened with status [${status}].`);
 	if (status === `success`) { //checks if Rockstar Social Club website is down
+		const content = await page.property('content'); // Gets the latest rdo updates
+			//console.log(content); 
+
+		let baseURL = "https://socialclub.rockstargames.com/";
+		
+		let urlHash02 = content.split("linkToUrl\":\"");
+		let urlHash01 = urlHash02[1].split("\"");
+		let urlHash = urlHash01[0];
+			//console.log(`urlHash: ${urlHash}`);
+
+		let url = `${baseURL}${urlHash}`;
+			//console.log(`url: ${url}`);
+
+		const rdoStatus = await page.open(url);
+		if (rdoStatus === `success`) {
 		const content = await page.property('content'); // Gets the latest rdo updates
 			//console.log(content); 
 		let rdoString001 = content.toString(); //converts HTML to string (necessary? not sure.);
@@ -109,6 +127,7 @@ module.exports = {
 			.replace(/<\/ul>/g, "")
 			.replace(/&amp;/g, "&")
 			.replace(/&nbsp;/g, " ") //Non breaking space
+			.replace(/\n\n/g, "\n")			
 			.replace(/<ul style="line-height:1.5;">/g, "\n")
 			//.replace(/\n<p>/g, "<p>") //Removes spaces after a bonus
 			//console.log(`rdoString: ${rdoString}`);
@@ -289,7 +308,7 @@ for (i = 1; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 	if (RDO_Title.toLowerCase().includes("discounts")) {
 			rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
 	}	
-	if (RDO_Title.toLowerCase().includes("triple rewards")) {
+	else if (RDO_Title.toLowerCase().includes("triple rewards")) {
 		rdoFinalString01 += `**${RDO_Title}**\n\n`;
 	}		
 	else if (RDO_Bonus.includes("• ")) { // If the bonus includes a list
@@ -306,9 +325,23 @@ for (i = 1; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 	else if (RDO_Title.toLowerCase().includes("featured series")) {
 		
 		if (RDOBonuses[2] != null) {
-			rdoFinalString01 += `**${RDO_Title}**\n${RDO_Bonus}\n${RDOBonuses[2]}\n\n`;
+			rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}${RDOBonuses[2].replace(/\n•/g, "•")}`;
 		}
-	}		
+		if (RDOBonuses[3] != null) {
+			rdoFinalString01 += `${RDOBonuses[3].replace(/\n•/g, "•")}`;
+		}
+		if (RDOBonuses[4] != null) {
+			rdoFinalString01 += `${RDOBonuses[4].replace(/\n•/g, "•")}`;
+		}		
+		if (RDOBonuses[5] != null) {
+			rdoFinalString01 += `${RDOBonuses[5].replace(/\n•/g, "•")}`;
+		}		
+		if (RDOBonuses[6] != null) {
+			rdoFinalString01 += `${RDOBonuses[6].replace(/\n•/g, "•")}`;
+		}	
+		
+		rdoFinalString01 += "\n";
+	}	
 	else {
 
 		for (c = 1; c <= rdoParas.length - 1; c++) {
@@ -326,8 +359,9 @@ for (i = 1; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 											.replace(/<\/p>/g, "")
 										  .replace(/<\/b>/g, "")
 										  .replace(/<b>/g, "")
-											.replace(/\n• /g, "\n• ") //removes spaces before a list item
-											.replace(/\n\n\n/g, "\n")
+											.replace(/\n\n• /g, "\n• ") //removes spaces before a list item
+											.replace(/\n\n/g, "\n")
+											.replace(/\*\*\n\*\*/g, "**\n\n**")
 											.replace(/• undefined/g, "• ")
 											.replace(/\)• /g, ")\n• ") //adds a newline between link lists
 
@@ -353,14 +387,14 @@ for (i = 1; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
     }		
     function rdoFooterMax() {
       if (rdoFinalString.length > 4000) {
-        return `** [click here](${rdoURL}) for more details**`;
+        return `** [click here](${url}) for more details**`;
       } else {
         return "";
       }
     }
     function rdoFooterMin() { 
       if (rdoFinalString.length <= 4000) {
-        return `** [click here](${rdoURL}) for more details**`;
+        return `** [click here](${url}) for more details**`;
       } else {
         return "";
       }
@@ -412,6 +446,7 @@ for (i = 1; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 			console.log(`The Rockstar Social Club website is down.`);	
 	}		
 		
+				}
 				}
 			});
 

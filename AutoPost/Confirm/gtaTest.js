@@ -314,13 +314,20 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 	}	
 	else if (i === 0) { //if the bonus is an intro paragraph.
 		let introParas = GTA_Title.split("<p>")
-		gtaFinalString01 += `• ${introParas[1]}\n`;
+		//gtaFinalString01 += `• ${introParas[1]}\n`; //usual intro paragraph
+		gtaFinalString01 += `• ${introParas[2]}\n• ${introParas[3]}\n`;
 	}
-	else if (GTA_Bonus != null) {
+	else if (GTA_Bonus != null) { //if the bonus is not an intro paraghraph
 			let gtaParas = GTA_Bonus.split("<p>");
 			//console.log(`gtaParas at ${i}: ${gtaParas}`);
-			//console.log(`gtaParas length at ${i}: ${gtaParas.length}`);		
-		if (GTA_Title.toLowerCase().includes("series updates")) {
+			//console.log(`gtaParas length at ${i}: ${gtaParas.length}`);	
+		if (GTA_Title.toLowerCase().includes("premium test ride")) { //fail safe for if the NextGenIndex does not work properly
+			gtaFinalString01 += `• ${GTA_Title}\n`;
+		}		
+		else if (GTA_Title.toLowerCase().includes("hsw time trial")) { //fail safe for if the NextGenIndex does not work properly
+			gtaFinalString01 += `• ${GTA_Title}\n`;
+		}				
+		else if (GTA_Title.toLowerCase().includes("series updates")) {
 			gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n• ${gtaParas[2]}\n`;
 		}	
 		else if (GTA_Title.toLowerCase().includes("motorsport showroom")) {
@@ -330,16 +337,16 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 			gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
 		}	
 		else if (GTA_Title.toLowerCase().includes("2x")) {
-			gtaFinalString01 += `**${GTA_Title}**\n`;
+			gtaFinalString01 += `**${GTA_Title}** \n`;
 		}	
 		else if (GTA_Title.toLowerCase().includes("3x")) {
-			gtaFinalString01 += `**${GTA_Title}**\n`;
+			gtaFinalString01 += `**${GTA_Title}** \n`;
 		}				
 		else if (GTA_Title.toLowerCase().includes("gta+")) {
 			gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n${gtaParas[2]}\n`;
 		}				
 		else if (GTA_Title.toLowerCase().includes("discount")) {
-			gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
+			gtaFinalString01 += `**${GTA_Title}**\n• ${GTA_Bonus}\n`;
 		}				
 		else if (GTA_Bonus.includes("• ")) { //if the bonus includes lists
 		if (gtaParas[0] != null) {
@@ -388,12 +395,12 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 
 			//console.log(`gtaFinalString: ${gtaFinalString}`);
     function gtaPost() {
-        return gtaFinalString.slice(0, 3768); //FIXME: adjust this for the best break - up to 4000
+        return gtaFinalString.slice(0, 3736); //FIXME: adjust this for the best break - up to 4000
     }
     //console.log(`1: ${gtaFinalString.length}\n`) 
     function gtaPost2() {
       if (gtaFinalString.length > 4000) {
-        let post02 = gtaFinalString.substr(3768, 2099); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
+        let post02 = gtaFinalString.substr(3736, 2099); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
         return post02;
       } else {
         return "";
@@ -543,7 +550,7 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 
 //begin checking for permissions
 					await interaction.deferUpdate();
-		console.log(`AdminRequired(): ${AdminRequired()}`)
+		//console.log(`AdminRequired(): ${AdminRequired()}`)
 				if (interaction.user.id != buttonUserID) {
 					await interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
 				}	
@@ -569,7 +576,7 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 
 				//console.log(`guildRoleIds.length: ${guildRoleIds.length}`)
 				let hasARole = 0;
-				for (a=1;a<=guildRoleIds.length - 1;a++) { //iterates through each role - 0 is @everyone
+				for (a=0;a<=guildRoleIds.length - 1;a++) { //iterates through each role - 0 is @everyone
 					//console.log(`guildRoleIds at ${i}: ${guildRoleIds[i]}`);
 					if (interaction.member.roles.cache.has(guildRoleIds[a])) {
 						hasARole += 1;
