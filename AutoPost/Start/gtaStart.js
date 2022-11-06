@@ -38,7 +38,7 @@ module.exports = {
 			.setColor(`Green`) 
 			.setTitle(`Start Auto Posting GTAV Online Bonuses & Discounts`)
 			.setDescription(`Click **the dropdown menu** to confirm the channel you want to send Grand Theft Auto V Auto Posts to \n**every Thursday at 2:00 PM EST**.`)	
-			.setFooter({ text: 'Auto posts can only be sent to text channels.', iconURL: process.env.logo_link });
+			.setFooter({ text: 'Auto posts can only be sent to text channels the bot has permission to \'Send Messages\' in.', iconURL: process.env.logo_link });
 
 			let gtaChannelCount = 0;
 				interaction.guild.channels.cache.forEach(channel => {
