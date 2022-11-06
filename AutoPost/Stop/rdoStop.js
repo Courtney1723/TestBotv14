@@ -51,7 +51,7 @@ module.exports = {
 			        }])
 			    )
 			interaction.guild.channels.cache.forEach(channel => {
-			    if ((channel.type === 0) && (data.includes(channel.id))) {
+			    if (((channel.type === 0) || (channel.type === 5)) && (data.includes(channel.id))) {
 			        rdoStopMenu.components[0].addOptions([{
 			            label: `${channel.name}`,
 			            description: `${channel.name}`,

@@ -21,7 +21,7 @@ const { get } = require("https");
 // 		});
 // 		var mstTime = mstDate.split(", ");
 // 		var mstHourMinute = mstTime[1].split(":");
-		
+
 // 		var mstHour = mstHourMinute[0];
 // 		var mstMinute = mstHourMinute[1];
 
@@ -29,7 +29,7 @@ const { get } = require("https");
 // 		var amPM = amPM01[1];
 
 // 				//console.log(`${mstHour}:${mstMinute} ${amPM}`);			
-			
+
 // 			if ((log.includes(`guilds`)) || (log.includes(`Logged in`)) || (log.includes(`You triggered`)) || (log.includes(`You clicked`)) ) {
 // 				const logChannel = client.channels.cache.get(process.env.logChannel2);	
 // 				let logEmbed = new EmbedBuilder()
@@ -45,18 +45,18 @@ const { get } = require("https");
 // 				logChannel.send({embeds: [logEmbed]});
 // 			}
 // 		}
-	
+
 // });
 
 //prevents errors from shutting the bot off
 process.on("unhandledRejection", async (err) => {
-  console.error("Unhandled Promise Rejection:\n", err);
+	console.error("Unhandled Promise Rejection:\n", err);
 });
 process.on("uncaughtException", async (err) => {
-  console.error("Uncaught Promise Exception:\n", err);
+	console.error("Uncaught Promise Exception:\n", err);
 });
 process.on("uncaughtExceptionMonitor", async (err) => {
-  console.error("Uncaught Promise Exception (Monitor):\n", err);
+	console.error("Uncaught Promise Exception (Monitor):\n", err);
 });
 client.setMaxListeners(30); // prevents max listeners error for buttons (DO NOT SET OVER 100)
 
@@ -86,11 +86,41 @@ client.on('interactionCreate', async interaction => {
 	try {
 		await command.execute(interaction);
 	} catch (error) {
-			console.log(`interaction error: ${error.stack}`);
-		if (error.toString().includes("InteractionNotReplied")) {
-			await interaction.reply({ content: `There was an error while executing this command!\nThe error has been sent to the developer and will be fixed as soon as possible.\nPlease try again.\n\nIf the problem persists you can try [re-inviting the bot](<${process.env.invite_link}>) or \nYou can report it in the [Rockstar Weekly Support Server](<${proces.env.support_link}>)`, ephemeral: true });
-		} else {
-			await interaction.editReply({ content: `There was an error while executing this command!\nThe error has been sent to the developer and will be fixed as soon as possible.\nPlease try again.\n\nIf the problem persists you can try [re-inviting the bot](<${process.env.invite_link}>) or \nYou can report it in the [Rockstar Weekly Support Server](<${process.env.support_link}>)`, ephemeral: true });
+
+      let errorEmbed = new EmbedBuilder()
+      .setColor('Red') 
+      .setTitle(`Uh Oh!`)
+      .setDescription(`There was an error while executing this command!\nThe error has been sent to the developer and will be fixed as soon as possible.\nPlease try again in a few minutes.\n\nIf the problem persists you can try [re-inviting the bot](<${process.env.invite_link}>) or \nYou can report it in the [Rockstar Weekly Support Server](<${process.env.support_link}>)`);
+
+		let trafficError = new EmbedBuilder()
+			.setColor('Orange')
+			.setTitle(`Uh Oh!`)
+			.setDescription(`It looks like Discord is under a heavy load! Please try again in a few minutes.`)
+		
+		console.log(`interaction error: ${error.stack}`);
+		if (error.toString().includes("has not been sent")) {
+			if (error.toString().includes("50027")) {
+				await interaction.reply({ embeds: [trafficError], ephemeral: true });
+			}
+			else {
+				await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
+			}
+		}
+		else if (error.toString().includes("is not a function")) {
+			if (error.toString().includes("50027")) {
+				await interaction.reply({ embeds: [trafficError], ephemeral: true });
+			}
+			else {
+				await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
+			}
+		}			
+		else {
+			if (error.toString().includes("50027")) {
+				await interaction.editReply({ embeds: [trafficError], ephemeral: true });
+			}
+			else {
+				await interaction.editReply({ embeds: [errorEmbed], ephemeral: true });
+			}
 		}
 	}
 });
@@ -114,7 +144,7 @@ const componentsPath = path.join(__dirname, 'components');
 const componentsFiles = fs.readdirSync(componentsPath).filter(file => file.endsWith('.js'));
 
 for (const file of componentsFiles) {
-	
+
 	const filePath = path.join(componentsPath, file);
 	const component = require(filePath);
 	if (component.once) {
@@ -129,7 +159,7 @@ const StartPath = path.join(__dirname, 'AutoPost/Start');
 const StartFiles = fs.readdirSync(StartPath).filter(file => file.endsWith('.js'));
 
 for (const file of StartFiles) {
-	
+
 	const filePath = path.join(StartPath, file);
 	const component = require(filePath);
 	if (component.once) {
@@ -144,7 +174,7 @@ const StopPath = path.join(__dirname, 'AutoPost/Stop');
 const StopFiles = fs.readdirSync(StopPath).filter(file => file.endsWith('.js'));
 
 for (const file of StopFiles) {
-	
+
 	const filePath = path.join(StopPath, file);
 	const component = require(filePath);
 	if (component.once) {
@@ -159,7 +189,7 @@ const ConfigurePath = path.join(__dirname, 'AutoPost/Configure');
 const ConfigureFiles = fs.readdirSync(ConfigurePath).filter(file => file.endsWith('.js'));
 
 for (const file of ConfigureFiles) {
-	
+
 	const filePath = path.join(ConfigurePath, file);
 	const component = require(filePath);
 	if (component.once) {
@@ -174,7 +204,7 @@ const ConfirmPath = path.join(__dirname, 'AutoPost/Confirm');
 const ConfirmFiles = fs.readdirSync(ConfirmPath).filter(file => file.endsWith('.js'));
 
 for (const file of ConfirmFiles) {
-	
+
 	const filePath = path.join(ConfirmPath, file);
 	const component = require(filePath);
 	if (component.once) {
@@ -189,7 +219,7 @@ const backButtonPath = path.join(__dirname, 'AutoPost/backButtons');
 const backButtonFiles = fs.readdirSync(backButtonPath).filter(file => file.endsWith('.js'));
 
 for (const file of backButtonFiles) {
-	
+
 	const filePath = path.join(backButtonPath, file);
 	const component = require(filePath);
 	if (component.once) {
@@ -201,8 +231,8 @@ for (const file of backButtonFiles) {
 
 //checks for 429 errors at startup and every 5 minutes
 function handleRateLimit() {
-  get(`https://discord.com/api/v10/gateway`, ({ statusCode }) => {
-	  if (statusCode == 429) { process.kill(1) }
+	get(`https://discord.com/api/v10/gateway`, ({ statusCode }) => {
+		if (statusCode == 429) { process.kill(1) }
 	});
 };
 handleRateLimit();

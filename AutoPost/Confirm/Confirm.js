@@ -61,7 +61,7 @@ module.exports = {
 
 			let channelIDArray = [];
 			interaction.guild.channels.cache.forEach(channel => {
-			    if (channel.type === 0) {
+			    if ((channel.type === 0) || (channel.type === 5)) {
 			        channelIDArray.push(`${channel.id}`);
 			    }
 			});
