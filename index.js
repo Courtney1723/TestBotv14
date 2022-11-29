@@ -50,15 +50,96 @@ const { get } = require("https");
 
 //prevents errors from shutting the bot off
 process.on("unhandledRejection", async (err) => {
-	console.error("Unhandled Promise Rejection:\n", err);
+	console.error("Unhandled Promise Rejection:\n", err.stack);
 });
 process.on("uncaughtException", async (err) => {
-	console.error("Uncaught Promise Exception:\n", err);
+	console.error("Uncaught Promise Exception:\n", err.stack);
 });
 process.on("uncaughtExceptionMonitor", async (err) => {
-	console.error("Uncaught Promise Exception (Monitor):\n", err);
+	console.error("Uncaught Promise Exception (Monitor):\n", err.stack);
 });
 client.setMaxListeners(30); // prevents max listeners error for buttons (DO NOT SET OVER 100)
+
+//checks for 429 errors at startup and every 5 minutes
+function handleRateLimit() {
+	get(`https://discord.com/api/v10/gateway`, ({ statusCode }) => {
+		if (statusCode == 429) { process.kill(1) }
+		//console.log(`StatusCode: ${statusCode}`);
+	});
+};
+handleRateLimit();
+setInterval(handleRateLimit, 3e5); //3e5 = 300000 (3 w/ 5 zeros)
+
+//error handler
+client.on('interactionCreate', async interaction => {
+	if (!interaction.isChatInputCommand()) return;
+
+	const command = interaction.client.commands.get(interaction.commandName);
+
+	if (!command) return;
+
+	try {
+
+		if (interaction.user.id === process.env.USER_ID_1) {
+
+      let tosEmbed = new EmbedBuilder()
+      .setColor('Orange') 
+      .setTitle(`Uh Oh!`)
+      .setDescription(`It looks like Discord is under a heavy load.`);
+			
+			interaction.reply({embeds: [tosEmbed], ephemeral: true});
+		}
+		else {
+			command.execute(interaction);
+		}
+	} catch (error) {
+
+      let errorEmbed = new EmbedBuilder()
+      .setColor('Red') 
+      .setTitle(`Uh Oh!`)
+      .setDescription(`There was an error while executing this command!\nThe error has been sent to the developer and will be fixed as soon as possible.\nPlease try again in a few minutes.\n\nIf the problem persists you can try [re-inviting the bot](<${process.env.invite_link}>) or \nYou can report it in the [Rockstar Weekly Support Server](<${process.env.support_link}>)`);
+
+		let trafficError = new EmbedBuilder()
+			.setColor('Orange')
+			.setTitle(`Uh Oh!`)
+			.setDescription(`It looks like Discord is under a heavy load! Please try again in a few minutes.`)
+		
+		console.log(`interaction error: ${error.stack}`);
+		if (error.toString().includes("has not been sent")) {
+			if ((error.toString().includes("50027")) || (error.toString().includes("10008"))) {
+				await interaction.reply({ embeds: [trafficError], ephemeral: true });
+				console.log(`There was an error! \n${error.stack}`);
+				handleRateLimit();
+			}
+			else {
+				await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
+				console.log(`There was an error! \n${error.stack}`);
+			}
+		}
+		else if (error.toString().includes("is not a function")) {
+			if ((error.toString().includes("50027")) || (error.toString().includes("10008"))) {
+				await interaction.reply({ embeds: [trafficError], ephemeral: true });
+				console.log(`There was an error! \n${error.stack}`);
+				handleRateLimit();
+			}
+			else {
+				await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
+				console.log(`There was an error! \n${error.stack}`);
+			}
+		}			
+		else {
+			if ((error.toString().includes("50027")) || (error.toString().includes("10008"))) {
+				await interaction.editReply({ embeds: [trafficError], ephemeral: true });
+				console.log(`There was an error! \n${error.stack}`);
+				handleRateLimit();
+			}		
+			else {
+				await interaction.editReply({ embeds: [errorEmbed], ephemeral: true });
+				console.log(`There was an error! \n${error.stack}`);
+			}
+		}
+	}
+});
 
 //Access Command Files
 const fs = require('node:fs');
@@ -75,55 +156,6 @@ for (const file of commandFiles) {
 	commands.push(command.data.toJSON());
 	client.commands.set(command.data.name, command);
 }
-
-client.on('interactionCreate', async interaction => {
-	if (!interaction.isChatInputCommand()) return;
-
-	const command = interaction.client.commands.get(interaction.commandName);
-
-	if (!command) return;
-
-	try {
-		await command.execute(interaction);
-	} catch (error) {
-
-      let errorEmbed = new EmbedBuilder()
-      .setColor('Red') 
-      .setTitle(`Uh Oh!`)
-      .setDescription(`There was an error while executing this command!\nThe error has been sent to the developer and will be fixed as soon as possible.\nPlease try again in a few minutes.\n\nIf the problem persists you can try [re-inviting the bot](<${process.env.invite_link}>) or \nYou can report it in the [Rockstar Weekly Support Server](<${process.env.support_link}>)`);
-
-		let trafficError = new EmbedBuilder()
-			.setColor('Orange')
-			.setTitle(`Uh Oh!`)
-			.setDescription(`It looks like Discord is under a heavy load! Please try again in a few minutes.`)
-		
-		console.log(`interaction error: ${error.stack}`);
-		if (error.toString().includes("has not been sent")) {
-			if (error.toString().includes("50027")) {
-				await interaction.reply({ embeds: [trafficError], ephemeral: true });
-			}
-			else {
-				await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
-			}
-		}
-		else if (error.toString().includes("is not a function")) {
-			if (error.toString().includes("50027")) {
-				await interaction.reply({ embeds: [trafficError], ephemeral: true });
-			}
-			else {
-				await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
-			}
-		}			
-		else {
-			if (error.toString().includes("50027")) {
-				await interaction.editReply({ embeds: [trafficError], ephemeral: true });
-			}
-			else {
-				await interaction.editReply({ embeds: [errorEmbed], ephemeral: true });
-			}
-		}
-	}
-});
 
 //Access Event files
 const eventsPath = path.join(__dirname, 'events');
@@ -228,15 +260,6 @@ for (const file of backButtonFiles) {
 		client.on(component.name, (...args) => component.execute(...args));
 	}
 }
-
-//checks for 429 errors at startup and every 5 minutes
-function handleRateLimit() {
-	get(`https://discord.com/api/v10/gateway`, ({ statusCode }) => {
-		if (statusCode == 429) { process.kill(1) }
-	});
-};
-handleRateLimit();
-setInterval(handleRateLimit, 3e5); //3e5 = 300000 (3 w/ 5 zeros)
 
 keepAlive();
 client.login(process.env.DISCORD_TOKEN).catch(err => console.log(`Login Error: ${err.stack}`));

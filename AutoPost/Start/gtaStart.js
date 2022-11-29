@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, PermissionsBitField, Collection, Partials, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, SelectMenuBuilder, ChannelType } = require('discord.js');
+const { Client, GatewayIntentBits, PermissionsBitField, Collection, Partials, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, ChannelType } = require('discord.js');
 const client = new Client({
 	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions],
 	partials: [Partials.Message, Partials.Channel, Partials.Reaction],
@@ -61,7 +61,7 @@ module.exports = {
 
 			let gtaStartMenu = new ActionRowBuilder()
 			    .addComponents(
-			        new SelectMenuBuilder()
+			        new StringSelectMenuBuilder()
 			        .setCustomId(`gtaStartMenu - u:${interaction.user.id} - c:undefinedchannel`)
 			        .setPlaceholder('Select a Channel')
 			        .addOptions([{
@@ -89,7 +89,7 @@ module.exports = {
 			);	
 			let gtaStartMenu2 = new ActionRowBuilder()
 			    .addComponents(
-			        new SelectMenuBuilder()
+			        new StringSelectMenuBuilder()
 			        .setCustomId(`gtaStartMenu2 - u:${interaction.user.id} - c:undefinedchannel`)
 			        .setPlaceholder('Select a Channel')
 			        .addOptions([{

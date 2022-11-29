@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, PermissionsBitField, Collection, Partials, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, SelectMenuBuilder } = require('discord.js');
+const { Client, GatewayIntentBits, PermissionsBitField, Collection, Partials, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } = require('discord.js');
 const client = new Client({
 	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions],
 	partials: [Partials.Message, Partials.Channel, Partials.Reaction],
@@ -82,7 +82,7 @@ function gtaTest() {
 		const content = await page.property('content'); // Gets the latest gta updates
 			//console.log(content); 
 
-		let baseURL = "https://socialclub.rockstargames.com/events/";
+		let baseURL = "https://socialclub.rockstargames.com/";
 		
 		let urlHash02 = content.split("urlHash\":\"");
 		let urlHash01 = urlHash02[1].split("\"");
@@ -94,7 +94,12 @@ function gtaTest() {
 		let urlSlug = urlSlug01[0];
 			//console.log(`urlSlug: ${urlSlug}`);
 
-		let url = `${baseURL}${urlHash}/${urlSlug}`;
+		let urlLink02 = content.split("linkToUrl\":");
+		let urlLink01 = urlLink02[1].split("\"");
+		let urlLink = urlLink01[1];
+			//console.log(`urlLink: ${urlLink01[1]}`);
+
+		let url = `${baseURL}${urlLink}`;
 			//console.log(`url: ${url}`);
 
 		const gtaStatus = await page.open(url);
@@ -309,23 +314,35 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 
 //-----BEGIN populating gtaFinalString01 -----//
 	if ( (i.toString() === nextGenIndex1) || (i.toString() === nextGenIndex2) )  {
+		let gtaParas = GTA_Bonus.split("<p>");
 		//gtaFinalString01 += `**Only on PlayStation 5 and Xbox Series X|S:**\n`;
-		gtaFinalString01 += `• ${GTA_Title}\n`;
+		if (!GTA_Title.toLowerCase().includes("motorsport showroom")) {
+			gtaFinalString01 += `• ${GTA_Title}\n`;
+		}
+		else {
+			gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
+		}
 	}	
 	else if (i === 0) { //if the bonus is an intro paragraph.
 		let introParas = GTA_Title.split("<p>")
 		//gtaFinalString01 += `• ${introParas[1]}\n`; //usual intro paragraph
-		gtaFinalString01 += `• ${introParas[2]}\n• ${introParas[3]}\n`;
+		gtaFinalString01 += `• ${introParas[1]}\n`;
 	}
 	else if (GTA_Bonus != null) { //if the bonus is not an intro paraghraph
 			let gtaParas = GTA_Bonus.split("<p>");
 			//console.log(`gtaParas at ${i}: ${gtaParas}`);
 			//console.log(`gtaParas length at ${i}: ${gtaParas.length}`);	
-		if (GTA_Title.toLowerCase().includes("premium test ride")) { //fail safe for if the NextGenIndex does not work properly
-			gtaFinalString01 += `• ${GTA_Title}\n`;
+		if (GTA_Title.toLowerCase().includes("only on playstation")) { //fail safe for if the NextGenIndex does not work properly
+			gtaFinalString01 += `**Only on PlayStation 5 or Xbox Series X|S:**\n`;
+		}	
+		if (GTA_Bonus.toLowerCase().includes("premium test ride")) { //fail safe for if the NextGenIndex does not work properly
+			gtaFinalString01 += `• ${gtaParas[1]}\n`;
 		}		
 		else if (GTA_Title.toLowerCase().includes("hsw time trial")) { //fail safe for if the NextGenIndex does not work properly
 			gtaFinalString01 += `• ${GTA_Title}\n`;
+		}		
+		else if (GTA_Title.toLowerCase().includes("new community series")) {
+			gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
 		}				
 		else if (GTA_Title.toLowerCase().includes("series updates")) {
 			gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n• ${gtaParas[2]}\n`;
@@ -339,12 +356,15 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 		else if (GTA_Title.toLowerCase().includes("2x")) {
 			gtaFinalString01 += `**${GTA_Title}** \n`;
 		}	
+		else if (GTA_Title.toLowerCase().includes("2.5x")) {
+			gtaFinalString01 += `**${GTA_Title}** \n`;
+		}				
 		else if (GTA_Title.toLowerCase().includes("3x")) {
 			gtaFinalString01 += `**${GTA_Title}** \n`;
 		}				
 		else if (GTA_Title.toLowerCase().includes("gta+")) {
 			gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n${gtaParas[2]}\n`;
-		}				
+		}		
 		else if (GTA_Title.toLowerCase().includes("discount")) {
 			gtaFinalString01 += `**${GTA_Title}**\n• ${GTA_Bonus}\n`;
 		}				
@@ -391,16 +411,18 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 											.replace(/\n\n• /g, "\n• ") //removes spaces before a list item
 											.replace(/.\n\*\*/g, "\n\n**")
 											.replace(/\n\n\n/g, "\n\n")
+											.replace(/\n\n\n/g, "\n\n")
 											.replace(/• undefined/g, "• ")
+											.replace(/• \n\n/g, "")
 
 			//console.log(`gtaFinalString: ${gtaFinalString}`);
     function gtaPost() {
-        return gtaFinalString.slice(0, 3736); //FIXME: adjust this for the best break - up to 4000
+        return gtaFinalString.slice(0, 3904); //FIXME: adjust this for the best break - up to 4000
     }
     //console.log(`1: ${gtaFinalString.length}\n`) 
     function gtaPost2() {
       if (gtaFinalString.length > 4000) {
-        let post02 = gtaFinalString.substr(3736, 2099); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
+        let post02 = gtaFinalString.substr(3904, 2099); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
         return post02;
       } else {
         return "";

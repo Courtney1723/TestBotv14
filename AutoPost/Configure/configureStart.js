@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, PermissionsBitField, Collection, Partials, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, SelectMenuBuilder } = require('discord.js');
+const { Client, GatewayIntentBits, PermissionsBitField, Collection, Partials, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } = require('discord.js');
 const client = new Client({
 	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions],
 	partials: [Partials.Message, Partials.Channel, Partials.Reaction],
@@ -89,7 +89,7 @@ module.exports = {
 				
 				let configureStartMenu = new ActionRowBuilder()
 				    .addComponents(
-				        new SelectMenuBuilder()
+				        new StringSelectMenuBuilder()
 				        .setCustomId(`configureStartMenu - u:${interaction.user.id}`)
 				        .setPlaceholder('Select a Role')
 				        .addOptions([{
@@ -132,7 +132,7 @@ module.exports = {
 
 			let configureStartMenu2 = new ActionRowBuilder()
 			    .addComponents(
-			        new SelectMenuBuilder()
+			        new StringSelectMenuBuilder()
 			        .setCustomId(`configureStartMenu2 - u:${interaction.user.id} - r:${configureRoleIDs[24]}`)
 			        .setPlaceholder('Select a Role')
 			        .addOptions([{

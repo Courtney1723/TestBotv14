@@ -1,7 +1,10 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 const phantom = require('phantom'); //https://github.com/amir20/phantomjs-node
-		let errorText = `There was an error while executing this command!\nThe error has been sent to the developer and it will be fixed as soon as possible. \nIf the error persists you can try re-inviting the Rockstar Weekly bot by [clicking here](<${process.env.invite_link}>). \nReport the error by joining the Rockstar Weekly bot support server: [click here](<${process.env.support_link}>).`;
+      let errorEmbed = new EmbedBuilder()
+      .setColor('Red') 
+      .setTitle(`Uh Oh!`)
+      .setDescription(`There was an error while executing this command!\nThe error has been sent to the developer and will be fixed as soon as possible.\nPlease try again in a few minutes.\n\nIf the problem persists you can try [re-inviting the bot](<${process.env.invite_link}>) or \nYou can report it in the [Rockstar Weekly Support Server](<${process.env.support_link}>)`);
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -25,7 +28,7 @@ module.exports = {
 		const content = await page.property('content'); // Gets the latest gta updates
 			//console.log(content); 
 
-		let baseURL = "https://socialclub.rockstargames.com/events/";
+		let baseURL = "https://socialclub.rockstargames.com/";
 		
 		let urlHash02 = content.split("urlHash\":\"");
 		let urlHash01 = urlHash02[1].split("\"");
@@ -37,7 +40,12 @@ module.exports = {
 		let urlSlug = urlSlug01[0];
 			//console.log(`urlSlug: ${urlSlug}`);
 
-		let url = `${baseURL}${urlHash}/${urlSlug}`;
+		let urlLink02 = content.split("linkToUrl\":");
+		let urlLink01 = urlLink02[1].split("\"");
+		let urlLink = urlLink01[1];
+			//console.log(`urlLink: ${urlLink01[1]}`);
+
+		let url = `${baseURL}${urlLink}`;
 			//console.log(`url: ${url}`);
 
 		const gtaStatus = await page.open(url);
@@ -253,23 +261,35 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 
 //-----BEGIN populating gtaFinalString01 -----//
 	if ( (i.toString() === nextGenIndex1) || (i.toString() === nextGenIndex2) )  {
+		let gtaParas = GTA_Bonus.split("<p>");
 		//gtaFinalString01 += `**Only on PlayStation 5 and Xbox Series X|S:**\n`;
-		gtaFinalString01 += `• ${GTA_Title}\n`;
+		if (!GTA_Title.toLowerCase().includes("motorsport showroom")) {
+			gtaFinalString01 += `• ${GTA_Title}\n`;
+		}
+		else {
+			gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
+		}
 	}	
 	else if (i === 0) { //if the bonus is an intro paragraph.
 		let introParas = GTA_Title.split("<p>")
 		//gtaFinalString01 += `• ${introParas[1]}\n`; //usual intro paragraph
-		gtaFinalString01 += `• ${introParas[2]}\n• ${introParas[3]}\n`;
+		gtaFinalString01 += `• ${introParas[1]}\n`;
 	}
 	else if (GTA_Bonus != null) { //if the bonus is not an intro paraghraph
 			let gtaParas = GTA_Bonus.split("<p>");
 			//console.log(`gtaParas at ${i}: ${gtaParas}`);
 			//console.log(`gtaParas length at ${i}: ${gtaParas.length}`);	
-		if (GTA_Title.toLowerCase().includes("premium test ride")) { //fail safe for if the NextGenIndex does not work properly
-			gtaFinalString01 += `• ${GTA_Title}\n`;
+		if (GTA_Title.toLowerCase().includes("only on playstation")) { //fail safe for if the NextGenIndex does not work properly
+			gtaFinalString01 += `**Only on PlayStation 5 or Xbox Series X|S:**\n`;
+		}	
+		if (GTA_Bonus.toLowerCase().includes("premium test ride")) { //fail safe for if the NextGenIndex does not work properly
+			gtaFinalString01 += `• ${gtaParas[1]}\n`;
 		}		
 		else if (GTA_Title.toLowerCase().includes("hsw time trial")) { //fail safe for if the NextGenIndex does not work properly
 			gtaFinalString01 += `• ${GTA_Title}\n`;
+		}		
+		else if (GTA_Title.toLowerCase().includes("new community series")) {
+			gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
 		}				
 		else if (GTA_Title.toLowerCase().includes("series updates")) {
 			gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n• ${gtaParas[2]}\n`;
@@ -283,6 +303,9 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 		else if (GTA_Title.toLowerCase().includes("2x")) {
 			gtaFinalString01 += `**${GTA_Title}** \n`;
 		}	
+		else if (GTA_Title.toLowerCase().includes("2.5x")) {
+			gtaFinalString01 += `**${GTA_Title}** \n`;
+		}				
 		else if (GTA_Title.toLowerCase().includes("3x")) {
 			gtaFinalString01 += `**${GTA_Title}** \n`;
 		}				
@@ -335,16 +358,18 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 											.replace(/\n\n• /g, "\n• ") //removes spaces before a list item
 											.replace(/.\n\*\*/g, "\n\n**")
 											.replace(/\n\n\n/g, "\n\n")
+											.replace(/\n\n\n/g, "\n\n")
 											.replace(/• undefined/g, "• ")
+											.replace(/• \n\n/g, "")
 
 			//console.log(`gtaFinalString: ${gtaFinalString}`);
     function gtaPost() {
-        return gtaFinalString.slice(0, 3736); //FIXME: adjust this for the best break - up to 4000
+        return gtaFinalString.slice(0, 3904); //FIXME: adjust this for the best break - up to 4000
     }
     //console.log(`1: ${gtaFinalString.length}\n`) 
     function gtaPost2() {
       if (gtaFinalString.length > 4000) {
-        let post02 = gtaFinalString.substr(3736, 2099); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
+        let post02 = gtaFinalString.substr(3904, 2099); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
         return post02;
       } else {
         return "";
@@ -389,12 +414,12 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 
 		if (gtaFinalString.length <= 4000) {
 			await interaction.editReply({embeds: [gtaImageEmbed, gtaEmbed]}).catch(err => 
-				interaction.editReply({content: `${errorText}\nError Code: *${err.code}*`, ephemeral: true }).then( 
+				interaction.editReply({embeds: [errorEmbed], ephemeral: true }).then( 
 				console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`))
 				);
 		} else {
 			await interaction.editReply({embeds: [gtaImageEmbed, gtaEmbed, gtaEmbed2]}).catch(err => 
-				interaction.editReply({content: `${errorText}\nError Code: *${err.code}*`, ephemeral: true }).then( 
+				interaction.editReply({embeds: [errorEmbed], ephemeral: true }).then( 
 				console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`) )
 				);
 		}
@@ -425,9 +450,9 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 				.setFooter({text:`It is ${estHour}:${estMinute} ${amPM} EST now.`, iconURL:process.env.logo_link})
 
   	//   if ( (aDay === 0) ) { //Test for today 0 = Sunday, 1 = Monday ... 6 = Saturday
-		// //if ( (aDay === 4) && (aHour > 3) && (aHour < 17) ) { //If it's Thursday(4) before 1:00PM EST (3<17)
-		// 	await interaction.followUp({embeds: [gtaExpiredEmbed], ephemeral:true}).catch(err => console.log(`gtaExpiredEmbed Error: ${err.stack}`));
-		// }			
+		if ( (aDay === 4) && (aHour > 3) && (aHour < 17) ) { //If it's Thursday(4) before 1:00PM EST (3<17)
+		await interaction.followUp({embeds: [gtaExpiredEmbed], ephemeral:true}).catch(err => console.log(`gtaExpiredEmbed Error: ${err.stack}`));
+		}			
 
 			//interaction.editReply(`Console logged! 👍`);
 

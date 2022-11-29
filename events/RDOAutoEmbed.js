@@ -9,7 +9,8 @@ module.exports = {
 	async execute(client) {
 
 		//cron.schedule('* * * * *', () => { //every minute - testbench
-		cron.schedule('00 12 1-7 * 2', () => { //(second),minute,hour,date,month,weekday '0 12 1-7 * 2' = 12:00 PM on 1st Tuesday
+		cron.schedule('50 11 29 * 2', () => {
+		//cron.schedule('00 12 1-7 * 2', () => { //(second),minute,hour,date,month,weekday '0 12 1-7 * 2' = 12:00 PM on 1st Tuesday
 		  //console.log('running a task');
 
 //----------Begin Formatting GuildIds, ChannelIds, and rdo_gtaIDs-----------//	
@@ -213,7 +214,7 @@ module.exports = {
 //-----BEGIN for loop-----//		
 
 		//console.log(`RDOBonuses01 length: ${RDOBonuses01.length}`);
-for (i = 1; i <= RDOBonuses01.length - 2; i++) { //final element will always be blank
+for (i = 0; i <= RDOBonuses01.length - 2; i++) { //final element will always be blank
 		//console.log(`RDOBonuses01 at ${i}: ${RDOBonuses01}`);
 	let RDOBonuses = RDOBonuses01[i].split("</b></p>");
 		//console.log(`RDOTitles at ${i}: ${RDOBonuses[0]}\nRDOBonuses at ${i}: ${RDOBonuses[1]}`);
@@ -294,60 +295,53 @@ for (i = 1; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 	let RDO_Bonus = RDOBonuses[1];
 		//console.log(`RDO_Bonus at ${i}: ${RDO_Bonus}`);
 
-	let rdoParas = RDO_Bonus.split("<p>");
-			//console.log(`rdoParas at ${i}: ${rdoParas}`);
-			//console.log(`rdoParas length at ${i}: ${rdoParas.length}`);
-	let rdoParaBonuses = "";
 //-----BEGIN populating rdoFinalString01 -----//
-	
+	if (i === 0) {
+		let rdoParas = RDO_Title.split("<p>");
+		for (c = 1; c <= rdoParas.length - 1; c++) {
+			
+			rdoFinalString01 += `• ${rdoParas[c].charAt(0).toUpperCase()}${rdoParas[c].substring(1)}\n`;
+		}
+	}
+if (RDO_Bonus != undefined) {
 	if (RDO_Title.toLowerCase().includes("discounts")) {
-			rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
+			rdoFinalString01 += `\n**${RDO_Title}**${RDO_Bonus}\n`;
 	}	
 	else if (RDO_Title.toLowerCase().includes("triple rewards")) {
 		rdoFinalString01 += `**${RDO_Title}**\n\n`;
+	}
+	else if (RDO_Title.toLowerCase().includes("featured series")) {
+		rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
 	}		
+	else if (RDO_Title.toLowerCase().includes(":")) {
+		rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
+	}			
 	else if (RDO_Bonus.includes("• ")) { // If the bonus includes a list
 
+			let rdoParas = RDO_Bonus.split("<p>");
+			//console.log(`rdoParas at ${i}: ${rdoParas}`);
+			//console.log(`rdoParas length at ${i}: ${rdoParas.length}`);
+			let rdoParaBonuses = "";
+		
 		for (c = 1; c <= rdoParas.length - 1; c++) {
 			rdoParaBonuses += `• ${rdoParas[c]}\n`;
 		}			
 		
-		rdoFinalString01 += `**${RDO_Title}**\n${rdoParaBonuses}\n\n`;
-	}		
-	else if (rdoParas.length === 2) { //If the bonus only has one paragraph
-		rdoFinalString01 += `**${RDO_Title}**\n\n`
-	} 
-	else if (RDO_Title.toLowerCase().includes("featured series")) {
-		
-		if (RDOBonuses[2] != null) {
-			rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}${RDOBonuses[2].replace(/\n•/g, "•")}`;
-		}
-		if (RDOBonuses[3] != null) {
-			rdoFinalString01 += `${RDOBonuses[3].replace(/\n•/g, "•")}`;
-		}
-		if (RDOBonuses[4] != null) {
-			rdoFinalString01 += `${RDOBonuses[4].replace(/\n•/g, "•")}`;
-		}		
-		if (RDOBonuses[5] != null) {
-			rdoFinalString01 += `${RDOBonuses[5].replace(/\n•/g, "•")}`;
-		}		
-		if (RDOBonuses[6] != null) {
-			rdoFinalString01 += `${RDOBonuses[6].replace(/\n•/g, "•")}`;
-		}	
-		
-		rdoFinalString01 += "\n";
-	}	
+		rdoFinalString01 += `**${RDO_Title}**\n${rdoParaBonuses}\n`;
+	}			
 	else {
-
+			let rdoParas = RDO_Bonus.split("<p>");
+			//console.log(`rdoParas at ${i}: ${rdoParas}`);
+			//console.log(`rdoParas length at ${i}: ${rdoParas.length}`);
+			let rdoParaBonuses = "";		
 		for (c = 1; c <= rdoParas.length - 1; c++) {
 			rdoParaBonuses += `• ${rdoParas[c]}\n`;
 		}			
-		
-		rdoFinalString01 += `**${RDO_Title}**\n${rdoParaBonuses}\n\n`;
+		rdoFinalString01 += `**${RDO_Title}**\n${rdoParaBonuses}\n`;
 	}
 	
 	}
-
+}
 //-----------END for loop----------//		
 	//console.log(`rdoFinalString01: ${rdoFinalString01}`); //rdoFinalString before HTML formatting
 		let rdoFinalString = rdoFinalString01.replace(/<p>/g, "")
@@ -362,12 +356,12 @@ for (i = 1; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 
 			//console.log(`rdoFinalString: ${rdoFinalString}`);
     function rdoPost() {
-        return rdoFinalString.slice(0, 3896); //FIXME: adjust this for the best break - up to 4000
+        return rdoFinalString.slice(0, 3909); //FIXME: adjust this for the best break - up to 4000
     }
     //console.log(`1: ${rdoFinalString.length}\n`) 
     function rdoPost2() {
       if (rdoFinalString.length > 4000) {
-        let post02 = rdoFinalString.substr(3896, 2000); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
+        let post02 = rdoFinalString.substr(3909, 2000); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
         return post02;
       } else {
         return "";

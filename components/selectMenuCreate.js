@@ -8,7 +8,7 @@ module.exports = {
 	name: 'interactionCreate',
 	async execute(interaction) {
 		//console.log(`interaction.channel.type: ${interaction.channel.type}`);
-		if (interaction.isSelectMenu()) {
+		if (interaction.isStringSelectMenu()) {
 			
 		if (interaction.channel.type === 0) { 
 			if ((interaction.user.id === process.env.USER_ID_1) || (interaction.user.id === process.env.USER_ID_2)) {

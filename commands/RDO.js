@@ -1,6 +1,9 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const phantom = require('phantom'); //https://github.com/amir20/phantomjs-node
-		let errorText = `There was an error while executing this command!\nThe error has been sent to the developer and it will be fixed as soon as possible. \nIf the error persists you can try re-inviting the Rockstar Weekly bot by [clicking here](<${process.env.invite_link}>). \nReport the error by joining the Rockstar Weekly bot support server: [click here](<${process.env.support_link}>).`;
+      let errorEmbed = new EmbedBuilder()
+      .setColor('Red') 
+      .setTitle(`Uh Oh!`)
+      .setDescription(`There was an error while executing this command!\nThe error has been sent to the developer and will be fixed as soon as possible.\nPlease try again in a few minutes.\n\nIf the problem persists you can try [re-inviting the bot](<${process.env.invite_link}>) or \nYou can report it in the [Rockstar Weekly Support Server](<${process.env.support_link}>)`);
 
 
 module.exports = {
@@ -10,6 +13,8 @@ module.exports = {
 		.setDMPermission(true),
 	async execute(interaction) {
 		await interaction.deferReply().catch(console.error);
+
+
 
 				let rdoURL = process.env.SOCIAL_URL_RDO2;
 
@@ -167,7 +172,7 @@ module.exports = {
 //-----BEGIN for loop-----//		
 
 		//console.log(`RDOBonuses01 length: ${RDOBonuses01.length}`);
-for (i = 1; i <= RDOBonuses01.length - 2; i++) { //final element will always be blank
+for (i = 0; i <= RDOBonuses01.length - 2; i++) { //final element will always be blank
 		//console.log(`RDOBonuses01 at ${i}: ${RDOBonuses01}`);
 	let RDOBonuses = RDOBonuses01[i].split("</b></p>");
 		//console.log(`RDOTitles at ${i}: ${RDOBonuses[0]}\nRDOBonuses at ${i}: ${RDOBonuses[1]}`);
@@ -244,64 +249,56 @@ for (i = 1; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 			}
 				//console.log(`nextGenIndex2 at ${i}: ${nextGenIndex2}`);								
 		//-----END get the index of "Only on PlayStation..." title-----//			
-	
 	let RDO_Bonus = RDOBonuses[1];
 		//console.log(`RDO_Bonus at ${i}: ${RDO_Bonus}`);
-
-	let rdoParas = RDO_Bonus.split("<p>");
-			//console.log(`rdoParas at ${i}: ${rdoParas}`);
-			//console.log(`rdoParas length at ${i}: ${rdoParas.length}`);
-	let rdoParaBonuses = "";
-//-----BEGIN populating rdoFinalString01 -----//
 	
+//-----BEGIN populating rdoFinalString01 -----//
+	if (i === 0) {
+		let rdoParas = RDO_Title.split("<p>");
+		for (c = 1; c <= rdoParas.length - 1; c++) {
+			
+			rdoFinalString01 += `• ${rdoParas[c].charAt(0).toUpperCase()}${rdoParas[c].substring(1)}\n`;
+		}
+	}
+if (RDO_Bonus != undefined) {
 	if (RDO_Title.toLowerCase().includes("discounts")) {
 			rdoFinalString01 += `\n**${RDO_Title}**${RDO_Bonus}\n`;
 	}	
 	else if (RDO_Title.toLowerCase().includes("triple rewards")) {
 		rdoFinalString01 += `**${RDO_Title}**\n\n`;
 	}
+	else if (RDO_Title.toLowerCase().includes("featured series")) {
+		rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
+	}		
+	else if (RDO_Title.toLowerCase().includes(":")) {
+		rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
+	}			
 	else if (RDO_Bonus.includes("• ")) { // If the bonus includes a list
 
+			let rdoParas = RDO_Bonus.split("<p>");
+			//console.log(`rdoParas at ${i}: ${rdoParas}`);
+			//console.log(`rdoParas length at ${i}: ${rdoParas.length}`);
+			let rdoParaBonuses = "";
+		
 		for (c = 1; c <= rdoParas.length - 1; c++) {
 			rdoParaBonuses += `• ${rdoParas[c]}\n`;
 		}			
 		
 		rdoFinalString01 += `**${RDO_Title}**\n${rdoParaBonuses}\n`;
-	}		
-	else if (rdoParas.length === 2) { //If the bonus only has one paragraph
-		rdoFinalString01 += `**${RDO_Title}**\n`
-	} 
-	else if (RDO_Title.toLowerCase().includes("featured series")) {
-		
-		if (RDOBonuses[2] != null) {
-			rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}${RDOBonuses[2].replace(/\n•/g, "•")}`;
-		}
-		if (RDOBonuses[3] != null) {
-			rdoFinalString01 += `${RDOBonuses[3].replace(/\n•/g, "•")}`;
-		}
-		if (RDOBonuses[4] != null) {
-			rdoFinalString01 += `${RDOBonuses[4].replace(/\n•/g, "•")}`;
-		}		
-		if (RDOBonuses[5] != null) {
-			rdoFinalString01 += `${RDOBonuses[5].replace(/\n•/g, "•")}`;
-		}		
-		if (RDOBonuses[6] != null) {
-			rdoFinalString01 += `${RDOBonuses[6].replace(/\n•/g, "•")}`;
-		}	
-		
-		rdoFinalString01 += "\n";
-	}		
+	}			
 	else {
-
+			let rdoParas = RDO_Bonus.split("<p>");
+			//console.log(`rdoParas at ${i}: ${rdoParas}`);
+			//console.log(`rdoParas length at ${i}: ${rdoParas.length}`);
+			let rdoParaBonuses = "";		
 		for (c = 1; c <= rdoParas.length - 1; c++) {
 			rdoParaBonuses += `• ${rdoParas[c]}\n`;
 		}			
-		
 		rdoFinalString01 += `**${RDO_Title}**\n${rdoParaBonuses}\n`;
 	}
 	
 	}
-
+}
 //-----------END for loop----------//		
 	//console.log(`rdoFinalString01: ${rdoFinalString01}`); //rdoFinalString before HTML formatting
 		let rdoFinalString = rdoFinalString01.replace(/<p>/g, "")
@@ -316,12 +313,12 @@ for (i = 1; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 
 			//console.log(`rdoFinalString: ${rdoFinalString}`);
     function rdoPost() {
-        return rdoFinalString.slice(0, 3896); //FIXME: adjust this for the best break - up to 4000
+        return rdoFinalString.slice(0, 3909); //FIXME: adjust this for the best break - up to 4000
     }
     //console.log(`1: ${rdoFinalString.length}\n`) 
     function rdoPost2() {
       if (rdoFinalString.length > 4000) {
-        let post02 = rdoFinalString.substr(3896, 2000); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
+        let post02 = rdoFinalString.substr(3909, 2000); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
         return post02;
       } else {
         return "";
@@ -366,12 +363,12 @@ for (i = 1; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 
 		if (rdoFinalString.length <= 4000) {
 			await interaction.editReply({embeds: [rdoImageEmbed, rdoEmbed]}).catch(err => 
-				interaction.editReply({content: `${errorText}\nError Code: *${err.code}*`, ephemeral: true }).then( 
+				interaction.editReply({embeds: [errorEmbed], ephemeral: true }).then( 
 				console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`))
 				);
 		} else {
 			await interaction.editReply({embeds: [rdoImageEmbed, rdoEmbed, rdoEmbed2]}).catch(err => 
-				interaction.editReply({content: `${errorText}\nError Code: *${err.code}*`, ephemeral: true }).then( 
+				interaction.editReply({embeds: [errorEmbed], ephemeral: true }).then( 
 				console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`) )
 				);
 		}
@@ -386,7 +383,7 @@ for (i = 1; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 		
 		 let rdoExpiredEmbed = new EmbedBuilder()
 		    .setColor('0xC10000') //Red
-		    .setDescription(`These bonuses & discounts may be expired. \nRockstar typically releases the latest bonuses & discounts the first \nTuesday of every month after 1:00 PM EST.`)
+		    .setDescription(`These bonuses & discounts may be expired. \nRockstar typically releases the latest bonuses & discounts the first \nTuesday of every month after 1:00 PM EST. \nAuto Posts will be sent tomorrow, November 29th, at 2:00 PM due to the atypical release of new bonuses.`)
 
     //if ( (aDay === 3) ) { //Test for today 0 = Sunday, 1 = Monday ... 6 = Saturday
 		if ( (aDay === 2) && (aHour < 17) && (aDigit <= 7) ) { //If it's Tuesday(2) before 1:00PM EST (17) and the first week of the month
