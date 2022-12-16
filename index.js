@@ -79,20 +79,9 @@ client.on('interactionCreate', async interaction => {
 	if (!command) return;
 
 	try {
-
-		if (interaction.user.id === process.env.USER_ID_1) {
-
-      let tosEmbed = new EmbedBuilder()
-      .setColor('Orange') 
-      .setTitle(`Uh Oh!`)
-      .setDescription(`It looks like Discord is under a heavy load.`);
-			
-			interaction.reply({embeds: [tosEmbed], ephemeral: true});
-		}
-		else {
 			command.execute(interaction);
-		}
 	} catch (error) {
+		console.log(`There was an error! \n${error.stack}`);
 
       let errorEmbed = new EmbedBuilder()
       .setColor('Red') 
@@ -109,7 +98,7 @@ client.on('interactionCreate', async interaction => {
 			if ((error.toString().includes("50027")) || (error.toString().includes("10008"))) {
 				await interaction.reply({ embeds: [trafficError], ephemeral: true });
 				console.log(`There was an error! \n${error.stack}`);
-				handleRateLimit();
+				process.kill(1);
 			}
 			else {
 				await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
@@ -120,7 +109,7 @@ client.on('interactionCreate', async interaction => {
 			if ((error.toString().includes("50027")) || (error.toString().includes("10008"))) {
 				await interaction.reply({ embeds: [trafficError], ephemeral: true });
 				console.log(`There was an error! \n${error.stack}`);
-				handleRateLimit();
+				process.kill(1);
 			}
 			else {
 				await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
@@ -131,7 +120,7 @@ client.on('interactionCreate', async interaction => {
 			if ((error.toString().includes("50027")) || (error.toString().includes("10008"))) {
 				await interaction.editReply({ embeds: [trafficError], ephemeral: true });
 				console.log(`There was an error! \n${error.stack}`);
-				handleRateLimit();
+				process.kill(1);
 			}		
 			else {
 				await interaction.editReply({ embeds: [errorEmbed], ephemeral: true });

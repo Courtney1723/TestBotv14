@@ -7,6 +7,5 @@ module.exports = {
 		.setDMPermission(true),
 	async execute(interaction) {
 		await interaction.reply('Pong!');
-		
 	},
 };

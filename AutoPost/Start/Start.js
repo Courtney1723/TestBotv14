@@ -91,7 +91,7 @@ Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for **the first Tu
 					await interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
 				}	
 		else if (AdminRequired() === undefined) {
-			await interaction.followUp({ content: `It looks like this is your first time using this command. Please try the start button again. :) `, ephemeral: true });
+			await interaction.followUp({ content: `It looks like this is your first time using this command. Please try the start button again.`, ephemeral: true });
 		}
 		else if (AdminRequired() === "AdminRequiredYes") { //if admin permissions are required
 			if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) {

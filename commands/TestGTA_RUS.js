@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 const phantom = require('phantom'); //https://github.com/amir20/phantomjs-node
+const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
 let errorEmbed = new EmbedBuilder()
 	.setColor('Red')
 	.setTitle(`Uh Oh!`)
@@ -8,8 +9,8 @@ let errorEmbed = new EmbedBuilder()
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('gta')
-		.setDescription('Latest GTA V online bonuses and discounts')
+		.setName('testgta')
+		.setDescription('Latest GTA V online bonuses and discounts in russian')
 		.setDMPermission(true),
 	async execute(interaction) {
 		await interaction.deferReply().catch(console.error);
@@ -45,7 +46,58 @@ module.exports = {
 			let urlLink = urlLink01[1];
 			//console.log(`urlLink: ${urlLink01[1]}`);
 
-			let url = `${baseURL}${urlHash}/${urlSlug}`;
+			fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
+			  if (err) {console.log(`Error: ${err}`)} 
+				else {
+					let lang03 = data.split("lang:");
+					//console.log(`lang03.length: ${lang03.length}`);
+
+					let langArray = [];
+					for (i=1; i <= lang03.length - 1; i++) { //first will always be undefined
+						let lang02 = lang03[i].split(" -");
+						//console.log(`lang02 at ${i}: ${lang02}`);
+						
+						let lang01 = lang02[0];
+						//console.log(`lang01 at ${i}: ${lang01}`);
+
+						langArray.push(lang01);
+					}
+
+					//console.log(`langArray: ${langArray}`);
+
+					let guildID03 = data.split("guild:");
+					//console.log(`guildID03.length: ${guildID03.length}`);
+					let guildIDArray = [];
+					for (i=2; i <= guildID03.length - 1; i++) { //first two will always be undefined
+						let guildID02 = guildID03[i].split(" -");
+						//console.log(`lang02 at ${i}: ${lang02}`);
+						
+						let guildID01 = guildID02[0];
+						//console.log(`lang01 at ${i}: ${lang01}`);
+
+						guildIDArray.push(guildID01);
+					}
+
+					//console.log(`guildIDArray: ${guildIDArray}`);	
+
+					let lang = "";
+					for (i=0; i <= guildIDArray.length - 1; i++) {
+						//console.log(`guildIDArray at ${i}: ${guildIDArray[i]}`);
+						//console.log(`langArray at ${i}: ${langArray[i]}`);
+						//console.log(`interaction.guildID at ${i}: ${interaction.guild.id}`);
+
+						if (interaction.guild.id === guildIDArray[i]) {
+							lang += `${langArray[i]}`;
+						}
+					}
+
+					console.log(`lang: ${lang}`);
+				
+
+			let langBase = `/?lang=`;
+			let langURL = `${langBase}${lang}`;
+			
+			let url = `${baseURL}${urlHash}/${urlSlug}${langURL}`;
 			//console.log(`url: ${url}`);
 
 			const gtaStatus = await page.open(url);
@@ -222,7 +274,7 @@ module.exports = {
 						return `${gtaTitleString}`;
 					}
 					let GTA_Title = titleCapitalization(GTABonuses);
-					console.log(`GTA_Title at ${i}: ${GTA_Title}`);		
+					//console.log(`GTA_Title at ${i}: ${GTA_Title}`);		
 					//--------------------END capitalization Function-----------------//		
 
 					//-----BEGIN get the index of "Only on PlayStation..." title-----//
@@ -380,6 +432,7 @@ module.exports = {
 					.replace(/• undefined/g, "• ")
 					.replace(/• \n\n/g, "")
 
+
 				//console.log(`gtaFinalString: ${gtaFinalString}`);
 				function gtaPost() {
 					return gtaFinalString.slice(0, 3822); //FIXME: adjust this for the best break - up to 4000
@@ -402,24 +455,69 @@ module.exports = {
 				}
 				function gtaFooterMax() {
 					if (gtaFinalString.length > 4000) {
-						return `\n** [click here](${url}) for more details**`;
+						if (lang === "en") {
+							return `\n** [click here](${url}) for more details**`;
+						}
+						else if (lang === "es" ) {
+							return `\n** [haga clic aquí](${url}) para más detalles**`;
+						}
+						else if (lang === "ru" ) {
+							return `\n** [нажмите здесь](${url}) для получения более подробной информации**`;
+						}				
+						else if (lang === "de" ) {
+							return `\n** [Klicken Sie hier](${url}) für weitere Details**`;
+						}		
+						else {
+							return `\n** [click here](${url}) for more details**`;
+						}			
 					} else {
 						return "";
 					}
 				}
 				function gtaFooterMin() {
 					if (gtaFinalString.length <= 4000) {
-						return `** [click here](${url}) for more details**`;
+						if (lang === "en") {
+							return `** [click here](${url}) for more details**`;
+						}
+						else if (lang === "es" ) {
+							return `** [haga clic aquí](${url}) para más detalles**`;
+						}
+						else if (lang === "ru" ) {
+							return `** [нажмите здесь](${url}) для получения более подробной информации**`;
+						}				
+						else if (lang === "de" ) {
+							return `** [Klicken Sie hier](${url}) für weitere Details**`;
+						}		
+						else {
+							return `** [click here](${url}) for more details**`;
+						}			
 					} else {
 						return "";
 					}
 				}
 
+				function gtaTitleString() {
+					if (lang === "en") {
+						return "GTA Online Bonuses:";
+					}
+					else if (lang === "es" ) {
+						return "Bonificaciones de GTA Online:";				
+					}
+					else if (lang === "ru" ) {
+						return "Бонусы GTA Online:";					
+					}				
+					else if (lang === "de" ) {
+						return "Boni in GTA Online:";	
+					}		
+					else {
+						return "GTA Online Bonuses:";
+					}		
+				}
+				//console.log(`gtaTitleString: ${gtaTitleString()}`);
 
 				let gtaEmbed = new EmbedBuilder()
 					.setColor('0x00CD06') //Green
-					.setTitle('Grand Theft Auto V Online Weekly Bonuses & Discounts:')
-					.setDescription(`${gtaDate[0]}\n\n${gtaPost()} \n${gtaFooterMin()} ${elipseFunction()}`)
+					.setDescription(`**${gtaTitleString()}** \n${gtaDate[0]}\n\n${gtaPost()} \n${gtaFooterMin()} ${elipseFunction()}`)			
 				let gtaEmbed2 = new EmbedBuilder()
 					.setColor('0x00CD06') //Green
 					.setDescription(`${elipseFunction()} \n${gtaPost2()} ${gtaFooterMax()}`)
@@ -483,8 +581,8 @@ module.exports = {
 				interaction.editReply({ embeds: [RStarDownEmbed], ephemeral: true });
 				console.log(`The Rockstar Social Club website is down.`);
 			}
-
-
+				}
+			}); //end fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {}
 		}
 		else {
 			let RStarDownEmbed = new EmbedBuilder()
@@ -494,6 +592,7 @@ module.exports = {
 			console.log(`The Rockstar Social Club website is down.`);
 		}
 
+	
 
 
 	},
