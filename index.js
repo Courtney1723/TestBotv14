@@ -58,7 +58,7 @@ process.on("uncaughtException", async (err) => {
 process.on("uncaughtExceptionMonitor", async (err) => {
 	console.error("Uncaught Promise Exception (Monitor):\n", err.stack);
 });
-client.setMaxListeners(30); // prevents max listeners error for buttons (DO NOT SET OVER 100)
+client.setMaxListeners(40); // prevents max listeners error for buttons (DO NOT SET OVER 100)
 
 //checks for 429 errors at startup and every 5 minutes
 function handleRateLimit() {

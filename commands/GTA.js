@@ -28,7 +28,7 @@ module.exports = {
 			const content = await page.property('content'); // Gets the latest gta updates
 			//console.log(content); 
 
-			let baseURL = "https://socialclub.rockstargames.com/events/";
+			let baseURL = "https://socialclub.rockstargames.com/";
 
 			let urlHash02 = content.split("urlHash\":\"");
 			let urlHash01 = urlHash02[1].split("\"");
@@ -45,8 +45,8 @@ module.exports = {
 			let urlLink = urlLink01[1];
 			//console.log(`urlLink: ${urlLink01[1]}`);
 
-			let url = `${baseURL}${urlHash}/${urlSlug}`;
-			//console.log(`url: ${url}`);
+			let url = `${baseURL}/${urlLink}`;
+			console.log(`url: ${url}`);
 
 			const gtaStatus = await page.open(url);
 			if (gtaStatus === `success`) {
@@ -275,7 +275,9 @@ module.exports = {
 					else if (i === 0) { //if the bonus is an intro paragraph.
 						let introParas = GTA_Title.split("<p>")
 						//gtaFinalString01 += `• ${introParas[1]}\n`; //usual intro paragraph
-						gtaFinalString01 += `• ${introParas[1].charAt(0).toUpperCase()}${introParas[1].substr(1)}\n`; //not sure why the first word is lowercase?
+						console.log(`introParas[0]: ${introParas[0]}`);
+						//gtaFinalString01 += `• ${introParas[1].charAt(0).toUpperCase()}${introParas[1].substr(1)}\n`; //not sure why the first word is lowercase?
+						
 					}
 					else if (GTA_Bonus != null) { //if the bonus is not an intro paraghraph
 						let gtaParas = GTA_Bonus.split("<p>");

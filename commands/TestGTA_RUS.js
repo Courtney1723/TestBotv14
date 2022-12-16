@@ -29,7 +29,7 @@ module.exports = {
 			const content = await page.property('content'); // Gets the latest gta updates
 			//console.log(content); 
 
-			let baseURL = "https://socialclub.rockstargames.com/events/";
+			let baseURL = "https://socialclub.rockstargames.com";
 
 			let urlHash02 = content.split("urlHash\":\"");
 			let urlHash01 = urlHash02[1].split("\"");
@@ -86,18 +86,21 @@ module.exports = {
 						//console.log(`langArray at ${i}: ${langArray[i]}`);
 						//console.log(`interaction.guildID at ${i}: ${interaction.guild.id}`);
 
+					if ((interaction.channel.type === 0) || (interaction.channel.type === 5)) {
 						if (interaction.guild.id === guildIDArray[i]) {
-							lang += `${langArray[i]}`;
+								lang += `${langArray[i]}`;
+							}
 						}
 					}
 
-					console.log(`lang: ${lang}`);
+					//console.log(`lang: ${lang}`);
 				
 
 			let langBase = `/?lang=`;
 			let langURL = `${langBase}${lang}`;
 			
-			let url = `${baseURL}${urlHash}/${urlSlug}${langURL}`;
+			//let url = `${baseURL}${urlHash}/${urlSlug}${langURL}`;
+			let url = `${baseURL}/${urlLink}${langURL}`;
 			//console.log(`url: ${url}`);
 
 			const gtaStatus = await page.open(url);

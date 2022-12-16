@@ -68,7 +68,7 @@ module.exports = {
 				}
 			}
 
-			console.log(`lang: ${lang}`);
+			//console.log(`lang: ${lang}`);
 
 			if (lang === "en") { //English
 				const initialEmbed = new EmbedBuilder()
@@ -77,7 +77,8 @@ module.exports = {
 					.setDescription(`Your current language is English.
 		Clic **\'español\'** para cambiar el idioma a español.
 		Щелчок **\'Pусский\'** изменить язык на русский.
-		Klicken **\'Deutsch\'** um die Sprache auf Deutsch zu ändern.`)
+		Klicken **\'Deutsch\'** um die Sprache auf Deutsch zu ändern.
+		Clique **\'português\'** para alterar o idioma para português	`)
 					.setFooter({text: `Only Administrators can change languages.`, iconURL: process.env.logo_link })		
 
 
@@ -95,6 +96,10 @@ module.exports = {
 						.setCustomId(`german - ${interaction.user.id}`)
 						.setLabel('Deutsch')
 						.setStyle(ButtonStyle.Secondary),		
+					new ButtonBuilder()
+						.setCustomId(`portuguese - ${interaction.user.id}`)
+						.setLabel('português')
+						.setStyle(ButtonStyle.Success),						
 					);	
 
 					interaction.reply({ embeds: [initialEmbed], components:[initialButtons] });
@@ -106,7 +111,8 @@ module.exports = {
 					.setDescription(`Tu idioma actual es el español.
 		Click **\'English\'** to change the language to English.
 		Щелчок **\'Pусский\'** изменить язык на русский.
-		Klicken **\'Deutsch\'** um die Sprache auf Deutsch zu ändern.`)
+		Klicken **\'Deutsch\'** um die Sprache auf Deutsch zu ändern.
+		Clique **\'português\'** para alterar o idioma para português`)
 					.setFooter({text: `Solo los administradores pueden cambiar de idioma.`, iconURL: process.env.logo_link })
 
 			const initialButtons = new ActionRowBuilder()
@@ -123,6 +129,10 @@ module.exports = {
 						.setCustomId(`german - ${interaction.user.id}`)
 						.setLabel('Deutsch')
 						.setStyle(ButtonStyle.Secondary),		
+					new ButtonBuilder()
+						.setCustomId(`portuguese - ${interaction.user.id}`)
+						.setLabel('português')
+						.setStyle(ButtonStyle.Success),						
 					);			
 
 					interaction.reply({ embeds: [initialEmbed], components:[initialButtons] });
@@ -135,7 +145,8 @@ module.exports = {
 							.setDescription(`Ваш текущий язык - русский.
 			 	Click **\'English\'** to change the language to English.
 				Clic **\'español\'** para cambiar el idioma a español.
-				Klicken **\'Deutsch\'** um die Sprache auf Deutsch zu ändern.`)
+				Klicken **\'Deutsch\'** um die Sprache auf Deutsch zu ändern.
+				Clique **\'português\'** para alterar o idioma para português`)
 							.setFooter({text: `Только администраторы могут изменять языки.`, iconURL: process.env.logo_link })
 
 			const initialButtons = new ActionRowBuilder()
@@ -152,6 +163,10 @@ module.exports = {
 						.setCustomId(`german - ${interaction.user.id}`)
 						.setLabel('Deutsch')
 						.setStyle(ButtonStyle.Secondary),		
+				new ButtonBuilder()
+					.setCustomId(`portuguese - ${interaction.user.id}`)
+					.setLabel('português')
+					.setStyle(ButtonStyle.Success),						
 					);
 
 					interaction.reply({ embeds: [initialEmbed], components:[initialButtons] });
@@ -164,7 +179,8 @@ module.exports = {
 							.setDescription(`Ihre aktuelle Sprache ist Deutsch.
 			 	Click **\'English\'** to change the language to English.
 				Clic **\'español\'** para cambiar el idioma a español.
-				Щелчок **\'Pусский\'** изменить язык на русский.`)
+				Щелчок **\'Pусский\'** изменить язык на русский.
+				Clique **\'português\'** para alterar o idioma para português`)
 							.setFooter({text: `Nur Administratoren können die Sprache ändern.`, iconURL: process.env.logo_link })	
 
 		const initialButtons = new ActionRowBuilder()
@@ -180,20 +196,59 @@ module.exports = {
 				new ButtonBuilder()
 					.setCustomId(`russian - ${interaction.user.id}`)
 					.setLabel('Pусский')
-					.setStyle(ButtonStyle.Primary),										
+					.setStyle(ButtonStyle.Primary),		
+				new ButtonBuilder()
+					.setCustomId(`portuguese - ${interaction.user.id}`)
+					.setLabel('português')
+					.setStyle(ButtonStyle.Success),					
 			);		
 
 					interaction.reply({ embeds: [initialEmbed], components:[initialButtons] });
 				
+			}
+			else if (lang === "pt") { //English
+				const initialEmbed = new EmbedBuilder()
+					.setColor(`0x00FFCC`) //Seafoam green
+					.setTitle(`Configurações de idioma`)
+					.setDescription(`Seu idioma atual é o português.
+		Click **\'English\'** to change the language to English.
+		clique **\'español\'** para cambiar el idioma a español.
+		Щелчок **\'Pусский\'** изменить язык на русский.
+		Klicken **\'Deutsch\'** um die Sprache auf Deutsch zu ändern.`)
+					.setFooter({text: `Somente os administradores podem alterar o idioma.`, iconURL: process.env.logo_link })		
+
+
+			const initialButtons = new ActionRowBuilder()
+				.addComponents(		
+					new ButtonBuilder()
+						.setCustomId(`english - ${interaction.user.id}`)
+						.setLabel('English')
+						.setStyle(ButtonStyle.Success),					
+					new ButtonBuilder()
+						.setCustomId(`spanish - ${interaction.user.id}`)
+						.setLabel('español')
+						.setStyle(ButtonStyle.Danger),			
+					new ButtonBuilder()
+						.setCustomId(`russian - ${interaction.user.id}`)
+						.setLabel('Pусский')
+						.setStyle(ButtonStyle.Primary),						
+					new ButtonBuilder()
+						.setCustomId(`german - ${interaction.user.id}`)
+						.setLabel('Deutsch')
+						.setStyle(ButtonStyle.Secondary),		
+					);	
+
+					interaction.reply({ embeds: [initialEmbed], components:[initialButtons] });
 			}
 			else { //English
 				const initialEmbed = new EmbedBuilder()
 					.setColor(`0x00FFCC`) //Seafoam green
 					.setTitle(`Language Settings`)
 					.setDescription(`Your current language is English
-		Click **\'español\'** para cambiar el idioma a español.
-		Click **\'Pусский\'** изменить язык на русский.
-		Click **\'Deutsch\'** um die Sprache auf Deutsch zu ändern.`)
+		Clic **\'español\'** para cambiar el idioma a español.
+		Щелчок **\'Pусский\'** изменить язык на русский.
+		Klicken **\'Deutsch\'** um die Sprache auf Deutsch zu ändern.
+		Clique **\'português\'** para alterar o idioma para português`)
 					.setFooter({text: `Only Administrators can change languages.`, iconURL: process.env.logo_link })
 
 			const initialButtons = new ActionRowBuilder()
@@ -209,7 +264,11 @@ module.exports = {
 					new ButtonBuilder()
 						.setCustomId(`german - ${interaction.user.id}`)
 						.setLabel('Deutsch')
-						.setStyle(ButtonStyle.Secondary),					
+						.setStyle(ButtonStyle.Secondary),	
+					new ButtonBuilder()
+						.setCustomId(`portuguese - ${interaction.user.id}`)
+						.setLabel('português')
+						.setStyle(ButtonStyle.Success),						
 			);
 
 				interaction.reply({ embeds: [initialEmbed], components:[initialButtons] });
