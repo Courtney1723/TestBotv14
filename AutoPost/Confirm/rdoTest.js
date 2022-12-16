@@ -465,8 +465,8 @@ if (RDO_Bonus != undefined) {
 								guildRoleIds.push(role.id);
 							}
 					});
-			guildRoleIds.shift(1); //removes the @everyone role
-				//console.log(`guildRoleIds: ${guildRoleIds}`);
+			guildRoleIds.splice(guildRoleIds.length - 1); //.splice(guildRoleIds.length - 1) removes the @everyone role
+			//console.log(`guildRoleIds: ${guildRoleIds}`);
 
 		let rdoChannelIds = [];
 		fs.readFile('./RDODataBase.txt', 'utf8', async function (err, data) {
@@ -533,7 +533,7 @@ if (RDO_Bonus != undefined) {
 
 				//console.log(`guildRoleIds.length: ${guildRoleIds.length}`)
 				let hasARole = 0;
-				for (a=1;a<=guildRoleIds.length - 1;a++) { //iterates through each role - 0 is @everyone
+				for (a=0;a<=guildRoleIds.length - 1;a++) { //iterates through each role - 0 is @everyone
 					//console.log(`guildRoleIds at ${i}: ${guildRoleIds[i]}`);
 					if (interaction.member.roles.cache.has(guildRoleIds[a])) {
 						hasARole += 1;

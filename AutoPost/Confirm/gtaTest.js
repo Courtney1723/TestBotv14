@@ -82,7 +82,7 @@ function gtaTest() {
 		const content = await page.property('content'); // Gets the latest gta updates
 			//console.log(content); 
 
-		let baseURL = "https://socialclub.rockstargames.com/events/";
+		let baseURL = "https://socialclub.rockstargames.com";
 		
 		let urlHash02 = content.split("urlHash\":\"");
 		let urlHash01 = urlHash02[1].split("\"");
@@ -150,7 +150,7 @@ function gtaTest() {
 			let langBase = `/?lang=`;
 			let langURL = `${langBase}${lang}`;
 			
-			let url = `${baseURL}${urlHash}/${urlSlug}${langURL}`;
+			let url = `${baseURL}/${urlLink}${langURL}`;
 			//console.log(`url: ${url}`);		
 
 		const gtaStatus = await page.open(url);
@@ -643,7 +643,7 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 								guildRoleIds.push(role.id);
 							}
 					});
-			guildRoleIds.shift(1); //removes the @everyone role
+			guildRoleIds.splice(guildRoleIds.length - 1); //.splice(guildRoleIds.length - 1) removes the @everyone role
 				//console.log(`guildRoleIds: ${guildRoleIds}`);
 
 
@@ -713,7 +713,8 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 				//console.log(`guildRoleIds.length: ${guildRoleIds.length}`)
 				let hasARole = 0;
 				for (a=0;a<=guildRoleIds.length - 1;a++) { //iterates through each role - 0 is @everyone
-					//console.log(`guildRoleIds at ${i}: ${guildRoleIds[i]}`);
+					//console.log(`guildRoleIds at ${a}: ${guildRoleIds[a]}`);
+					//console.log(`hasARole at ${a}? ${interaction.member.roles.cache.has(guildRoleIds[a])}`);
 					if (interaction.member.roles.cache.has(guildRoleIds[a])) {
 						hasARole += 1;
 					}

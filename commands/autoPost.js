@@ -140,6 +140,35 @@ Klicken **\'Bestätigen\'** um aktuelle Einstellungen anzuzeigen.`)
 					.setStyle(ButtonStyle.Secondary),					
 			);		
 
+		const initialEmbedPt = new EmbedBuilder()
+			.setColor(`0x00FFCC`) //Seafoam green
+			.setTitle(`Definições de posts automáticos`)
+			.setDescription(`Clique **\'Começar\'** para adicionar um canal.
+Clique **\'Parar\'** para remover um canal.
+Clique **\'Configure\'** para adicionar ou remover uma função.
+Clique **\'Confirmar\'** para ver as definições atuais.`)
+			.setFooter({text: `Apenas os administradores podem iniciar, parar ou configurar publicações automáticas por predefinição.`, iconURL: process.env.logo_link })
+
+		const initialButtonsPt = new ActionRowBuilder()
+			.addComponents(
+				new ButtonBuilder()
+					.setCustomId(`start - ${interaction.user.id}`)
+					.setLabel('Começar')
+					.setStyle(ButtonStyle.Success),
+				new ButtonBuilder()
+					.setCustomId(`stop - ${interaction.user.id}`)
+					.setLabel('Parar')
+					.setStyle(ButtonStyle.Danger),			
+				new ButtonBuilder()
+					.setCustomId(`configure - ${interaction.user.id}`)
+					.setLabel('Configure')
+					.setStyle(ButtonStyle.Primary),						
+				new ButtonBuilder()
+					.setCustomId(`confirm - ${interaction.user.id}`)
+					.setLabel('Confirmar')
+					.setStyle(ButtonStyle.Secondary),					
+			);		
+
 			fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
 			  if (err) {console.log(`Error: ${err}`)} 
 				else {
@@ -185,7 +214,7 @@ Klicken **\'Bestätigen\'** um aktuelle Einstellungen anzuzeigen.`)
 						}
 					}
 
-					console.log(`lang: ${lang}`);
+					//console.log(`lang: ${lang}`);
 
 					if (lang === "en") {
 						//Initial Embed + Buttons (start, stop, confirm, configure)
@@ -202,6 +231,13 @@ Klicken **\'Bestätigen\'** um aktuelle Einstellungen anzuzeigen.`)
 					else if (lang === "de") {
 						//Initial Embed + Buttons (start, stop, confirm, configure)
 						interaction.reply({ embeds: [initialEmbedDe], components:[initialButtonsDe] });						
+					}
+					else if (lang === "pt") {
+						//Initial Embed + Buttons (start, stop, confirm, configure)
+						interaction.reply({ embeds: [initialEmbedPt], components:[initialButtonsPt] });						
+					}						
+					else {
+						interaction.reply({ embeds: [initialEmbed], components:[initialButtons] });
 					}
 
 				}

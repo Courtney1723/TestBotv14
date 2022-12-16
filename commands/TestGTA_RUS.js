@@ -459,19 +459,22 @@ module.exports = {
 				function gtaFooterMax() {
 					if (gtaFinalString.length > 4000) {
 						if (lang === "en") {
-							return `\n** [click here](${url}) for more details**`;
+							return `\n** [Click here](${url}) for more details**`;
 						}
 						else if (lang === "es" ) {
-							return `\n** [haga clic aquí](${url}) para más detalles**`;
+							return `\n** [Haga clic aquí](${url}) para más detalles**`;
 						}
 						else if (lang === "ru" ) {
-							return `\n** [нажмите здесь](${url}) для получения более подробной информации**`;
+							return `\n** [Hажмите здесь](${url}) для получения более подробной информации**`;
 						}				
 						else if (lang === "de" ) {
 							return `\n** [Klicken Sie hier](${url}) für weitere Details**`;
 						}		
+						else if (lang === "pt" ) {
+							return `\n** [Clique aqui](${url}) für weitere Details**`;
+						}								
 						else {
-							return `\n** [click here](${url}) for more details**`;
+							return `\n** [Click here](${url}) for more details**`;
 						}			
 					} else {
 						return "";
@@ -491,8 +494,11 @@ module.exports = {
 						else if (lang === "de" ) {
 							return `** [Klicken Sie hier](${url}) für weitere Details**`;
 						}		
+						else if (lang === "pt" ) {
+							return `** [Clique aqui](${url}) für weitere Details**`;
+						}									
 						else {
-							return `** [click here](${url}) for more details**`;
+							return `** [click here](${url}) clique aqui para mais detalhes**`;
 						}			
 					} else {
 						return "";
@@ -512,6 +518,9 @@ module.exports = {
 					else if (lang === "de" ) {
 						return "Boni in GTA Online:";	
 					}		
+					else if (lang === "pt" ) {
+						return "Bônus no GTA Online:";	
+					}								
 					else {
 						return "GTA Online Bonuses:";
 					}		
