@@ -249,7 +249,8 @@ module.exports = {
 					  await interaction.editReply({ embeds: [rdoStartEmbed], components: [rdoStartMenu, rdoStartMenu2, backButton] })
 		        .catch(err => console.log(`rdoStartEmbed+Menu Error: ${err.stack}`)); 
 					}					
-		    } else {
+		    } 
+				else {
 			    if (lang === "en") {
 						await interaction.followUp({ content: `These buttons are not for you.`, ephemeral: true });	
 					}
@@ -266,9 +267,10 @@ module.exports = {
 					  await interaction.followUp({ content: `Esses botões não são para você.`, ephemeral: true });
 					}
 					else {
-					  await interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
+						await interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
 					}
-		    }				
+				}
+		  			
 				
 			} //end if rdoChannelCount >24
 

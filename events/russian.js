@@ -82,7 +82,7 @@ module.exports = {
 			.setColor(`Green`) 
 			.setTitle(`Успех`)
 			.setDescription(`Язык этого сервера был изменен на русский.`)	
-			.setFooter({ text: 'Языком по умолчанию является английский. Некоторая информация может отсутствовать.', iconURL: process.env.logo_link });
+			.setFooter({ text: 'Языком по умолчанию является английский. Некоторая информация может отсутствовать или плохо переведена.', iconURL: process.env.logo_link });
 				
 
 					fs.writeFile('./LANGDataBase.txt', `${data.replace(`guild:${interaction.guild.id} - lang:${lang} - `, `guild:${interaction.guild.id} - lang:ru - `)}`, function (err) {

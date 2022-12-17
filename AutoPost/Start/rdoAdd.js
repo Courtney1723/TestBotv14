@@ -126,22 +126,22 @@ module.exports = {
 
 						const rdoConfirmEmbedEs = new EmbedBuilder()
 								.setColor(`Green`) 
-								.setTitle(`Success!`)
+								.setTitle(`Éxito`)
 								.setDescription(`Ahora recibirás publicaciones automáticas de Red Dead Redemption II en el canal <#${menuChannelID}> \n**el primer martes de cada mes a las 2:00 PM EST**.`)			
 
 						const rdoConfirmEmbedRu = new EmbedBuilder()
 								.setColor(`Green`) 
-								.setTitle(`Success!`)
+								.setTitle(`Успех`)
 								.setDescription(`Теперь вы будете получать автоматические сообщения Red Dead Redemption II на <#${menuChannelID}> канале \n**в первый вторник каждого месяца в 14:00 EST**.`)		
 
 						const rdoConfirmEmbedDe = new EmbedBuilder()
 								.setColor(`Green`) 
-								.setTitle(`Success!`)
+								.setTitle(`Erfolg`)
 								.setDescription(`Sie erhalten jetzt Red Dead Redemption II Auto-Posts auf dem <#${menuChannelID}>-Kanal \n**am ersten Dienstag eines jeden Monats um 14:00 Uhr EST**.`)	
 
 						const rdoConfirmEmbedPt = new EmbedBuilder()
 								.setColor(`Green`) 
-								.setTitle(`Success!`)
+								.setTitle(`Éxito`)
 								.setDescription(`Agora você receberá postagens automáticas de Red Dead Redemption II no canal <#${menuChannelID}> \n**na primeira terça-feira de cada mês às 14:00 EST**.`)							
 						
 						await interaction.deferUpdate();

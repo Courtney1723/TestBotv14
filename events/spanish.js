@@ -82,7 +82,7 @@ module.exports = {
 			.setColor(`Green`) 
 			.setTitle(`Éxito`)
 			.setDescription(`El idioma de este servidor se ha cambiado al español.`)
-			.setFooter({ text: 'El idioma predeterminado es el inglés. Es posible que falte alguna información.', iconURL: process.env.logo_link });
+			.setFooter({ text: 'El idioma predeterminado es el inglés. Es posible que falte alguna información o que esté mal traducida.', iconURL: process.env.logo_link });
 
 					fs.writeFile('./LANGDataBase.txt', `${data.replace(`guild:${interaction.guild.id} - lang:${lang} - `, `guild:${interaction.guild.id} - lang:es - `)}`, function (err) {
 						if (err) throw err;

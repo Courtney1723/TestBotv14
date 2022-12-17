@@ -144,7 +144,7 @@ function gtaTest() {
 						}
 					}
 
-					console.log(`lang: ${lang}`);
+					//console.log(`lang: ${lang}`);
 				
 
 			let langBase = `/?lang=`;
@@ -516,6 +516,9 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 						else if (lang === "de" ) {
 							return `\n** [Klicken Sie hier](${url}) für weitere Details**`;
 						}		
+						else if (lang === "pt" ) {
+							return `\n** [clique aqui](${url}) para mais detalhes**`;
+						}								
 						else {
 							return `\n** [click here](${url}) for more details**`;
 						}			
@@ -537,6 +540,9 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 						else if (lang === "de" ) {
 							return `** [Klicken Sie hier](${url}) für weitere Details**`;
 						}		
+						else if (lang === "pt" ) {
+							return `** [clique aqui](${url}) para mais detalhes**`;
+						}									
 						else {
 							return `** [click here](${url}) for more details**`;
 						}			
@@ -558,6 +564,9 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 					else if (lang === "de" ) {
 						return "Boni in GTA Online:";	
 					}		
+					else if (lang === "pt" ) {
+						return "Bônus no GTA Online:";	
+					}							
 					else {
 						return "GTA Online Bonuses:";
 					}		
@@ -595,9 +604,9 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 
 			//BELOW THIS DIFFERS FROM ALL OTHER GTA POSTS
 			if (gtaFinalString.length <= 4000) {
-				interaction.guild.channels.fetch(channelIDArray[c]).then(channel => channel.send(({embeds: [gtaImageEmbed, gtaEmbed]}))).catch(err => console.log(`Min Error: ${err.stack}`));
+				interaction.guild.channels.fetch(channelIDArray[c]).then(channel => channel.send(({embeds: [gtaImageEmbed, gtaEmbed]}))).catch(err => console.log(`RDO Test Min Error: ${err.stack}`));
 			} else {
-				interaction.guild.channels.fetch(channelIDArray[c]).then(channel => channel.send({embeds: [gtaImageEmbed, gtaEmbed, gtaEmbed2]})).catch(err => console.log(`Max Error: ${err.stack}`));
+				interaction.guild.channels.fetch(channelIDArray[c]).then(channel => channel.send({embeds: [gtaImageEmbed, gtaEmbed, gtaEmbed2]})).catch(err => console.log(`RDO Test Max Error: ${err.stack}`));
 			}
 			} //end if not undefined channel
 		} //end c loop

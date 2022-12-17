@@ -82,7 +82,7 @@ module.exports = {
 			.setColor(`Green`) 
 			.setTitle(`Êxito`)
 			.setDescription(`O idioma deste servidor foi alterado para português.`)
-			.setFooter({ text: 'O idioma padrão é o inglês. Algumas informações podem estar faltando.', iconURL: process.env.logo_link });
+			.setFooter({ text: 'O idioma padrão é o inglês. Algumas informações podem estar faltando ou mal traduzidas.', iconURL: process.env.logo_link });
 
 					fs.writeFile('./LANGDataBase.txt', `${data.replace(`guild:${interaction.guild.id} - lang:${lang} - `, `guild:${interaction.guild.id} - lang:pt - `)}`, function (err) {
 						if (err) throw err;

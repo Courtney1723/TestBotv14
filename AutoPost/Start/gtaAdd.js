@@ -51,7 +51,7 @@ module.exports = {
 				}
 			}		
 
-						fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
+			fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
 			  if (err) {console.log(`Error: ${err}`)} 
 				else {
 					let lang03 = data.split("lang:");
@@ -126,22 +126,22 @@ module.exports = {
 
 						const gtaConfirmEmbedEs = new EmbedBuilder()
 								.setColor(`Green`) 
-								.setTitle(`Success!`)
+								.setTitle(`Éxito`)
 								.setDescription(`Ahora recibirás publicaciones automáticas de GTA Online en el canal <#${menuChannelID}> \n**el primer martes de cada mes a las 2:00 PM EST**.`)			
 
 						const gtaConfirmEmbedRu = new EmbedBuilder()
 								.setColor(`Green`) 
-								.setTitle(`Success!`)
+								.setTitle(`Успех`)
 								.setDescription(`Теперь вы будете получать автоматические сообщения GTA Online на <#${menuChannelID}> канале \n**в первый вторник каждого месяца в 14:00 EST**.`)		
 
 						const gtaConfirmEmbedDe = new EmbedBuilder()
 								.setColor(`Green`) 
-								.setTitle(`Success!`)
+								.setTitle(`Erfolg`)
 								.setDescription(`Sie erhalten jetzt GTA Online Auto-Posts auf dem <#${menuChannelID}>-Kanal \n**am ersten Dienstag eines jeden Monats um 14:00 Uhr EST**.`)	
 
 						const gtaConfirmEmbedPt = new EmbedBuilder()
 								.setColor(`Green`) 
-								.setTitle(`Success!`)
+								.setTitle(`Éxito`)
 								.setDescription(`Agora você receberá postagens automáticas de GTA Online no canal <#${menuChannelID}> \n**na primeira terça-feira de cada mês às 14:00 EST**.`)							
 						
 						await interaction.deferUpdate();
@@ -173,7 +173,7 @@ module.exports = {
 							}							
 
 						//Appends the GTADataBase.txt file with guildID, Channel ID, and choice of gta of gta
-						fs.appendFile(`./GTADataBase.txt`,`guild:${interaction.guild.id} - channel:${menuChannelID} - gta_gta:gtaStartMenu - \n`, err => {
+					fs.appendFile(`./GTADataBase.txt`,`guild:${interaction.guild.id} - channel:${menuChannelID} - rdo_gta:gtaStartMenu - \n`, err => {
 							 if (err) {
 								 console.error(err);
 								 return

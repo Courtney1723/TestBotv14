@@ -471,7 +471,7 @@ module.exports = {
 							return `\n** [Klicken Sie hier](${url}) für weitere Details**`;
 						}		
 						else if (lang === "pt" ) {
-							return `\n** [Clique aqui](${url}) für weitere Details**`;
+							return `\n** [Clique aqui](${url}) para mais detalhes**`;
 						}								
 						else {
 							return `\n** [Click here](${url}) for more details**`;
@@ -495,7 +495,7 @@ module.exports = {
 							return `** [Klicken Sie hier](${url}) für weitere Details**`;
 						}		
 						else if (lang === "pt" ) {
-							return `** [Clique aqui](${url}) für weitere Details**`;
+							return `** [Clique aqui](${url}) para mais detalhes**`;
 						}									
 						else {
 							return `** [click here](${url}) clique aqui para mais detalhes**`;
