@@ -82,10 +82,10 @@ module.exports = {
 		
 										 //console.log(`interaction.guild.id: ${interaction.guild.id}`)
 										 //console.log(`menuChannelID: ${menuChannelID}`)
-										 //console.log(`data.replace: ${data.replace(`guild:${interaction.guild.id} - channel:${menuChannelID} - rdo_gta:gtaStartMenu - `, "")}`);
+										 //console.log(`data.replace: ${data.replace(`\nguild:${interaction.guild.id} - channel:${menuChannelID} - gta_gta:gtaStartMenu - `, "")}`);
 		
 		
-										fs.writeFile('./GTADataBase.txt', `${data.replace(`\nguild:${interaction.guild.id} - channel:${menuChannelID} - rdo_gta:gtaStartMenu - `, "")}`, function (err) {
+										fs.writeFile('./GTADataBase.txt', `${data.replace(`\nguild:${interaction.guild.id} - channel:${menuChannelID} - gta_gta:gtaStartMenu - `, "")}`, function (err) {
 											  if (err) throw err;
 											}); //end fs:writeFile to remove channel from autoposts
 		

@@ -51,6 +51,52 @@ module.exports = {
 				}
 			}		
 
+						fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
+			  if (err) {console.log(`Error: ${err}`)} 
+				else {
+					let lang03 = data.split("lang:");
+					//console.log(`lang03.length: ${lang03.length}`);
+
+					let langArray = [];
+					for (i=1; i <= lang03.length - 1; i++) { //first will always be undefined
+						let lang02 = lang03[i].split(" -");
+						//console.log(`lang02 at ${i}: ${lang02}`);
+						
+						let lang01 = lang02[0];
+						//console.log(`lang01 at ${i}: ${lang01}`);
+
+						langArray.push(lang01);
+					}
+
+					//console.log(`langArray: ${langArray}`);
+
+					let guildID03 = data.split("guild:");
+					//console.log(`guildID03.length: ${guildID03.length}`);
+					let guildIDArray = [];
+					for (i=2; i <= guildID03.length - 1; i++) { //first two will always be undefined
+						let guildID02 = guildID03[i].split(" -");
+						//console.log(`lang02 at ${i}: ${lang02}`);
+						
+						let guildID01 = guildID02[0];
+						//console.log(`lang01 at ${i}: ${lang01}`);
+
+						guildIDArray.push(guildID01);
+					}
+
+					//console.log(`guildIDArray: ${guildIDArray}`);	
+
+					let lang = "";
+					for (i=0; i <= guildIDArray.length - 1; i++) {
+						//console.log(`guildIDArray at ${i}: ${guildIDArray[i]}`);
+						//console.log(`langArray at ${i}: ${langArray[i]}`);
+						//console.log(`interaction.guildID at ${i}: ${interaction.guild.id}`);
+
+						if (interaction.guild.id === guildIDArray[i]) {
+							lang += `${langArray[i]}`;
+						}
+					}
+
+					//console.log(`lang: ${lang}`);	
 
 					if (interaction.user.id != menuUserID) {
 						interaction.reply({ content: `These options aren't for you!`, ephemeral: true });
@@ -76,29 +122,90 @@ module.exports = {
 						const rdoConfirmEmbed = new EmbedBuilder()
 								.setColor(`Green`) 
 								.setTitle(`Success!`)
-								.setDescription(`You will now get Red Dead Redemption II Auto Posts to the <#${menuChannelID}> channel \n**the first Tuesday of every month at 2:00 PM EST**.`)	
+								.setDescription(`You will now get Red Dead Redemption II auto posts to the _____ channel \n**the first Tuesday of every month at 2:00 PM EST**.`)	
+
+						const rdoConfirmEmbedEs = new EmbedBuilder()
+								.setColor(`Green`) 
+								.setTitle(`Success!`)
+								.setDescription(`Ahora recibirás publicaciones automáticas de Red Dead Redemption II en el canal <#${menuChannelID}> \n**el primer martes de cada mes a las 2:00 PM EST**.`)			
+
+						const rdoConfirmEmbedRu = new EmbedBuilder()
+								.setColor(`Green`) 
+								.setTitle(`Success!`)
+								.setDescription(`Теперь вы будете получать автоматические сообщения Red Dead Redemption II на <#${menuChannelID}> канале \n**в первый вторник каждого месяца в 14:00 EST**.`)		
+
+						const rdoConfirmEmbedDe = new EmbedBuilder()
+								.setColor(`Green`) 
+								.setTitle(`Success!`)
+								.setDescription(`Sie erhalten jetzt Red Dead Redemption II Auto-Posts auf dem <#${menuChannelID}>-Kanal \n**am ersten Dienstag eines jeden Monats um 14:00 Uhr EST**.`)	
+
+						const rdoConfirmEmbedPt = new EmbedBuilder()
+								.setColor(`Green`) 
+								.setTitle(`Success!`)
+								.setDescription(`Agora você receberá postagens automáticas de Red Dead Redemption II no canal <#${menuChannelID}> \n**na primeira terça-feira de cada mês às 14:00 EST**.`)							
 						
 						await interaction.deferUpdate();
 						if (interaction.user.id === menuUserID) {
+
+							if (lang === "en") {
 								await interaction.editReply({ embeds: [rdoConfirmEmbed], components: [] })
 								.catch(err => console.log(`rdoConfirmEmbed Error: ${err}`));
+							}
+							else if (lang === "es") {
+							  await interaction.editReply({ embeds: [rdoConfirmEmbedEs], components: [] })
+								.catch(err => console.log(`rdoConfirmEmbed Error: ${err}`));
+							}
+							else if (lang === "ru") {
+							  await interaction.editReply({ embeds: [rdoConfirmEmbedRu], components: [] })
+								.catch(err => console.log(`rdoConfirmEmbed Error: ${err}`));
+							}
+							else if (lang === "de") {
+							  await interaction.editReply({ embeds: [rdoConfirmEmbedDe], components: [] })
+								.catch(err => console.log(`rdoConfirmEmbed Error: ${err}`));
+							}
+							else if (lang === "pt") {
+							  await interaction.editReply({ embeds: [rdoConfirmEmbedPt], components: [] })
+								.catch(err => console.log(`rdoConfirmEmbed Error: ${err}`));
+							}
+							else {
+							  await interaction.editReply({ embeds: [rdoConfirmEmbed], components: [] })
+								.catch(err => console.log(`rdoConfirmEmbed Error: ${err}`));
+							}							
 
 						//Appends the RDODataBase.txt file with guildID, Channel ID, and choice of rdo of rdo
 						fs.appendFile(`./RDODataBase.txt`,`guild:${interaction.guild.id} - channel:${menuChannelID} - rdo_gta:rdoStartMenu - \n`, err => {
 							 if (err) {
-								 console.error(err)
+								 console.error(err);
 								 return
 									 }		
-							console.log(`A user added a channel for RDO auto posts.`)
+							console.log(`A user added a channel for RDO auto posts.`);
 						}); // end fs:appendFile to add a channel for rdo autop posts	
 							
 						} else {
-								interaction.followUp({ content: `These options aren't for you!`, ephemeral: true });
+							if (lang === "en") {
+								await interaction.followUp({ content: `These buttons are not for you.`, ephemeral: true });
+							}
+							else if (lang === "es") {
+								await interaction.followUp({ content: `Estas opciones no son para ti.`, ephemeral: true });
+							}
+							else if (lang === "ru") {
+								await interaction.followUp({ content: `Эти варианты не для вас.`, ephemeral: true });
+							}
+							else if (lang === "de") {
+								await interaction.followUp({ content: `Diese Optionen sind nichts für Sie.`, ephemeral: true });
+							}
+							else if (lang === "pt") {
+								await interaction.followUp({ content: `Esses Opções não são para você.`, ephemeral: true });
+							}
+							else {
+								await interaction.followUp({ content: `These buttons are not for you.`, ephemeral: true });
+							}
 						}
 						
 					} //end add new channel
 
-		});//end fs:readFile	
+				}}); //end fs.readFileLANGDataBase
+		});//end fs:readFileRolesDataBase	
 			
 		setTimeout(() => {
 			interaction.editReply({components: []})

@@ -33,12 +33,83 @@ module.exports = {
 				//console.log(`interaction.user.id === buttonUserID? ${interaction.user.id === buttonUserID}`)						
 
 			//console.log(`begin gtastart - ${interaction.customId}`);
+
+		fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
+			  if (err) {console.log(`Error: ${err}`)} 
+				else {
+					let lang03 = data.split("lang:");
+					//console.log(`lang03.length: ${lang03.length}`);
+
+					let langArray = [];
+					for (i=1; i <= lang03.length - 1; i++) { //first will always be undefined
+						let lang02 = lang03[i].split(" -");
+						//console.log(`lang02 at ${i}: ${lang02}`);
+						
+						let lang01 = lang02[0];
+						//console.log(`lang01 at ${i}: ${lang01}`);
+
+						langArray.push(lang01);
+					}
+
+					//console.log(`langArray: ${langArray}`);
+
+					let guildID03 = data.split("guild:");
+					//console.log(`guildID03.length: ${guildID03.length}`);
+					let guildIDArray = [];
+					for (i=2; i <= guildID03.length - 1; i++) { //first two will always be undefined
+						let guildID02 = guildID03[i].split(" -");
+						//console.log(`lang02 at ${i}: ${lang02}`);
+						
+						let guildID01 = guildID02[0];
+						//console.log(`lang01 at ${i}: ${lang01}`);
+
+						guildIDArray.push(guildID01);
+					}
+
+					//console.log(`guildIDArray: ${guildIDArray}`);	
+
+					let lang = "";
+					for (i=0; i <= guildIDArray.length - 1; i++) {
+						//console.log(`guildIDArray at ${i}: ${guildIDArray[i]}`);
+						//console.log(`langArray at ${i}: ${langArray[i]}`);
+						//console.log(`interaction.guildID at ${i}: ${interaction.guild.id}`);
+
+						if (interaction.guild.id === guildIDArray[i]) {
+							lang += `${langArray[i]}`;
+						}
+					}
+
+					//console.log(`lang: ${lang}`);				
 			
 			const gtaStartEmbed = new EmbedBuilder()
-			.setColor(`Green`) 
-			.setTitle(`Start Auto Posting GTAV Online Bonuses & Discounts`)
-			.setDescription(`Click **the dropdown menu** to confirm the channel you want to send Grand Theft Auto V Auto Posts to \n**every Thursday at 2:00 PM EST**.`)	
-			.setFooter({ text: 'Auto posts can only be sent to text channels the bot has permission to \'Send Messages\' in.', iconURL: process.env.logo_link });
+				.setColor(`Green`) 
+				.setTitle(`Start auto posting GTAV Online bonuses & Discounts`)
+				.setDescription(`Click **the dropdown menu** to confirm the channel you want to send Grand Theft Auto V auto posts to \n**every Thursday at 2:00 PM EST**.`)	
+				.setFooter({ text: 'Auto posts can only be sent to text channels the bot has permission to \'Send Messages\' in.', iconURL: process.env.logo_link });
+
+			const gtaStartEmbedEs = new EmbedBuilder()
+				.setColor(`Green`) 
+				.setTitle(`Comience a publicar automáticamente los bonos de GTAV Online`)
+				.setDescription(`Clic **el menú desplegable** para confirmar el canal al que desea enviar publicaciones automáticas de Grand Theft Auto V \n** todos los jueves a las 2:00 PM EST**.`)	
+				.setFooter({ text: 'Las publicaciones automáticas solo se pueden enviar a canales de texto en los que el bot tiene permiso para \'Enviar mensajes\'.', iconURL: process.env.logo_link });	
+
+			const gtaStartEmbedRu = new EmbedBuilder()
+				.setColor(`Green`) 
+				.setTitle(`Начать автоматическую публикацию GTAV Онлайн бонусы`)
+				.setDescription(`Щелчок **раскрывающееся меню** для подтверждения канала, вы хотите отправлять автопосты GTA Online на \n**каждый четверг в 14:00 EST**.`)	
+				.setFooter({ text: 'Автоматические сообщения могут быть отправлены только на текстовые каналы, на которые бот имеет разрешение \'Отправить сообщения\'.', iconURL: process.env.logo_link });		
+
+			const gtaStartEmbedDe = new EmbedBuilder()
+				.setColor(`Green`) 
+				.setTitle(`Starten Sie die automatische Veröffentlichung von GTA Online-Boni`)
+				.setDescription(`Klicken **Das Dropdown-Menü** um den Kanal zu bestätigen, an den Sie GTA Online Auto-Beiträge senden möchten \n**jeden Donnerstag um 14:00 Uhr EST**.`)	
+				.setFooter({ text: 'Automatische Beiträge können nur an Textkanäle gesendet werden, in denen der Bot die Berechtigung zum Senden von Nachrichten hat.', iconURL: process.env.logo_link });	
+
+			const gtaStartEmbedPt = new EmbedBuilder()
+				.setColor(`Green`) 
+				.setTitle(`Comece a postar automaticamente bônus GTA Online`)
+				.setDescription(`Clique **o menu suspenso** para confirmar o canal que você deseja enviar Grand Theft Auto V auto posts para \n**todas as quintas-feiras às 14:00 EST**.`)	
+				.setFooter({ text: 'Auto posts só pode ser enviado para canais de texto o bot tem permissão para \'Enviar mensagens\' em.', iconURL: process.env.logo_link });					
 
 			let gtaChannelCount = 0;
 				interaction.guild.channels.cache.forEach(channel => {
@@ -80,13 +151,43 @@ module.exports = {
 			        }]);
 			    }
 				}
+
 			const backButton = new ActionRowBuilder()
 				.addComponents(
 					new ButtonBuilder()
-			        .setCustomId(`gtastartback - ${interaction.user.id}`)
+			        .setCustomId(`rdostartback - ${interaction.user.id}`)
 			        .setLabel('Go Back')
 			        .setStyle(ButtonStyle.Secondary),	
-			);	
+				);
+			const backButtonEs = new ActionRowBuilder()
+				.addComponents(
+					new ButtonBuilder()
+			        .setCustomId(`rdostartback - ${interaction.user.id}`)
+			        .setLabel('Volver')
+			        .setStyle(ButtonStyle.Secondary),	
+				);
+			const backButtonRu = new ActionRowBuilder()
+				.addComponents(
+					new ButtonBuilder()
+			        .setCustomId(`rdostartback - ${interaction.user.id}`)
+			        .setLabel('Вернуться')
+			        .setStyle(ButtonStyle.Secondary),	
+				);
+			const backButtonDe = new ActionRowBuilder()
+				.addComponents(
+					new ButtonBuilder()
+			        .setCustomId(`rdostartback - ${interaction.user.id}`)
+			        .setLabel('Zurück')
+			        .setStyle(ButtonStyle.Secondary),	
+				);
+			const backButtonPt = new ActionRowBuilder()
+				.addComponents(
+					new ButtonBuilder()
+			        .setCustomId(`rdostartback - ${interaction.user.id}`)
+			        .setLabel('Voltar')
+			        .setStyle(ButtonStyle.Secondary),	
+				);
+				
 			let gtaStartMenu2 = new ActionRowBuilder()
 			    .addComponents(
 			        new StringSelectMenuBuilder()
@@ -112,28 +213,107 @@ module.exports = {
 				}
 
 				if (interaction.user.id === buttonUserID) { 
-		        await interaction.editReply({ embeds: [gtaStartEmbed], components: [gtaStartMenu, gtaStartMenu2, backButton] })
+		      if (lang === "en") {
+						await interaction.editReply({ embeds: [gtaStartEmbed], components: [gtaStartMenu, gtaStartMenu2, backButton] })
 		        .catch(err => console.log(`gtaStartEmbed+Menu Error: ${err.stack}`));
+					}
+					else if (lang === "es") {
+					  await interaction.editReply({ embeds: [gtaStartEmbedEs], components: [gtaStartMenu, gtaStartMenu2, backButtonEs] })
+		        .catch(err => console.log(`gtaStartEmbed+Menu Error: ${err.stack}`));
+					}
+					else if (lang === "ru") {
+					  await interaction.editReply({ embeds: [gtaStartEmbedRu], components: [gtaStartMenu, gtaStartMenu2, backButtonRu] })
+		        .catch(err => console.log(`gtaStartEmbed+Menu Error: ${err.stack}`));
+					}
+					else if (lang === "de") {
+					  await interaction.editReply({ embeds: [gtaStartEmbedDe], components: [gtaStartMenu, gtaStartMenu2, backButtonDe] })
+		        .catch(err => console.log(`gtaStartEmbed+Menu Error: ${err.stack}`));
+					}
+					else if (lang === "pt") {
+					  await interaction.editReply({ embeds: [gtaStartEmbedPt], components: [gtaStartMenu, gtaStartMenu2, backButtonPt] })
+		        .catch(err => console.log(`gtaStartEmbed+Menu Error: ${err.stack}`));
+					}
+					else {
+					  await interaction.editReply({ embeds: [gtaStartEmbed], components: [gtaStartMenu, gtaStartMenu2, backButton] })
+		        .catch(err => console.log(`gtaStartEmbed+Menu Error: ${err.stack}`)); 
+					}
 		    } else {
-		       interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
-		    }				
+			    if (lang === "en") {
+						await interaction.followUp({ content: `These buttons are not for you.`, ephemeral: true });	
+					}
+					else if (lang === "es") {
+					  await interaction.followUp({ content: `Estos botones no son para ti.`, ephemeral: true });
+					}
+					else if (lang === "ru") {
+					  await interaction.followUp({ content: `Эти кнопки не для вас.`, ephemeral: true });
+					}
+					else if (lang === "de") {
+					  await interaction.followUp({ content: `Diese Schaltflächen sind nicht für Sie.`, ephemeral: true });
+					}
+					else if (lang === "pt") {
+					  await interaction.followUp({ content: `Esses botões não são para você.`, ephemeral: true });
+					}
+					else {
+					  await interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
+					}
+				}				
 				
 			} //end if gtaChannelCount >24
 			else if (gtaChannelCount <= 23) { //if there are 23 channels or fewer
 				
 
 		if (interaction.user.id === buttonUserID) { 
-        await interaction.editReply({ embeds: [gtaStartEmbed], components: [gtaStartMenu, backButton] })
-        .catch(err => console.log(`gtaStartEmbed+Menu Error: ${err.stack}`));
+			if (lang === "en") {
+				await interaction.editReply({ embeds: [gtaStartEmbed], components: [gtaStartMenu, gtaStartMenu2, backButton] })
+				.catch(err => console.log(`gtaStartEmbed+Menu Error: ${err.stack}`));
+			}
+			else if (lang === "es") {
+				await interaction.editReply({ embeds: [gtaStartEmbedEs], components: [gtaStartMenu, gtaStartMenu2, backButtonEs] })
+				.catch(err => console.log(`gtaStartEmbed+Menu Error: ${err.stack}`));
+			}
+			else if (lang === "ru") {
+				await interaction.editReply({ embeds: [gtaStartEmbedRu], components: [gtaStartMenu, gtaStartMenu2, backButtonRu] })
+				.catch(err => console.log(`gtaStartEmbed+Menu Error: ${err.stack}`));
+			}
+			else if (lang === "de") {
+				await interaction.editReply({ embeds: [gtaStartEmbedDe], components: [gtaStartMenu, gtaStartMenu2, backButtonDe] })
+				.catch(err => console.log(`gtaStartEmbed+Menu Error: ${err.stack}`));
+			}
+			else if (lang === "pt") {
+				await interaction.editReply({ embeds: [gtaStartEmbedPt], components: [gtaStartMenu, gtaStartMenu2, backButtonPt] })
+				.catch(err => console.log(`gtaStartEmbed+Menu Error: ${err.stack}`));
+			}
+			else {
+				await interaction.editReply({ embeds: [gtaStartEmbed], components: [gtaStartMenu, gtaStartMenu2, backButton] })
+				.catch(err => console.log(`gtaStartEmbed+Menu Error: ${err.stack}`)); 
+			}
     } else {
-       interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
+			if (lang === "en") {
+				await interaction.followUp({ content: `These buttons are not for you.`, ephemeral: true });	
+			}
+			else if (lang === "es") {
+				await interaction.followUp({ content: `Estos botones no son para ti.`, ephemeral: true });
+			}
+			else if (lang === "ru") {
+				await interaction.followUp({ content: `Эти кнопки не для вас.`, ephemeral: true });
+			}
+			else if (lang === "de") {
+				await interaction.followUp({ content: `Diese Schaltflächen sind nicht für Sie.`, ephemeral: true });
+			}
+			else if (lang === "pt") {
+				await interaction.followUp({ content: `Esses botões não são para você.`, ephemeral: true });
+			}
+			else {
+				await interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
+			}
     }
 				
 		} //end if there are fewer than 23 channels
 
 				setTimeout(() => {
 					interaction.editReply({components: [expiredButton]})
-				}, (60000 * 2))					
+				}, (60000 * 2))		
+					}}); //end fs.readfile LANGDataBase
 		
 		} // end if gtastart button
 		
