@@ -1,3 +1,0 @@
-guild:undefined - undefined - 
-guild:822761002546364417 - lang:en - 
-guild:981688162382413946 - lang:es - 
