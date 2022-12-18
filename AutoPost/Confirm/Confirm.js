@@ -266,226 +266,259 @@ module.exports = {
 			  ConfigureConfirmString += `• <@&${interaction.guild.id}> can configure auto posts.\n`;
 			}
     }	
+
+		function confirmTitleString() {
+			if (lang === "en") {
+				return `Your Current Auto Post Channels:`;
+			}
+			else if (lang === "es") {
+				return `Tus canales actuales de publicación automática:`;
+			}
+			else if (lang === "ru") {
+				return `Текущие настройки автоматической публикации:`;
+			}
+			else if (lang === "de") {
+				return `Ihre aktuellen Auto-Post-Kanäle:`;
+			}
+			else if (lang === "pt") {
+				return `Seus canais de publicação automática atuais:`;
+			}
+			else {
+			  return `Your Current Auto Post Channels:`;
+			}			
+		}
+
+		function rolesAllowedTitleString() {
+			if (lang === "en") {
+					return `Roles Allowed to Configure Auto Posts:`;	
+			}
+			else if (lang === "es") {
+				return `Roles permitidos para configurar publicaciones automáticas`;	
+			}
+			else if (lang === "ru") {
+				return `Роли, которым разрешено настраивать автоматические публикации:`;	
+			}
+			else if (lang === "de") {
+				return `Rollen, die automatische Beiträge konfigurieren dürfen:`;	
+			}
+			else if (lang === "pt") {
+				return `Posições que têm permissão para configurar postagens automáticas:`;	
+			}
+			else {
+				return `Roles Allowed to Configure Auto Posts`;	
+			}			
+		}
+
+		function testGTAString() {
+			if (lang === "en") {
+					return `Click **\'Test GTA\'** to send a test post to your subscribed GTA Online channel(s).`;
+			}
+			else if (lang === "es") {
+				return `Clic **\'Prueba GTA\'** para enviar una publicación de prueba a sus canal(es) GTA Online suscritos.`;
+			}
+			else if (lang === "ru") {
+				return `Щелчок **\'Тест GTA\'** для того, чтобы отправить тестовое сообщение на подписанные каналы GTA Online.`;
+			}
+			else if (lang === "de") {
+				return `Klicken Sie auf **\'GTA testen'**, um einen Testbeitrag an Ihre abonnierten GTA-Kanäle zu senden.`;
+			}
+			else if (lang === "pt") {
+				return `Clique em **\'Testar GTA\'** para enviar uma postagem de teste para seus canais GTA inscritos.`;
+			}
+			else {
+			  return `Click **\'Test GTA\'** to send a test post to your subscribed GTA Online channel(s).`;
+			}			
+		}
+
+		function testRDOString() {
+			if (lang === "en") {
+					return `Click **\'Test RDO\'** to send a test post to your subscribed GTA Online channel(s).`;
+			}
+			else if (lang === "es") {
+				return `Clic **\'Prueba RDO\'** para enviar una publicación de prueba a sus canal(es) RDO suscritos.`;
+			}
+			else if (lang === "ru") {
+				return `Щелчок **\'Тест RDO\'** для того, чтобы отправить тестовое сообщение на подписанные каналы RDO.`;
+			}
+			else if (lang === "de") {
+				return `Klicken Sie auf **\'RDO testen\'**, um einen Testbeitrag an Ihre abonnierten RDO-Kanäle zu senden.`;
+			}
+			else if (lang === "pt") {
+				return `Clique em **\'Testar RDO\'** para enviar uma postagem de teste para seus canais RDO inscritos.`;
+			}
+			else {
+			  return `Click **\'Test RDO\'** to send a test post to your subscribed GTA Online channel(s).`;
+			}			
+		}			
+
+		function footerString() {
+			if (lang === "en") {
+					return `You must be an administrator or have a role listed above to test auto posts.`;
+			}
+			else if (lang === "es") {
+				return `Debe ser administrador o tener un rol mencionado anteriormente para probar publicaciones automáticas.`;
+			}
+			else if (lang === "ru") {
+				return `Для тестирования автоматических публикаций необходимо быть администратором или иметь роль, указанную выше.`;
+			}
+			else if (lang === "de") {
+				return `Sie müssen Administrator sein oder über eine der oben aufgeführten Rollen verfügen, um automatische Beiträge testen zu können.`;
+			}
+			else if (lang === "pt") {
+				return `Você deve ser um administrador ou ter uma função listada acima para testar postagens automáticas.`;
+			}
+			else {
+				return `You must be an administrator or have a role listed above to test auto posts.`;
+			}
+		}
+
+		function testGTAButtonString() {
+			if (lang === "en") {
+				return `Test GTA`;
+			}
+			else if (lang === "es") {
+				return `Prueba GTA`;
+			}
+			else if (lang === "ru") {
+				return `Тест GTA`;
+			}
+			else if (lang === "de") {
+				return `GTA testen`;
+			}
+			else if (lang === "pt") {
+				return `Testar GTA`;
+			}
+			else {
+				return `Test GTA`;
+			}			
+		}
+
+		function testRDOButtonString() {
+			if (lang === "en") {
+				return `Test RDO`;
+			}
+			else if (lang === "es") {
+				return `Prueba RDO`;
+			}
+			else if (lang === "ru") {
+				return `Тест RDO`;
+			}
+			else if (lang === "de") {
+				return `RDO testen`;
+			}
+			else if (lang === "pt") {
+				return `Testar RDO`;
+			}
+			else {
+				return `Test GTA`;
+			}			
+		}	
+
+		function backButtonString() {
+			if (lang === "en") {
+				return `Go Back`;
+			}
+			else if (lang === "es") {
+				return `Volver`;
+			}
+			else if (lang === "ru") {
+				return `Вернуться`;
+			}
+			else if (lang === "de") {
+				return `Zurück`;
+			}
+			else if (lang === "pt") {
+				return `Voltar`;
+			}
+			else {
+				return `Go Back`;
+			}			
+		}
 			
 			
 
 		const confirmEmbed = new EmbedBuilder()
 			.setColor(`Blue`) 
-			.setTitle(`Your Current Auto Post Channels:`)
+			.setTitle(`${confirmTitleString()}`)
 			.setDescription(`
 **GTA Online:**
 ${GTAConfirmString}
-**RDO:**
+**Red Dead Online:**
 ${RDOConfirmString}
-**Roles Allowed to Configure Auto Posts**
+**${rolesAllowedTitleString()}**
 ${ConfigureConfirmString}
-Click **\'Test GTA\'** to send a test post to your subscribed GTA Online channel(s).
-Click **\'Test RDO\'** to send a test post to your subscribed RDO channel(s).`)	
-			.setFooter({ text: 'You must be an administrator or have a role listed above to test auto posts.', iconURL: process.env.logo_link });
+${testGTAString()}
+${testRDOString()}`)	
+			.setFooter({ text: `${footerString()}`, iconURL: process.env.logo_link });
 
 
 		const confirmButtons = new ActionRowBuilder()
 			.addComponents(
 			    new ButtonBuilder()
 			        .setCustomId(`gtaTest - ${interaction.user.id}`)
-			        .setLabel('Test GTA')
+			        .setLabel(`${testGTAButtonString()}`)
 			        .setStyle(ButtonStyle.Success),	
 			    new ButtonBuilder()
 			        .setCustomId(`rdoTest - ${interaction.user.id}`)
-			        .setLabel('Test RDO')
+			        .setLabel(`${testRDOButtonString()}`)
 			        .setStyle(ButtonStyle.Danger),			
 			    new ButtonBuilder()
 			        .setCustomId(`confirmback - ${interaction.user.id}`)
-			        .setLabel('Go Back')
-			        .setStyle(ButtonStyle.Secondary),				
-			);		
-
-		const confirmEmbedEs = new EmbedBuilder()
-			.setColor(`Blue`) 
-			.setTitle(`Tus canales actuales de publicación automática:`)
-			.setDescription(`
-**GTA Online:**
-${GTAConfirmString}
-**RDO:**
-${RDOConfirmString}
-**Roles permitidos para configurar publicaciones automáticas**
-${ConfigureConfirmString}
-Clic **\'Prueba GTA\'** para enviar una publicación de prueba a tu canal(es) GTA Online suscrito.
-Clic **\'Prueba RDO\'** para enviar una publicación de prueba a sus canal(es) RDO suscritos`)	
-			.setFooter({ text: 'Debe ser administrador o tener un rol mencionado anteriormente para probar publicaciones automáticas.', iconURL: process.env.logo_link });
-
-
-		const confirmButtonsEs = new ActionRowBuilder()
-			.addComponents(
-			    new ButtonBuilder()
-			        .setCustomId(`gtaTest - ${interaction.user.id}`)
-			        .setLabel('Prueba GTA')
-			        .setStyle(ButtonStyle.Success),	
-			    new ButtonBuilder()
-			        .setCustomId(`rdoTest - ${interaction.user.id}`)
-			        .setLabel('Prueba RDO')
-			        .setStyle(ButtonStyle.Danger),			
-			    new ButtonBuilder()
-			        .setCustomId(`confirmback - ${interaction.user.id}`)
-			        .setLabel('Volver')
+			        .setLabel(`${backButtonString()}`)
 			        .setStyle(ButtonStyle.Secondary),				
 			);			
 
-		const confirmEmbedRu = new EmbedBuilder()
-			.setColor(`Blue`) 
-			.setTitle(`Текущие настройки автоматической публикации:`)
-			.setDescription(`
-**GTA Online:**
-${GTAConfirmString}
-**RDO:**
-${RDOConfirmString}
-**Роли, которым разрешено настраивать автоматические публикации:**
-${ConfigureConfirmString}
-Щелчок **\'Тест GTA\'** для того, чтобы отправить тестовое сообщение на подписанные каналы GTA Online.
-Щелчок **\'Тест RDO\'** для того, чтобы отправить тестовое сообщение на подписанные каналы RDO`)	
-			.setFooter({ text: 'Для тестирования автоматических публикаций необходимо быть администратором или иметь роль, указанную выше.', iconURL: process.env.logo_link });
+			function firstCommandString() {
+					if (lang === "en") {
+						return `It looks like this is your first time using this command. Please try the start button again.`;
+					}
+					else if (lang === "es") {
+						return `Esta es la primera vez que usas este comando. Vuelva a intentar el botón Inicio.`;
+					}
+					else if (lang === "ru") {
+						return `Вы впервые используете эту команду. Повторите попытку нажатия кнопки «Пуск».`;
+					}
+					else if (lang === "de") {
+						return `Dies ist das erste Mal, dass Sie diesen Befehl verwenden. Wiederholen Sie die Startschaltfläche.`;
+					}
+					else if (lang === "pt") {
+						return `Esta é a primeira vez que você usa este comando. Tente o botão Iniciar novamente.`;
+					}
+					else {
+						return `It looks like this is your first time using this command. Please try the start button again.`;
+					}				
+			}
 
-
-		const confirmButtonsRu = new ActionRowBuilder()
-			.addComponents(
-			    new ButtonBuilder()
-			        .setCustomId(`gtaTest - ${interaction.user.id}`)
-			        .setLabel('Тест GTA')
-			        .setStyle(ButtonStyle.Success),
-			    new ButtonBuilder()
-			        .setCustomId(`rdoTest - ${interaction.user.id}`)
-			        .setLabel('Тест RDO')
-			        .setStyle(ButtonStyle.Danger),
-			    new ButtonBuilder()
-			        .setCustomId(`confirmback - ${interaction.user.id}`)
-			        .setLabel('Вернуться')
-			        .setStyle(ButtonStyle.Secondary),
-			);	
-
-		const confirmEmbedDe = new EmbedBuilder()
-			.setColor(`Blue`) 
-			.setTitle(`Ihre aktuellen Auto-Post-Kanäle:`)
-			.setDescription(`
-**GTA Online:**
-${GTAConfirmString}
-**RDO:**
-${RDOConfirmString}
-**Rollen, die automatische Beiträge konfigurieren dürfen**
-${ConfigureConfirmString}
-Klicken Sie auf **\'GTA testen'**, um einen Testbeitrag an Ihre abonnierten GTA-Kanäle zu senden.
-Klicken Sie auf **\'Test-RDO\'**, um einen Testbeitrag an Ihre abonnierten RDO-Kanäle zu senden.`)	
-			.setFooter({ text: 'Sie müssen Administrator sein oder über eine der oben aufgeführten Rollen verfügen, um automatische Beiträge testen zu können.', iconURL: process.env.logo_link });
-
-
-		const confirmButtonsDe = new ActionRowBuilder()
-			.addComponents(
-			    new ButtonBuilder()
-			        .setCustomId(`gtaTest - ${interaction.user.id}`)
-			        .setLabel('GTA testen')
-			        .setStyle(ButtonStyle.Success),	
-			    new ButtonBuilder()
-			        .setCustomId(`rdoTest - ${interaction.user.id}`)
-			        .setLabel('Test-RDO')
-			        .setStyle(ButtonStyle.Danger),			
-			    new ButtonBuilder()
-			        .setCustomId(`confirmback - ${interaction.user.id}`)
-			        .setLabel('Zurück')
-			        .setStyle(ButtonStyle.Secondary),				
-			);		
-
-		const confirmEmbedPt = new EmbedBuilder()
-			.setColor(`Blue`) 
-			.setTitle(`Seus canais de publicação automática atuais:`)
-			.setDescription(`
-**GTA Online:**
-${GTAConfirmString}
-**RDO:**
-${RDOConfirmString}
-**Posições que têm permissão para configurar postagens automáticas:**
-${ConfigureConfirmString}
-Clique em **\'Testar GTA\'** para enviar uma postagem de teste para seus canais GTA inscritos.
-Clique em **\'Testar RDO\'** para enviar uma postagem de teste para seus canais RDO inscritos.`)	
-			.setFooter({ text: 'Você deve ser um administrador ou ter uma função listada acima para testar postagens automáticas.', iconURL: process.env.logo_link });
-
-
-		const confirmButtonsPt = new ActionRowBuilder()
-			.addComponents(
-			    new ButtonBuilder()
-			        .setCustomId(`gtaTest - ${interaction.user.id}`)
-			        .setLabel('Testar GTA')
-			        .setStyle(ButtonStyle.Success),	
-			    new ButtonBuilder()
-			        .setCustomId(`rdoTest - ${interaction.user.id}`)
-			        .setLabel('Testar RDO')
-			        .setStyle(ButtonStyle.Danger),			
-			    new ButtonBuilder()
-			        .setCustomId(`confirmback - ${interaction.user.id}`)
-			        .setLabel('Voltar')
-			        .setStyle(ButtonStyle.Secondary),				
-			);							
+			function notYourButtonString() {
+					if (lang === "en") {
+						return `These buttons are not for you.`;
+					}
+					else if (lang === "es") {
+						return `Estos botones no son para ti.`;
+					}
+					else if (lang === "ru") {
+						return `Эти кнопки не для вас.`;
+					}
+					else if (lang === "de") {
+						return `Diese Schaltflächen sind nicht für Sie.`;
+					}
+					else if (lang === "pt") {
+						return `Esses botões não são para você.`;
+					}
+					else {
+						return `These buttons are not for you.`;
+					}				
+			}
 
 				await interaction.deferUpdate();
 				if (AdminRequired() === undefined) {
-					if (lang === "en") {
-						await interaction.followUp({ content: `It looks like this is your first time using this command. Please try the start button again.`, ephemeral: true });
-					}
-					else if (lang === "es") {
-						await interaction.followUp({ content: `Esta es la primera vez que usas este comando. Vuelva a intentar el botón Inicio.`, ephemeral: true });
-					}
-					else if (lang === "ru") {
-						await interaction.followUp({ content: `Вы впервые используете эту команду. Повторите попытку нажатия кнопки «Пуск».`, ephemeral: true });
-					}
-					else if (lang === "de") {
-						await interaction.followUp({ content: `Dies ist das erste Mal, dass Sie diesen Befehl verwenden. Wiederholen Sie die Startschaltfläche.`, ephemeral: true });
-					}
-					else if (lang === "pt") {
-						await interaction.followUp({ content: `Esta é a primeira vez que você usa este comando. Tente o botão Iniciar novamente.`, ephemeral: true });
-					}
-					else {
-						await interaction.followUp({ content: `It looks like this is your first time using this command. Please try the start button again.`, ephemeral: true });
-					}
+					await interaction.followUp({ content: `${firstCommandString()}`, ephemeral: true });
 				}	
-					
 				else if (interaction.user.id === buttonUserID) {
-					if (lang === "en") {
-						await interaction.editReply({ embeds: [confirmEmbed], components: [confirmButtons] }).catch(err => console.log(`confirmEmbed Error: ${err}`));	
-					}
-					else if (lang === "es") {
-						await interaction.editReply({ embeds: [confirmEmbedEs], components: [confirmButtonsEs] }).catch(err => console.log(`confirmEmbed Error: ${err}`));
-					}
-					else if (lang === "ru") {
-						await interaction.editReply({ embeds: [confirmEmbedRu], components: [confirmButtonsRu] }).catch(err => console.log(`confirmEmbed Error: ${err}`));
-					}
-					else if (lang === "de") {
-						await interaction.editReply({ embeds: [confirmEmbedDe], components: [confirmButtonsDe] }).catch(err => console.log(`confirmEmbed Error: ${err}`));	
-					}
-					else if (lang === "pt") {
-						await interaction.editReply({ embeds: [confirmEmbedPt], components: [confirmButtonsPt] }).catch(err => console.log(`confirmEmbed Error: ${err}`));
-					}
-					else {
-						await interaction.editReply({ embeds: [confirmEmbed], components: [confirmButtons] }).catch(err => console.log(`confirmEmbed Error: ${err}`));
-					}					
-				} 
-					
+					await interaction.editReply({ embeds: [confirmEmbed], components: [confirmButtons] }).catch(err => console.log(`confirmEmbed Error: ${err}`));						
+				} 	
 				else {
-					if (lang === "en") {
-						await interaction.followUp({ content: `These buttons are not for you.`, ephemeral: true });
-					}
-					else if (lang === "es") {
-						await interaction.followUp({ content: `Estos botones no son para ti.`, ephemeral: true });
-					}
-					else if (lang === "ru") {
-						await interaction.followUp({ content: `Эти кнопки не для вас.`, ephemeral: true });
-					}
-					else if (lang === "de") {
-						await interaction.followUp({ content: `Diese Schaltflächen sind nicht für Sie.`, ephemeral: true });
-					}
-					else if (lang === "pt") {
-						await interaction.followUp({ content: `Esses botões não são para você.`, ephemeral: true });
-					}
-					else {
-						await interaction.followUp({ content: `These buttons are not for you.`, ephemeral: true });
-					}
+					await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });
 				}
 
 	

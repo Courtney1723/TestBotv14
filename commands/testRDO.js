@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
 const phantom = require('phantom'); //https://github.com/amir20/phantomjs-node
       let errorEmbed = new EmbedBuilder()
       .setColor('Red') 
@@ -8,7 +9,7 @@ const phantom = require('phantom'); //https://github.com/amir20/phantomjs-node
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('rdo')
+		.setName('testrdo')
 		.setDescription('Latest RDR2 online bonuses and discounts')
 		.setDMPermission(true),
 	async execute(interaction) {
@@ -37,7 +38,58 @@ module.exports = {
 		let urlHash = urlHash01[0];
 			//console.log(`urlHash: ${urlHash}`);
 
-		let url = `${baseURL}${urlHash}`;
+			fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
+			  if (err) {console.log(`Error: ${err}`)} 
+				else {
+					let lang03 = data.split("lang:");
+					//console.log(`lang03.length: ${lang03.length}`);
+
+					let langArray = [];
+					for (i=1; i <= lang03.length - 1; i++) { //first will always be undefined
+						let lang02 = lang03[i].split(" -");
+						//console.log(`lang02 at ${i}: ${lang02}`);
+						
+						let lang01 = lang02[0];
+						//console.log(`lang01 at ${i}: ${lang01}`);
+
+						langArray.push(lang01);
+					}
+
+					//console.log(`langArray: ${langArray}`);
+
+					let guildID03 = data.split("guild:");
+					//console.log(`guildID03.length: ${guildID03.length}`);
+					let guildIDArray = [];
+					for (i=2; i <= guildID03.length - 1; i++) { //first two will always be undefined
+						let guildID02 = guildID03[i].split(" -");
+						//console.log(`lang02 at ${i}: ${lang02}`);
+						
+						let guildID01 = guildID02[0];
+						//console.log(`lang01 at ${i}: ${lang01}`);
+
+						guildIDArray.push(guildID01);
+					}
+
+					//console.log(`guildIDArray: ${guildIDArray}`);	
+
+					let lang = "";
+					for (i=0; i <= guildIDArray.length - 1; i++) {
+						//console.log(`guildIDArray at ${i}: ${guildIDArray[i]}`);
+						//console.log(`langArray at ${i}: ${langArray[i]}`);
+						//console.log(`interaction.guildID at ${i}: ${interaction.guild.id}`);
+
+					if ((interaction.channel.type === 0) || (interaction.channel.type === 5)) {
+						if (interaction.guild.id === guildIDArray[i]) {
+								lang += `${langArray[i]}`;
+							}
+						}
+					}
+					//console.log(`lang: ${lang}`);	
+
+			let langBase = `/?lang=`;
+			let langURL = `${langBase}${lang}`;
+
+		let url = `${baseURL}${urlHash}${langURL}`;
 			//console.log(`url: ${url}`);
 
 		const rdoStatus = await page.open(url);
@@ -159,7 +211,7 @@ module.exports = {
 			return rdoLinkFormatted;
 		}
 	}
-			//console.log(`rdoBoldFormatted(): ${rdoBoldFormatted()}`);
+	//console.log(`rdoBoldFormatted(): ${rdoBoldFormatted()}`);
 
 //--------------------END checking for words that are bold at the beginning of a paragraph-------------------//
 
@@ -345,18 +397,41 @@ if (RDO_Bonus != undefined) {
         return "";
       }
     } 		
+
+		function rdoTitleFunction() {
+					
+			if (lang === "en") {
+				return `Red Dead Online Bonuses:`;
+			}
+			else if (lang === "es") {
+				return `Bonificaciones de Red Dead Online:`;
+			}
+			else if (lang === "ru") {
+				return `Бонусы Red Dead Online:`;
+			}
+			else if (lang === "de") {
+				return `Boni in Red Dead Online:`;
+			}
+			else if (lang === "pt") {
+				return `Bônus no Red Dead Online:`;
+			}
+			else {
+    		return `Red Dead Online Bonuses & Discounts:`;
+			}		
+		}
+		console.log(`rdoTitleFunction: ${rdoTitleFunction()}`);
 		
 
 		let rdoEmbed = new EmbedBuilder()
 			.setColor('0xC10000') //Red
-			.setTitle('Red Dead Redemption II Online Bonuses & Discounts:')
+			.setTitle(`${rdoTitleFunction()}`) //Red Dead Redemption II Online Bonuses & Discounts:
 			.setDescription(`${rdoDate[0]}\n\n${rdoPost()} \n${rdoFooterMin()} ${elipseFunction()}`)
 		let rdoEmbed2 = new EmbedBuilder()
 			.setColor('0xC10000') //Red
 			.setDescription(`${elipseFunction()} \n${rdoPost2()} ${rdoFooterMax()}`)	
 		let rdoImageEmbed = new EmbedBuilder()
 			.setColor('0xC10000') //Red
-			.setImage(`${rdoImage[0]}`);
+			.setImage(`${rdoImage[0]}`);	
 
 		 // console.log(`rdoEmbed length: ${rdoEmbed.length}`); //no more than 4096 (line 199)
 		 // console.log(`rdoEmbed2 length: ${rdoEmbed2.length}`); //no more than 6000 - rdoEmbed.length (line 204)
@@ -399,6 +474,7 @@ if (RDO_Bonus != undefined) {
 			console.log(`The Rockstar Social Club website is down.`);	
 	}
 }
+					}}); //end fs.readFile for LANGDataBase.txt
 	}
 	}
 }

@@ -529,7 +529,8 @@ module.exports = {
 
 				let gtaEmbed = new EmbedBuilder()
 					.setColor('0x00CD06') //Green
-					.setDescription(`**${gtaTitleString()}** \n${gtaDate[0]}\n\n${gtaPost()} \n${gtaFooterMin()} ${elipseFunction()}`)			
+					.setTitle(`${gtaTitleString()}`)
+					.setDescription(`${gtaDate[0]}\n\n${gtaPost()} \n${gtaFooterMin()} ${elipseFunction()}`)			
 				let gtaEmbed2 = new EmbedBuilder()
 					.setColor('0x00CD06') //Green
 					.setDescription(`${elipseFunction()} \n${gtaPost2()} ${gtaFooterMax()}`)
