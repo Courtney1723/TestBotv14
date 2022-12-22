@@ -109,7 +109,10 @@ module.exports = {
 				.setColor(`Green`) 
 				.setTitle(`Comece a postar automaticamente bônus GTA Online`)
 				.setDescription(`Clique **o menu suspenso** para confirmar o canal que você deseja enviar Grand Theft Auto V auto posts para \n**todas as quintas-feiras às 14:00 EST**.`)	
-				.setFooter({ text: 'Auto posts só pode ser enviado para canais de texto o bot tem permissão para \'Enviar mensagens\' em.', iconURL: process.env.logo_link });					
+				.setFooter({ text: 'Auto posts só pode ser enviado para canais de texto o bot tem permissão para \'Enviar mensagens\' em.', iconURL: process.env.logo_link });	
+
+		fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
+    if (err) {console.log(`Error: ${err}`)} //If an error, console.log					
 
 			let gtaChannelCount = 0;
 				interaction.guild.channels.cache.forEach(channel => {
@@ -313,6 +316,8 @@ module.exports = {
 				setTimeout(() => {
 					interaction.editReply({components: [expiredButton]})
 				}, (60000 * 2))		
+
+					}); //end fs.readFile for GTADataBase.txt
 					}}); //end fs.readfile LANGDataBase
 		
 		} // end if gtastart button

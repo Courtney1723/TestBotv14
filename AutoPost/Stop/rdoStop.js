@@ -104,7 +104,10 @@ module.exports = {
 			const rdoStopEmbedPt = new EmbedBuilder()
 				.setColor(`Red`) 
 				.setTitle(`Parar de lançar automaticamente bônus RDO`)
-				.setDescription(`Clique **o menu suspenso** para confirmar o canal para o qual você deseja parar de enviar postagens automáticas do RDO.`)					
+				.setDescription(`Clique **o menu suspenso** para confirmar o canal para o qual você deseja parar de enviar postagens automáticas do RDO.`)		
+
+			fs.readFile('./RDODataBase.txt', 'utf8', async function (err, data) {
+    	if (err) {console.log(`Error: ${err}`)} //If an error, console.log
 
 			let rdoStopMenu = new ActionRowBuilder()
 			    .addComponents(
@@ -248,6 +251,8 @@ module.exports = {
 				setTimeout(() => {
 					interaction.editReply({components: [expiredButton]})
 				}, (60000 * 2))	
+
+			}); //end fs.readFile for rolesDataBase.txt
 			}); //end fs:readFile
 				
 		} // end if rdostop button

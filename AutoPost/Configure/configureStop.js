@@ -59,12 +59,172 @@ module.exports = {
 					}
 				});
 					//console.log(`userHighestRoleRawPosition: ${userHighestRoleRawPosition}`);
+
+
+//--BEGIN TRANSLATIONS--//
+
+			fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
+			  if (err) {console.log(`Error: ${err}`)} 
+				else {
+					let lang03 = data.split("lang:");
+					//console.log(`lang03.length: ${lang03.length}`);
+
+					let langArray = [];
+					for (i=1; i <= lang03.length - 1; i++) { //first will always be undefined
+						let lang02 = lang03[i].split(" -");
+						//console.log(`lang02 at ${i}: ${lang02}`);
+						
+						let lang01 = lang02[0];
+						//console.log(`lang01 at ${i}: ${lang01}`);
+
+						langArray.push(lang01);
+					}
+
+					//console.log(`langArray: ${langArray}`);
+
+					let guildID03 = data.split("guild:");
+					//console.log(`guildID03.length: ${guildID03.length}`);
+					let guildIDArray = [];
+					for (i=2; i <= guildID03.length - 1; i++) { //first two will always be undefined
+						let guildID02 = guildID03[i].split(" -");
+						//console.log(`lang02 at ${i}: ${lang02}`);
+						
+						let guildID01 = guildID02[0];
+						//console.log(`lang01 at ${i}: ${lang01}`);
+
+						guildIDArray.push(guildID01);
+					}
+
+					//console.log(`guildIDArray: ${guildIDArray}`);	
+
+					let lang = "";
+					for (i=0; i <= guildIDArray.length - 1; i++) {
+						//console.log(`guildIDArray at ${i}: ${guildIDArray[i]}`);
+						//console.log(`langArray at ${i}: ${langArray[i]}`);
+						//console.log(`interaction.guildID at ${i}: ${interaction.guild.id}`);
+
+						if (interaction.guild.id === guildIDArray[i]) {
+							lang += `${langArray[i]}`;
+						}
+					}
+
+					//console.log(`lang: ${lang}`);		
 				
+				function removeARole() {
+					if (lang === "en") {
+						return `Remove a Role`;	
+					}
+					else if (lang === "es") {
+						return `Quitar un rol`;
+					}
+					else if (lang === "ru") {
+						return `Удаление роли`;
+					}
+					else if (lang === "de") {
+						return `Entfernen einer Rolle`;
+					}
+					else if (lang === "pt") {
+						return `Remover uma função`;
+					}
+					else {
+						return `Remove a Role`;
+					}					
+				}	
+
+				function dropdownMenu(){
+					if (lang === "en") {
+						return `Click **the dropdown menu** to remove a role from being able to configure auto posts.`;	
+					}
+					else if (lang === "es") {
+						return `Haz clic en el menú desplegable para eliminar un rol de poder configurar publicaciones automáticas.`;
+					}
+					else if (lang === "ru") {
+						return `Щелкните раскрывающееся меню, чтобы удалить роль из возможности настройки автоматических записей.`;
+					}
+					else if (lang === "de") {
+						return `Klicken Sie auf das Dropdown-Menü, um eine Rolle von der Konfiguration automatischer Beiträge auszuschließen.`;
+					}
+					else if (lang === "pt") {
+						return `Clique no menu suspenso para remover uma função de ser capaz de configurar postagens automáticas.`;
+					}
+					else {
+						return `Click **the dropdown menu** to remove a role from being able to configure auto posts.`;
+					}					
+				}
+
+				function adminFooter() {
+					if (lang === "en") {
+						return `Administrators can always configure auto posts.`;	
+					}
+					else if (lang === "es") {
+						return `Administrators can always configure auto posts.`;
+					}
+					else if (lang === "ru") {
+						return `Los administradores siempre pueden configurar publicaciones automáticas.`;
+					}
+					else if (lang === "de") {
+						return `Administratoren können automatische Beiträge jederzeit konfigurieren.`;
+					}
+					else if (lang === "pt") {
+						return `Os administradores sempre podem configurar postagens automáticas.`;
+					}
+					else {
+						return `Administrators can always configure auto posts.`;
+					}					
+				}		
+
+				function goBack() {
+					if (lang === "en") {
+							return `Go Back`;
+					}
+					else if (lang === "es") {
+						return `Volver`;
+					}
+					else if (lang === "ru") {
+						return `Вернуться`;
+					}
+					else if (lang === "de") {
+						return `Zurück`;
+					}
+					else if (lang === "pt") {
+						return `Voltar`;
+					}
+					else {
+						return `Go Back`;
+					}					
+				}			
+
+			function notYourButtonString() {
+					if (lang === "en") {
+						return `These buttons are not for you.`;
+					}
+					else if (lang === "es") {
+						return `Estos botones no son para ti.`;
+					}
+					else if (lang === "ru") {
+						return `Эти кнопки не для вас.`;
+					}
+					else if (lang === "de") {
+						return `Diese Schaltflächen sind nicht für Sie.`;
+					}
+					else if (lang === "pt") {
+						return `Esses botões não são para você.`;
+					}
+					else {
+						return `These buttons are not for you.`;
+					}				
+			}					
+
+//--END TRANSLATIONS--//				
+
+		fs.readFile('./rolesDataBase.txt', 'utf8', async function (err, data) {
+    if (err) {console.log(`Error: ${err}`)} //If an error, console.log
+					
 				const configureStopEmbed = new EmbedBuilder()
 				.setColor(`0x00FFFF`) //Teal
-				.setTitle(`Remove a Role`)
-				.setDescription(`Click **the dropdown menu** to remove a role from being able to configure auto posts.`)	
-				.setFooter({text: `Administrators can always configure auto posts.`, iconURL: process.env.logo_link })
+				.setTitle(`${removeARole()}`)
+				.setDescription(`${dropdownMenu()}`)	
+				.setFooter({text: `${adminFooter()}`, iconURL: process.env.logo_link })
 				
 				let configureStopMenu = new ActionRowBuilder()
 				    .addComponents(
@@ -78,9 +238,9 @@ module.exports = {
 				        }])
 				    )
 				interaction.guild.roles.cache.first(24).forEach(role => {
-					//console.log(`role names: ${role.name}`)
+					//console.log(`role names: ${role.name}`)				
 					if ((role.name != "@everyone") && (data.includes(`${role.id}`)) && (role.rawPosition <= userHighestRoleRawPosition) ) {
-							//console.log(`role.rawPosition:${role.rawPosition}`);
+							//console.log(`role.rawPosition: ${role.rawPosition}`);
 						configureStopMenu.components[0].addOptions([{
 								label: `${role.name}`,
 								description: `${role.name}`,
@@ -93,7 +253,7 @@ module.exports = {
 					.addComponents(
 							new ButtonBuilder()
 					        .setCustomId(`configurestopback - ${interaction.user.id}`)
-					        .setLabel('Go Back')
+					        .setLabel(`${goBack()}`)
 					        .setStyle(ButtonStyle.Secondary),	
 					);				
 
@@ -101,13 +261,17 @@ module.exports = {
         await interaction.editReply({ embeds: [configureStopEmbed], components: [configureStopMenu, backButton] })
         .catch(err => console.log(`configureStopEmbed+Menu Error: ${err.stack}`));
     } else {
-       interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
+       interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });
     }
 
 
 				setTimeout(() => {
 					interaction.editReply({components: [expiredButton]})
-				}, (60000 * 2))					
+				}, (60000 * 2))		
+
+				}) //end fs.readFile for rolesDataBase.txt
+
+				}}); //end fs.readFile for LANGDataBase.txt
 				
 		} // end if configureStop button
 		

@@ -235,29 +235,58 @@ Clique **\'Confirmar\'** para ver as definições atuais.`)
 					}
 
 					//console.log(`lang: ${lang}`);
-					await interaction.deferUpdate();
+
+			function notYourButtonString() {
 					if (lang === "en") {
-						//Initial Embed + Buttons (start, stop, confirm, configure)
-						await interaction.editReply({ embeds: [initialEmbed], components:[initialButtons] });
+						return `These buttons are not for you.`;
 					}
 					else if (lang === "es") {
-						//Initial Embed + Buttons (start, stop, confirm, configure)
-						await interaction.editReply({ embeds: [initialEmbedEs], components:[initialButtonsEs] });						
+						return `Estos botones no son para ti.`;
 					}
 					else if (lang === "ru") {
-						//Initial Embed + Buttons (start, stop, confirm, configure)
-						await interaction.editReply({ embeds: [initialEmbedRu], components:[initialButtonsRu] });						
+						return `Эти кнопки не для вас.`;
 					}
 					else if (lang === "de") {
-						//Initial Embed + Buttons (start, stop, confirm, configure)
-						await interaction.editReply({ embeds: [initialEmbedDe], components:[initialButtonsDe] });						
+						return `Diese Schaltflächen sind nicht für Sie.`;
 					}
 					else if (lang === "pt") {
-						//Initial Embed + Buttons (start, stop, confirm, configure)
-						await interaction.editReply({ embeds: [initialEmbedPt], components:[initialButtonsPt] });						
-					}						
+						return `Esses botões não são para você.`;
+					}
 					else {
-						await interaction.editReply({ embeds: [initialEmbed], components:[initialButtons] });
+						return `These buttons are not for you.`;
+					}				
+			}
+
+					
+					await interaction.deferUpdate();
+					if (buttonUserID === interaction.user.id) {
+						if (lang === "en") {
+							//Initial Embed + Buttons (start, stop, confirm, configure)
+							await interaction.editReply({ embeds: [initialEmbed], components:[initialButtons] });
+						}
+						else if (lang === "es") {
+							//Initial Embed + Buttons (start, stop, confirm, configure)
+							await interaction.editReply({ embeds: [initialEmbedEs], components:[initialButtonsEs] });						
+						}
+						else if (lang === "ru") {
+							//Initial Embed + Buttons (start, stop, confirm, configure)
+							await interaction.editReply({ embeds: [initialEmbedRu], components:[initialButtonsRu] });						
+						}
+						else if (lang === "de") {
+							//Initial Embed + Buttons (start, stop, confirm, configure)
+							await interaction.editReply({ embeds: [initialEmbedDe], components:[initialButtonsDe] });						
+						}
+						else if (lang === "pt") {
+							//Initial Embed + Buttons (start, stop, confirm, configure)
+							await interaction.editReply({ embeds: [initialEmbedPt], components:[initialButtonsPt] });						
+						}						
+						else {
+							await interaction.editReply({ embeds: [initialEmbed], components:[initialButtons] });
+						}
+						
+					}
+					else {
+						await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });
 					}
 
 				}

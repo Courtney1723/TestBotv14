@@ -323,6 +323,9 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 						let introParas = GTA_Title.split("<p>")
 						//gtaFinalString01 += `• ${introParas[1]}\n`; //usual intro paragraph
 						gtaFinalString01 += `• ${introParas[1].charAt(0).toUpperCase()}${introParas[1].substr(1)}\n`; //not sure why the first word is lowercase?
+						if (introParas[2] != undefined) {
+							gtaFinalString01 += `• ${introParas[2].charAt(0).toUpperCase()}${introParas[2].substr(1)}\n`; //not sure why the first word is lowercase?
+						}						
 					}
 					else if (GTA_Bonus != null) { //if the bonus is not an intro paraghraph
 						let gtaParas = GTA_Bonus.split("<p>");
@@ -337,6 +340,9 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 						else if (GTA_Title.toLowerCase().includes("hsw time trial")) { //fail safe for if the NextGenIndex does not work properly
 							gtaFinalString01 += `• ${GTA_Title}\n`;
 						}
+						else if (GTA_Title.toLowerCase().includes("candy cane")) {
+							gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
+						}							
 						else if (GTA_Title.toLowerCase().includes("new community series")) {
 							gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
 						}
@@ -374,10 +380,10 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 							gtaFinalString01 += `**${GTA_Title}** \n`;
 						}
 						else if (GTA_Title.toLowerCase().includes("gta+")) {
-							gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n${gtaParas[2]}\n`;
+							gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n${gtaParas[2]})\n`; //FIXME - remove parenthesis
 						}
 						else if (GTA_Title.toLowerCase().includes("discount")) {
-							gtaFinalString01 += `**${GTA_Title}**\n• ${GTA_Bonus}\n`;
+							gtaFinalString01 += `**${GTA_Title}**\n• ${GTA_Bonus}:\n• Declasse Drift Tampa (Sports)\n• Pegassi Infernus Classic (Sports Classics)\n• Obey Tailgater S (Sedan)\n• Declasse Granger 3600LX (SUV)\n• JoBuilt Velum 5-Seater (Plane)\n• Pegassi Toros (SUV)\n• Benefactor Schafter V12 (Armored) (Sedan)\n• Ocelot Stromberg (Sports Classics)\n`; //FIXME - vehicles not showing up change next week
 						}
 						else if (GTA_Bonus.includes("• ")) { //if the bonus includes lists
 							if (gtaParas[0] != null) {

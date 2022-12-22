@@ -110,7 +110,9 @@ module.exports = {
 					}
 
 					//console.log(`lang: ${lang}`);		
-				
+
+		fs.readFile('./RDODataBase.txt', 'utf8', async function (err, data) {
+    	if (err) {console.log(`Error: ${err}`)} //If an error, console.log						
 
 			let rdoChannelCount = 0;
 				interaction.guild.channels.cache.forEach(channel => {
@@ -276,8 +278,9 @@ module.exports = {
 
 				setTimeout(() => {
 					interaction.editReply({components: [expiredButton]})
-				}, (60000 * 2))					
-
+				}, (60000 * 2))		
+			
+				}); //end fs.readFile for rolesDataBase.txt
 				}}); //end fs.readFile LANGDataBase
 		} // end if rdostart button
 

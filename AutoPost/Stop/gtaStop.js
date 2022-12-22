@@ -58,6 +58,9 @@ module.exports = {
 			.setColor(`Red`) 
 			.setTitle(`Pare de auto postar bônus GTA Online`)
 			.setDescription(`Clique **o menu suspenso** para confirmar o canal que você deseja parar de enviar GTA Online auto posts para.`)	
+
+		fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
+    	if (err) {console.log(`Error: ${err}`)} //If an error, console.log
 				
 			let gtaStopMenu = new ActionRowBuilder()
 			    .addComponents(
@@ -248,8 +251,9 @@ module.exports = {
 					interaction.editReply({components: [expiredButton]})
 				}, (60000 * 2))			
 		
-		} // end if gtastop button			
-		
+		} // end if gtastop button	
+			
+		}); //end fs.readFile for GTADataBase.txt
 		}); //end fs:readFile
 
 			}}); //end fs.readFile for LANGDataBase.txt

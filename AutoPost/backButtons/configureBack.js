@@ -65,11 +65,186 @@ module.exports = {
 			});
 			//console.log(`channelIDArray: ${channelIDArray}`);			
 
+//--BEGIN TRANSLATIONS--//
 
+			fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
+			  if (err) {console.log(`Error: ${err}`)} 
+				else {
+					let lang03 = data.split("lang:");
+					//console.log(`lang03.length: ${lang03.length}`);
+
+					let langArray = [];
+					for (i=1; i <= lang03.length - 1; i++) { //first will always be undefined
+						let lang02 = lang03[i].split(" -");
+						//console.log(`lang02 at ${i}: ${lang02}`);
+						
+						let lang01 = lang02[0];
+						//console.log(`lang01 at ${i}: ${lang01}`);
+
+						langArray.push(lang01);
+					}
+
+					//console.log(`langArray: ${langArray}`);
+
+					let guildID03 = data.split("guild:");
+					//console.log(`guildID03.length: ${guildID03.length}`);
+					let guildIDArray = [];
+					for (i=2; i <= guildID03.length - 1; i++) { //first two will always be undefined
+						let guildID02 = guildID03[i].split(" -");
+						//console.log(`lang02 at ${i}: ${lang02}`);
+						
+						let guildID01 = guildID02[0];
+						//console.log(`lang01 at ${i}: ${lang01}`);
+
+						guildIDArray.push(guildID01);
+					}
+
+					//console.log(`guildIDArray: ${guildIDArray}`);	
+
+					let lang = "";
+					for (i=0; i <= guildIDArray.length - 1; i++) {
+						//console.log(`guildIDArray at ${i}: ${guildIDArray[i]}`);
+						//console.log(`langArray at ${i}: ${langArray[i]}`);
+						//console.log(`interaction.guildID at ${i}: ${interaction.guild.id}`);
+
+						if (interaction.guild.id === guildIDArray[i]) {
+							lang += `${langArray[i]}`;
+						}
+					}
+
+					//console.log(`lang: ${lang}`);		
+
+			function AddRemoveARole() {
+				if (lang === "en") {
+					return `Add or Remove a Role`;	
+				}
+				else if (lang === "es") {
+					return `Agregar o quitar un rol`;	
+				}
+				else if (lang === "ru") {
+					return `Добавление или удаление роли`;	
+				}
+				else if (lang === "de") {
+					return `Hinzufügen oder Entfernen einer Rolle`;	
+				}
+				else if (lang === "pt") {
+					return `Adicionar ou remover uma função`;	
+				}
+				else {
+					return `Add or Remove a Role`;	
+				}				
+			}	
+
+			function addRole() {
+				if (lang === "en") {
+					return `Click **\'Add\'** to add a role that can configure auto posts.`;
+				}
+				else if (lang === "es") {
+					return `Haga clic en **\'Agregar\'** para agregar un rol que pueda configurar publicaciones automáticas`;
+				}
+				else if (lang === "ru") {
+					return `Нажмите кнопку **\'Добавить\'**, чтобы добавить роль, которая может настраивать автоматические публикации.`;
+				}
+				else if (lang === "de") {
+					return `Klicken Sie auf **\'Hinzufügen\'**, um eine Rolle hinzuzufügen, die automatische Beiträge konfigurieren kann.`;
+				}
+				else if (lang === "pt") {
+					return `Clique em **\'Adicionar\'** para adicionar uma função que possa configurar postagens automáticas.`;
+				}
+				else {
+					return `Click **\'Add\'** to add a role that can configure auto posts.`;
+				}				
+			}		
+
+			function add() {
+				if (lang === "en") {
+						return `Add`;
+				}
+				else if (lang === "es") {
+					return `Agregar`;
+				}
+				else if (lang === "ru") {
+					return `добавлять`;
+				}
+				else if (lang === "de") {
+					return `Hinzufügen`;
+				}
+				else if (lang === "pt") {
+					return `Adicionar`;
+				}
+				else {
+					return `Add`;
+				}				
+			}		
+
+			function removeRole() {
+				if (lang === "en") {
+					return `Click **\'Remove\'** to remove a role that can configure auto posts.`;
+				}
+				else if (lang === "es") {
+					return `Haga clic en **\'Quitar\'** para quitar un rol que puede configurar publicaciones automáticas.`;
+				}
+				else if (lang === "ru") {
+					return `Нажмите кнопку **\'Удалить\'**, чтобы удалить роль, которая может настраивать автоматические публикации.`;
+				}
+				else if (lang === "de") {
+					return `Klicken Sie auf **\'Entfernen\'**, um eine Rolle zu entfernen, die automatische Beiträge konfigurieren kann.`;
+				}
+				else if (lang === "pt") {
+					return `Clique em **\'Remover\'** para remover uma função que pode configurar postagens automáticas.`;
+				}
+				else {
+					return `Click **\'Remove\'** to remove a role that can configure auto posts.`;
+				}				
+			}					
+
+			function remove() {
+				if (lang === "en") {
+						return `Remove`;
+				}
+				else if (lang === "es") {
+					return `Quitar`;
+				}
+				else if (lang === "ru") {
+					return `Удалить`;
+				}
+				else if (lang === "de") {
+					return `Entfernen`;
+				}
+				else if (lang === "pt") {
+					return `Remover`;
+				}
+				else {
+					return `Remove`;
+				}				
+			}					
+
+				function goBack() {
+					if (lang === "en") {
+							return `Go Back`;
+					}
+					else if (lang === "es") {
+						return `Volver`;
+					}
+					else if (lang === "ru") {
+						return `Вернуться`;
+					}
+					else if (lang === "de") {
+						return `Zurück`;
+					}
+					else if (lang === "pt") {
+						return `Voltar`;
+					}
+					else {
+						return `Go Back`;
+					}					
+				}	
+					
+//--END TRANSLATIONS--//
 
 			const configureEmbed = new EmbedBuilder()
 .setColor(`0x00FFFF`) //Teal
-.setTitle(`Add or Remove a Role`)
+.setTitle(`${AddRemoveARole()}`)
 .setDescription(`Click **\'Add\'** to add a role that can configure auto posts.
 
 Click **\'Remove\'** to remove a role that can configure auto posts.`)		
@@ -78,15 +253,15 @@ const configureButtons = new ActionRowBuilder()
 .addComponents(
     new ButtonBuilder()
         .setCustomId(`configureadd - ${interaction.user.id}`)
-        .setLabel('Add')
+        .setLabel(`${add()}`)
         .setStyle(ButtonStyle.Success),
     new ButtonBuilder()
         .setCustomId(`configurestop - ${interaction.user.id}`)
-        .setLabel('Remove')
+        .setLabel(`${remove()}`)
         .setStyle(ButtonStyle.Danger),
 		new ButtonBuilder()
 			.setCustomId(`configureback - ${interaction.user.id}`)
-			.setLabel('Go Back')
+			.setLabel(`${goBack()}`)
 			.setStyle(ButtonStyle.Secondary),	
 );	
 
@@ -141,6 +316,8 @@ const configureButtons = new ActionRowBuilder()
                 else {
                     await interaction.followUp({ content: `There was an error executing this button.`, ephemeral: true });
                 } //end checking for permissions
+
+				}}); //end fs.readFile for LANGDataBase.txt
 	
 		}); //end fs:readFile for guildID and Admin check
 			

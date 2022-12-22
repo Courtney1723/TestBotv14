@@ -28,7 +28,7 @@ module.exports = {
 			const content = await page.property('content'); // Gets the latest gta updates
 			//console.log(content); 
 
-			let baseURL = "https://socialclub.rockstargames.com/";
+			let baseURL = "https://socialclub.rockstargames.com";
 
 			let urlHash02 = content.split("urlHash\":\"");
 			let urlHash01 = urlHash02[1].split("\"");
@@ -46,7 +46,7 @@ module.exports = {
 			//console.log(`urlLink: ${urlLink01[1]}`);
 
 			let url = `${baseURL}/${urlLink}`;
-			console.log(`url: ${url}`);
+			//console.log(`url: ${url}`);
 
 			const gtaStatus = await page.open(url);
 			if (gtaStatus === `success`) {
@@ -222,7 +222,7 @@ module.exports = {
 						return `${gtaTitleString}`;
 					}
 					let GTA_Title = titleCapitalization(GTABonuses);
-					console.log(`GTA_Title at ${i}: ${GTA_Title}`);		
+					//console.log(`GTA_Title at ${i}: ${GTA_Title}`);		
 					//--------------------END capitalization Function-----------------//		
 
 					//-----BEGIN get the index of "Only on PlayStation..." title-----//
@@ -275,9 +275,10 @@ module.exports = {
 					else if (i === 0) { //if the bonus is an intro paragraph.
 						let introParas = GTA_Title.split("<p>")
 						//gtaFinalString01 += `• ${introParas[1]}\n`; //usual intro paragraph
-						console.log(`introParas[0]: ${introParas[0]}`);
-						//gtaFinalString01 += `• ${introParas[1].charAt(0).toUpperCase()}${introParas[1].substr(1)}\n`; //not sure why the first word is lowercase?
-						
+						gtaFinalString01 += `• ${introParas[1].charAt(0).toUpperCase()}${introParas[1].substr(1)}\n`; //not sure why the first word is lowercase?
+						if (introParas[2] != undefined) {
+							gtaFinalString01 += `• ${introParas[2].charAt(0).toUpperCase()}${introParas[2].substr(1)}\n`; //not sure why the first word is lowercase?
+						}
 					}
 					else if (GTA_Bonus != null) { //if the bonus is not an intro paraghraph
 						let gtaParas = GTA_Bonus.split("<p>");
@@ -291,6 +292,9 @@ module.exports = {
 						}
 						else if (GTA_Title.toLowerCase().includes("hsw time trial")) { //fail safe for if the NextGenIndex does not work properly
 							gtaFinalString01 += `• ${GTA_Title}\n`;
+						}
+						else if (GTA_Title.toLowerCase().includes("candy cane")) {
+							gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
 						}
 						else if (GTA_Title.toLowerCase().includes("new community series")) {
 							gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
@@ -329,10 +333,10 @@ module.exports = {
 							gtaFinalString01 += `**${GTA_Title}** \n`;
 						}
 						else if (GTA_Title.toLowerCase().includes("gta+")) {
-							gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n${gtaParas[2]}\n`;
+							gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n${gtaParas[2]})\n`;
 						}
 						else if (GTA_Title.toLowerCase().includes("discount")) {
-							gtaFinalString01 += `**${GTA_Title}**\n• ${GTA_Bonus}\n`;
+							gtaFinalString01 += `**${GTA_Title}**\n• ${GTA_Bonus}:\n• Declasse Drift Tampa (Sports)\n• Pegassi Infernus Classic (Sports Classics)\n• Obey Tailgater S (Sedan)\n• Declasse Granger 3600LX (SUV)\n• JoBuilt Velum 5-Seater (Plane)\n• Pegassi Toros (SUV)\n• Benefactor Schafter V12 (Armored) (Sedan)\n• Ocelot Stromberg (Sports Classics)\n`; //FIXME - vehicles not showing up change next week
 						}
 						else if (GTA_Bonus.includes("• ")) { //if the bonus includes lists
 							if (gtaParas[0] != null) {
@@ -350,9 +354,6 @@ module.exports = {
 								gtaFinalString01 += `**${GTA_Title}**\n\n`;
 							}
 						}
-						else if (GTA_Bonus.toLowerCase().includes("luxury autos")) {
-							gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
-						}
 						else if (i === GTABonuses01.length - 2) { //if the bonus is the last bonus
 							gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n• ${gtaParas[2]}\n• ${gtaParas[3]}`;
 						}
@@ -363,9 +364,9 @@ module.exports = {
 							gtaFinalString01 += `\n**${GTA_Title}**\n\n`;
 						}
 					}
-					// else { //if the bonus only has 1 paragraph only post the title
-					// 	gtaFinalString01 += `\n**${GTA_Title}**\n\n`;
-					// }
+					else { //if the bonus only has 1 paragraph only post the title
+					gtaFinalString01 += `\n**${GTA_Title}**\n\n`;
+					}
 
 				}
 
@@ -470,9 +471,9 @@ module.exports = {
 					.setFooter({ text: `It is ${estHour}:${estMinute} ${amPM} EST now.`, iconURL: process.env.logo_link })
 
 				//   if ( (aDay === 0) ) { //Test for today 0 = Sunday, 1 = Monday ... 6 = Saturday
-				if ((aDay === 4) && (aHour > 3) && (aHour < 17)) { //If it's Thursday(4) before 1:00PM EST (3>17)
-					await interaction.followUp({ embeds: [gtaExpiredEmbed], ephemeral: true }).catch(err => console.log(`gtaExpiredEmbed Error: ${err.stack}`));
-				}
+				// if ((aDay === 4) && (aHour > 3) && (aHour < 17)) { //If it's Thursday(4) before 1:00PM EST (3>17)
+					// await interaction.followUp({ embeds: [gtaExpiredEmbed], ephemeral: true }).catch(err => console.log(`gtaExpiredEmbed Error: ${err.stack}`));
+				// }
 
 				//interaction.editReply(`Console logged! 👍`);
 
