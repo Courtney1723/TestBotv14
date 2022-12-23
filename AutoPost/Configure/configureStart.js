@@ -141,10 +141,10 @@ module.exports = {
 						return `Administrators can always configure auto posts.`;	
 					}
 					else if (lang === "es") {
-						return `Administrators can always configure auto posts.`;
+						return `Los administradores siempre pueden configurar publicaciones automáticas.`;
 					}
 					else if (lang === "ru") {
-						return `Los administradores siempre pueden configurar publicaciones automáticas.`;
+						return `Администраторы всегда могут настроить автоматические записи.`;
 					}
 					else if (lang === "de") {
 						return `Administratoren können automatische Beiträge jederzeit konfigurieren.`;
@@ -325,7 +325,7 @@ module.exports = {
 
 				setTimeout(() => {
 					interaction.editReply({components: [expiredButton]})
-				}, (60000 * 2))	
+				}, (60000 * 5))	
 
 				}); //end fs.redFile for rolesDataBase.txt
 

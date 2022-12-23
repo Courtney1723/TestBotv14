@@ -167,7 +167,9 @@ Clique **\'Confirmar\'** para ver as definições atuais.`)
 					.setCustomId(`confirm - ${interaction.user.id}`)
 					.setLabel('Confirmar')
 					.setStyle(ButtonStyle.Secondary),					
-			);		
+			);	
+
+//--BEGIN TRANSLATIONS--//		
 
 			fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
 			  if (err) {console.log(`Error: ${err}`)} 
@@ -216,37 +218,209 @@ Clique **\'Confirmar\'** para ver as definições atuais.`)
 
 					//console.log(`lang: ${lang}`);
 
-					if (lang === "en") {
+		function autoPostTitle() {
+			if (lang === "en") {
+				return `Auto Post Settings`;
+			}
+			else if (lang === "es") {
+				return `Configuración de publicación automática`;
+			}
+			else if (lang === "ru") {
+				return `Автоматические настройки публикации`;
+			}
+			else if (lang === "de") {
+				return `Automatische Post-Einstellungen`;
+			}
+			else if (lang === "pt") {
+				return `Configurações de lançamento automático`;
+			}
+			else {
+				return `Auto Post Settings`;
+			}			
+		}	
+
+		function autoPostDesc() {
+			if (lang === "en") {
+				return `Click **\'Start\'** to add an auto post channel.
+Click **\'Stop\'** to remove an auto post channel.
+Click **\'Configure\'** to add or remove a role that can configure auto post settings.
+Click **\'Confirm\'** to view current settings or test auto posts.`;
+			}
+			else if (lang === "es") {
+				return `Clic **\'empezar\'** para agregar un canal.
+Clic **\'sopa\'** para quitar un canal.
+Clic **\'configurar\'** Para agregar o quitar un rol.
+Clic **\'confirm\'** para ver la configuración.`;
+			}
+			else if (lang === "ru") {
+				return `Щелчок **\'Начало\'** для того, чтобы добавить канал.
+Щелчок **\'Остановка\'** для удаления канала.
+Щелчок **\'Настроить\'** Чтобы добавить или удалить роль.
+Щелчок **\'Подтверждать\'** для просмотра текущих настроек.`;
+			}
+			else if (lang === "de") {
+				return `Klicken **\'Anfangen\'** so fügen Sie einen Kanal hinzu.
+Klicken **\'Aufhören\'** so entfernen Sie einen Kanal.
+Klicken **\'Konfigurieren\'** so fügen Sie eine Rolle hinzu oder entfernen sie.
+Klicken **\'Bestätigen\'** um aktuelle Einstellungen anzuzeigen.`;
+			}
+			else if (lang === "pt") {
+				return `Clique **\'Começar\'** para adicionar um canal.
+Clique **\'Parar\'** para remover um canal.
+Clique **\'Configurar\'** para adicionar ou remover uma função.
+Clique **\'Confirmar\'** para ver as definições atuais.`;
+			}
+			else {
+				return `Click **\'Start\'** to add an auto post channel.
+Click **\'Stop\'** to remove an auto post channel.
+Click **\'Configure\'** to add or remove a role that can configure auto post settings.
+Click **\'Confirm\'** to view current settings or test auto posts.`;
+			}			
+		}
+
+		function footerText() {
+			if (lang === "en") {
+				return `Only Administrators can start, stop, or configure auto posts by default.`;
+			}
+			else if (lang === "es") {
+				return `Solo los administradores pueden iniciar, detener o configurar publicaciones automáticas de forma predeterminada.`;
+			}
+			else if (lang === "ru") {
+				return `По умолчанию только администраторы могут запускать, останавливать или настраивать автоматические публикации.`;
+			}
+			else if (lang === "de") {
+				return `Nur Administratoren können automatische Beiträge standardmäßig starten, stoppen oder konfigurieren.`;
+			}
+			else if (lang === "pt") {
+				return `Apenas os administradores podem iniciar, parar ou configurar publicações automáticas por predefinição.`;
+			}
+			else {
+				return `Only Administrators can start, stop, or configure auto posts by default.`;
+			}			
+		}
+
+		function start() {
+			if (lang === "en") {
+				return `Start`;
+			}
+			else if (lang === "es") {
+				return `empezar`;
+			}
+			else if (lang === "ru") {
+				return `Начало`;
+			}
+			else if (lang === "de") {
+				return `Anfangen`;
+			}
+			else if (lang === "pt") {
+				return `Começar`;
+			}
+			else {
+				return `Start`;
+			}			
+		}
+
+		function stop() {
+			if (lang === "en") {
+				return `Stop`;
+			}
+			else if (lang === "es") {
+				return `sopa`;
+			}
+			else if (lang === "ru") {
+				return `Остановка`;
+			}
+			else if (lang === "de") {
+				return `Aufhören`;
+			}
+			else if (lang === "pt") {
+				return `Parar`;
+			}
+			else {
+				return `Stop`;
+			}
+		}
+
+		function configure() {
+			if (lang === "en") {
+				return `Configure`;
+			}
+			else if (lang === "es") {
+				return `configurar`;
+			}
+			else if (lang === "ru") {
+				return `Настроить`;
+			}
+			else if (lang === "de") {
+				return `Konfigurieren`;
+			}
+			else if (lang === "pt") {
+				return `Configurar`;
+			}
+			else {
+				return `Configure`;
+			}			
+		}	
+
+		function confirm() {
+			if (lang === "en") {
+				return `Confirm`;
+			}
+			else if (lang === "es") {
+				return `confirmar`;
+			}
+			else if (lang === "ru") {
+				return `Подтверждать`;
+			}
+			else if (lang === "de") {
+				return `Bestätigen`;
+			}
+			else if (lang === "pt") {
+				return `Confirmar`;
+			}
+			else {
+				return `Confirm`;
+			}			
+		}			
+
+		const initialEmbed = new EmbedBuilder()
+			.setColor(`0x00FFCC`) //Seafoam green
+			.setTitle(`${autoPostTitle()}`)
+			.setDescription(`${autoPostDesc()}`)
+			.setFooter({text: `${footerText()}`, iconURL: process.env.logo_link })
+
+		const initialButtons = new ActionRowBuilder()
+			.addComponents(
+				new ButtonBuilder()
+					.setCustomId(`start - ${interaction.user.id}`)
+					.setLabel(`${start()}`)
+					.setStyle(ButtonStyle.Success),
+				new ButtonBuilder()
+					.setCustomId(`stop - ${interaction.user.id}`)
+					.setLabel(`${stop()}`)
+					.setStyle(ButtonStyle.Danger),			
+				new ButtonBuilder()
+					.setCustomId(`configure - ${interaction.user.id}`)
+					.setLabel(`${configure()}`)
+					.setStyle(ButtonStyle.Primary),						
+				new ButtonBuilder()
+					.setCustomId(`confirm - ${interaction.user.id}`)
+					.setLabel(`${confirm()}`)
+					.setStyle(ButtonStyle.Secondary),					
+			);					
+
+//--END TRANSLATIONS--//					
+
 						//Initial Embed + Buttons (start, stop, confirm, configure)
 						interaction.reply({ embeds: [initialEmbed], components:[initialButtons] });
-					}
-					else if (lang === "es") {
-						//Initial Embed + Buttons (start, stop, confirm, configure)
-						interaction.reply({ embeds: [initialEmbedEs], components:[initialButtonsEs] });						
-					}
-					else if (lang === "ru") {
-						//Initial Embed + Buttons (start, stop, confirm, configure)
-						interaction.reply({ embeds: [initialEmbedRu], components:[initialButtonsRu] });						
-					}
-					else if (lang === "de") {
-						//Initial Embed + Buttons (start, stop, confirm, configure)
-						interaction.reply({ embeds: [initialEmbedDe], components:[initialButtonsDe] });						
-					}
-					else if (lang === "pt") {
-						//Initial Embed + Buttons (start, stop, confirm, configure)
-						interaction.reply({ embeds: [initialEmbedPt], components:[initialButtonsPt] });						
-					}						
-					else {
-						interaction.reply({ embeds: [initialEmbed], components:[initialButtons] });
-					}
 
 				}
-			});
+			}); //end fs.readFile LANGDataVase.txt
 
 
 		setTimeout(() => {
 			interaction.editReply({components: [expiredButton]})
-		}, (60000 * 2))
+		}, (60000 * 5))
 		
 
 }}

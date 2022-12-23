@@ -497,7 +497,7 @@ Clique **\'RDO\'** para iniciar Red Dead Redemption II auto posts para **a prime
 
 				setTimeout(() => {
 					interaction.editReply({components: [expiredButton]})
-				}, (60000 * 2))		
+				}, (60000 * 5))		
 	
 	} //end if start
 	},

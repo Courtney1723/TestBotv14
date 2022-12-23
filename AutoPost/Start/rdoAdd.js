@@ -209,7 +209,7 @@ module.exports = {
 			
 		setTimeout(() => {
 			interaction.editReply({components: []})
-		}, (60000 * 2))
+		}, (60000 * 5))
 			
 		}// end if interaction.customId === 'rdoStartMenu'
 		

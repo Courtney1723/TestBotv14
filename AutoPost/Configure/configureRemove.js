@@ -46,23 +46,223 @@ module.exports = {
 				}
 			}		
 
+//--BEGIN TRANSLATIONS--//
+
+			fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
+			  if (err) {console.log(`Error: ${err}`)} 
+				else {
+					let lang03 = data.split("lang:");
+					//console.log(`lang03.length: ${lang03.length}`);
+
+					let langArray = [];
+					for (i=1; i <= lang03.length - 1; i++) { //first will always be undefined
+						let lang02 = lang03[i].split(" -");
+						//console.log(`lang02 at ${i}: ${lang02}`);
+						
+						let lang01 = lang02[0];
+						//console.log(`lang01 at ${i}: ${lang01}`);
+
+						langArray.push(lang01);
+					}
+
+					//console.log(`langArray: ${langArray}`);
+
+					let guildID03 = data.split("guild:");
+					//console.log(`guildID03.length: ${guildID03.length}`);
+					let guildIDArray = [];
+					for (i=2; i <= guildID03.length - 1; i++) { //first two will always be undefined
+						let guildID02 = guildID03[i].split(" -");
+						//console.log(`lang02 at ${i}: ${lang02}`);
+						
+						let guildID01 = guildID02[0];
+						//console.log(`lang01 at ${i}: ${lang01}`);
+
+						guildIDArray.push(guildID01);
+					}
+
+					//console.log(`guildIDArray: ${guildIDArray}`);	
+
+					let lang = "";
+					for (i=0; i <= guildIDArray.length - 1; i++) {
+						//console.log(`guildIDArray at ${i}: ${guildIDArray[i]}`);
+						//console.log(`langArray at ${i}: ${langArray[i]}`);
+						//console.log(`interaction.guildID at ${i}: ${interaction.guild.id}`);
+
+						if (interaction.guild.id === guildIDArray[i]) {
+							lang += `${langArray[i]}`;
+						}
+					}
+
+					//console.log(`lang: ${lang}`);	
+
+				function notForYou() {
+					if (lang === "en") {
+						return `These options aren't for you.`;	
+					}
+					else if (lang === "es") {
+						return `Estas opciones no son para ti.`;
+					}
+					else if (lang === "ru") {
+						return `Эти варианты не для вас.`;
+					}
+					else if (lang === "de") {
+						return `Diese Optionen sind nichts für Sie.`;
+					}
+					else if (lang === "pt") {
+						return `Essas opções não são para você.`;
+					}
+					else {
+						return `These options are not for you.`;
+					}						
+				}				
+
+			function tryAgain() {
+				if (lang === "en") {
+					return `Please Try Again`;
+				}
+				else if (lang === "es") {
+					return `Inténtalo de nuevo`;
+				}
+				else if (lang === "ru") {
+					return `Повторите попытку`;
+				}
+				else if (lang === "de") {
+					return `Bitte versuchen Sie es erneut.`;
+				}
+				else if (lang === "pt") {
+					return `Tente novamente`;
+				}
+				else {
+					return `Please Try Again`;
+				}				
+			}			
+
+			function tryAgainDesc() {
+				if (lang === "en") {
+						return `You selected an invalid response. || ❄❄❄ ||`;
+				}
+				else if (lang === "es") {
+					return `Seleccionó una respuesta no válida. || ❄❄❄ ||`;
+				}
+				else if (lang === "ru") {
+					return `Вы выбрали недопустимый ответ. || ❄❄❄ ||`;
+				}
+				else if (lang === "de") {
+					return `Sie haben eine ungültige Antwort ausgewählt. || ❄❄❄ ||`;
+				}
+				else if (lang === "pt") {
+					return `Você selecionou uma resposta inválida. || ❄❄❄ ||`;
+				}
+				else {
+					return `You selected an invalid response. || ❄❄❄ ||`;
+				}				
+			}				
+
+		function everyoneWarn() {
+			if (lang === "en") {
+					return `\n• <@&${interaction.guild.id}> can configure auto posts now.\n• Try the **/autopost** command again and click **Configure**. to add a role.`;	
+			}
+			else if (lang === "es") {
+			    return `\n• <@&${interaction.guild.id}> puede configurar publicaciones automáticas ahora.\n• Vuelva a probar el comando **/autopost** y haga clic en **configurar** para agregar un rol.`;
+			}
+			else if (lang === "ru") {
+				return `\n• <@&${interaction.guild.id}> теперь можно настроить автоматические сообщения.\n• Попробуйте команду **/autopost** еще раз и нажмите кнопку **Настроить**, чтобы добавить роль.`;
+			}
+			else if (lang === "de") {
+				return `\n• <@&${interaction.guild.id}>  kann jetzt automatische Beiträge konfigurieren.\n• Wiederholen Sie den Befehl **/autopost**, und klicken Sie auf **Konfigurieren**, um eine Rolle hinzuzufügen.`;
+			}
+			else if (lang === "pt") {
+				return `\n• <@&${interaction.guild.id}> pode configurar postagens automáticas agora.\n• Tente o comando **/autopost** novamente e clique em **Configurar** para adicionar uma função.`;
+			}
+			else {
+				return `\n• <@&${interaction.guild.id}> can configure auto posts now.\n• Try the **/autopost** command again and click **Configure**. to add a role.`;
+			}			
+		}
+
+		function adminNotRequired() {
+			if (lang === "en") {
+				return `Administrator privileges are no longer required to configure auto posts.`;
+			}
+			else if (lang === "es") {
+			  return `Ya no se requieren privilegios de administrador para configurar publicaciones automáticas.`;
+			}
+			else if (lang === "ru") {
+				return `Права администратора больше не требуются для настройки автоматических записей.`;
+			}
+			else if (lang === "de") {
+				return `Zum Konfigurieren automatischer Beiträge sind keine Administratorrechte mehr erforderlich.`;
+			}
+			else if (lang === "pt") {
+				return `Os privilégios de administrador não são mais necessários para configurar postagens automáticas.`;
+			}
+			else {
+				return `Administrator privileges are no longer required to configure auto posts.`;
+			}			
+		}
+
+			function success() {
+				if (lang === "en") {
+						return `Success`;
+				}
+				else if (lang === "es") {
+					return `Éxito`;
+				}
+				else if (lang === "ru") {
+					return `Успех`;
+				}
+				else if (lang === "de") {
+					return `Erfolg`;
+				}
+				else if (lang === "pt") {
+					return `Êxito`;
+				}
+				else {
+					return `Success`;
+				}				
+			}			
+
+			function removeRoleDesc() {
+				if (lang === "en") {
+					return `The <@&${menuRoleID}> role is now no longer allowed to configure auto posts.`;
+				}
+				else if (lang === "es") {
+				  return `El rol <@&${menuRoleID}> ya no puede configurar publicaciones automáticas.`;
+				}
+				else if (lang === "ru") {
+					return `Роль <@&${menuRoleID}> больше не разрешается настраивать автоматические записи.`;
+				}
+				else if (lang === "de") {
+					return `Die <@&${menuRoleID}>-Rolle darf nun keine automatischen Beiträge mehr konfigurieren.`;
+				}
+				else if (lang === "pt") {
+					return `A função <@&${menuRoleID}> agora não tem mais permissão para configurar postagens automáticas.`;
+				}
+				else {
+					return `The <@&${menuRoleID}> role is now no longer allowed to configure auto posts.`;
+				}				
+			}
+
+
+//--END TRANSLATIONS--//		
+	fs.readFile('./rolesDataBase.txt', 'utf8', async function (err, data) {
+	if (err) {console.log(`Error: ${err}`)} //If an error, console.log			
 
 if (interaction.user.id != menuUserID) {
-	interaction.reply({ content: `These options aren't for you!`, ephemeral: true });
+	interaction.reply({ content: `${notForYou()}`, ephemeral: true });
 }
 else if (menuRoleID === `undefinedrole`) { //if the Admin role is already required - error
 
     const configureDuplicateEmbed = new EmbedBuilder()
     .setColor(`Orange`) 
-    .setTitle(`Please Try Again`)
-    .setDescription(`You selected an invalid response "No Role Selected".\nPlease Try again. || have a good day! ||`)	
+    .setTitle(`${tryAgain()}`)
+    .setDescription(`${tryAgainDesc()}`)	
     
     await interaction.deferUpdate();
     if (interaction.user.id === menuUserID) {
         await interaction.followUp({ embeds: [configureDuplicateEmbed], components: [], ephemeral: true })
         .catch(err => console.log(`configureDuplicateEmbed Error: ${err}`));
         } else {
-       interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
+       interaction.followUp({ content: `${notForYou()}`, ephemeral: true });
     }
 
   } //end if menuRoleID === `undefinedrole`
@@ -80,15 +280,15 @@ else if (menuRoleID === `undefinedrole`) { //if the Admin role is already requir
 
 			let everyoneCheck = "";
 			if (roleIDArray.length <= 0) {
-					everyoneCheck += `\n• @everyone can configure auto posts now!\n• Try the **/autopost** command again and click **\'Configure\'** to add a role.`;
+					everyoneCheck += `${everyoneWarn()}`;
 				
 			}
 			console.log(`roleIDArray length: ${roleIDArray.length}`);
 		
     const configureConfirmAddEmbed = new EmbedBuilder()
         .setColor(`Green`) 
-        .setTitle(`Success!`)
-        .setDescription(`Administrator privileges are no longer required to configure auto posts.\n${everyoneCheck}`)	
+        .setTitle(`${success()}`)
+        .setDescription(`${adminNotRequired()}\n${everyoneCheck}`)	
 
     await interaction.deferUpdate();
 		
@@ -117,7 +317,7 @@ else if (menuRoleID === `undefinedrole`) { //if the Admin role is already requir
 		        }); //end fs.writeFile to change the admin privileges	
 					
 		    } else {
-		       interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
+		       interaction.followUp({ content: `${notForYou()}`, ephemeral: true });
 		    }
 		
 		    }    // end removing Admins as a required permission 
@@ -135,15 +335,15 @@ else if (menuRoleID === `undefinedrole`) { //if the Admin role is already requir
 					let everyoneCheck = "";
 					if (roleIDArray.length <= 1) {
 						if (AdminRequired() === `AdminRequiredNo`) {
-							everyoneCheck += `\n• @everyone can configure auto posts now!\n• Try the **/autopost** command again and click **\'Configure\'** to add a role.`;
+							everyoneCheck += `${everyoneWarn()}`;
 						}
 						
 					}
 		
 					const configureAddEmbed = new EmbedBuilder()
 						.setColor(`Green`) 
-						.setTitle(`Success!`)
-						.setDescription(`The <@&${menuRoleID}> role is now no longer allowed to configure auto posts.\n${everyoneCheck}`)	
+						.setTitle(`${success()}`)
+						.setDescription(`${removeRoleDesc()}\n${everyoneCheck}`)	
 		
 			    await interaction.deferUpdate();
 					if (interaction.user.id != menuUserID) {
@@ -185,18 +385,22 @@ else if (menuRoleID === `undefinedrole`) { //if the Admin role is already requir
 
 				
 	    } else {
-	       interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
+	       interaction.followUp({ content: `${notForYou()}`, ephemeral: true });
 	    }		
 
 
 		} // end adding a new role to rolesDataBase.txt
+
+	}); //end fs.readFile for rolesDataBase.txt
+
+				}}); //end fs.readFile for LANGDataBase.txt
 			
 
 		});//end fs:readFile	
 
 		setTimeout(() => {
 			interaction.editReply({components: []})
-		}, (60000 * 2))
+		}, (60000 * 5))
 			
 		}// end if interaction.customId === 'configureStartMenu'
 		
