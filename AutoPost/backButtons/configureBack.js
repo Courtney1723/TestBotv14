@@ -239,15 +239,55 @@ module.exports = {
 						return `Go Back`;
 					}					
 				}	
+
+function notYourButtonString() {
+					if (lang === "en") {
+						return `These buttons are not for you.`;
+					}
+					else if (lang === "es") {
+						return `Estos botones no son para ti.`;
+					}
+					else if (lang === "ru") {
+						return `Эти кнопки не для вас.`;
+					}
+					else if (lang === "de") {
+						return `Diese Schaltflächen sind nicht für Sie.`;
+					}
+					else if (lang === "pt") {
+						return `Esses botões não são para você.`;
+					}
+					else {
+						return `These buttons are not for you.`;
+					}				
+			}		
+
+function missingPermissions()	{
+				if (lang === "en") {
+					return `You do not have the required permissions to do that.`;
+				}
+				else if (lang === "es") {
+				  return `No tienes permiso para hacer eso.`;
+				}
+				else if (lang === "ru") {
+				  return `У вас нет разрешения на это.`;
+				}
+				else if (lang === "de") {
+				  return `Sie haben keine Erlaubnis dazu.`;
+				}
+				else if (lang === "pt") {
+				  return `Você não tem permissão para fazer isso.`;
+				}
+				else {
+				  return `You do not have the required permissions to do that.`;
+				}				
+			}						
 					
 //--END TRANSLATIONS--//
 
 			const configureEmbed = new EmbedBuilder()
 .setColor(`0x00FFFF`) //Teal
 .setTitle(`${AddRemoveARole()}`)
-.setDescription(`Click **\'Add\'** to add a role that can configure auto posts.
-
-Click **\'Remove\'** to remove a role that can configure auto posts.`)		
+.setDescription(`${addRole()}\n${removeRole()}`)		
 
 const configureButtons = new ActionRowBuilder()
 .addComponents(
@@ -271,17 +311,17 @@ const configureButtons = new ActionRowBuilder()
                 //console.log(`AdminRequired(): ${AdminRequired()}`)
 			
 								if (interaction.user.id != buttonUserID) {
-									await interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
+									await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });
 								}					
                 else if (AdminRequired() === "AdminRequiredYes") { //if admin permissions are required
                     if ((interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) {
                         await interaction.editReply({ embeds: [configureEmbed], components: [configureButtons] }).catch(err => console.log(`configureEmbed Error: ${err}`));
                     } 
                     else if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
-                        await interaction.followUp({content: `You do not have the required permissions to do that.`, ephemeral: true})
+                        await interaction.followUp({content: `${missingPermissions()}`, ephemeral: true})
                     }
                     else if (!interaction.user.id === buttonUserID)  {
-                        await interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
+                        await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });
                     }
                 }	
                 else if (AdminRequired() === "AdminRequiredNo") { //if admin permissions are NOT required
@@ -306,15 +346,16 @@ const configureButtons = new ActionRowBuilder()
 													await interaction.editReply({ embeds: [configureEmbed], components: [configureButtons] }).catch(err => console.log(`configureEmbed Error: ${err}`));
 												}
 												else {
-                            await interaction.followUp({content: `You do not have the required permissions to do that.`, ephemeral: true})
+                            await interaction.followUp({content: `${missingPermissions()}`, ephemeral: true})
                         }
                     } //end if admin permission not required
                     else {
-                        await interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
+                        await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });
                     }
                 }	
                 else {
                     await interaction.followUp({ content: `There was an error executing this button.`, ephemeral: true });
+										console.log(`configureBack button error: ${error.stack}`);
                 } //end checking for permissions
 
 				}}); //end fs.readFile for LANGDataBase.txt

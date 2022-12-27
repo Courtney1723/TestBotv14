@@ -22,152 +22,6 @@ module.exports = {
 		.setDescription('Configure and Confirm Auto Post Settings')
 		.setDMPermission(false),
 	async execute(interaction) {
-		
-
-		const initialEmbed = new EmbedBuilder()
-			.setColor(`0x00FFCC`) //Seafoam green
-			.setTitle(`Auto Post Settings`)
-			.setDescription(`Click **\'Start\'** to add an auto post channel.
-Click **\'Stop\'** to remove an auto post channel.
-Click **\'Configure\'** to add or remove a role that can configure auto post settings.
-Click **\'Confirm\'** to view current settings or test auto posts.`)
-			.setFooter({text: `Only Administrators can start, stop, or configure auto posts by default.`, iconURL: process.env.logo_link })
-
-		const initialButtons = new ActionRowBuilder()
-			.addComponents(
-				new ButtonBuilder()
-					.setCustomId(`start - ${interaction.user.id}`)
-					.setLabel('Start')
-					.setStyle(ButtonStyle.Success),
-				new ButtonBuilder()
-					.setCustomId(`stop - ${interaction.user.id}`)
-					.setLabel('Stop')
-					.setStyle(ButtonStyle.Danger),			
-				new ButtonBuilder()
-					.setCustomId(`configure - ${interaction.user.id}`)
-					.setLabel('Configure')
-					.setStyle(ButtonStyle.Primary),						
-				new ButtonBuilder()
-					.setCustomId(`confirm - ${interaction.user.id}`)
-					.setLabel('Confirm')
-					.setStyle(ButtonStyle.Secondary),					
-			);
-
-		const initialEmbedEs = new EmbedBuilder()
-			.setColor(`0x00FFCC`) //Seafoam green
-			.setTitle(`Configuración de publicación automática`)
-			.setDescription(`Clic **\'empezar\'** para agregar un canal.
-Clic **\'sopa\'** para quitar un canal.
-Clic **\'configurar\'** Para agregar o quitar un rol.
-Clic **\'confirm\'** para ver la configuración.`)
-			.setFooter({text: `Solo los administradores pueden iniciar, detener o configurar publicaciones automáticas de forma predeterminada.`, iconURL: process.env.logo_link })
-
-		const initialButtonsEs = new ActionRowBuilder()
-			.addComponents(
-				new ButtonBuilder()
-					.setCustomId(`start - ${interaction.user.id}`)
-					.setLabel('empezar')
-					.setStyle(ButtonStyle.Success),
-				new ButtonBuilder()
-					.setCustomId(`stop - ${interaction.user.id}`)
-					.setLabel('sopa')
-					.setStyle(ButtonStyle.Danger),			
-				new ButtonBuilder()
-					.setCustomId(`configure - ${interaction.user.id}`)
-					.setLabel('configurar')
-					.setStyle(ButtonStyle.Primary),						
-				new ButtonBuilder()
-					.setCustomId(`confirm - ${interaction.user.id}`)
-					.setLabel('confirmar')
-					.setStyle(ButtonStyle.Secondary),					
-			);		
-
-		const initialEmbedRu = new EmbedBuilder()
-			.setColor(`0x00FFCC`) //Seafoam green
-			.setTitle(`Автоматические настройки публикации`)
-			.setDescription(`Щелчок **\'Начало\'** для того, чтобы добавить канал.
-Щелчок **\'Остановка\'** для удаления канала.
-Щелчок **\'Настроить\'** Чтобы добавить или удалить роль.
-Щелчок **\'Подтверждать\'** для просмотра текущих настроек.`)
-			.setFooter({text: `По умолчанию только администраторы могут запускать, останавливать или настраивать автоматические публикации.`, iconURL: process.env.logo_link })
-
-		const initialButtonsRu = new ActionRowBuilder()
-			.addComponents(
-				new ButtonBuilder()
-					.setCustomId(`start - ${interaction.user.id}`)
-					.setLabel('Начало')
-					.setStyle(ButtonStyle.Success),
-				new ButtonBuilder()
-					.setCustomId(`stop - ${interaction.user.id}`)
-					.setLabel('Остановка')
-					.setStyle(ButtonStyle.Danger),			
-				new ButtonBuilder()
-					.setCustomId(`configure - ${interaction.user.id}`)
-					.setLabel('Настроить')
-					.setStyle(ButtonStyle.Primary),						
-				new ButtonBuilder()
-					.setCustomId(`confirm - ${interaction.user.id}`)
-					.setLabel('Подтверждать')
-					.setStyle(ButtonStyle.Secondary),					
-			);		
-
-		const initialEmbedDe = new EmbedBuilder()
-			.setColor(`0x00FFCC`) //Seafoam green
-			.setTitle(`Automatische Post-Einstellungen`)
-			.setDescription(`Klicken **\'Anfangen\'** so fügen Sie einen Kanal hinzu.
-Klicken **\'Aufhören\'** so entfernen Sie einen Kanal.
-Klicken **\'Konfigurieren\'** so fügen Sie eine Rolle hinzu oder entfernen sie.
-Klicken **\'Bestätigen\'** um aktuelle Einstellungen anzuzeigen.`)
-			.setFooter({text: `Nur Administratoren können automatische Beiträge standardmäßig starten, stoppen oder konfigurieren.`, iconURL: process.env.logo_link })
-
-		const initialButtonsDe = new ActionRowBuilder()
-			.addComponents(
-				new ButtonBuilder()
-					.setCustomId(`start - ${interaction.user.id}`)
-					.setLabel('Anfangen')
-					.setStyle(ButtonStyle.Success),
-				new ButtonBuilder()
-					.setCustomId(`stop - ${interaction.user.id}`)
-					.setLabel('Aufhören')
-					.setStyle(ButtonStyle.Danger),			
-				new ButtonBuilder()
-					.setCustomId(`configure - ${interaction.user.id}`)
-					.setLabel('Konfigurieren')
-					.setStyle(ButtonStyle.Primary),						
-				new ButtonBuilder()
-					.setCustomId(`confirm - ${interaction.user.id}`)
-					.setLabel('Bestätigen')
-					.setStyle(ButtonStyle.Secondary),					
-			);		
-
-		const initialEmbedPt = new EmbedBuilder()
-			.setColor(`0x00FFCC`) //Seafoam green
-			.setTitle(`Definições de posts automáticos`)
-			.setDescription(`Clique **\'Começar\'** para adicionar um canal.
-Clique **\'Parar\'** para remover um canal.
-Clique **\'Configure\'** para adicionar ou remover uma função.
-Clique **\'Confirmar\'** para ver as definições atuais.`)
-			.setFooter({text: `Apenas os administradores podem iniciar, parar ou configurar publicações automáticas por predefinição.`, iconURL: process.env.logo_link })
-
-		const initialButtonsPt = new ActionRowBuilder()
-			.addComponents(
-				new ButtonBuilder()
-					.setCustomId(`start - ${interaction.user.id}`)
-					.setLabel('Começar')
-					.setStyle(ButtonStyle.Success),
-				new ButtonBuilder()
-					.setCustomId(`stop - ${interaction.user.id}`)
-					.setLabel('Parar')
-					.setStyle(ButtonStyle.Danger),			
-				new ButtonBuilder()
-					.setCustomId(`configure - ${interaction.user.id}`)
-					.setLabel('Configure')
-					.setStyle(ButtonStyle.Primary),						
-				new ButtonBuilder()
-					.setCustomId(`confirm - ${interaction.user.id}`)
-					.setLabel('Confirmar')
-					.setStyle(ButtonStyle.Secondary),					
-			);	
 
 //--BEGIN TRANSLATIONS--//		
 
@@ -381,7 +235,9 @@ Click **\'Confirm\'** to view current settings or test auto posts.`;
 			else {
 				return `Confirm`;
 			}			
-		}			
+		}		
+
+//--END TRANSLATIONS--//						
 
 		const initialEmbed = new EmbedBuilder()
 			.setColor(`0x00FFCC`) //Seafoam green
@@ -407,9 +263,7 @@ Click **\'Confirm\'** to view current settings or test auto posts.`;
 					.setCustomId(`confirm - ${interaction.user.id}`)
 					.setLabel(`${confirm()}`)
 					.setStyle(ButtonStyle.Secondary),					
-			);					
-
-//--END TRANSLATIONS--//					
+			);									
 
 						//Initial Embed + Buttons (start, stop, confirm, configure)
 						interaction.reply({ embeds: [initialEmbed], components:[initialButtons] });
