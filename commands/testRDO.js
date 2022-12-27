@@ -385,14 +385,48 @@ if (RDO_Bonus != undefined) {
     }		
     function rdoFooterMax() {
       if (rdoFinalString.length > 4000) {
-        return `**[click here](${url}) for more details**`;
+        if (lang === "en") {
+					return `\n** [click here](${url}) for more details**`;
+				}
+				else if (lang === "es" ) {
+					return `\n** [haga clic aquí](${url}) para más detalles**`;
+				}
+				else if (lang === "ru" ) {
+					return `\n** [нажмите здесь](${url}) для получения более подробной информации**`;
+				}				
+				else if (lang === "de" ) {
+					return `\n** [Klicken Sie hier](${url}) für weitere Details**`;
+				}		
+				else if (lang === "pt" ) {
+					return `\n** [clique aqui](${url}) para mais detalhes**`;
+				}								
+				else {
+					return `\n** [click here](${url}) for more details**`;
+				}
       } else {
         return "";
       }
     }
     function rdoFooterMin() { 
       if (rdoFinalString.length <= 4000) {
-        return `**[click here](${url}) for more details**`;
+				if (lang === "en") {
+					return `\n** [click here](${url}) for more details**`;
+				}
+				else if (lang === "es" ) {
+					return `\n** [haga clic aquí](${url}) para más detalles**`;
+				}
+				else if (lang === "ru" ) {
+					return `\n** [нажмите здесь](${url}) для получения более подробной информации**`;
+				}				
+				else if (lang === "de" ) {
+					return `\n** [Klicken Sie hier](${url}) für weitere Details**`;
+				}		
+				else if (lang === "pt" ) {
+					return `\n** [clique aqui](${url}) para mais detalhes**`;
+				}								
+				else {
+					return `\n** [click here](${url}) for more details**`;
+				}
       } else {
         return "";
       }
@@ -419,7 +453,7 @@ if (RDO_Bonus != undefined) {
     		return `Red Dead Online Bonuses & Discounts:`;
 			}		
 		}
-		console.log(`rdoTitleFunction: ${rdoTitleFunction()}`);
+		//console.log(`rdoTitleFunction: ${rdoTitleFunction()}`);
 		
 
 		let rdoEmbed = new EmbedBuilder()

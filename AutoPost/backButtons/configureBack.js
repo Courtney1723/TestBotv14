@@ -240,7 +240,7 @@ module.exports = {
 					}					
 				}	
 
-function notYourButtonString() {
+				function notYourButtonString() {
 					if (lang === "en") {
 						return `These buttons are not for you.`;
 					}
@@ -261,7 +261,7 @@ function notYourButtonString() {
 					}				
 			}		
 
-function missingPermissions()	{
+			function missingPermissions()	{
 				if (lang === "en") {
 					return `You do not have the required permissions to do that.`;
 				}

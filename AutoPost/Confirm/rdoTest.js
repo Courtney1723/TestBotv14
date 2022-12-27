@@ -15,9 +15,55 @@ module.exports = {
 		if (!interaction.isButton()) {return};
 		if (interaction.customId.startsWith(`rdoTest -`)) {
 
+		fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
+			  if (err) {console.log(`Error: ${err}`)} 
+				else {
+					let lang03 = data.split("lang:");
+					//console.log(`lang03.length: ${lang03.length}`);
 
+					let langArray = [];
+					for (i=1; i <= lang03.length - 1; i++) { //first will always be undefined
+						let lang02 = lang03[i].split(" -");
+						//console.log(`lang02 at ${i}: ${lang02}`);
+						
+						let lang01 = lang02[0];
+						//console.log(`lang01 at ${i}: ${lang01}`);
 
-	function rdoTest () {
+						langArray.push(lang01);
+					}
+
+					//console.log(`langArray: ${langArray}`);
+
+					let guildID03 = data.split("guild:");
+					//console.log(`guildID03.length: ${guildID03.length}`);
+					let guildIDArray = [];
+					for (i=2; i <= guildID03.length - 1; i++) { //first two will always be undefined
+						let guildID02 = guildID03[i].split(" -");
+						//console.log(`lang02 at ${i}: ${lang02}`);
+						
+						let guildID01 = guildID02[0];
+						//console.log(`lang01 at ${i}: ${lang01}`);
+
+						guildIDArray.push(guildID01);
+					}
+
+					//console.log(`guildIDArray: ${guildIDArray}`);	
+
+					let lang = "";
+					for (i=0; i <= guildIDArray.length - 1; i++) {
+						//console.log(`guildIDArray at ${i}: ${guildIDArray[i]}`);
+						//console.log(`langArray at ${i}: ${langArray[i]}`);
+						//console.log(`interaction.guildID at ${i}: ${interaction.guild.id}`);
+
+					if ((interaction.channel.type === 0) || (interaction.channel.type === 5)) {
+						if (interaction.guild.id === guildIDArray[i]) {
+								lang += `${langArray[i]}`;
+							}
+						}
+					}
+					//console.log(`lang: ${lang}`);	
+
+	function rdoTest() {
 
 //----------------------------------BEGIN RDO TEST POST----------------------------------//	
 			fs.readFile('./RDODataBase.txt', 'utf8', async function (err, data) {
@@ -91,7 +137,10 @@ module.exports = {
 		let urlHash = urlHash01[0];
 			//console.log(`urlHash: ${urlHash}`);
 
-		let url = `${baseURL}${urlHash}`;
+			let langBase = `/?lang=`;
+			let langURL = `${langBase}${lang}`;
+
+		let url = `${baseURL}${urlHash}${langURL}`;
 			//console.log(`url: ${url}`);
 
 		const rdoStatus = await page.open(url);
@@ -379,23 +428,84 @@ if (RDO_Bonus != undefined) {
     }		
     function rdoFooterMax() {
       if (rdoFinalString.length > 4000) {
-        return `** [click here](${url}) for more details**`;
+				if (lang === "en") {
+					return `\n** [click here](${url}) for more details**`;
+				}
+				else if (lang === "es" ) {
+					return `\n** [haga clic aquí](${url}) para más detalles**`;
+				}
+				else if (lang === "ru" ) {
+					return `\n** [нажмите здесь](${url}) для получения более подробной информации**`;
+				}				
+				else if (lang === "de" ) {
+					return `\n** [Klicken Sie hier](${url}) für weitere Details**`;
+				}		
+				else if (lang === "pt" ) {
+					return `\n** [clique aqui](${url}) para mais detalhes**`;
+				}								
+				else {
+					return `\n** [click here](${url}) for more details**`;
+				}
       } else {
         return "";
       }
     }
     function rdoFooterMin() { 
       if (rdoFinalString.length <= 4000) {
-        return `** [click here](${url}) for more details**`;
+				if (lang === "en") {
+					return `\n** [click here](${url}) for more details**`;
+				}
+				else if (lang === "es" ) {
+					return `\n** [haga clic aquí](${url}) para más detalles**`;
+				}
+				else if (lang === "ru" ) {
+					return `\n** [нажмите здесь](${url}) для получения более подробной информации**`;
+				}				
+				else if (lang === "de" ) {
+					return `\n** [Klicken Sie hier](${url}) für weitere Details**`;
+				}		
+				else if (lang === "pt" ) {
+					return `\n** [clique aqui](${url}) para mais detalhes**`;
+				}								
+				else {
+					return `\n** [click here](${url}) for more details**`;
+				}
       } else {
         return "";
       }
     } 		
+
+//--BEGIN TRANSLATIONS--//
+
+function rdoTitleFunction() {
+					
+			if (lang === "en") {
+				return `Red Dead Online Bonuses:`;
+			}
+			else if (lang === "es") {
+				return `Bonificaciones de Red Dead Online:`;
+			}
+			else if (lang === "ru") {
+				return `Бонусы Red Dead Online:`;
+			}
+			else if (lang === "de") {
+				return `Boni in Red Dead Online:`;
+			}
+			else if (lang === "pt") {
+				return `Bônus no Red Dead Online:`;
+			}
+			else {
+    		return `Red Dead Online Bonuses & Discounts:`;
+			}		
+		}
+		//console.log(`rdoTitleFunction: ${rdoTitleFunction()}`);
+
+//--END TRANSLATIONS--//
 		
 
 		let rdoEmbed = new EmbedBuilder()
 			.setColor('0xC10000') //Red
-			.setTitle('Red Dead Redemption II Online Bonuses & Discounts:')
+			.setTitle(`${rdoTitleFunction()}`)
 			.setDescription(`${rdoDate[0]}\n\n${rdoPost()} \n${rdoFooterMin()} ${elipseFunction()}`)
 		let rdoEmbed2 = new EmbedBuilder()
 			.setColor('0xC10000') //Red
@@ -436,14 +546,13 @@ if (RDO_Bonus != undefined) {
 				.setDescription(`The Rockstar Social Club website is down. \nPlease try again later. \nSorry for the inconvenience.`)
 			client.channels.fetch(process.env.logChannel).then(channel => channel.send({embeds: [RStarDownEmbed], ephemeral: true}));
 			console.log(`The Rockstar Social Club website is down.`);	
-	}		
-		
+	}	
 				}
 				}
 			});
 
 			
-//----------------------------------END RDO TEST POST----------------------------------//	
+//----------------------------------END RDO TEST FUNCTION----------------------------------//	
 	}
 
 
@@ -497,25 +606,155 @@ if (RDO_Bonus != undefined) {
 					return "AdminRequiredNo";
 				}
 			}		
-				//console.log(`AdminRequired(): ${AdminRequired()}`)			
+				//console.log(`AdminRequired(): ${AdminRequired()}`)		
+
+//--BEGIN TRANSLATIONS--//
+
+		function success() {
+			if (lang === "en") {
+				return `Success`;
+			}
+			else if (lang === "es") {
+				return `Éxito`;
+			}
+			else if (lang === "ru") {
+				return `Успех`;
+			}
+			else if (lang === "de") {
+				return `Erfolg`;
+			}
+			else if (lang === "pt") {
+				return `Éxito`;
+			}	
+			else {
+				return `Success`;
+			}				
+		}
+
+		function sentPostDesc() {
+			if (lang === "en") {
+				return `• Posts have been sent to your subscribed channels!\n• If a channel you are subscribed to did not get a test post check to make sure the bot has the **\'View Channel\'**, **\'Send Messages\'**, and **\'Embed Links\'** permissions.`;
+			}
+			else if (lang === "es") {
+				return `• Se han enviado publicaciones a tus canales suscritos.\n• Si un canal al que está suscrito no obtuvo una comprobación posterior de prueba para asegurarse de que el bot tiene permiso para ver el canal, enviar mensajes e insertar vínculos.`;
+			}
+			else if (lang === "ru") {
+				return `• Сообщения были отправлены на ваши каналы с подпиской.\n• Если канал, на который вы подписаны, не получил тестовую запись, чтобы убедиться, что бот имеет разрешение на просмотр канала, отправку сообщений и встраивание ссылок.`;
+			}
+			else if (lang === "de") {
+				return `• Beiträge wurden an Ihre abonnierten Kanäle gesendet.\n• Wenn ein Kanal, den Sie abonniert haben, keine Testbeitragsüberprüfung erhalten hat, um sicherzustellen, dass der Bot über die Berechtigung zum Anzeigen des Kanals, zum Senden von Nachrichten und zum Einbetten von Links verfügt.`;
+			}
+			else if (lang === "pt") {
+				return `• Se han enviado publicaciones a sus canales suscritos.\n• Se um canal no qual você está inscrito não recebeu uma verificação de postagem de teste para garantir que o bot tenha permissão para visualizar o canal, enviar mensagens e incorporar links.`;
+			}
+			else {
+				return `• Posts have been sent to your subscribed channels!\n• If a channel you are subscribed to did not get a test post check to make sure the bot has the **\'View Channel\'**, **\'Send Messages\'**, and **\'Embed Links\'** permissions.`;
+			}			
+		}
+
+			function notYourButtonString() {
+					if (lang === "en") {
+						return `These buttons are not for you.`;
+					}
+					else if (lang === "es") {
+						return `Estos botones no son para ti.`;
+					}
+					else if (lang === "ru") {
+						return `Эти кнопки не для вас.`;
+					}
+					else if (lang === "de") {
+						return `Diese Schaltflächen sind nicht für Sie.`;
+					}
+					else if (lang === "pt") {
+						return `Esses botões não são para você.`;
+					}
+					else {
+						return `These buttons are not for you.`;
+					}				
+			}	
+
+	function noSubscriptions() {
+		if (lang === "en") {
+			return `You do not have any channels subscribed to Red Dead Online auto posts.`;
+		}
+		else if (lang === "es") {
+			return `No tienes ningún canal suscrito a las publicaciones automáticas de Red Dead Online.`;
+		}
+		else if (lang === "ru") {
+			return `У вас нет каналов, подписанных на автоматические посты Red Dead Online.`;
+		}
+		else if (lang === "de") {
+			return `Sie haben keine Kanäle, die Red Dead Online-Autobeiträge abonniert haben.`;
+		}
+		else if (lang === "pt") {
+			return `Você não tem nenhum canal inscrito nas postagens automáticas do Red Dead Online.`;
+		}
+		else {
+			return `You do not have any channels subscribed to Red Dead Online auto posts.`;
+		}		
+	}
+
+	function firstTime() {
+		if (lang === "en") {
+			return `It looks like this is your first time using this command. Please try the test button again.`;
+		}
+		else if (lang === "es") {
+			return `Parece que es la primera vez que usas este comando. Vuelva a intentar el botón de prueba.`;
+		}
+		else if (lang === "ru") {
+			return `Похоже, вы впервые используете эту команду. Повторите попытку нажатия кнопки теста.`;
+		}
+		else if (lang === "de") {
+			return `Es sieht so aus, als ob Sie diesen Befehl zum ersten Mal verwenden. Bitte versuchen Sie es erneut mit dem Test-Button.`;
+		}
+		else if (lang === "pt") {
+			return `Parece que esta é a primeira vez que você usa esse comando. Tente o botão de teste novamente.`;
+		}
+		else {
+			return `It looks like this is your first time using this command. Please try the test button again.`;
+		}		
+	}
+
+function missingPermissions()	{
+				if (lang === "en") {
+					return `You do not have the required permissions to do that.`;
+				}
+				else if (lang === "es") {
+				  return `No tienes permiso para hacer eso.`;
+				}
+				else if (lang === "ru") {
+				  return `У вас нет разрешения на это.`;
+				}
+				else if (lang === "de") {
+				  return `Sie haben keine Erlaubnis dazu.`;
+				}
+				else if (lang === "pt") {
+				  return `Você não tem permissão para fazer isso.`;
+				}
+				else {
+				  return `You do not have the required permissions to do that.`;
+				}				
+			}				
+
+//--END TRANSLATIONS--//
 
 		const testEmbed = new EmbedBuilder()
 			.setColor(`Green`) 
-			.setTitle(`Success!`)
-			.setDescription(`• Posts have been sent to your subscribed channels!\n• If a channel you are subscribed to did not get a test post check to make sure the bot has the **\'View Channel\'**, **\'Send Messages\'**, and **\'Embed Links\'** permissions.`)
+			.setTitle(`${success()}`)
+			.setDescription(`${sentPostDesc()}`)
 
 
 //begin checking for permissions
 					await interaction.deferUpdate();
 		//console.log(`AdminRequired(): ${AdminRequired()}`)
 				if (interaction.user.id != buttonUserID) {
-					await interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
+					await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });
 				}	
 		else if (rdoChannelIds.length <= 0) { 
-			await interaction.followUp({ content: `You do not have any channels subscribed to RDR2 auto posts.`, ephemeral: true });
+			await interaction.followUp({ content: `${noSubscriptions()}`, ephemeral: true });
 		}						
 		else if (AdminRequired() === undefined) { //uncessary because confirm already checked? 
-			await interaction.followUp({ content: `It looks like this is your first time using this command. Please try the Test button again. :) `, ephemeral: true });
+			await interaction.followUp({ content: `${firstTime()}`, ephemeral: true });
 		}
 		else if (AdminRequired() === "AdminRequiredYes") { //if admin permissions are required
 			if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) {
@@ -523,10 +762,10 @@ if (RDO_Bonus != undefined) {
 				await interaction.followUp({ embeds: [testEmbed], components: [], ephemeral: true }).catch(err => console.log(`testEmbed Error: ${err}`));
 			} 
 			else if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
-				await interaction.followUp({content: `You do not have the required permissions to do that.`, ephemeral: true})
+				await interaction.followUp({content: `${missingPermissions()}`, ephemeral: true})
 			}
 			else if (!interaction.user.id === buttonUserID)  {
-				await interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
+				await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });
 			}
 		}
 		else if (AdminRequired() === "AdminRequiredNo") { //if admin permissions are NOT required
@@ -553,15 +792,21 @@ if (RDO_Bonus != undefined) {
 					await interaction.followUp({ embeds: [testEmbed], components: [], ephemeral: true }).catch(err => console.log(` Error: ${err.stack}`));
 				}		
 				else if (hasARole <= 0) {
-					await interaction.followUp({content: `You do not have the required permissions to do that.`, ephemeral: true})
+					await interaction.followUp({content: `${missingPermissions()}`, ephemeral: true})
 				}											
 		}
 		else {
-			await interaction.followUp({ content: `There was an error executing this button.`, ephemeral: true });
+			await interaction.followUp({ content: `There was an error executing this button. Please try again in a few minutes.`, ephemeral: true });
+			console.log(`rdoTest error: ${error.stack}`);
 		} //end checking for permissions	
 
+			
+
 		});
+
+		}}); //end fs.readFile for LANGDataBase.txt
 		}
+	
 
 },
 
