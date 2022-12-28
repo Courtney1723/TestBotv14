@@ -715,7 +715,7 @@ function rdoTitleFunction() {
 		}		
 	}
 
-function missingPermissions()	{
+			function missingPermissions()	{
 				if (lang === "en") {
 					return `You do not have the required permissions to do that.`;
 				}

@@ -83,17 +83,41 @@ module.exports = {
 			.setTitle(`Erfolg`)
 			.setDescription(`Die Sprache für diesen Server wurde auf Deutsch geändert.`)
 			.setFooter({ text: 'Die Standardsprache ist Englisch. Einige Informationen fehlen möglicherweise oder sind schlecht übersetzt.', iconURL: process.env.logo_link });
-
-					fs.writeFile('./LANGDataBase.txt', `${data.replace(`guild:${interaction.guild.id} - lang:${lang} - `, `guild:${interaction.guild.id} - lang:de - `)}`, function (err) {
-						if (err) throw err;
-						console.log('A user changed the server language to German.');
-					}); //end fs:writeFile to remove a role from autoposts
 				
 		if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) { 
         await interaction.editReply({ embeds: [germanStartEmbed], components: [] })
         .catch(err => console.log(`germanEmbed Error: ${err.stack}`));
+
+		if (lang === "") {
+				fs.appendFile(`./LANGDataBase.txt`,`guild:${interaction.guild.id} - lang:de - \n`, err => {
+					 if (err) {
+						 console.error(err);
+						 throw err;
+						}	
+					 else {
+						 if ((interaction.user.id === process.env.USER_ID_1) || (interaction.user.id === process.env.USER_ID_2)) {
+							console.log(`You added German as the server language.`);
+						 }
+						 else {
+							console.log(`A user added German as the server language.`);
+						 } 
+					 }	
+				}); // end fs:appendFile to add server language to german
+			}	
+			else {
+					fs.writeFile('./LANGDataBase.txt', `${data.replace(`guild:${interaction.guild.id} - lang:${lang} - `, `guild:${interaction.guild.id} - lang:de - `)}`, function (err) {
+						if (err) throw err;
+						 if ((interaction.user.id === process.env.USER_ID_1) || (interaction.user.id === process.env.USER_ID_2)) {
+							console.log('You changed the server language to German.');						 
+						 }
+						 else {
+							console.log('A user changed the server language to German.');						 
+						 } 						
+					}); //end fs:writeFile to change server language to german
+			}
+			
     } 
-		if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
+		else if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
 			interaction.followUp({ content: `Nur Administratoren können die Sprache ändern.`, ephemeral: true });
 		}
 		else if (!interaction.user.id === buttonUserID) {

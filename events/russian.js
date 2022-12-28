@@ -83,16 +83,39 @@ module.exports = {
 			.setTitle(`Успех`)
 			.setDescription(`Язык этого сервера был изменен на русский.`)	
 			.setFooter({ text: 'Языком по умолчанию является английский. Некоторая информация может отсутствовать или плохо переведена.', iconURL: process.env.logo_link });
-				
 
-					fs.writeFile('./LANGDataBase.txt', `${data.replace(`guild:${interaction.guild.id} - lang:${lang} - `, `guild:${interaction.guild.id} - lang:ru - `)}`, function (err) {
-						if (err) throw err;
-						console.log('A user changed the server language to russian.');
-					}); //end fs:writeFile to remove a role from autoposts
 				
 		if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) { 
         await interaction.editReply({ embeds: [russianStartEmbed], components: [] })
         .catch(err => console.log(`russianEmbed Error: ${err.stack}`));
+
+			if (lang === "") {
+				fs.appendFile(`./LANGDataBase.txt`,`guild:${interaction.guild.id} - lang:ru - \n`, err => {
+					 if (err) {
+						 console.error(err);
+						 throw err;
+						}	
+					 else {
+						 if ((interaction.user.id === process.env.USER_ID_1) || (interaction.user.id === process.env.USER_ID_2)) {
+							 console.log(`You added Russian as the server language.`);
+						 }
+						 else {
+							 console.log(`A user added Russian as the server language.`);
+						 }						 
+					 }	
+				}); // end fs:appendFile to add server language to russian
+			}	
+			else {
+				fs.writeFile('./LANGDataBase.txt', `${data.replace(`guild:${interaction.guild.id} - lang:${lang} - `, `guild:${interaction.guild.id} - lang:ru - `)}`, function (err) {
+					if (err) throw err;
+						 if ((interaction.user.id === process.env.USER_ID_1) || (interaction.user.id === process.env.USER_ID_2)) {
+							 console.log('You changed the server language to russian.');
+						 }
+						 else {
+							 console.log('A user changed the server language to russian.');
+						 } 
+				}); //end fs:writeFile to change server language to russian		
+			}
     } 
 		if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
 			interaction.followUp({ content: `Только администраторы могут изменять язык.`, ephemeral: true });

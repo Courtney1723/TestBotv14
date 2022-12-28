@@ -82,18 +82,21 @@ module.exports = {
 			.setColor(`Green`) 
 			.setTitle(`Success!`)
 			.setDescription(`The language for this server has been changed to English.`)	
-				
-
-					fs.writeFile('./LANGDataBase.txt', `${data.replace(`guild:${interaction.guild.id} - lang:${lang} - `, `guild:${interaction.guild.id} - lang:en - `)}`, function (err) {
-						if (err) throw err;
-						console.log('A user changed the server language to english.');
-					}); //end fs:writeFile to remove a role from autoposts
-
-				
-				
+	
 		if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) { 
         await interaction.editReply({ embeds: [englishStartEmbed], components: [] })
         .catch(err => console.log(`englishEmbed Error: ${err.stack}`));
+
+					fs.writeFile('./LANGDataBase.txt', `${data.replace(`guild:${interaction.guild.id} - lang:${lang} - `, `guild:${interaction.guild.id} - lang:en - `)}`, function (err) {
+						if (err) throw err;
+						if ((interaction.user.id === process.env.USER_ID_1) || (interaction.user.id === process.env.USER_ID_2)) {
+							console.log('A user changed the server language to English.');
+						 }
+						 else {
+							console.log('A user changed the server language to English.');
+						 } 		
+					}); //end fs:writeFile to change server language to english
+			
     } 
 		if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
 			interaction.followUp({ content: `Only administrators can change the language.`, ephemeral: true });

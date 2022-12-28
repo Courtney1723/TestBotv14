@@ -1,20 +1,16 @@
-const { Client, GatewayIntentBits, PermissionsBitField, Collection, Partials, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } = require('discord.js');
-const client = new Client({
-	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions],
-	partials: [Partials.Message, Partials.Channel, Partials.Reaction],
-});
-const phantom = require('phantom'); //https://github.com/amir20/phantomjs-node
-		let errorText = `There was an error while executing this command!\nThe error has been sent to the developer and it will be fixed as soon as possible. \nIf the error persists you can try re-inviting the Rockstar Weekly bot by [clicking here](<${process.env.invite_link}>). \nReport the error by joining the Rockstar Weekly bot support server: [click here](<${process.env.support_link}>).`;
-
+var cron = require('node-cron'); //https://github.com/node-cron/node-cron
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const phantom = require('phantom'); //https://github.com/amir20/phantomjs-node
 
 module.exports = {
-	name: 'interactionCreate',
-	async execute(interaction) {
+	name: 'ready',
+	async execute(client) {
 
-		if (!interaction.isButton()) {return};
-		if (interaction.customId.startsWith(`gtaTest -`)) {
-
+		//cron.schedule('*/20 * * * * *', () => { //(second),minute,hour,date,month,weekday 
+		cron.schedule('50 11 * * 4', () => { //(second),minute,hour,date,month,weekday '0 12 * * 4' = 12:00 PM on Thursday
+		  console.log('sending GTA Auto Posts...');
+			
 			fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
 			  if (err) {console.log(`Error: ${err}`)} 
 				else {
@@ -22,7 +18,7 @@ module.exports = {
 					//console.log(`lang03.length: ${lang03.length}`);
 
 					let langArray = [];
-					for (i=1; i <= lang03.length - 1; i++) { //first will always be undefined
+					for (i=1; i <= lang03.length - 1; i++) { //first language will always be undefined
 						let lang02 = lang03[i].split(" -");
 						//console.log(`lang02 at ${i}: ${lang02}`);
 						
@@ -31,12 +27,11 @@ module.exports = {
 
 						langArray.push(lang01);
 					}
-
 					//console.log(`langArray: ${langArray}`);
 
 					let guildID03 = data.split("guild:");
 					//console.log(`guildID03.length: ${guildID03.length}`);
-					let guildIDArray = [];
+					let guildIDLangArray = [];
 					for (i=2; i <= guildID03.length - 1; i++) { //first two will always be undefined
 						let guildID02 = guildID03[i].split(" -");
 						//console.log(`lang02 at ${i}: ${lang02}`);
@@ -44,38 +39,22 @@ module.exports = {
 						let guildID01 = guildID02[0];
 						//console.log(`lang01 at ${i}: ${lang01}`);
 
-						guildIDArray.push(guildID01);
+						guildIDLangArray.push(guildID01);
 					}
 
-					//console.log(`guildIDArray: ${guildIDArray}`);	
+					//console.log(`guildIDLangArray: ${guildIDLangArray}`);	
 
-					let lang = "";
-					for (i=0; i <= guildIDArray.length - 1; i++) {
-						//console.log(`guildIDArray at ${i}: ${guildIDArray[i]}`);
-						//console.log(`langArray at ${i}: ${langArray[i]}`);
-						//console.log(`interaction.guildID at ${i}: ${interaction.guild.id}`);
-
-						if (interaction.guild.id === guildIDArray[i]) {
-							lang += `${langArray[i]}`;
-						}
-					}
-
-					//console.log(`lang: ${lang}`);
-
-			
-function gtaTest() {
-
-	
-//-------------------Begin GTA TEST POST---------------------//	
+					
+//----------Begin Formatting GuildIds, ChannelIds, and rdo_gtaIDs-----------//	
 			fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
 			  if (err) {console.log(`Error: ${err}`)} 
 				else {
 			  	//console.log(`data: ${data}`);
-					let guildIDs01 = data.split(`guild:${interaction.guild.id} - `);
+					let guildIDs01 = data.split("guild:");
 						//console.log(`guildIDs01[1]: ${guildIDs01[1]}\n`);
 						//console.log(`guildIDs01[2]: ${guildIDs01[2]}\n`);
 
-					let channelIDs01 = data.split(`guild:${interaction.guild.id} - channel:`);
+					let channelIDs01 = data.split("channel:");
 						//console.log(`channelIDs01[1]: ${channelIDs01[1]}\n`);		
 						//console.log(`channelIDs01[2]: ${channelIDs01[2]}\n`);	
 
@@ -86,7 +65,7 @@ function gtaTest() {
 					let guildIDs = [];
 					let channelIDs = [];
 					let rdo_gtaIDs = [];
-					for (i = 1; i <= guildIDs01.length - 1; i++) {
+					for (i = 1; i <= rdo_gtaIDs01.length - 1; i++) { //iterated through the subbbed channels 
 						let guildIDs02 = guildIDs01[i].split("-");
 						let guildIDs03 = guildIDs02[0];
 							//console.log(`guildIDs at ${i}: ${guildIDs03}`);
@@ -96,6 +75,7 @@ function gtaTest() {
 						let channelIDs02 = channelIDs01[i].split("-");
 						let channelIDs03 = channelIDs02[0];
 							//console.log(`channelIDs at ${i}: ${channelIDs03}`);
+
 							channelIDs += `${channelIDs03} - `;		
 
 						let rdo_gtaIDs02 = rdo_gtaIDs01[i].split("-");
@@ -104,20 +84,48 @@ function gtaTest() {
 
 							rdo_gtaIDs += `${rdo_gtaIDs03} - `;
 
-
-						//client.channels.fetch(channelIDs03).then(channel => channel.send('<content>')) //example DO NOT UNCOMMENT
+						//client.channels.fetch(channelIDs03).then(channel => channel.send('<content>')) //example DO NOT UNCOMMENT				
 
 					}
 
 					//console.log(`guildIDs: ${guildIDs}`);
-					//console.log(`channelIDs: ${channelIDs}`); //do not comment out - no idea why
+					console.log(`channelIDs: ${channelIDs}`); //do not comment out 
 					//console.log(`rdo_gtaIDs: ${rdo_gtaIDs}`);
-//----------END Formatting GuildIds, ChannelIds, and rdo_gtaIDs-----------//	
+
+			let guildIDsArray = guildIDs.split('  - ');
+			guildIDsArray.shift(); //removes the undefined element
+			let channelIDArray = channelIDs.split('  - ');
+			channelIDArray.shift(); //removes the undefined element
+			let guildLangs = guildIDLangArray.join(` - `);
+					console.log(`guildIDsArray: ${guildIDsArray}`);
+					console.log(`guildIDLangArray: ${guildIDLangArray}`);
+					console.log(`channelIDArray: ${channelIDArray}`);
+			for (c = 0; c <= channelIDArray.length - 2; c++) { //first & last elements will always be undefined	
+					let lang = "";
+				
+				for (langCheck=0;langCheck <= langArray.length - 1; langCheck++) { //iterates through all the languages
+						// console.log(`guildIDsArray[c] === guildIDLangArray[langCheck]? ${guildIDsArray[c] === guildIDLangArray[langCheck]}`);
+						// console.log(`guildIDsArray at c${c}: ${guildIDsArray[c]}`);
+						// console.log(`guildIDLangArray at c${c}: ${guildIDLangArray[c]}`);
+						// console.log(`channelIDArray at c${c}: ${channelIDArray[c]}`);
+						// console.log(`langArray at c${c}: ${langArray[c]}`);					
+						// console.log(`guildIDsArray at langCheck${langCheck}: ${guildIDsArray[langCheck]}`);
+						// console.log(`guildIDLangArray at langCheck${langCheck}: ${guildIDLangArray[langCheck]}`);
+						// console.log(`channelIDArray at langCheck${langCheck}: ${channelIDArray[langCheck]}`);
+						// console.log(`langArray at langCheck${langCheck}: ${langArray[langCheck]}`);						
+					if (guildIDsArray[c] === guildIDLangArray[langCheck]) { //if the subscribed channel is in a guild that has a language chosen
+						lang = langArray[langCheck];
+					}
+				}
+				console.log(`lang: ${lang}`);
+					
+//----------END Formatting GuildIds, ChannelIds, rdo_gtaIDs, and language-----------//	
 
 					
 
 //Begin GTA Formatting		
-		let gtaURL = process.env.SOCIAL_URL_GTA2;
+
+let gtaURL = process.env.SOCIAL_URL_GTA2;
 
 		//await interaction.editReply(`Console Logged 👍`).catch(console.error);
 	
@@ -152,10 +160,10 @@ function gtaTest() {
 			let langURL = `${langBase}${lang}`;
 			
 			let url = `${baseURL}/${urlLink}${langURL}`;
-			//console.log(`url: ${url}`);		
+			//console.log(`url: ${url}`);	
 
 		const gtaStatus = await page.open(url);
-		if (gtaStatus === `success`) {
+		if (gtaStatus === `success`) { //checks if Rockstar Social Club website is down
 		const content = await page.property('content'); // Gets the latest gta updates
 			//console.log(content); 
 		let gtaString001 = content.toString(); //converts HTML to string (necessary? not sure.);
@@ -379,6 +387,9 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 						let introParas = GTA_Title.split("<p>")
 						//gtaFinalString01 += `• ${introParas[1]}\n`; //usual intro paragraph
 						gtaFinalString01 += `• ${introParas[1].charAt(0).toUpperCase()}${introParas[1].substr(1)}\n`; //not sure why the first word is lowercase?
+						if (introParas[2] != undefined) {
+							gtaFinalString01 += `• ${introParas[2].charAt(0).toUpperCase()}${introParas[2].substr(1)}\n`; //not sure why the first word is lowercase?
+						}						
 					}
 					else if (GTA_Bonus != null) { //if the bonus is not an intro paraghraph
 						let gtaParas = GTA_Bonus.split("<p>");
@@ -393,6 +404,9 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 						else if (GTA_Title.toLowerCase().includes("hsw time trial")) { //fail safe for if the NextGenIndex does not work properly
 							gtaFinalString01 += `• ${GTA_Title}\n`;
 						}
+						else if (GTA_Title.toLowerCase().includes("candy cane")) {
+							gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
+						}							
 						else if (GTA_Title.toLowerCase().includes("new community series")) {
 							gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
 						}
@@ -430,10 +444,10 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 							gtaFinalString01 += `**${GTA_Title}** \n`;
 						}
 						else if (GTA_Title.toLowerCase().includes("gta+")) {
-							gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n${gtaParas[2]}\n`;
+							gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n${gtaParas[2]})\n`; //FIXME - remove parenthesis
 						}
 						else if (GTA_Title.toLowerCase().includes("discount")) {
-							gtaFinalString01 += `**${GTA_Title}**\n• ${GTA_Bonus}\n`;
+							gtaFinalString01 += `**${GTA_Title}**\n• ${GTA_Bonus}:\n• Declasse Drift Tampa (Sports)\n• Pegassi Infernus Classic (Sports Classics)\n• Obey Tailgater S (Sedan)\n• Declasse Granger 3600LX (SUV)\n• JoBuilt Velum 5-Seater (Plane)\n• Pegassi Toros (SUV)\n• Benefactor Schafter V12 (Armored) (Sedan)\n• Ocelot Stromberg (Sports Classics)\n`; //FIXME - vehicles not showing up change next week
 						}
 						else if (GTA_Bonus.includes("• ")) { //if the bonus includes lists
 							if (gtaParas[0] != null) {
@@ -469,7 +483,6 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 					// }
 
 				}
-
 //-----------END for loop----------//		
 	//console.log(`gtaFinalString01: ${gtaFinalString01}`); //gtaFinalString before HTML formatting
 		let gtaFinalString = gtaFinalString01.replace(/<p>/g, "")
@@ -503,56 +516,56 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
         return "";
         }
     }		
-				function gtaFooterMax() {
-					if (gtaFinalString.length > 4000) {
-						if (lang === "en") {
-							return `\n** [click here](${url}) for more details**`;
-						}
-						else if (lang === "es" ) {
-							return `\n** [haga clic aquí](${url}) para más detalles**`;
-						}
-						else if (lang === "ru" ) {
-							return `\n** [нажмите здесь](${url}) для получения более подробной информации**`;
-						}				
-						else if (lang === "de" ) {
-							return `\n** [Klicken Sie hier](${url}) für weitere Details**`;
-						}		
-						else if (lang === "pt" ) {
-							return `\n** [clique aqui](${url}) para mais detalhes**`;
-						}								
-						else {
-							return `\n** [click here](${url}) for more details**`;
-						}			
-					} else {
-						return "";
-					}
+    function gtaFooterMax() {
+      if (gtaFinalString.length > 4000) {
+        if (lang === "en") {
+					return `\n** [click here](${url}) for more details**`;
 				}
-				function gtaFooterMin() {
-					if (gtaFinalString.length <= 4000) {
-						if (lang === "en") {
-							return `** [click here](${url}) for more details**`;
-						}
-						else if (lang === "es" ) {
-							return `** [haga clic aquí](${url}) para más detalles**`;
-						}
-						else if (lang === "ru" ) {
-							return `** [нажмите здесь](${url}) для получения более подробной информации**`;
-						}				
-						else if (lang === "de" ) {
-							return `** [Klicken Sie hier](${url}) für weitere Details**`;
-						}		
-						else if (lang === "pt" ) {
-							return `** [clique aqui](${url}) para mais detalhes**`;
-						}									
-						else {
-							return `** [click here](${url}) for more details**`;
-						}			
-					} else {
-						return "";
-					}
+				else if (lang === "es" ) {
+					return `\n** [haga clic aquí](${url}) para más detalles**`;
 				}
+				else if (lang === "ru" ) {
+					return `\n** [нажмите здесь](${url}) для получения более подробной информации**`;
+				}				
+				else if (lang === "de" ) {
+					return `\n** [Klicken Sie hier](${url}) für weitere Details**`;
+				}		
+				else if (lang === "pt" ) {
+					return `\n** [clique aqui](${url}) para mais detalhes**`;
+				}								
+				else {
+					return `\n** [click here](${url}) for more details**`;
+				}	
+      } else {
+        return "";
+      }
+    }
+    function gtaFooterMin() { 
+      if (gtaFinalString.length <= 4000) {
+				if (lang === "en") {
+					return `\n** [click here](${url}) for more details**`;
+				}
+				else if (lang === "es" ) {
+					return `\n** [haga clic aquí](${url}) para más detalles**`;
+				}
+				else if (lang === "ru" ) {
+					return `\n** [нажмите здесь](${url}) для получения более подробной информации**`;
+				}				
+				else if (lang === "de" ) {
+					return `\n** [Klicken Sie hier](${url}) für weitere Details**`;
+				}		
+				else if (lang === "pt" ) {
+					return `\n** [clique aqui](${url}) para mais detalhes**`;
+				}								
+				else {
+					return `\n** [click here](${url}) for more details**`;
+				}	
+      } else {
+        return "";
+      }
+    } 	
 
-				function gtaTitleString() {
+		function gtaTitleString() {
 					if (lang === "en") {
 						return "GTA Online Bonuses:";
 					}
@@ -572,17 +585,19 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 						return "GTA Online Bonuses:";
 					}		
 				}
-				//console.log(`gtaTitleString: ${gtaTitleString()}`);
+				//console.log(`gtaTitleString: ${gtaTitleString()}`);			
+		
 
-				let gtaEmbed = new EmbedBuilder()
-					.setColor('0x00CD06') //Green
-					.setDescription(`**${gtaTitleString()}** \n${gtaDate[0]}\n\n${gtaPost()} \n${gtaFooterMin()} ${elipseFunction()}`)			
-				let gtaEmbed2 = new EmbedBuilder()
-					.setColor('0x00CD06') //Green
-					.setDescription(`${elipseFunction()} \n${gtaPost2()} ${gtaFooterMax()}`)
-				let gtaImageEmbed = new EmbedBuilder()
-					.setColor('0x00CD06') //Green
-					.setImage(`${gtaImage[0]}`);
+		let gtaEmbed = new EmbedBuilder()
+			.setColor('0x00CD06') //Green
+			.setTitle(`${gtaTitleString()}`)
+			.setDescription(`${gtaDate[0]}\n\n${gtaPost()} \n${gtaFooterMin()} ${elipseFunction()}`)
+		let gtaEmbed2 = new EmbedBuilder()
+			.setColor('0x00CD06') //Green
+			.setDescription(`${elipseFunction()} \n${gtaPost2()} ${gtaFooterMax()}`)	
+		let gtaImageEmbed = new EmbedBuilder()
+			.setColor('0x00CD06') //Green
+			.setImage(`${gtaImage[0]}`);
 
 		 // console.log(`gtaEmbed length: ${gtaEmbed.length}`); //no more than 4096 (line 199)
 		 // console.log(`gtaEmbed2 length: ${gtaEmbed2.length}`); //no more than 6000 - gtaEmbed.length (line 204)
@@ -594,24 +609,23 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
 
 		
-		let channelIDArray = channelIDs.split('  - ');
-			//console.log(`channelIDArray length: ${channelIDArray.length}`);
-			//console.log(`channelIDArray: ${channelIDArray}`);
-		for (c = 0; c <= channelIDArray.length - 2; c++) { //last element will always be blank
-			//console.log(`channelIDArray at ${c}: ${channelIDArray[c]}`);
-			if (channelIDArray[c].startsWith("undefined")) {return}
-			else if (!channelIDArray[c].startsWith("undefined")) {
-
-
-			//BELOW THIS DIFFERS FROM ALL OTHER GTA POSTS
-			if (gtaFinalString.length <= 4000) {
-				interaction.guild.channels.fetch(channelIDArray[c]).then(channel => channel.send(({embeds: [gtaImageEmbed, gtaEmbed]}))).catch(err => console.log(`RDO Test Min Error: ${err.stack}`));
-			} else {
-				interaction.guild.channels.fetch(channelIDArray[c]).then(channel => channel.send({embeds: [gtaImageEmbed, gtaEmbed, gtaEmbed2]})).catch(err => console.log(`RDO Test Max Error: ${err.stack}`));
-			}
+			if (channelIDArray[c].includes("undefined")) {}
+			else {
+				if (gtaFinalString.length <= 4000) {
+					client.channels.fetch(channelIDArray[c]).then(channel => channel.send(({embeds: [gtaImageEmbed, gtaEmbed]}))).catch(err => console.log(`Min Error: ${err.stack}`));
+				} 
+				else {
+					client.channels.fetch(channelIDArray[c]).then(channel => channel.send({embeds: [gtaImageEmbed, gtaEmbed, gtaEmbed2]})).catch(err => console.log(`Max Error: ${err.stack}`));
+				}
 			} //end if not undefined channel
-		} //end c loop
-
+		} 
+	else {
+			let RStarDownEmbed = new EmbedBuilder()
+				.setColor('0xFF0000') //RED
+				.setDescription(`The Rockstar Social Club website is down. \nPlease try again later.`)
+			client.channels.fetch(process.env.logChannel2).then(channel => channel.send({embeds: [RStarDownEmbed], ephemeral: true}));
+			console.log(`The Rockstar Social Club website is down.`);	
+	}			
 	} 
 	else {
 			let RStarDownEmbed = new EmbedBuilder()
@@ -620,245 +634,15 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 			client.channels.fetch(process.env.logChannel2).then(channel => channel.send({embeds: [RStarDownEmbed], ephemeral: true}));
 			console.log(`The Rockstar Social Club website is down.`);	
 	}	
-	} //end if (status === `success`)
-	else {
-			let RStarDownEmbed = new EmbedBuilder()
-				.setColor('0xFF0000') //RED
-				.setDescription(`The Rockstar Social Club website is down. \nPlease try again later. \nSorry for the inconvenience.`)
-			interaction.editReply({embeds: [RStarDownEmbed], ephemeral: true});
-			console.log(`The Rockstar Social Club website is down.`);	
-	}		
+	} //end c loop				
 				}
 			});
+		}}); //end fs.readFile for LANGDataBase.txt
+		}, {
+   scheduled: true,
+   timezone: "America/Denver"
+ });
 
-
-	
-//----------------------------------END GTA TEST POST----------------------------------//
-		}		
-
-		let buttonUserID01 = (interaction.customId).split("gtaTest - ");
-		let buttonUserID = buttonUserID01[1];
-			//console.log(`start buttonUserID: ${buttonUserID}`);
-			//console.log(`start interaction.user.id === buttonUserID? ${interaction.user.id === buttonUserID}`);
-			//console.log(`start interaction.user.id: ${interaction.user.id} && buttonUserID: ${buttonUserID}`);
-
-		let guildRoleIds = [];
-		fs.readFile('./rolesDataBase.txt', 'utf8', async function (err, data) {
-		    if (err) {console.log(`Error: ${err}`)} //If an error, console.log
 		
-					interaction.guild.roles.cache.forEach(role => {
-							if (data.includes(role.id)) {
-								guildRoleIds.push(role.id);
-							}
-					});
-			guildRoleIds.splice(guildRoleIds.length - 1); //.splice(guildRoleIds.length - 1) removes the @everyone role
-				//console.log(`guildRoleIds: ${guildRoleIds}`);
-
-
-		let gtaChannelIds = [];
-		fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
-		    if (err) {console.log(`Error: ${err}`)} //If an error, console.log
-		
-					interaction.guild.channels.cache.forEach(channel => {
-							if (data.includes(channel.id)) {
-								gtaChannelIds.push(channel.id);
-							}
-					});
-			});
-			//console.log(`gtaChannelIds: ${gtaChannelIds}`);					
-
-			function AdminRequired() {
-				let AdminRequiredBoolean = data.split(`guild:${interaction.guild.id} - admin:`);
-				if (AdminRequiredBoolean[1] === undefined) {
-					 	fs.appendFile(`./rolesDataBase.txt`,`guild:${interaction.guild.id} - admin:yes - role:undefined - \n`, err => {
- 							if (err) {
- 								console.error(err)
- 								return
- 							}					
- 						}); //end fs.appendFile	
-				}
-				else if (AdminRequiredBoolean[1].startsWith(`yes`)) {
-					return "AdminRequiredYes";
-				}
-				else {
-					return "AdminRequiredNo";
-				}
-			}		
-				//console.log(`AdminRequired(): ${AdminRequired()}`)		
-
-//--BEGIN TRANSLATIONS--//
-
-			function success() {
-				if (lang === "en") {
-						return `Success`;
-				}
-				else if (lang === "es") {
-					return `Éxito`;
-				}
-				else if (lang === "ru") {
-					return `Успех`;
-				}
-				else if (lang === "de") {
-					return `Erfolg`;
-				}
-				else if (lang === "pt") {
-					return `Êxito`;
-				}
-				else {
-					return `Success`;
-				}				
-			}	
-
-		function sentPostDesc() {
-			if (lang === "en") {
-				return `• Posts have been sent to your subscribed channels!\n• If a channel you are subscribed to did not get a test post check to make sure the bot has the **\'View Channel\'**, **\'Send Messages\'**, and **\'Embed Links\'** permissions.`;
-			}
-			else if (lang === "es") {
-				return `• Se han enviado publicaciones a tus canales suscritos.\n• Si un canal al que está suscrito no obtuvo una comprobación posterior de prueba para asegurarse de que el bot tiene permiso para ver el canal, enviar mensajes e insertar vínculos.`;
-			}
-			else if (lang === "ru") {
-				return `• Сообщения были отправлены на ваши каналы с подпиской.\n• Если канал, на который вы подписаны, не получил тестовую запись, чтобы убедиться, что бот имеет разрешение на просмотр канала, отправку сообщений и встраивание ссылок.`;
-			}
-			else if (lang === "de") {
-				return `• Beiträge wurden an Ihre abonnierten Kanäle gesendet.\n• Wenn ein Kanal, den Sie abonniert haben, keine Testbeitragsüberprüfung erhalten hat, um sicherzustellen, dass der Bot über die Berechtigung zum Anzeigen des Kanals, zum Senden von Nachrichten und zum Einbetten von Links verfügt.`;
-			}
-			else if (lang === "pt") {
-				return `• Se han enviado publicaciones a sus canales suscritos.\n• Se um canal no qual você está inscrito não recebeu uma verificação de postagem de teste para garantir que o bot tenha permissão para visualizar o canal, enviar mensagens e incorporar links.`;
-			}
-			else {
-				return `• Posts have been sent to your subscribed channels!\n• If a channel you are subscribed to did not get a test post check to make sure the bot has the **\'View Channel\'**, **\'Send Messages\'**, and **\'Embed Links\'** permissions.`;
-			}			
-		}
-
-	function firstTime() {
-		if (lang === "en") {
-			return `It looks like this is your first time using this command. Please try the test button again.`;
-		}
-		else if (lang === "es") {
-			return `Parece que es la primera vez que usas este comando. Vuelva a intentar el botón de prueba.`;
-		}
-		else if (lang === "ru") {
-			return `Похоже, вы впервые используете эту команду. Повторите попытку нажатия кнопки теста.`;
-		}
-		else if (lang === "de") {
-			return `Es sieht so aus, als ob Sie diesen Befehl zum ersten Mal verwenden. Bitte versuchen Sie es erneut mit dem Test-Button.`;
-		}
-		else if (lang === "pt") {
-			return `Parece que esta é a primeira vez que você usa esse comando. Tente o botão de teste novamente.`;
-		}
-		else {
-			return `It looks like this is your first time using this command. Please try the test button again.`;
-		}		
-	}			
-
-				function notYourButtonString() {
-					if (lang === "en") {
-						return `These buttons are not for you.`;
-					}
-					else if (lang === "es") {
-						return `Estos botones no son para ti.`;
-					}
-					else if (lang === "ru") {
-						return `Эти кнопки не для вас.`;
-					}
-					else if (lang === "de") {
-						return `Diese Schaltflächen sind nicht für Sie.`;
-					}
-					else if (lang === "pt") {
-						return `Esses botões não são para você.`;
-					}
-					else {
-						return `These buttons are not for you.`;
-					}				
-			}			
-
-			function missingPermissions()	{
-				if (lang === "en") {
-					return `You do not have the required permissions to do that.`;
-				}
-				else if (lang === "es") {
-				  return `No tienes permiso para hacer eso.`;
-				}
-				else if (lang === "ru") {
-				  return `У вас нет разрешения на это.`;
-				}
-				else if (lang === "de") {
-				  return `Sie haben keine Erlaubnis dazu.`;
-				}
-				else if (lang === "pt") {
-				  return `Você não tem permissão para fazer isso.`;
-				}
-				else {
-				  return `You do not have the required permissions to do that.`;
-				}				
-			}			
-
-//--END TRANSLATIONS--//
-
-		const testEmbed = new EmbedBuilder()
-			.setColor(`Green`) 
-			.setTitle(`${success()}`)
-			.setDescription(`${sentPostDesc()}`)
-
-
-//begin checking for permissions
-					await interaction.deferUpdate();
-		//console.log(`AdminRequired(): ${AdminRequired()}`)
-				if (interaction.user.id != buttonUserID) {
-					await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });
-				}	
-		else if (gtaChannelIds.length <= 0) {
-			await interaction.followUp({ content: `You do not have any channels subscribed to GTAV auto posts.`, ephemeral: true });
-		}			
-		else if (AdminRequired() === undefined) { //uncessary because confirm already checked? 
-			await interaction.followUp({ content: `${firstTime()}`, ephemeral: true });
-		}
-		else if (AdminRequired() === "AdminRequiredYes") { //if admin permissions are required
-			if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) {
-				gtaTest();
-				await interaction.followUp({ embeds: [testEmbed], components: [], ephemeral: true }).catch(err => console.log(`testEmbed Error: ${err}`));
-			} 
-			else if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
-				await interaction.followUp({content: `${missingPermissions()}`, ephemeral: true})
-			}
-			else if (!interaction.user.id === buttonUserID)  {
-				await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });
-			}
-		}
-		else if (AdminRequired() === "AdminRequiredNo") { //if admin permissions are NOT required
-
-				//console.log(`guildRoleIds.length: ${guildRoleIds.length}`)
-				let hasARole = 0;
-				for (a=0;a<=guildRoleIds.length - 1;a++) { //iterates through each role - 0 is @everyone
-					//console.log(`guildRoleIds at ${a}: ${guildRoleIds[a]}`);
-					//console.log(`hasARole at ${a}? ${interaction.member.roles.cache.has(guildRoleIds[a])}`);
-					if (interaction.member.roles.cache.has(guildRoleIds[a])) {
-						hasARole += 1;
-					}
-				} //end loop to check for hasARole
-					//console.log(`hasARole: ${hasARole} && required roles:${guildRoleIds.length}`)
-				if ( (guildRoleIds.length === 0) && (interaction.user.id === buttonUserID) ) { //no role required
-					gtaTest();
-					await interaction.followUp({ embeds: [testEmbed], components: [], ephemeral: true }).catch(err => console.log(` Error: ${err.stack}`));
-				}
-				else if ( (hasARole >= 1) && (interaction.user.id === buttonUserID) ) { //if the user has at least one role listed
-					gtaTest();
-					await interaction.followUp({ embeds: [testEmbed], components: [], ephemeral: true }).catch(err => console.log(` Error: ${err.stack}`));
-				}
-				else if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) { //user is an admin
-					gtaTest();
-					await interaction.followUp({ embeds: [testEmbed], components: [], ephemeral: true }).catch(err => console.log(` Error: ${err.stack}`));
-				}		
-				else if (hasARole <= 0) {
-					await interaction.followUp({content: `${missingPermissions()}`, ephemeral: true})
-				}											
-		}
-		else {
-			await interaction.followUp({ content: `There was an error executing this button.`, ephemeral: true });
-		} //end checking for permissions	
-		});
-					}}); //end fs.readFile for LANGDataBase.txt
-		}
-},
-
+	}
 }

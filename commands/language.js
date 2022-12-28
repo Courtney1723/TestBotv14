@@ -189,7 +189,7 @@ module.exports = {
 					return `English`;
 				}
 				else {
-					return `English`;
+					return `español`;
 				}				
 			}
 
@@ -231,7 +231,7 @@ module.exports = {
 					return `español`;
 				}
 				else {
-					return `English`;
+					return `Pусский`;
 				}				
 			}	
 
@@ -273,7 +273,7 @@ module.exports = {
 					return `Pусский`;
 				}
 				else {
-					return `English`;
+					return `Deutsch`;
 				}				
 			}		
 
@@ -315,7 +315,7 @@ module.exports = {
 					return `Deutsch`;
 				}
 				else {
-					return `English`;
+					return `português`;
 				}				
 			}	
 
@@ -366,7 +366,7 @@ module.exports = {
 						.setStyle(ButtonStyle.Success),						
 					);	
 
-					interaction.reply({ embeds: [initialEmbed], components:[initialButtons] });
+					interaction.reply({ embeds: [initialEmbed], components:[initialButtons] });		
 
 		setTimeout(() => {
 			interaction.editReply({components: [expiredButton]})

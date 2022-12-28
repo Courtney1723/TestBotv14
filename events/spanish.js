@@ -83,15 +83,38 @@ module.exports = {
 			.setTitle(`Éxito`)
 			.setDescription(`El idioma de este servidor se ha cambiado al español.`)
 			.setFooter({ text: 'El idioma predeterminado es el inglés. Es posible que falte alguna información o que esté mal traducida.', iconURL: process.env.logo_link });
-
-					fs.writeFile('./LANGDataBase.txt', `${data.replace(`guild:${interaction.guild.id} - lang:${lang} - `, `guild:${interaction.guild.id} - lang:es - `)}`, function (err) {
-						if (err) throw err;
-						console.log('A user changed the server language to spanish.');
-					}); //end fs:writeFile to remove a role from autoposts
 				
 		if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) { 
         await interaction.editReply({ embeds: [spanishStartEmbed], components: [] })
         .catch(err => console.log(`spanishEmbed Error: ${err.stack}`));
+
+			if (lang === "") {
+				fs.appendFile(`./LANGDataBase.txt`,`guild:${interaction.guild.id} - lang:es - \n`, err => {
+					 if (err) {
+						 console.error(err);
+						 throw err;
+						}	
+					 else {
+						 if ((interaction.user.id === process.env.USER_ID_1) || (interaction.user.id === process.env.USER_ID_2)) {
+							 console.log(`You added Spanish as the server language.`);
+						 }
+						 else {
+							 console.log(`A user added Spanish as the server language.`);
+						 }
+					 }	
+				}); // end fs:appendFile to add server language to spanish
+			}	
+			else {
+					fs.writeFile('./LANGDataBase.txt', `${data.replace(`guild:${interaction.guild.id} - lang:${lang} - `, `guild:${interaction.guild.id} - lang:es - `)}`, function (err) {
+						if (err) throw err;
+						 if ((interaction.user.id === process.env.USER_ID_1) || (interaction.user.id === process.env.USER_ID_2)) {
+							 console.log('You changed the server language to Spanish.');
+						 }
+						 else {
+							 console.log('A user changed the server language to Spanish.');
+						 } 						
+					}); //end fs:writeFile to change server language to spanish			
+			}			
     } 
 		if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
 			interaction.followUp({ content: `Solo los administradores pueden cambiar el idioma.`, ephemeral: true });

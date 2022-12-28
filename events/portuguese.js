@@ -83,15 +83,38 @@ module.exports = {
 			.setTitle(`Êxito`)
 			.setDescription(`O idioma deste servidor foi alterado para português.`)
 			.setFooter({ text: 'O idioma padrão é o inglês. Algumas informações podem estar faltando ou mal traduzidas.', iconURL: process.env.logo_link });
-
-					fs.writeFile('./LANGDataBase.txt', `${data.replace(`guild:${interaction.guild.id} - lang:${lang} - `, `guild:${interaction.guild.id} - lang:pt - `)}`, function (err) {
-						if (err) throw err;
-						console.log('A user changed the server language to portuguese.');
-					}); //end fs:writeFile to remove a role from autoposts
 				
 		if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) { 
         await interaction.editReply({ embeds: [portugueseStartEmbed], components: [] })
         .catch(err => console.log(`portugueseEmbed Error: ${err.stack}`));
+
+			if (lang === "") {
+				fs.appendFile(`./LANGDataBase.txt`,`guild:${interaction.guild.id} - lang:pt - \n`, err => {
+					 if (err) {
+						 console.error(err);
+						 throw err;
+						}	
+					 else {
+						 if ((interaction.user.id === process.env.USER_ID_1) || (interaction.user.id === process.env.USER_ID_2)) {
+						console.log(`You added Portuguese as the server language.`);
+						 }
+						 else {
+						console.log(`A user added Portuguese as the server language.`);
+						 } 
+					 }	
+				}); // end fs:appendFile to add a channel for gta autop posts	
+			}	
+			else {
+				fs.writeFile('./LANGDataBase.txt', `${data.replace(`guild:${interaction.guild.id} - lang:${lang} - `, `guild:${interaction.guild.id} - lang:pt - `)}`, function (err) {
+					if (err) throw err;
+						 if ((interaction.user.id === process.env.USER_ID_1) || (interaction.user.id === process.env.USER_ID_2)) {
+					console.log('You changed the server language to portuguese.');
+						 }
+						 else {
+					console.log('A user changed the server language to portuguese.');
+						 } 					
+				}); //end fs:writeFile to remove a role from autoposts				
+			}
     } 
 		if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
 			interaction.followUp({ content: `Somente os administradores podem alterar o idioma.`, ephemeral: true });
