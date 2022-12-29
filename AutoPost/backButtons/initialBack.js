@@ -43,151 +43,7 @@ module.exports = {
 			//console.log(`startBack interaction.user.id === buttonUserID? ${interaction.user.id === buttonUserID}`);
 			//console.log(`startBack interaction.user.id: ${interaction.user.id} && buttonUserID: ${buttonUserID}`);			
 
-
-		const initialEmbed = new EmbedBuilder()
-			.setColor(`0x00FFCC`) //Seafoam green
-			.setTitle(`Auto Post Settings`)
-			.setDescription(`Click **\'Start\'** to add an auto post channel.
-Click **\'Stop\'** to remove an auto post channel.
-Click **\'Configure\'** to add or remove a role that can configure auto post settings.
-Click **\'Confirm\'** to view current settings or test auto posts.`)
-			.setFooter({text: `Only Administrators can start, stop, or configure auto posts by default.`, iconURL: process.env.logo_link })
-
-		const initialButtons = new ActionRowBuilder()
-			.addComponents(
-				new ButtonBuilder()
-					.setCustomId(`start - ${interaction.user.id}`)
-					.setLabel('Start')
-					.setStyle(ButtonStyle.Success),
-				new ButtonBuilder()
-					.setCustomId(`stop - ${interaction.user.id}`)
-					.setLabel('Stop')
-					.setStyle(ButtonStyle.Danger),			
-				new ButtonBuilder()
-					.setCustomId(`configure - ${interaction.user.id}`)
-					.setLabel('Configure')
-					.setStyle(ButtonStyle.Primary),						
-				new ButtonBuilder()
-					.setCustomId(`confirm - ${interaction.user.id}`)
-					.setLabel('Confirm')
-					.setStyle(ButtonStyle.Secondary),					
-			);
-
-		const initialEmbedEs = new EmbedBuilder()
-			.setColor(`0x00FFCC`) //Seafoam green
-			.setTitle(`Configuración de publicación automática`)
-			.setDescription(`Clic **\'empezar\'** para agregar un canal.
-Clic **\'sopa\'** para quitar un canal.
-Clic **\'configurar\'** Para agregar o quitar un rol.
-Clic **\'confirm\'** para ver la configuración.`)
-			.setFooter({text: `Solo los administradores pueden iniciar, detener o configurar publicaciones automáticas de forma predeterminada.`, iconURL: process.env.logo_link })
-
-		const initialButtonsEs = new ActionRowBuilder()
-			.addComponents(
-				new ButtonBuilder()
-					.setCustomId(`start - ${interaction.user.id}`)
-					.setLabel('empezar')
-					.setStyle(ButtonStyle.Success),
-				new ButtonBuilder()
-					.setCustomId(`stop - ${interaction.user.id}`)
-					.setLabel('sopa')
-					.setStyle(ButtonStyle.Danger),			
-				new ButtonBuilder()
-					.setCustomId(`configure - ${interaction.user.id}`)
-					.setLabel('configurar')
-					.setStyle(ButtonStyle.Primary),						
-				new ButtonBuilder()
-					.setCustomId(`confirm - ${interaction.user.id}`)
-					.setLabel('confirmar')
-					.setStyle(ButtonStyle.Secondary),					
-			);		
-
-		const initialEmbedRu = new EmbedBuilder()
-			.setColor(`0x00FFCC`) //Seafoam green
-			.setTitle(`Автоматические настройки публикации`)
-			.setDescription(`Щелчок **\'Начало\'** для того, чтобы добавить канал.
-Щелчок **\'Остановка\'** для удаления канала.
-Щелчок **\'Настроить\'** Чтобы добавить или удалить роль.
-Щелчок **\'Подтверждать\'** для просмотра текущих настроек.`)
-			.setFooter({text: `По умолчанию только администраторы могут запускать, останавливать или настраивать автоматические публикации.`, iconURL: process.env.logo_link })
-
-		const initialButtonsRu = new ActionRowBuilder()
-			.addComponents(
-				new ButtonBuilder()
-					.setCustomId(`start - ${interaction.user.id}`)
-					.setLabel('Начало')
-					.setStyle(ButtonStyle.Success),
-				new ButtonBuilder()
-					.setCustomId(`stop - ${interaction.user.id}`)
-					.setLabel('Остановка')
-					.setStyle(ButtonStyle.Danger),			
-				new ButtonBuilder()
-					.setCustomId(`configure - ${interaction.user.id}`)
-					.setLabel('Настроить')
-					.setStyle(ButtonStyle.Primary),						
-				new ButtonBuilder()
-					.setCustomId(`confirm - ${interaction.user.id}`)
-					.setLabel('Подтверждать')
-					.setStyle(ButtonStyle.Secondary),					
-			);		
-
-		const initialEmbedDe = new EmbedBuilder()
-			.setColor(`0x00FFCC`) //Seafoam green
-			.setTitle(`Automatische Post-Einstellungen`)
-			.setDescription(`Klicken **\'Anfangen\'** so fügen Sie einen Kanal hinzu.
-Klicken **\'Aufhören\'** so entfernen Sie einen Kanal.
-Klicken **\'Konfigurieren\'** so fügen Sie eine Rolle hinzu oder entfernen sie.
-Klicken **\'Bestätigen\'** um aktuelle Einstellungen anzuzeigen.`)
-			.setFooter({text: `Nur Administratoren können automatische Beiträge standardmäßig starten, stoppen oder konfigurieren.`, iconURL: process.env.logo_link })
-
-		const initialButtonsDe = new ActionRowBuilder()
-			.addComponents(
-				new ButtonBuilder()
-					.setCustomId(`start - ${interaction.user.id}`)
-					.setLabel('Anfangen')
-					.setStyle(ButtonStyle.Success),
-				new ButtonBuilder()
-					.setCustomId(`stop - ${interaction.user.id}`)
-					.setLabel('Aufhören')
-					.setStyle(ButtonStyle.Danger),			
-				new ButtonBuilder()
-					.setCustomId(`configure - ${interaction.user.id}`)
-					.setLabel('Konfigurieren')
-					.setStyle(ButtonStyle.Primary),						
-				new ButtonBuilder()
-					.setCustomId(`confirm - ${interaction.user.id}`)
-					.setLabel('Bestätigen')
-					.setStyle(ButtonStyle.Secondary),					
-			);		
-
-		const initialEmbedPt = new EmbedBuilder()
-			.setColor(`0x00FFCC`) //Seafoam green
-			.setTitle(`Definições de posts automáticos`)
-			.setDescription(`Clique **\'Começar\'** para adicionar um canal.
-Clique **\'Parar\'** para remover um canal.
-Clique **\'Configure\'** para adicionar ou remover uma função.
-Clique **\'Confirmar\'** para ver as definições atuais.`)
-			.setFooter({text: `Apenas os administradores podem iniciar, parar ou configurar publicações automáticas por predefinição.`, iconURL: process.env.logo_link })
-
-		const initialButtonsPt = new ActionRowBuilder()
-			.addComponents(
-				new ButtonBuilder()
-					.setCustomId(`start - ${interaction.user.id}`)
-					.setLabel('Começar')
-					.setStyle(ButtonStyle.Success),
-				new ButtonBuilder()
-					.setCustomId(`stop - ${interaction.user.id}`)
-					.setLabel('Parar')
-					.setStyle(ButtonStyle.Danger),			
-				new ButtonBuilder()
-					.setCustomId(`configure - ${interaction.user.id}`)
-					.setLabel('Configure')
-					.setStyle(ButtonStyle.Primary),						
-				new ButtonBuilder()
-					.setCustomId(`confirm - ${interaction.user.id}`)
-					.setLabel('Confirmar')
-					.setStyle(ButtonStyle.Secondary),					
-			);		
+//--BEGIN TRANSLATIONS--//		
 
 			fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
 			  if (err) {console.log(`Error: ${err}`)} 
@@ -236,7 +92,200 @@ Clique **\'Confirmar\'** para ver as definições atuais.`)
 
 					//console.log(`lang: ${lang}`);
 
-			function notYourButtonString() {
+		function autoPostTitle() {
+			if (lang === "en") {
+				return `Auto Post Settings`;
+			}
+			else if (lang === "es") {
+				return `Configuración de publicación automática`;
+			}
+			else if (lang === "ru") {
+				return `Автоматические настройки публикации`;
+			}
+			else if (lang === "de") {
+				return `Einstellungen für die automatische Veröffentlichung`;
+			}
+			else if (lang === "pt") {
+				return `Configurações de publicação automática`;
+			}
+			else {
+				return `Auto Post Settings`;
+			}			
+		}	
+
+		function autoPostDesc() {
+			if (lang === "en") {
+				return `Click **\'Start\'** to add an auto post channel.
+Click **\'Stop\'** to remove an auto post channel.
+Click **\'Configure\'** to add or remove a role that can configure auto post settings.
+Click **\'Confirm\'** to view and test current settings.`;
+			}
+			else if (lang === "es") {
+				return `Haga clic en **\'Empezar\'** para agregar un canal.
+Haga clic en **\'Detener\'** para quitar un canal.
+Haga clic en **\'Configurar\'** para agregar o quitar un rol.
+Haga clic en **\'Confirmar\'** para ver y probar la configuración.`;
+			}
+			else if (lang === "ru") {
+				return `Нажмите **\'Начало\'** для того, чтобы добавить канал.
+Нажмите **\'Остановка\'** для удаления канала.
+Нажмите **\'Настроить\'** Чтобы добавить или удалить роль.
+Нажмите **\'подтвержда́ю\'** чтобы просмотреть и опробовать настройки.`;
+			}
+			else if (lang === "de") {
+				return `Klicken Sie auf **\'Anfangen\'** so fügen Sie einen Kanal hinzu.
+Klicken Sie auf **\'Aufhören\'** so entfernen Sie einen Kanal.
+Klicken Sie auf **\'Konfigurieren\'** so fügen Sie eine Rolle hinzu oder entfernen sie.
+Klicken Sie auf **\'Bestätigen\'** um die aktuellen Einstellungen anzuzeigen und zu testen.`;
+			}
+			else if (lang === "pt") {
+				return `Clique em **\'Começar\'** para adicionar um canal.
+Clique em **\'Parar\'** para remover um canal.
+Clique em **\'Configurar\'** para adicionar ou remover uma função.
+Clique em **\'Confirmar\'** para exibir e testar as configurações atuais.`;
+			}
+			else {
+				return `Click **\'Start\'** to add an auto post channel.
+Click **\'Stop\'** to remove an auto post channel.
+Click **\'Configure\'** to add or remove a role that can configure auto post settings.
+Click **\'Confirm\'** to view and test current settings.`;
+			}			
+		}
+
+		function footerText() {
+			if (lang === "en") {
+				return `Only Administrators can start, stop, or configure auto posts by default.`;
+			}
+			else if (lang === "es") {
+				return `Solo los administradores pueden iniciar, detener o configurar publicaciones automáticas de forma predeterminada.`;
+			}
+			else if (lang === "ru") {
+				return `По умолчанию только администраторы могут запускать, останавливать или настраивать автоматические публикации.`;
+			}
+			else if (lang === "de") {
+				return `Nur Administratoren können automatische Beiträge standardmäßig starten, stoppen oder konfigurieren.`;
+			}
+			else if (lang === "pt") {
+				return `Apenas os administradores podem iniciar, parar ou configurar publicações automáticas por predefinição.`;
+			}
+			else {
+				return `Only Administrators can start, stop, or configure auto posts by default.`;
+			}			
+		}
+
+		function start() {
+			if (lang === "en") {
+				return `Start`;
+			}
+			else if (lang === "es") {
+				return `Empezar`;
+			}
+			else if (lang === "ru") {
+				return `Начало`;
+			}
+			else if (lang === "de") {
+				return `Anfangen`;
+			}
+			else if (lang === "pt") {
+				return `Começar`;
+			}
+			else {
+				return `Start`;
+			}			
+		}
+
+		function stop() {
+			if (lang === "en") {
+				return `Stop`;
+			}
+			else if (lang === "es") {
+				return `Detener`;
+			}
+			else if (lang === "ru") {
+				return `Остановка`;
+			}
+			else if (lang === "de") {
+				return `Aufhören`;
+			}
+			else if (lang === "pt") {
+				return `Parar`;
+			}
+			else {
+				return `Stop`;
+			}
+		}
+
+		function configure() {
+			if (lang === "en") {
+				return `Configure`;
+			}
+			else if (lang === "es") {
+				return `Configurar`;
+			}
+			else if (lang === "ru") {
+				return `Настроить`;
+			}
+			else if (lang === "de") {
+				return `Konfigurieren`;
+			}
+			else if (lang === "pt") {
+				return `Configurar`;
+			}
+			else {
+				return `Configure`;
+			}			
+		}	
+
+		function confirm() {
+			if (lang === "en") {
+				return `Confirm`;
+			}
+			else if (lang === "es") {
+				return `Confirmar`;
+			}
+			else if (lang === "ru") {
+				return `подтвержда́ю`;
+			}
+			else if (lang === "de") {
+				return `Bestätigen`;
+			}
+			else if (lang === "pt") {
+				return `Confirmar`;
+			}
+			else {
+				return `Confirm`;
+			}			
+		}		
+
+//--END TRANSLATIONS--//						
+
+		const initialEmbed = new EmbedBuilder()
+			.setColor(`0x00FFCC`) //Seafoam green
+			.setTitle(`${autoPostTitle()}`)
+			.setDescription(`${autoPostDesc()}`)
+			.setFooter({text: `${footerText()}`, iconURL: process.env.logo_link })
+
+		const initialButtons = new ActionRowBuilder()
+			.addComponents(
+				new ButtonBuilder()
+					.setCustomId(`start - ${interaction.user.id}`)
+					.setLabel(`${start()}`)
+					.setStyle(ButtonStyle.Success),
+				new ButtonBuilder()
+					.setCustomId(`stop - ${interaction.user.id}`)
+					.setLabel(`${stop()}`)
+					.setStyle(ButtonStyle.Danger),			
+				new ButtonBuilder()
+					.setCustomId(`configure - ${interaction.user.id}`)
+					.setLabel(`${configure()}`)
+					.setStyle(ButtonStyle.Primary),						
+				new ButtonBuilder()
+					.setCustomId(`confirm - ${interaction.user.id}`)
+					.setLabel(`${confirm()}`)
+					.setStyle(ButtonStyle.Secondary),					
+			);	
+
+				function notYourButtonString() {
 					if (lang === "en") {
 						return `These buttons are not for you.`;
 					}
@@ -255,35 +304,14 @@ Clique **\'Confirmar\'** para ver as definições atuais.`)
 					else {
 						return `These buttons are not for you.`;
 					}				
-			}
+			}							
 
+//--END TRANSLATIONS--//
 					
 					await interaction.deferUpdate();
 					if (buttonUserID === interaction.user.id) {
-						if (lang === "en") {
 							//Initial Embed + Buttons (start, stop, confirm, configure)
 							await interaction.editReply({ embeds: [initialEmbed], components:[initialButtons] });
-						}
-						else if (lang === "es") {
-							//Initial Embed + Buttons (start, stop, confirm, configure)
-							await interaction.editReply({ embeds: [initialEmbedEs], components:[initialButtonsEs] });						
-						}
-						else if (lang === "ru") {
-							//Initial Embed + Buttons (start, stop, confirm, configure)
-							await interaction.editReply({ embeds: [initialEmbedRu], components:[initialButtonsRu] });						
-						}
-						else if (lang === "de") {
-							//Initial Embed + Buttons (start, stop, confirm, configure)
-							await interaction.editReply({ embeds: [initialEmbedDe], components:[initialButtonsDe] });						
-						}
-						else if (lang === "pt") {
-							//Initial Embed + Buttons (start, stop, confirm, configure)
-							await interaction.editReply({ embeds: [initialEmbedPt], components:[initialButtonsPt] });						
-						}						
-						else {
-							await interaction.editReply({ embeds: [initialEmbed], components:[initialButtons] });
-						}
-						
 					}
 					else {
 						await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });

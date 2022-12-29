@@ -608,8 +608,8 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//		
 //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
 
-		
-			if (channelIDArray[c].includes("undefined")) {}
+		console.log(`channelIDArray[c]: ${channelIDArray[c]}`);
+		if (channelIDArray[c].includes("undefined")) {return;}
 			else {
 				if (gtaFinalString.length <= 4000) {
 					client.channels.fetch(channelIDArray[c]).then(channel => channel.send(({embeds: [gtaImageEmbed, gtaEmbed]}))).catch(err => console.log(`Min Error: ${err.stack}`));

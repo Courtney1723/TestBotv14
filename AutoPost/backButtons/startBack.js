@@ -139,9 +139,9 @@ Clic **\'RDO\'** para comenzar a publicar publicaciones automáticas de Red Dead
 		const startEmbedDe = new EmbedBuilder()
 			.setColor(`Green`) 
 			.setTitle(`Automatische Beiträge starten`)
-			.setDescription(`Klicken **\'GTA\'** um Grand Theft Auto V Online Auto Posts für **jeden Donnerstag um 14:00 Uhr EST** zu starten.
+			.setDescription(`Klicken Sie auf **\'GTA\'**, um GTA Online Auto-Beiträge für jeden Donnerstag um **14:00 Uhr EST** zu starten.
 
-Klicken **\'RDO\'** um Red Dead Redemption II Auto Posts für **den ersten Dienstag eines jeden Monats um 14:00 Uhr EST** zu starten.`)	
+Klicken Sie auf **\'RDO\'**, um Red Dead Online Auto-Posts für **den ersten Dienstag jedes Monats 2:00pm EST** zu starten.`)	
 			
 		const startButtonsDe = new ActionRowBuilder()
 			.addComponents(

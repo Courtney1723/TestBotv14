@@ -93,7 +93,7 @@ module.exports = {
 						}
 					}
 
-					//console.log(`lang: ${lang}`);
+					console.log(`lang: ${lang}`);
 				
 
 			let langBase = `/?lang=`;
@@ -101,7 +101,7 @@ module.exports = {
 			
 			//let url = `${baseURL}${urlHash}/${urlSlug}${langURL}`;
 			let url = `${baseURL}/${urlLink}${langURL}`;
-			//console.log(`url: ${url}`);
+			console.log(`url: ${url}`);
 
 			const gtaStatus = await page.open(url);
 			if (gtaStatus === `success`) {

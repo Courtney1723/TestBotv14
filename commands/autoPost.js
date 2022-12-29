@@ -83,7 +83,7 @@ module.exports = {
 				return `Автоматические настройки публикации`;
 			}
 			else if (lang === "de") {
-				return `Automatische Post-Einstellungen`;
+				return `Einstellungen für die automatische Veröffentlichung`;
 			}
 			else if (lang === "pt") {
 				return `Configurações de lançamento automático`;
@@ -98,37 +98,37 @@ module.exports = {
 				return `Click **\'Start\'** to add an auto post channel.
 Click **\'Stop\'** to remove an auto post channel.
 Click **\'Configure\'** to add or remove a role that can configure auto post settings.
-Click **\'Confirm\'** to view current settings or test auto posts.`;
+Click **\'Confirm\'** to view and test current settings.`;
 			}
 			else if (lang === "es") {
-				return `Clic **\'empezar\'** para agregar un canal.
-Clic **\'sopa\'** para quitar un canal.
-Clic **\'configurar\'** Para agregar o quitar un rol.
-Clic **\'confirm\'** para ver la configuración.`;
+				return `Haga clic en **\'Empezar\'** para agregar un canal.
+Haga clic en **\'Detener\'** para quitar un canal.
+Haga clic en **\'Configurar\'** para agregar o quitar un rol.
+Haga clic en **\'Confirmar\'** para ver y probar la configuración.`;
 			}
 			else if (lang === "ru") {
-				return `Щелчок **\'Начало\'** для того, чтобы добавить канал.
-Щелчок **\'Остановка\'** для удаления канала.
-Щелчок **\'Настроить\'** Чтобы добавить или удалить роль.
-Щелчок **\'Подтверждать\'** для просмотра текущих настроек.`;
+				return `Нажмите **\'Начало\'** для того, чтобы добавить канал.
+Нажмите **\'Остановка\'** для удаления канала.
+Нажмите **\'Настроить\'** Чтобы добавить или удалить роль.
+Нажмите **\'подтвержда́ю\'** чтобы просмотреть и опробовать настройки.`;
 			}
 			else if (lang === "de") {
-				return `Klicken **\'Anfangen\'** so fügen Sie einen Kanal hinzu.
-Klicken **\'Aufhören\'** so entfernen Sie einen Kanal.
-Klicken **\'Konfigurieren\'** so fügen Sie eine Rolle hinzu oder entfernen sie.
-Klicken **\'Bestätigen\'** um aktuelle Einstellungen anzuzeigen.`;
+				return `Klicken Sie auf **\'Anfangen\'** so fügen Sie einen Kanal hinzu.
+Klicken Sie auf **\'Aufhören\'** so entfernen Sie einen Kanal.
+Klicken Sie auf **\'Konfigurieren\'** so fügen Sie eine Rolle hinzu oder entfernen sie.
+Klicken Sie auf **\'Bestätigen\'** um die aktuellen Einstellungen anzuzeigen und zu testen.`;
 			}
 			else if (lang === "pt") {
-				return `Clique **\'Começar\'** para adicionar um canal.
-Clique **\'Parar\'** para remover um canal.
-Clique **\'Configurar\'** para adicionar ou remover uma função.
-Clique **\'Confirmar\'** para ver as definições atuais.`;
+				return `Clique em **\'Começar\'** para adicionar um canal.
+Clique em **\'Parar\'** para remover um canal.
+Clique em **\'Configurar\'** para adicionar ou remover uma função.
+Clique em **\'Confirmar\'** para exibir e testar as configurações atuais.`;
 			}
 			else {
 				return `Click **\'Start\'** to add an auto post channel.
 Click **\'Stop\'** to remove an auto post channel.
 Click **\'Configure\'** to add or remove a role that can configure auto post settings.
-Click **\'Confirm\'** to view current settings or test auto posts.`;
+Click **\'Confirm\'** to view and test current settings.`;
 			}			
 		}
 
@@ -158,7 +158,7 @@ Click **\'Confirm\'** to view current settings or test auto posts.`;
 				return `Start`;
 			}
 			else if (lang === "es") {
-				return `empezar`;
+				return `Empezar`;
 			}
 			else if (lang === "ru") {
 				return `Начало`;
@@ -179,7 +179,7 @@ Click **\'Confirm\'** to view current settings or test auto posts.`;
 				return `Stop`;
 			}
 			else if (lang === "es") {
-				return `sopa`;
+				return `Detener`;
 			}
 			else if (lang === "ru") {
 				return `Остановка`;
@@ -200,7 +200,7 @@ Click **\'Confirm\'** to view current settings or test auto posts.`;
 				return `Configure`;
 			}
 			else if (lang === "es") {
-				return `configurar`;
+				return `Configurar`;
 			}
 			else if (lang === "ru") {
 				return `Настроить`;
@@ -221,10 +221,10 @@ Click **\'Confirm\'** to view current settings or test auto posts.`;
 				return `Confirm`;
 			}
 			else if (lang === "es") {
-				return `confirmar`;
+				return `Confirmar`;
 			}
 			else if (lang === "ru") {
-				return `Подтверждать`;
+				return `подтвержда́ю`;
 			}
 			else if (lang === "de") {
 				return `Bestätigen`;
@@ -269,7 +269,7 @@ Click **\'Confirm\'** to view current settings or test auto posts.`;
 						interaction.reply({ embeds: [initialEmbed], components:[initialButtons] });
 
 				}
-			}); //end fs.readFile LANGDataVase.txt
+			}); //end fs.readFile LANGDataBase.txt
 
 
 		setTimeout(() => {

@@ -101,8 +101,8 @@ module.exports = {
 
 			const gtaStartEmbedDe = new EmbedBuilder()
 				.setColor(`Green`) 
-				.setTitle(`Starten Sie die automatische Veröffentlichung von GTA Online-Boni`)
-				.setDescription(`Klicken **Das Dropdown-Menü** um den Kanal zu bestätigen, an den Sie GTA Online Auto-Beiträge senden möchten \n**jeden Donnerstag um 14:00 Uhr EST**.`)	
+				.setTitle(`Starten Sie die automatischen Beiträge von GTA Online-Boni`)
+				.setDescription(`Klicken **Das Dropdown-Menü** um den Kanal zu bestätigen, an den Sie GTA Online automatische Beiträge senden möchten \n**jeden Donnerstag um 14:00 Uhr EST**.`)
 				.setFooter({ text: 'Automatische Beiträge können nur an Textkanäle gesendet werden, in denen der Bot die Berechtigung zum Senden von Nachrichten hat.', iconURL: process.env.logo_link });	
 
 			const gtaStartEmbedPt = new EmbedBuilder()
