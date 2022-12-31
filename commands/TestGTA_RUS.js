@@ -43,8 +43,20 @@ module.exports = {
 
 			let urlLink02 = content.split("linkToUrl\":");
 			let urlLink01 = urlLink02[1].split("\"");
-			let urlLink = urlLink01[1];
-			//console.log(`urlLink: ${urlLink01[1]}`);
+
+			function urlLink() {
+				if (urlLink01[1].includes(`\?`)) {
+					let urlLinkFix = urlLink01[1].split(`\?`);
+					let urlLink = urlLinkFix[0];
+					return urlLink;
+				}
+				else {
+					let urlLink = urlLink01[1];
+					return urlLink;
+				}					
+			}
+			//console.log(`urlLink: ${urlLink()}`);
+
 
 			fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
 			  if (err) {console.log(`Error: ${err}`)} 
@@ -93,15 +105,15 @@ module.exports = {
 						}
 					}
 
-					console.log(`lang: ${lang}`);
+					//console.log(`lang: ${lang}`);
 				
 
 			let langBase = `/?lang=`;
 			let langURL = `${langBase}${lang}`;
 			
 			//let url = `${baseURL}${urlHash}/${urlSlug}${langURL}`;
-			let url = `${baseURL}/${urlLink}${langURL}`;
-			console.log(`url: ${url}`);
+			let url = `${baseURL}/${urlLink()}${langURL}`;
+				//console.log(`url: ${url}`);
 
 			const gtaStatus = await page.open(url);
 			if (gtaStatus === `success`) {

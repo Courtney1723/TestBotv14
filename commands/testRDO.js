@@ -90,7 +90,7 @@ module.exports = {
 			let langURL = `${langBase}${lang}`;
 
 		let url = `${baseURL}${urlHash}${langURL}`;
-			//console.log(`url: ${url}`);
+			console.log(`rdo url: ${url}`);
 
 		const rdoStatus = await page.open(url);
 		if (rdoStatus === `success`) {
