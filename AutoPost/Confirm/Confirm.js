@@ -470,22 +470,22 @@ ${testRDOString()}`)
 
 			function firstCommandString() {
 					if (lang === "en") {
-						return `It looks like this is your first time using this command. Please try the start button again.`;
+						return `It looks like this is your first time using this command. Please try the Confirm button again.`;
 					}
 					else if (lang === "es") {
-						return `Esta es la primera vez que usas este comando. Vuelva a intentar el botón Inicio.`;
+						return `Parece que esta es la primera vez que usa este comando. Vuelva a intentarlo con el botón de confirmación.`; 
 					}
 					else if (lang === "ru") {
-						return `Вы впервые используете эту команду. Повторите попытку нажатия кнопки «Пуск».`;
+						return `Вы впервые используете эту команду. Попробуйте нажать кнопку подтверждения еще раз.`;
 					}
 					else if (lang === "de") {
-						return `Dies ist das erste Mal, dass Sie diesen Befehl verwenden. Wiederholen Sie die Startschaltfläche.`;
+						return `Dies ist das erste Mal, dass Sie diesen Befehl verwenden. Versuchen Sie erneut, die Bestätigungstaste zu drücken.`;
 					}
 					else if (lang === "pt") {
-						return `Esta é a primeira vez que você usa este comando. Tente o botão Iniciar novamente.`;
+						return `Esta é a primeira vez que você usa este comando. Tente pressionar o botão de confirmação novamente.`;
 					}
 					else {
-						return `It looks like this is your first time using this command. Please try the start button again.`;
+						return `It looks like this is your first time using this command. Please try the Confirm button again.`;
 					}				
 			}
 

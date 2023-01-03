@@ -267,7 +267,7 @@ module.exports = {
 										await interaction.followUp({ content: `Esta é a primeira vez que você usa este comando. Tente o botão configurar novamente.`, ephemeral: true });
 									}
 									else {
-										await interaction.followUp({ content: `It looks like this is your first time using this command. Please try the start button again.`, ephemeral: true });
+										await interaction.followUp({ content: `It looks like this is your first time using this command. Please try the configure button again.`, ephemeral: true });
 									}
 								}				
 									
