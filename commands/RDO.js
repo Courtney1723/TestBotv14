@@ -14,8 +14,6 @@ module.exports = {
 	async execute(interaction) {
 		await interaction.deferReply().catch(console.error);
 
-
-
 				let rdoURL = process.env.SOCIAL_URL_RDO2;
 
 		//await interaction.editReply(`Console Logged 👍`).catch(console.error);
@@ -310,15 +308,16 @@ if (RDO_Bonus != undefined) {
 											.replace(/\*\*\n\*\*/g, "**\n\n**")
 											.replace(/• undefined/g, "• ")
 											.replace(/\)• /g, ")\n• ") //adds a newline between link lists
+											.replace(/• Jan 3 – Jan 9:/g, "• Click the link below for more details\n"); //FIXME - delete next month
 
 			//console.log(`rdoFinalString: ${rdoFinalString}`);
     function rdoPost() {
-        return rdoFinalString.slice(0, 3909); //FIXME: adjust this for the best break - up to 4000
+        return rdoFinalString.slice(0, 3668); //FIXME: adjust this for the best break - up to 4000
     }
     //console.log(`1: ${rdoFinalString.length}\n`) 
     function rdoPost2() {
       if (rdoFinalString.length > 4000) {
-        let post02 = rdoFinalString.substr(3909, 2000); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
+        let post02 = rdoFinalString.substr(3668, 1800); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
         return post02;
       } else {
         return "";
@@ -386,7 +385,7 @@ if (RDO_Bonus != undefined) {
 		    .setDescription(`These bonuses & discounts may be expired. \nRockstar typically releases the latest bonuses & discounts the first \nTuesday of every month after 1:00 PM EST.`)
 
     //if ( (aDay === 3) ) { //Test for today 0 = Sunday, 1 = Monday ... 6 = Saturday
-		if ( (aDay === 2) && (aHour < 17) && (aDigit <= 7) ) { //If it's Tuesday(2) before 1:00PM EST(17) and the first week of the month
+		if ( (aDay === 2) && (aHour < 17) && (aDigit <= 7) ) { //If it's Tuesday(2) before 1:00PM EST (17) and the first week of the month
 			await interaction.followUp({embeds: [rdoExpiredEmbed], ephemeral:true}).catch(err => console.log(`rdoExpiredEmbed Error: ${err.stack}`));
 		}			
 

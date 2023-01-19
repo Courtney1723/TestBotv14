@@ -9,8 +9,7 @@ module.exports = {
 	async execute(client) {
 
 		//cron.schedule('* * * * *', () => { //every minute - testbench
-		cron.schedule('50 11 29 * 2', () => {
-		//cron.schedule('00 12 1-7 * 2', () => { //(second),minute,hour,date,month,weekday '0 12 1-7 * 2' = 12:00 PM on 1st Tuesday
+		cron.schedule('50 11 1-7 * 2', () => { //(second),minute,hour,date,month,weekday '0 12 1-7 * 2' = 12:00 PM on 1st Tuesday
 		  //console.log('running a task');
 
 //----------Begin Formatting GuildIds, ChannelIds, and rdo_gtaIDs-----------//	
@@ -353,15 +352,16 @@ if (RDO_Bonus != undefined) {
 											.replace(/\*\*\n\*\*/g, "**\n\n**")
 											.replace(/• undefined/g, "• ")
 											.replace(/\)• /g, ")\n• ") //adds a newline between link lists
+											.replace(/• Jan 3 – Jan 9:/g, "• Click the link below for more details\n");
 
 			//console.log(`rdoFinalString: ${rdoFinalString}`);
     function rdoPost() {
-        return rdoFinalString.slice(0, 3909); //FIXME: adjust this for the best break - up to 4000
+        return rdoFinalString.slice(0, 3668); //FIXME: adjust this for the best break - up to 4000
     }
     //console.log(`1: ${rdoFinalString.length}\n`) 
     function rdoPost2() {
       if (rdoFinalString.length > 4000) {
-        let post02 = rdoFinalString.substr(3909, 2000); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
+        let post02 = rdoFinalString.substr(3668, 1800); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
         return post02;
       } else {
         return "";
@@ -376,14 +376,14 @@ if (RDO_Bonus != undefined) {
     }		
     function rdoFooterMax() {
       if (rdoFinalString.length > 4000) {
-        return `** [click here](${rdoURL}) for more details**`;
+        return `** [click here](${url}) for more details**`;
       } else {
         return "";
       }
     }
     function rdoFooterMin() { 
       if (rdoFinalString.length <= 4000) {
-        return `** [click here](${rdoURL}) for more details**`;
+        return `** [click here](${url}) for more details**`;
       } else {
         return "";
       }

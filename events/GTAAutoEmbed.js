@@ -470,6 +470,13 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 		 // console.log(`gtaEmbed length: ${gtaEmbed.length}`); //no more than 4096 (line 199)
 		 // console.log(`gtaEmbed2 length: ${gtaEmbed2.length}`); //no more than 6000 - gtaEmbed.length (line 204)
 
+				travelEmbed = new EmbedBuilder()
+					.setColor('0xFF8B2B') //Orange
+					.setDescription(`Please note: The developer is travelling and some information may be missing or incorrectly formatted.`)
+					.setFooter({ text: `Thank you for supporting the Rockstar Weekly bot.`, iconURL: process.env.logo_link })				
+
+				//await interaction.followUp({ embeds: [travelEmbed], ephemeral: true }).catch(err => console.log(`travelEmbed Error: ${err.stack}`));			//NOT APPLICABLE FOR AUTO POSTS	
+
 
 
 //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
@@ -484,10 +491,10 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 			if (channelIDArray[c].includes("undefined")) {}
 			else {
 				if (gtaFinalString.length <= 4000) {
-					client.channels.fetch(channelIDArray[c]).then(channel => channel.send(({embeds: [gtaImageEmbed, gtaEmbed]}))).catch(err => console.log(`Min Error: ${err}`));
+					client.channels.fetch(channelIDArray[c]).then(channel => channel.send(({embeds: [gtaImageEmbed, gtaEmbed, travelEmbed]}))).catch(err => console.log(`Min Error: ${err}`));
 				} 
 				else {
-					client.channels.fetch(channelIDArray[c]).then(channel => channel.send({embeds: [gtaImageEmbed, gtaEmbed, gtaEmbed2]})).catch(err => console.log(`Max Error: ${err}`));
+					client.channels.fetch(channelIDArray[c]).then(channel => channel.send({embeds: [gtaImageEmbed, gtaEmbed, gtaEmbed2, travelEmbed]})).catch(err => console.log(`Max Error: ${err}`));
 				}
 			} //end if not undefined channel
 		} //end c loop

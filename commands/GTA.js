@@ -459,9 +459,16 @@ module.exports = {
 					.setFooter({ text: `It is ${estHour}:${estMinute} ${amPM} EST now.`, iconURL: process.env.logo_link })
 
 				//   if ( (aDay === 0) ) { //Test for today 0 = Sunday, 1 = Monday ... 6 = Saturday
-				// if ((aDay === 4) && (aHour > 3) && (aHour < 17)) { //If it's Thursday(4) before 1:00PM EST (3>17)
-					// await interaction.followUp({ embeds: [gtaExpiredEmbed], ephemeral: true }).catch(err => console.log(`gtaExpiredEmbed Error: ${err.stack}`));
-				// }
+				if ((aDay === 4) && (aHour > 3) && (aHour < 17)) { //If it's Thursday(4) before 1:00PM EST (3>17)
+					await interaction.followUp({ embeds: [gtaExpiredEmbed], ephemeral: true }).catch(err => console.log(`gtaExpiredEmbed Error: ${err.stack}`));
+				}
+
+				travelEmbed = new EmbedBuilder()
+					.setColor('0xFF8B2B') //Orange
+					.setDescription(`Please note: The developer is travelling and some information may be missing or incorrectly formatted.`)
+					.setFooter({ text: `Thank you for supporting the Rockstar Weekly bot.`, iconURL: process.env.logo_link })				
+
+				//await interaction.followUp({ embeds: [travelEmbed], ephemeral: true }).catch(err => console.log(`travelEmbed Error: ${err.stack}`));				
 
 				//interaction.editReply(`Console logged! 👍`);
 

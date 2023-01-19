@@ -388,12 +388,12 @@ Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for **the first Tu
 				await interaction.followUp({ content: `${errorString()}`, ephemeral: true });
 		} //end checking for permissions		
 
-				}});// end fs:readFile for LANGData.txt
-		}); //end fs:readFile		
-
 				setTimeout(() => {
 					interaction.editReply({components: [expiredButton]})
-				}, (60000 * 5))		
+				}, (60000 * 5))						
+
+				}});// end fs:readFile for LANGData.txt
+		}); //end fs:readFile			
 	
 	} //end if start
 	},

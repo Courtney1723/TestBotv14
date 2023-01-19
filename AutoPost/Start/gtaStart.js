@@ -90,7 +90,7 @@ module.exports = {
 			const gtaStartEmbedEs = new EmbedBuilder()
 				.setColor(`Green`) 
 				.setTitle(`Comience a publicar automáticamente los bonos de GTAV Online`)
-				.setDescription(`Clic **el menú desplegable** para confirmar el canal al que desea enviar publicaciones automáticas de Grand Theft Auto V \n** todos los jueves a las 2:00 PM EST**.`)	
+				.setDescription(`Hage clic en **el menú desplegable** para confirmar el canal al que desea enviar publicaciones automáticas de Grand Theft Auto V \n** todos los jueves a las 2:00 PM EST**.`)	
 				.setFooter({ text: 'Las publicaciones automáticas solo se pueden enviar a canales de texto en los que el bot tiene permiso para \'Enviar mensajes\'.', iconURL: process.env.logo_link });	
 
 			const gtaStartEmbedRu = new EmbedBuilder()
