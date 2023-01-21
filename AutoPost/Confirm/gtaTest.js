@@ -388,7 +388,7 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 						//console.log(`gtaParas at ${i}: ${gtaParas}`);
 						//console.log(`gtaParas length at ${i}: ${gtaParas.length}`);	
 						if (GTA_Title.toLowerCase().includes("only on playstation")) { //fail safe for if the NextGenIndex does not work properly
-							gtaFinalString01 += `**Only on PlayStation 5 or Xbox Series X|S:**\n`;
+							//gtaFinalString01 += `**Only on PlayStation 5 or Xbox Series X|S:**\n`;
 						}
 						else if (GTA_Bonus.toLowerCase().includes("premium test ride")) { //fail safe for if the NextGenIndex does not work properly
 							gtaFinalString01 += `• ${gtaParas[1]}\n`;
@@ -782,7 +782,28 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 				else {
 				  return `You do not have the required permissions to do that.`;
 				}				
-			}			
+			}	
+
+			function noSubscriptions() {
+				if (lang === "en") {
+					return `You do not have any channels subscribed to GTA Online auto posts.`;
+				}
+			 	else if (lang === "es") {
+					return `No tienes ningún canal suscrito a las publicaciones automáticas de GTA Online.`;
+				}
+				else if (lang === "ru") {
+					return `У вас нет каналов, подписанных на автопосты GTA Online.`;
+				}
+				else if (lang === "de") {
+					return `Du hast keine Kanäle, die automatische Beiträge von GTA Online abonniert haben.`;
+				}
+				else if (lang === "pt") {
+					return `Você não tem nenhum canal inscrito nas postagens automáticas do GTA Online.`;
+				}
+				else {
+					return `You do not have any channels subscribed to GTA Online auto posts.`;
+				}
+			}
 
 //--END TRANSLATIONS--//
 
@@ -799,7 +820,7 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 					await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });
 				}	
 		else if (gtaChannelIds.length <= 0) {
-			await interaction.followUp({ content: `You do not have any channels subscribed to GTAV auto posts.`, ephemeral: true });
+			await interaction.followUp({ content: `${noSubscriptions()}`, ephemeral: true });
 		}			
 		else if (AdminRequired() === undefined) { //uncessary because confirm already checked? 
 			await interaction.followUp({ content: `${firstTime()}`, ephemeral: true });

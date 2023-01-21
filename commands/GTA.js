@@ -263,13 +263,15 @@ module.exports = {
 
 					//-----BEGIN populating gtaFinalString01 -----//
 					if ((i.toString() === nextGenIndex1) || (i.toString() === nextGenIndex2)) {
+						if (!GTA_Bonus === undefined) {
 						let gtaParas = GTA_Bonus.split("<p>");
-						//gtaFinalString01 += `**Only on PlayStation 5 and Xbox Series X|S:**\n`;
-						if (!GTA_Title.toLowerCase().includes("motorsport showroom")) {
-							gtaFinalString01 += `• ${GTA_Title}\n`;
-						}
-						else {
-							gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
+							//gtaFinalString01 += `**Only on PlayStation 5 and Xbox Series X|S:**\n`;
+							if (!GTA_Title.toLowerCase().includes("motorsport showroom")) {
+								gtaFinalString01 += `• ${GTA_Title}\n`;
+							}
+							else {
+								gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
+							}
 						}
 					}
 					else if (i === 0) { //if the bonus is an intro paragraph.
@@ -285,7 +287,7 @@ module.exports = {
 						//console.log(`gtaParas at ${i}: ${gtaParas}`);
 						//console.log(`gtaParas length at ${i}: ${gtaParas.length}`);	
 						if (GTA_Title.toLowerCase().includes("only on playstation")) { //fail safe for if the NextGenIndex does not work properly
-							gtaFinalString01 += `**Only on PlayStation 5 or Xbox Series X|S:**\n`;
+							//gtaFinalString01 += `**Only on PlayStation 5 or Xbox Series X|S:**\n`;
 						}
 						else if (GTA_Bonus.toLowerCase().includes("premium test ride")) { //fail safe for if the NextGenIndex does not work properly
 							gtaFinalString01 += `• ${gtaParas[1]}\n`;
@@ -369,16 +371,17 @@ module.exports = {
 					.replace(/\n\n\n/g, "\n\n")
 					.replace(/\n\n\n/g, "\n\n")
 					.replace(/• undefined/g, "• ")
+					.replace(/\n• undefine/g, "")
 					.replace(/• \n\n/g, "")
 
 				//console.log(`gtaFinalString: ${gtaFinalString}`);
 				function gtaPost() {
-					return gtaFinalString.slice(0, 3918); //FIXME: adjust this for the best break - up to 4000
+					return gtaFinalString.slice(0, 3920); //FIXME: adjust this for the best break - up to 4000
 				}
 				//console.log(`1: ${gtaFinalString.length}\n`) 
 				function gtaPost2() {
 					if (gtaFinalString.length > 4000) {
-						let post02 = gtaFinalString.substr(3918, 1800); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
+						let post02 = gtaFinalString.substr(3920, 1800); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
 						return post02;
 					} else {
 						return "";

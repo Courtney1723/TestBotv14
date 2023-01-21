@@ -335,7 +335,7 @@ module.exports = {
 					return `Click **\'Test RDO\'** to send a test post to your subscribed GTA Online channel(s).`;
 			}
 			else if (lang === "es") {
-				return `Clic **\'Prueba RDO\'** para enviar una publicación de prueba a sus canal(es) RDO suscritos.`;
+				return `Haga clic en **\'Prueba RDO\'** para enviar una publicación de prueba a sus canal(es) RDO suscritos.`;
 			}
 			else if (lang === "ru") {
 				return `Щелчок **\'Тест RDO\'** для того, чтобы отправить тестовое сообщение на подписанные каналы RDO.`;
