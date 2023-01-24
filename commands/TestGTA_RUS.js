@@ -445,6 +445,7 @@ module.exports = {
 					.replace(/\n\n\n/g, "\n\n")
 					.replace(/\n\n\n/g, "\n\n")
 					.replace(/• undefined/g, "• ")
+					.replace(/\n• undefine/g, "")
 					.replace(/• \n\n/g, "")
 
 

@@ -145,14 +145,28 @@ function gtaTest() {
 
 		let urlLink02 = content.split("linkToUrl\":");
 		let urlLink01 = urlLink02[1].split("\"");
-		let urlLink = urlLink01[1];
+		
+		//let urlLink = urlLink01[1];
 			//console.log(`urlLink: ${urlLink01[1]}`);
+
+			function urlLink() {
+				if (urlLink01[1].includes(`\?`)) {
+					let urlLinkFix = urlLink01[1].split(`\?`);
+					let urlLink = urlLinkFix[0];
+					return urlLink;
+				}
+				else {
+					let urlLink = urlLink01[1];
+					return urlLink;
+				}					
+			}
+			//console.log(`urlLink: ${urlLink()}`);		
 
 			let langBase = `/?lang=`;
 			let langURL = `${langBase}${lang}`;
 			
-			let url = `${baseURL}/${urlLink}${langURL}`;
-			//console.log(`url: ${url}`);		
+			let url = `${baseURL}/${urlLink()}${langURL}`;
+			console.log(`url: ${url}`);		
 
 		const gtaStatus = await page.open(url);
 		if (gtaStatus === `success`) {
@@ -366,13 +380,15 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 
 					//-----BEGIN populating gtaFinalString01 -----//
 					if ((i.toString() === nextGenIndex1) || (i.toString() === nextGenIndex2)) {
-						let gtaParas = GTA_Bonus.split("<p>");
-						//gtaFinalString01 += `**Only on PlayStation 5 and Xbox Series X|S:**\n`;
-						if (!GTA_Title.toLowerCase().includes("motorsport showroom")) {
-							gtaFinalString01 += `• ${GTA_Title}\n`;
-						}
-						else {
-							gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
+						if (!GTA_Bonus === undefined) {
+							let gtaParas = GTA_Bonus.split("<p>");
+							//gtaFinalString01 += `**Only on PlayStation 5 and Xbox Series X|S:**\n`;
+							if (!GTA_Title.toLowerCase().includes("motorsport showroom")) {
+								gtaFinalString01 += `• ${GTA_Title}\n`;
+							}
+							else {
+								gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
+							}
 						}
 					}
 					else if (i === 0) { //if the bonus is an intro paragraph.
@@ -472,6 +488,7 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 											.replace(/\n\n\n/g, "\n\n")
 											.replace(/\n\n\n/g, "\n\n")
 											.replace(/• undefined/g, "• ")
+											.replace(/\n• undefine/g, "")
 											.replace(/• \n\n/g, "")
 
 			//console.log(`gtaFinalString: ${gtaFinalString}`);

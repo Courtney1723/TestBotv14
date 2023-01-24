@@ -295,7 +295,7 @@ module.exports = {
 						else if (GTA_Title.toLowerCase().includes("hsw time trial")) { //fail safe for if the NextGenIndex does not work properly
 							gtaFinalString01 += `• ${GTA_Title}\n`;
 						}
-						else if (GTA_Title.toLowerCase().includes("candy cane")) {
+						else if (GTA_Bonus.toLowerCase().includes("luxury autos")) {
 							gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
 						}
 						else if (GTA_Title.toLowerCase().includes("new community series")) {
@@ -376,12 +376,12 @@ module.exports = {
 
 				//console.log(`gtaFinalString: ${gtaFinalString}`);
 				function gtaPost() {
-					return gtaFinalString.slice(0, 3920); //FIXME: adjust this for the best break - up to 4000
+					return gtaFinalString.slice(0, 3919); //FIXME: adjust this for the best break - up to 4000
 				}
 				//console.log(`1: ${gtaFinalString.length}\n`) 
 				function gtaPost2() {
 					if (gtaFinalString.length > 4000) {
-						let post02 = gtaFinalString.substr(3920, 1800); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
+						let post02 = gtaFinalString.substr(3919, 1900); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
 						return post02;
 					} else {
 						return "";
@@ -412,7 +412,7 @@ module.exports = {
 
 				let gtaEmbed = new EmbedBuilder()
 					.setColor('0x00CD06') //Green
-					.setTitle('Grand Theft Auto V Online Weekly Bonuses & Discounts:')
+					.setTitle('GTA Online Weekly Bonuses & Discounts:')
 					.setDescription(`${gtaDate[0]}\n\n${gtaPost()} \n${gtaFooterMin()} ${elipseFunction()}`)
 				let gtaEmbed2 = new EmbedBuilder()
 					.setColor('0x00CD06') //Green
@@ -464,17 +464,9 @@ module.exports = {
 				//   if ( (aDay === 0) ) { //Test for today 0 = Sunday, 1 = Monday ... 6 = Saturday
 				if ((aDay === 4) && (aHour > 3) && (aHour < 17)) { //If it's Thursday(4) before 1:00PM EST (3>17)
 					await interaction.followUp({ embeds: [gtaExpiredEmbed], ephemeral: true }).catch(err => console.log(`gtaExpiredEmbed Error: ${err.stack}`));
-				}
-
-				travelEmbed = new EmbedBuilder()
-					.setColor('0xFF8B2B') //Orange
-					.setDescription(`Please note: The developer is travelling and some information may be missing or incorrectly formatted.`)
-					.setFooter({ text: `Thank you for supporting the Rockstar Weekly bot.`, iconURL: process.env.logo_link })				
-
-				//await interaction.followUp({ embeds: [travelEmbed], ephemeral: true }).catch(err => console.log(`travelEmbed Error: ${err.stack}`));				
+				}				
 
 				//interaction.editReply(`Console logged! 👍`);
-
 
 			}
 			else {

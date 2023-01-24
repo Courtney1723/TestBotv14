@@ -31,6 +31,8 @@ module.exports = {
 
 			//console.log(`begin rdostop - ${interaction.customId}`);
 
+//-----BEGIN TRANSLATIONS-----//			
+
 		fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
 			  if (err) {console.log(`Error: ${err}`)} 
 				else {
@@ -78,33 +80,118 @@ module.exports = {
 
 					//console.log(`lang: ${lang}`);		
 
-		fs.readFile('./RDODataBase.txt', 'utf8', async function (err, data) {
-    if (err) {console.log(`Error: ${err}`)} //If an error, console.log					
+
+	function rdoStopTitle() {
+		if (lang === "en") {
+			return `Stop auto posting Red Dead Online Bonuses`;
+		}
+		else if (lang === "es") {
+			return `Detener la publicación automática de bonificaciones Red Dead Online`;
+		}
+		else if (lang === "ru") {
+			return `Прекратить автоматическую отправку бонусов Red Dead Online`;
+		}
+		else if (lang === "de") {
+			return `Stoppen Sie die automatische Buchung von Red Dead Online-Boni`; //FIXME - double check translation
+		}
+		else if (lang === "pt") {
+			return `Parar de lançar automaticamente bônus Red Dead Online`;
+		}
+		else {
+			return `Stop auto posting Red Dead Online Bonuses`;
+		}		
+	}
+
+	function rdoStopDesc() {
+		if (lang === "en") {
+			return `Click **the dropdown menu** to confirm the channel you want to stop sending Red Dead Online auto posts to.`;
+		}
+		else if (lang === "es") {
+			return `Haga clic en **el menú desplegable** para confirmar el canal al que desea dejar de enviar publicaciones automáticas de Red Dead Online.`;
+		}
+		else if (lang === "ru") {
+			return `Щелчок **раскрывающееся меню**, чтобы подтвердить канал, на который вы хотите прекратить отправку автоматических сообщений Red Dead Online.`;
+		}
+		else if (lang === "de") {
+			return `Klicken **Das Dropdown-Menü** um den Kanal zu bestätigen, an den Sie keine automatischen Red Dead Online-Beiträge mehr senden möchten.`; //FIXME - double check translation 
+		}
+		else if (lang === "pt") {
+			return `Clique **o menu suspenso** para confirmar o canal para o qual você deseja parar de enviar postagens automáticas do Red Dead Online.`;
+		}
+		else {
+			return `Click **the dropdown menu** to confirm the channel you want to stop sending Red Dead Online auto posts to.`;
+		}		
+	}
+
+	function goBack() {
+		if (lang === "en") {
+				return `Go Back`;
+		}
+		else if (lang === "es") {
+			return `Volver`;
+		}
+		else if (lang === "ru") {
+			return `Вернуться`;
+		}
+		else if (lang === "de") {
+			return `Zurück`;
+		}
+		else if (lang === "pt") {
+			return `Voltar`;
+		}
+		else {
+			return `Go Back`;
+		}					
+	}
+	
+	function noSubscriptions() {
+		if (lang === "en") {
+			return `There are no channels in this server subscribed to Red Dead Online auto posts.`;
+		}
+		else if (lang === "es") {
+			return `No hay canales en este servidor suscritos a publicaciones automáticas Red Dead Online.`;
+		}
+		else if (lang === "ru") {
+			return `На этом сервере нет каналов, подписанных на автоматические посты Red Dead Online.`;
+		}
+		else if (lang === "de") {
+			return `Es gibt keine Kanäle auf diesem Server, die Red Dead Online-Auto-Posts abonniert haben.`;
+		}
+		else if (lang === "pt") {
+			return `Não há canais neste servidor inscritos para Red Dead Online auto posts.`;
+		}
+		else {
+			return `There are no channels in this server subscribed to Red Dead Online auto posts.`;
+		}		
+	}	
+
+	function notYourButtonString() {
+		if (lang === "en") {
+			return `These buttons are not for you.`;
+		}
+		else if (lang === "es") {
+			return `Estos botones no son para ti.`;
+		}
+		else if (lang === "ru") {
+			return `Эти кнопки не для вас.`;
+		}
+		else if (lang === "de") {
+			return `Diese Schaltflächen sind nicht für Sie.`;
+		}
+		else if (lang === "pt") {
+			return `Esses botões não são para você.`;
+		}
+		else {
+			return `These buttons are not for you.`;
+		}				
+	}	
+					
+//-----END TRANSLATIONS-----//				
 			
 			const rdoStopEmbed = new EmbedBuilder()
 				.setColor(`Red`) 
-				.setTitle(`Stop auto posting RDO Bonuses`)
-				.setDescription(`Click **the dropdown menu** to confirm the channel you want to stop sending RDO auto posts to.`)	
-
-			const rdoStopEmbedEs = new EmbedBuilder()
-				.setColor(`Red`) 
-				.setTitle(`Detener la publicación automática de bonificaciones RDO`)
-				.setDescription(`Clic **el menú desplegable** para confirmar el canal al que desea dejar de enviar publicaciones automáticas de RDO.`)		
-
-			const rdoStopEmbedRu = new EmbedBuilder()
-				.setColor(`Red`) 
-				.setTitle(`Прекратить автоматическую отправку бонусов RDO`)
-				.setDescription(`Щелчок **раскрывающееся меню**, чтобы подтвердить канал, на который вы хотите прекратить отправку автоматических сообщений RDO.`)		
-
-			const rdoStopEmbedDe = new EmbedBuilder()
-				.setColor(`Red`) 
-				.setTitle(`Stoppen Sie die automatische Buchung von RDO-Boni`)
-				.setDescription(`Klicken **Das Dropdown-Menü** um den Kanal zu bestätigen, an den Sie keine automatischen RDO-Beiträge mehr senden möchten.`)		
-
-			const rdoStopEmbedPt = new EmbedBuilder()
-				.setColor(`Red`) 
-				.setTitle(`Parar de lançar automaticamente bônus RDO`)
-				.setDescription(`Clique **o menu suspenso** para confirmar o canal para o qual você deseja parar de enviar postagens automáticas do RDO.`)		
+				.setTitle(`${rdoStopTitle()}`)
+				.setDescription(`${rdoStopDesc()}`)		
 
 			fs.readFile('./RDODataBase.txt', 'utf8', async function (err, data) {
     	if (err) {console.log(`Error: ${err}`)} //If an error, console.log
@@ -134,37 +221,10 @@ module.exports = {
 				.addComponents(
 					new ButtonBuilder()
 			        .setCustomId(`rdostartback - ${interaction.user.id}`)
-			        .setLabel('Go Back')
+			        .setLabel(`${goBack()}`)
 			        .setStyle(ButtonStyle.Secondary),	
 				);
-			const backButtonEs = new ActionRowBuilder()
-				.addComponents(
-					new ButtonBuilder()
-			        .setCustomId(`rdostartback - ${interaction.user.id}`)
-			        .setLabel('Volver')
-			        .setStyle(ButtonStyle.Secondary),	
-				);
-			const backButtonRu = new ActionRowBuilder()
-				.addComponents(
-					new ButtonBuilder()
-			        .setCustomId(`rdostartback - ${interaction.user.id}`)
-			        .setLabel('Вернуться')
-			        .setStyle(ButtonStyle.Secondary),	
-				);
-			const backButtonDe = new ActionRowBuilder()
-				.addComponents(
-					new ButtonBuilder()
-			        .setCustomId(`rdostartback - ${interaction.user.id}`)
-			        .setLabel('Zurück')
-			        .setStyle(ButtonStyle.Secondary),	
-				);
-			const backButtonPt = new ActionRowBuilder()
-				.addComponents(
-					new ButtonBuilder()
-			        .setCustomId(`rdostartback - ${interaction.user.id}`)
-			        .setLabel('Voltar')
-			        .setStyle(ButtonStyle.Secondary),	
-				);
+
 
 		let rdoChannelIds = [];
 		fs.readFile('./RDODataBase.txt', 'utf8', async function (err, data) {
@@ -180,71 +240,16 @@ module.exports = {
 
 		if (interaction.user.id === buttonUserID) { 
 			if (rdoChannelIds.length <= 0) {
-				if (lang === "en") {
-					interaction.followUp({ content: `There are no channels in this server subscribed to RDO auto posts.`, ephemeral: true });
-				}
-				else if (lang === "es") {
-					interaction.followUp({ content: `No hay canales en este servidor suscritos a publicaciones automáticas RDO.`, ephemeral: true });
-				}
-				else if (lang === "ru") {
-					interaction.followUp({ content: `На этом сервере нет каналов, подписанных на автоматические посты RDO.`, ephemeral: true });
-				}
-				else if (lang === "de") {
-					interaction.followUp({ content: `Es gibt keine Kanäle auf diesem Server, die RDO-Auto-Posts abonniert haben.`, ephemeral: true });
-				}
-				else if (lang === "pt") {
-					interaction.followUp({ content: `Não há canais neste servidor inscritos para RDO auto posts.`, ephemeral: true });
-				}
-				else {
-					interaction.followUp({ content: `There are no channels in this server subscribed to RDO auto posts.`, ephemeral: true });
-				}				
+					interaction.followUp({ content: `${noSubscriptions()}`, ephemeral: true });				
 			} 
 			else {
-				if (lang === "en") {
 				  await interaction.editReply({ embeds: [rdoStopEmbed], components: [rdoStopMenu, backButton] })
-        .catch(err => console.log(`rdoStopEmbed+Menu Error: ${err.stack}`));
-				}
-				else if (lang === "es") {
-					await interaction.editReply({ embeds: [rdoStopEmbedEs], components: [rdoStopMenu, backButtonEs] })
-        .catch(err => console.log(`rdoStopEmbed+Menu Error: ${err.stack}`));
-				}
-				else if (lang === "ru") {
-					await interaction.editReply({ embeds: [rdoStopEmbedRu], components: [rdoStopMenu, backButtonRu] })
-        .catch(err => console.log(`rdoStopEmbed+Menu Error: ${err.stack}`));
-				}
-				else if (lang === "de") {
-					await interaction.editReply({ embeds: [rdoStopEmbedDe], components: [rdoStopMenu, backButtonDe] })
-        .catch(err => console.log(`rdoStopEmbed+Menu Error: ${err.stack}`));
-				}
-				else if (lang === "pt") {
-					await interaction.editReply({ embeds: [rdoStopEmbedPt], components: [rdoStopMenu, backButtonPt] })
-        .catch(err => console.log(`rdoStopEmbed+Menu Error: ${err.stack}`));
-				}
-				else {
-					await interaction.editReply({ embeds: [rdoStopEmbed], components: [rdoStopMenu, backButton] })
-        .catch(err => console.log(`rdoStopEmbed+Menu Error: ${err.stack}`));
+        .catch(err => {console.log(`rdoStopEmbed+Menu Error: ${err.stack}`); process.kill(1);});
 				}				
 			}
-    } else {
-			if (lang === "en") {
-				await interaction.followUp({ content: `These buttons are not for you.`, ephemeral: true });	
-			}
-			else if (lang === "es") {
-				await interaction.followUp({ content: `Estos botones no son para ti.`, ephemeral: true });
-			}
-			else if (lang === "ru") {
-				await interaction.followUp({ content: `Эти кнопки не для вас.`, ephemeral: true });
-			}
-			else if (lang === "de") {
-				await interaction.followUp({ content: `Diese Schaltflächen sind nicht für Sie.`, ephemeral: true });
-			}
-			else if (lang === "pt") {
-				await interaction.followUp({ content: `Esses botões não são para você.`, ephemeral: true });
-			}
-			else {
-				await interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
-			}
-    }
+    		else {
+				await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });	
+    		}
 
 				}); // end checking for if no channels are subscribed
 
@@ -253,7 +258,7 @@ module.exports = {
 				}, (60000 * 5))	
 
 			}); //end fs.readFile for rolesDataBase.txt
-			}); //end fs:readFile
+
 				
 		} // end if rdostop button
 
@@ -261,8 +266,3 @@ module.exports = {
 				
 	},
 };
-
-
-
-
-	

@@ -51,6 +51,8 @@ module.exports = {
 				}
 			}		
 
+//-----BEGIN TRANSLATIONS-----//			
+
 			fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
 			  if (err) {console.log(`Error: ${err}`)} 
 				else {
@@ -98,8 +100,115 @@ module.exports = {
 
 					//console.log(`lang: ${lang}`);	
 
+		function notYourOption() {
+			if (lang === "en") {
+				return `These options aren't for you.`;
+			}
+			else if (lang === "es") {
+				return `Estas opciones no son para ti.`;
+			}
+			else if (lang === "ru") {
+				return `Эти варианты не для вас.`;
+			}
+			else if (lang === "de") {
+				return `Diese Optionen sind nichts für Sie.`;
+			}
+			else if (lang === "pt") {
+				return `Essas opções não são para você.`;
+			}
+			else {
+				return `These options aren't for you.`;
+			}		
+		}			
+
+		function success() {
+			if (lang === "en") {
+				return `Success`;
+			}
+			else if (lang === "es") {
+				return `Éxito`;
+			}
+			else if (lang === "ru") {
+				return `Успех`;
+			}
+			else if (lang === "de") {
+				return `Erfolg`;
+			}
+			else if (lang === "pt") {
+				return `Éxito`;
+			}
+			else {
+				return `Success`;
+			}		
+		}
+
+	function gtaAddDesc() {
+		if (lang === "en") {
+			return `You will now get GTA Online auto posts to the <#${menuChannelID}> channel \n**the first Tuesday of every month at 2:00 PM EST**.`;
+		}
+		if (lang === "es") {
+			return `Ahora recibirás publicaciones automáticas de GTA Online en el canal <#${menuChannelID}> \n**el primer martes de cada mes a las 2:00 PM EST**.`;
+		}	
+		if (lang === "ru") {
+			return `Теперь вы будете получать автоматические сообщения GTA Online на <#${menuChannelID}> канале \n**в первый вторник каждого месяца в 14:00 EST**.`;
+		}		
+		if (lang === "de") {
+			return `Sie erhalten jetzt GTA Online Auto-Posts auf dem <#${menuChannelID}>-Kanal \n**am ersten Dienstag eines jeden Monats um 14:00 Uhr EST**.`;
+		}		
+		if (lang === "pt") {
+			return `Agora você receberá postagens automáticas de GTA Online no canal <#${menuChannelID}> \n**na primeira terça-feira de cada mês às 14:00 EST**.`;
+		}		
+		else {
+			return `You will now get GTA Online auto posts to the <#${menuChannelID}> channel \n**the first Tuesday of every month at 2:00 PM EST**.`;
+		}		
+	}			
+
+	function confirmSettingsString() {
+		if (lang === "en") {
+				return `Confirm Settings`;
+		}
+		else if (lang === "es") {
+			return `Confirmar la configuración`;
+		}
+		else if (lang === "ru") {
+			return `Подтвердить настройки`;
+		}
+		else if (lang === "de") {
+			return `Einstellungen bestätigen`;
+		}
+		else if (lang === "pt") {
+			return `Confirmar configurações`;
+		}
+		else {
+			return `Confirm Settings`;
+		}					
+	}		
+
+	function notYourOption() {
+		if (lang === "en") {
+			return `These options aren't for you.`;
+		}
+		else if (lang === "es") {
+			return `Estas opciones no son para ti.`;
+		}
+		else if (lang === "ru") {
+			return `Эти варианты не для вас.`;
+		}
+		else if (lang === "de") {
+			return `Diese Optionen sind nichts für Sie.`;
+		}
+		else if (lang === "pt") {
+			return `Essas opções não são para você.`;
+		}
+		else {
+			return `These options aren't for you.`;
+		}		
+	}							
+
+//-----END TRASLATIONS-----//					
+
 					if (interaction.user.id != menuUserID) {
-						interaction.reply({ content: `These options aren't for you!`, ephemeral: true });
+						interaction.reply({ content: `${notYourOption()}`, ephemeral: true });
 					}
 					else if (menuChannelID.includes(`undefinedchannel`)) { //interaction.values === `undefinedchannel` does not work?
 
@@ -113,7 +222,7 @@ module.exports = {
 								await interaction.followUp({ embeds: [gtaDuplicateEmbed], components: [], ephemeral: true })
 								.catch(err => console.log(`gtaDuplicateEmbed Error: ${err}`));
 						} else {
-								interaction.followUp({ content: `These options aren't for you!`, ephemeral: true });
+								interaction.followUp({ content: `${notYourOption()}`, ephemeral: true });
 						}
 						
 					} 
@@ -121,85 +230,42 @@ module.exports = {
 
 						const gtaConfirmEmbed = new EmbedBuilder()
 								.setColor(`Green`) 
-								.setTitle(`Success!`)
-								.setDescription(`You will now get GTA Online auto posts to the _____ channel \n**the first Tuesday of every month at 2:00 PM EST**.`)	
+								.setTitle(`${success()}`)
+								.setDescription(`${gtaAddDesc()}`)	
 
-						const gtaConfirmEmbedEs = new EmbedBuilder()
-								.setColor(`Green`) 
-								.setTitle(`Éxito`)
-								.setDescription(`Ahora recibirás publicaciones automáticas de GTA Online en el canal <#${menuChannelID}> \n**el primer martes de cada mes a las 2:00 PM EST**.`)			
-
-						const gtaConfirmEmbedRu = new EmbedBuilder()
-								.setColor(`Green`) 
-								.setTitle(`Успех`)
-								.setDescription(`Теперь вы будете получать автоматические сообщения GTA Online на <#${menuChannelID}> канале \n**в первый вторник каждого месяца в 14:00 EST**.`)		
-
-						const gtaConfirmEmbedDe = new EmbedBuilder()
-								.setColor(`Green`) 
-								.setTitle(`Erfolg`)
-								.setDescription(`Sie erhalten jetzt GTA Online Auto-Posts auf dem <#${menuChannelID}>-Kanal \n**am ersten Dienstag eines jeden Monats um 14:00 Uhr EST**.`)	
-
-						const gtaConfirmEmbedPt = new EmbedBuilder()
-								.setColor(`Green`) 
-								.setTitle(`Éxito`)
-								.setDescription(`Agora você receberá postagens automáticas de GTA Online no canal <#${menuChannelID}> \n**na primeira terça-feira de cada mês às 14:00 EST**.`)							
+						const confirmSettingsButton = new ActionRowBuilder()
+						.addComponents(
+								new ButtonBuilder()
+										.setCustomId(`initialback - ${interaction.user.id}`)
+										.setLabel(`${confirmSettingsString()}`)
+										.setStyle(ButtonStyle.Secondary),	
+						);							
 						
 						await interaction.deferUpdate();
-						if (interaction.user.id === menuUserID) {
-
-							if (lang === "en") {
-								await interaction.editReply({ embeds: [gtaConfirmEmbed], components: [] })
-								.catch(err => console.log(`gtaConfirmEmbed Error: ${err}`));
-							}
-							else if (lang === "es") {
-							  await interaction.editReply({ embeds: [gtaConfirmEmbedEs], components: [] })
-								.catch(err => console.log(`gtaConfirmEmbed Error: ${err}`));
-							}
-							else if (lang === "ru") {
-							  await interaction.editReply({ embeds: [gtaConfirmEmbedRu], components: [] })
-								.catch(err => console.log(`gtaConfirmEmbed Error: ${err}`));
-							}
-							else if (lang === "de") {
-							  await interaction.editReply({ embeds: [gtaConfirmEmbedDe], components: [] })
-								.catch(err => console.log(`gtaConfirmEmbed Error: ${err}`));
-							}
-							else if (lang === "pt") {
-							  await interaction.editReply({ embeds: [gtaConfirmEmbedPt], components: [] })
-								.catch(err => console.log(`gtaConfirmEmbed Error: ${err}`));
-							}
-							else {
-							  await interaction.editReply({ embeds: [gtaConfirmEmbed], components: [] })
-								.catch(err => console.log(`gtaConfirmEmbed Error: ${err}`));
-							}							
+						if (interaction.user.id === menuUserID) {					
 
 						//Appends the GTADataBase.txt file with guildID, Channel ID, and choice of gta of gta
-					fs.appendFile(`./GTADataBase.txt`,`guild:${interaction.guild.id} - channel:${menuChannelID} - rdo_gta:gtaStartMenu - \n`, err => {
+					fs.appendFile(`./GTADataBase.txt`,`guild:${interaction.guild.id} - channel:${menuChannelID} - rdo_gta:gtaStartMenu - \n`, async err => {
 							 if (err) {
 								 console.error(err);
 								 return
 									 }		
-							console.log(`A user added a channel for GTA Online auto posts.`);
+						else {
+							await interaction.editReply({ embeds: [gtaConfirmEmbed], components: [confirmSettingsButton] })
+							.catch(err => console.log(`gtaConfirmEmbed Error: ${err.stack}`));
+
+							if ((interaction.user.ID === process.env.USER_ID_1) || (interaction.user.ID === process.env.USER_ID_2)) {
+								console.log(`You added a channel for GTA Online auto posts.`);
+							}
+							else {
+								console.log(`A user added a channel for GTA Online auto posts.`);
+							}
+						}
+
 						}); // end fs:appendFile to add a channel for gta autop posts	
 							
 						} else {
-							if (lang === "en") {
-								await interaction.followUp({ content: `These buttons are not for you.`, ephemeral: true });
-							}
-							else if (lang === "es") {
-								await interaction.followUp({ content: `Estas opciones no son para ti.`, ephemeral: true });
-							}
-							else if (lang === "ru") {
-								await interaction.followUp({ content: `Эти варианты не для вас.`, ephemeral: true });
-							}
-							else if (lang === "de") {
-								await interaction.followUp({ content: `Diese Optionen sind nichts für Sie.`, ephemeral: true });
-							}
-							else if (lang === "pt") {
-								await interaction.followUp({ content: `Esses Opções não são para você.`, ephemeral: true });
-							}
-							else {
-								await interaction.followUp({ content: `These buttons are not for you.`, ephemeral: true });
-							}
+							await interaction.followUp({ content: `${notYourOption()}`, ephemeral: true });
 						}
 						
 					} //end add new channel

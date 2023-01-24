@@ -51,6 +51,8 @@ module.exports = {
 				}
 			}		
 
+//-----BEGIN TRANSLATIONS-----//			
+
 						fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
 			  if (err) {console.log(`Error: ${err}`)} 
 				else {
@@ -98,8 +100,91 @@ module.exports = {
 
 					//console.log(`lang: ${lang}`);	
 
+	function success() {
+		if (lang === "en") {
+			return `Success`;
+		}
+		else if (lang === "es") {
+			return `Éxito`;
+		}
+		else if (lang === "ru") {
+			return `Успех`;
+		}
+		else if (lang === "de") {
+			return `Erfolg`;
+		}
+		else if (lang === "pt") {
+			return `Éxito`;
+		}
+		else {
+			return `Success`;
+		}		
+	}		
+
+	function rdoAddDesc() {
+		if (lang === "en") {
+			return `You will now get Red Dead Redemption II auto posts to the <#${menuChannelID}> channel \n**the first Tuesday of every month at 2:00 PM EST**.`;
+		}
+		if (lang === "es") {
+			return `Ahora recibirás publicaciones automáticas de Red Dead Redemption II en el canal <#${menuChannelID}> \n**el primer martes de cada mes a las 2:00 PM EST**.`;
+		}		
+		if (lang === "ru") {
+			return `Теперь вы будете получать автоматические сообщения Red Dead Redemption II на <#${menuChannelID}> канале \n**в первый вторник каждого месяца в 14:00 EST**.`;
+		}		
+		if (lang === "de") {
+			return `Sie erhalten jetzt Red Dead Redemption II Auto-Posts auf dem <#${menuChannelID}>-Kanal \n**am ersten Dienstag eines jeden Monats um 14:00 Uhr EST**.`;
+		}		
+		if (lang === "pt") {
+			return `Agora você receberá postagens automáticas de Red Dead Redemption II no canal <#${menuChannelID}> \n**na primeira terça-feira de cada mês às 14:00 EST**.`;
+		}		
+	}
+
+	function notYourOption() {
+		if (lang === "en") {
+			return `These options aren't for you.`;
+		}
+		else if (lang === "es") {
+			return `Estas opciones no son para ti.`;
+		}
+		else if (lang === "ru") {
+			return `Эти варианты не для вас.`;
+		}
+		else if (lang === "de") {
+			return `Diese Optionen sind nichts für Sie.`;
+		}
+		else if (lang === "pt") {
+			return `Essas opções não são para você.`;
+		}
+		else {
+			return `These options aren't for you.`;
+		}		
+	}							
+
+	function confirmSettingsString() {
+		if (lang === "en") {
+				return `Confirm Settings`;
+		}
+		else if (lang === "es") {
+			return `Confirmar la configuración`;
+		}
+		else if (lang === "ru") {
+			return `Подтвердить настройки`;
+		}
+		else if (lang === "de") {
+			return `Einstellungen bestätigen`;
+		}
+		else if (lang === "pt") {
+			return `Confirmar configurações`;
+		}
+		else {
+			return `Confirm Settings`;
+		}					
+	}	
+
+//-----END TRANSLATIONS-----//
+
 					if (interaction.user.id != menuUserID) {
-						interaction.reply({ content: `These options aren't for you!`, ephemeral: true });
+						interaction.reply({ content: `${notYourOption()}`, ephemeral: true });
 					}
 					else if (menuChannelID.includes(`undefinedchannel`)) { //interaction.values === `undefinedchannel` does not work?
 
@@ -113,7 +198,7 @@ module.exports = {
 								await interaction.followUp({ embeds: [rdoDuplicateEmbed], components: [], ephemeral: true })
 								.catch(err => console.log(`rdoDuplicateEmbed Error: ${err}`));
 						} else {
-								interaction.followUp({ content: `These options aren't for you!`, ephemeral: true });
+								interaction.followUp({ content: `${notYourOption()}`, ephemeral: true });
 						}
 						
 					} 
@@ -121,56 +206,22 @@ module.exports = {
 
 						const rdoConfirmEmbed = new EmbedBuilder()
 								.setColor(`Green`) 
-								.setTitle(`Success!`)
-								.setDescription(`You will now get Red Dead Redemption II auto posts to the _____ channel \n**the first Tuesday of every month at 2:00 PM EST**.`)	
+								.setTitle(`${success()}`)
+								.setDescription(`${rdoAddDesc()}`)	
 
-						const rdoConfirmEmbedEs = new EmbedBuilder()
-								.setColor(`Green`) 
-								.setTitle(`Éxito`)
-								.setDescription(`Ahora recibirás publicaciones automáticas de Red Dead Redemption II en el canal <#${menuChannelID}> \n**el primer martes de cada mes a las 2:00 PM EST**.`)			
-
-						const rdoConfirmEmbedRu = new EmbedBuilder()
-								.setColor(`Green`) 
-								.setTitle(`Успех`)
-								.setDescription(`Теперь вы будете получать автоматические сообщения Red Dead Redemption II на <#${menuChannelID}> канале \n**в первый вторник каждого месяца в 14:00 EST**.`)		
-
-						const rdoConfirmEmbedDe = new EmbedBuilder()
-								.setColor(`Green`) 
-								.setTitle(`Erfolg`)
-								.setDescription(`Sie erhalten jetzt Red Dead Redemption II Auto-Posts auf dem <#${menuChannelID}>-Kanal \n**am ersten Dienstag eines jeden Monats um 14:00 Uhr EST**.`)	
-
-						const rdoConfirmEmbedPt = new EmbedBuilder()
-								.setColor(`Green`) 
-								.setTitle(`Éxito`)
-								.setDescription(`Agora você receberá postagens automáticas de Red Dead Redemption II no canal <#${menuChannelID}> \n**na primeira terça-feira de cada mês às 14:00 EST**.`)							
+						const confirmSettingsButton = new ActionRowBuilder()
+						.addComponents(
+								new ButtonBuilder()
+										.setCustomId(`initialback - ${interaction.user.id}`)
+										.setLabel(`${confirmSettingsString()}`)
+										.setStyle(ButtonStyle.Secondary),	
+						);							
 						
 						await interaction.deferUpdate();
 						if (interaction.user.id === menuUserID) {
 
-							if (lang === "en") {
-								await interaction.editReply({ embeds: [rdoConfirmEmbed], components: [] })
-								.catch(err => console.log(`rdoConfirmEmbed Error: ${err}`));
-							}
-							else if (lang === "es") {
-							  await interaction.editReply({ embeds: [rdoConfirmEmbedEs], components: [] })
-								.catch(err => console.log(`rdoConfirmEmbed Error: ${err}`));
-							}
-							else if (lang === "ru") {
-							  await interaction.editReply({ embeds: [rdoConfirmEmbedRu], components: [] })
-								.catch(err => console.log(`rdoConfirmEmbed Error: ${err}`));
-							}
-							else if (lang === "de") {
-							  await interaction.editReply({ embeds: [rdoConfirmEmbedDe], components: [] })
-								.catch(err => console.log(`rdoConfirmEmbed Error: ${err}`));
-							}
-							else if (lang === "pt") {
-							  await interaction.editReply({ embeds: [rdoConfirmEmbedPt], components: [] })
-								.catch(err => console.log(`rdoConfirmEmbed Error: ${err}`));
-							}
-							else {
-							  await interaction.editReply({ embeds: [rdoConfirmEmbed], components: [] })
-								.catch(err => console.log(`rdoConfirmEmbed Error: ${err}`));
-							}							
+								await interaction.editReply({ embeds: [rdoConfirmEmbed], components: [confirmSettingsButton] })
+								.catch(err => console.log(`rdoConfirmEmbed Error: ${err}`));							
 
 						//Appends the RDODataBase.txt file with guildID, Channel ID, and choice of rdo of rdo
 						fs.appendFile(`./RDODataBase.txt`,`guild:${interaction.guild.id} - channel:${menuChannelID} - rdo_gta:rdoStartMenu - \n`, err => {
@@ -178,28 +229,16 @@ module.exports = {
 								 console.error(err);
 								 return
 									 }		
-							console.log(`A user added a channel for RDO auto posts.`);
+							if ((interaction.user.ID === process.env.USER_ID_1) || (interaction.user.ID === process.env.USER_ID_1)) {
+								console.log(`You added a channel for RDO auto posts.`);
+							}
+							else {
+								console.log(`A user added a channel for RDO auto posts.`);
+							}
 						}); // end fs:appendFile to add a channel for rdo autop posts	
 							
 						} else {
-							if (lang === "en") {
-								await interaction.followUp({ content: `These buttons are not for you.`, ephemeral: true });
-							}
-							else if (lang === "es") {
-								await interaction.followUp({ content: `Estas opciones no son para ti.`, ephemeral: true });
-							}
-							else if (lang === "ru") {
-								await interaction.followUp({ content: `Эти варианты не для вас.`, ephemeral: true });
-							}
-							else if (lang === "de") {
-								await interaction.followUp({ content: `Diese Optionen sind nichts für Sie.`, ephemeral: true });
-							}
-							else if (lang === "pt") {
-								await interaction.followUp({ content: `Esses Opções não são para você.`, ephemeral: true });
-							}
-							else {
-								await interaction.followUp({ content: `These buttons are not for you.`, ephemeral: true });
-							}
+							await interaction.followUp({ content: `${notYourOption()}`, ephemeral: true });
 						}
 						
 					} //end add new channel

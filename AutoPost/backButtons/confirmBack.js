@@ -21,10 +21,10 @@ module.exports = {
 	async execute(interaction) {
 
 		if (!interaction.isButton()) {return};
-		if (interaction.customId.startsWith(`confirm - `)) {
-			//console.log(`begin start: '${interaction.customId}'`);		
+		if (interaction.customId.startsWith(`initialback -`)) {			
 
-		let buttonUserID01 = (interaction.customId).split("confirm - ");
+
+		let buttonUserID01 = (interaction.customId).split("initialback - ");
 		let buttonUserID = buttonUserID01[1];
 			//console.log(`buttonUserID: ${buttonUserID}`);
 			//console.log(`interaction.user.id === buttonUserID? ${interaction.user.id === buttonUserID}`)
@@ -515,7 +515,7 @@ ${testRDOString()}`)
 					await interaction.followUp({ content: `${firstCommandString()}`, ephemeral: true });
 				}	
 				else if (interaction.user.id === buttonUserID) {
-					await interaction.editReply({ embeds: [confirmEmbed], components: [confirmButtons] }).catch(err => {console.log(`confirmEmbed Error: ${err}`); process.kill(1);});						
+					await interaction.followUp({ embeds: [confirmEmbed], components: [confirmButtons] }).catch(err => {console.log(`confirmBackEmbed Error: ${err}`); process.kill(1);});	
 				} 	
 				else {
 					await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });
@@ -532,13 +532,9 @@ ${testRDOString()}`)
 
 				setTimeout(() => {
 					interaction.editReply({components: [expiredButton]})
-				}, (60000 * 5))				
-		
-		} //end if start
+				}, (60000 * 5))	
+			
+		} //end if interaction starts with startback - stopback - configureback
+
 	},
-};
-
-
-
-
-	
+}

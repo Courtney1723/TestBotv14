@@ -34,7 +34,7 @@ module.exports = {
 
 			//console.log(`begin rdostart - ${interaction.customId}`);
 			
-			const rdoStartEmbed = new EmbedBuilder()
+			const rdoStartEmbedEn = new EmbedBuilder()
 			.setColor(`Green`) 
 			.setTitle(`Start Auto Posting RDR2 Online Bonuses & Discounts`)
 			.setDescription(`Click **the dropdown menu** to confirm the channel you want to send Red Dead Redemption II Auto Posts to \n**the first Tuesday of every month at 2:00 PM EST**.`)	
@@ -63,6 +63,8 @@ module.exports = {
 			.setTitle(`Comece a Publicar Automaticamente Bônus e Descontos Online RDR2`)
 			.setDescription(`Clique **o menu suspenso** para confirmar o canal que você deseja enviar Red Dead Redemption II Auto Posts para \n**a primeira terça-feira de cada mês às 14:00 EST**.`)	
 			.setFooter({ text: 'Auto posts só pode ser enviado para canais de texto o bot tem permissão para \'Enviar mensagens\' em.', iconURL: process.env.logo_link });
+
+//-----BEGIN TRANSLATIONS-----//				
 
 		fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
 			  if (err) {console.log(`Error: ${err}`)} 
@@ -110,6 +112,12 @@ module.exports = {
 					}
 
 					//console.log(`lang: ${lang}`);		
+
+			const rdoStartEmbed = new EmbedBuilder()
+			.setColor(`Green`) 
+			.setTitle(`Start Auto Posting RDR2 Online Bonuses & Discounts`)
+			.setDescription(`Click **the dropdown menu** to confirm the channel you want to send Red Dead Redemption II Auto Posts to \n**the first Tuesday of every month at 2:00 PM EST**.`)	
+			.setFooter({ text: 'Auto posts can only be sent to text channels the bot has permission to \'Send Messages\' in.', iconURL: process.env.logo_link });					
 
 		fs.readFile('./RDODataBase.txt', 'utf8', async function (err, data) {
     	if (err) {console.log(`Error: ${err}`)} //If an error, console.log						

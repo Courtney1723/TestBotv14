@@ -61,32 +61,7 @@ module.exports = {
 				}
 				
 			} 
-			else { //remove a channel from RDODataBase.txt
-
-				const rdoConfirmEmbed = new EmbedBuilder()
-						.setColor(`Green`) 
-						.setTitle(`Success`)
-						.setDescription(`You will now no longer get RDO auto posts in the <#${menuChannelID}> channel.`)
-
-				const rdoConfirmEmbedEs = new EmbedBuilder()
-						.setColor(`Green`) 
-						.setTitle(`Éxito`)
-						.setDescription(`Ahora ya no obtendrá publicaciones automáticas de RDO en el canal <#${menuChannelID}>.`)		
-
-				const rdoConfirmEmbedRu = new EmbedBuilder()
-						.setColor(`Green`) 
-						.setTitle(`Успех`)
-						.setDescription(`Теперь вы больше не будете получать автоматические сообщения RDO в канале <#${menuChannelID}>.`)		
-
-				const rdoConfirmEmbedDe = new EmbedBuilder()
-						.setColor(`Green`) 
-						.setTitle(`Erfolg`)
-						.setDescription(`Sie erhalten jetzt keine automatischen RDO-Beiträge mehr im <#${menuChannelID}>-Kanal.`)		
-
-				const rdoConfirmEmbedPt = new EmbedBuilder()
-						.setColor(`Green`) 
-						.setTitle(`Éxito`)
-						.setDescription(`Agora você não receberá mais postagens automáticas do RDO no canal <#${menuChannelID}>.`)				
+			else { //remove a channel from RDODataBase.txt			
 				
 				await interaction.deferUpdate();
 				if (interaction.user.id === menuUserID) { //begin removing an rdo channel
@@ -102,6 +77,7 @@ module.exports = {
 											throw err;
 										}
 										else {
+//-----BEGIN TRANSLATIONS-----//											
 											fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
 												if (err) {console.log(`Error: ${err}`)} 
 												else {
@@ -147,63 +123,125 @@ module.exports = {
 														}
 													}
 								
-													//console.log(`lang: ${lang}`);												
-											if (lang === "en") {
-												await interaction.editReply({ embeds: [rdoConfirmEmbed], components: [] })
-												.catch(err => console.log(`rdoConfirmEmbed Error: ${err}`));	
-											}
-											else if (lang === "es") {
-												await interaction.editReply({ embeds: [rdoConfirmEmbedEs], components: [] })
-												.catch(err => console.log(`rdoConfirmEmbed Error: ${err}`));
-											}
-											else if (lang === "ru") {
-												await interaction.editReply({ embeds: [rdoConfirmEmbedRu], components: [] })
-												.catch(err => console.log(`rdoConfirmEmbed Error: ${err}`));
-											}
-											else if (lang === "de") {
-												await interaction.editReply({ embeds: [rdoConfirmEmbedDe], components: [] })
-												.catch(err => console.log(`rdoConfirmEmbed Error: ${err}`));
-											}
-											else if (lang === "pt") {
-												await interaction.editReply({ embeds: [rdoConfirmEmbedPt], components: [] })
-												.catch(err => console.log(`rdoConfirmEmbed Error: ${err}`));
-											}
-											else {
-											  await interaction.editReply({ embeds: [rdoConfirmEmbed], components: [] })
-												.catch(err => console.log(`rdoConfirmEmbed Error: ${err}`));  
-											}											
+													//console.log(`lang: ${lang}`);														
 
-											if ((interaction.user.id === process.env.USER_ID_1) || (interaction.user.id === process.env.USER_ID_2)) {
-												console.log('You unsubscribed from RDR2 auto posts.');	
-											}
-											else {
-												console.log('A user unsubscribed from RDR2 auto posts.');	
-											}										
-										}
+		function success() {
+			if (lang === "en") {
+				return `Success`;
+			}
+			else if (lang === "es") {
+				return `Éxito`;
+			}
+			else if (lang === "ru") {
+				return `Успех`;
+			}
+			else if (lang === "de") {
+				return `Erfolg`;
+			}
+			else if (lang === "pt") {
+				return `Éxito`;
+			}
+			else {
+				return `Success`;
+			}		
+		}
+
+		function rdoRemoveDesc() {
+			if (lang === "en") {
+				return `You will now no longer get RDO auto posts in the <#${menuChannelID}> channel.`;
+			}
+			else if (lang === "es") {
+				return `Ahora ya no obtendrá publicaciones automáticas de Rd Dead Online en el canal <#${menuChannelID}>.`;
+			}
+			else if (lang === "ru") {
+				return `Теперь вы больше не будете получать автоматические сообщения Red Dead Online в канале <#${menuChannelID}>.`;
+			}
+			else if (lang === "de") {
+				return `Sie erhalten jetzt keine automatischen Red Dead Online-Beiträge mehr im <#${menuChannelID}>-Kanal.`; //FIXME - double check translation
+			}
+			else if (lang === "pt") {
+				return `Agora você não receberá mais postagens automáticas do RDO no canal <#${menuChannelID}>.`;
+			}
+			else {
+				return `You will now no longer get RDO auto posts in the <#${menuChannelID}> channel.`;
+			}
+		}
+
+		function notYourOption() {
+			if (lang === "en") {
+				return `These options aren't for you.`;
+			}
+			else if (lang === "es") {
+				return `Estas opciones no son para ti.`;
+			}
+			else if (lang === "ru") {
+				return `Эти варианты не для вас.`;
+			}
+			else if (lang === "de") {
+				return `Diese Optionen sind nichts für Sie.`;
+			}
+			else if (lang === "pt") {
+				return `Essas opções não são para você.`;
+			}
+			else {
+				return `These options aren't for you.`;
+			}		
+		}		
+
+	function confirmSettingsString() {
+		if (lang === "en") {
+				return `Confirm Settings`;
+		}
+		else if (lang === "es") {
+			return `Confirmar la configuración`;
+		}
+		else if (lang === "ru") {
+			return `Подтвердить настройки`;
+		}
+		else if (lang === "de") {
+			return `Einstellungen bestätigen`;
+		}
+		else if (lang === "pt") {
+			return `Confirmar configurações`;
+		}
+		else {
+			return `Confirm Settings`;
+		}					
+	}														
+
+													
+//-----END TRANSLATIONS-----//	
+
+		const rdoConfirmEmbed = new EmbedBuilder()
+			.setColor(`Green`) 
+			.setTitle(`${success()}`)
+			.setDescription(`${rdoRemoveDesc()}`)
+
+				const confirmSettingsButton = new ActionRowBuilder()
+				.addComponents(
+						new ButtonBuilder()
+								.setCustomId(`initialback - ${interaction.user.id}`)
+								.setLabel(`${confirmSettingsString()}`)
+								.setStyle(ButtonStyle.Secondary),	
+				);														
+
+					await interaction.editReply({ embeds: [rdoConfirmEmbed], components: [confirmSettingsButton] })
+					.catch(err => {console.log(`rdoConfirmEmbed Error: ${err}`); process.kill(1);});											
+
+					if ((interaction.user.id === process.env.USER_ID_1) || (interaction.user.id === process.env.USER_ID_2)) {
+						console.log('You unsubscribed from RDR2 auto posts.');	
+					}
+					else {
+						console.log('A user unsubscribed from RDR2 auto posts.');	
+					}										
+				}
 											
-									}); //end fs:writeFile to remove channel from autoposts
-								}}); //end fs.readFile for LANGDataBase.txt
-							}); //end fs:readFile RDODataBase.txt
+					}); //end fs:writeFile to remove channel from autoposts
+				}}); //end fs.readFile for LANGDataBase.txt
+			}); //end fs:readFile RDODataBase.txt
 						
 					} else {
-						if (lang === "en") {
-							interaction.followUp({ content: `These options aren't for you.`, ephemeral: true });		
-						}
-						else if (lang === "es") {
-							interaction.followUp({ content: `Estas opciones no son para ti.`, ephemeral: true });
-						}
-						else if (lang === "ru") {
-							interaction.followUp({ content: `Эти варианты не для вас.`, ephemeral: true });
-						}
-						else if (lang === "de") {
-							interaction.followUp({ content: `Diese Optionen sind nichts für Sie.`, ephemeral: true });
-						}
-						else if (lang === "pt") {
-							interaction.followUp({ content: `Essas opções não são para você.`, ephemeral: true });
-						}
-						else {
-							interaction.followUp({ content: `These options are not for you.`, ephemeral: true });
-						}	
+						interaction.followUp({ content: `${notYourOption()}`, ephemeral: true });			
 					}
 
 				} //end remove channel

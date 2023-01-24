@@ -377,7 +377,7 @@ Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for **the first Tu
 				}
 					
 				else if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) { //If the user is an administrator
-						await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`startButtons Error: ${err.stack}`));
+						await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => {console.log(`startButtons Error: ${err.stack}`); process.kill(1);});
 				}		
 				else if (hasARole <= 0) { //if the user does not have a listed role and is not an administrator
 					await interaction.followUp({content: `${missingPermissions()}`, ephemeral: true});

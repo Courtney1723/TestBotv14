@@ -63,164 +63,189 @@ module.exports = {
 			} 
 			else { //remove a channel from GTADataBase.txt
 
+//-----BEGIN TRANSLATIONS----//				
+
+				fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
+					if (err) {console.log(`Error: ${err}`)} //If an error, console.log
+
+						// console.log(`interaction.guild.id: ${interaction.guild.id}`)
+						// console.log(`menuChannelID: ${menuChannelID}`)
+						// console.log(`data.replace: ${data.replace(`\nguild:${interaction.guild.id} - channel:${menuChannelID} - rdo_gta:gtaStartMenu - `, "")}`);
+						fs.writeFile('./GTADataBase.txt', `${data.replace(`\nguild:${interaction.guild.id} - channel:${menuChannelID} - rdo_gta:gtaStartMenu - `, "")}`, async function (err) {
+								if (err) {
+									throw err;
+								}
+								else {
+									fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
+										if (err) {console.log(`Error: ${err}`)} 
+										else {
+											let lang03 = data.split("lang:");
+											//console.log(`lang03.length: ${lang03.length}`);
+						
+											let langArray = [];
+											for (i=1; i <= lang03.length - 1; i++) { //first will always be undefined
+												let lang02 = lang03[i].split(" -");
+												//console.log(`lang02 at ${i}: ${lang02}`);
+												
+												let lang01 = lang02[0];
+												//console.log(`lang01 at ${i}: ${lang01}`);
+						
+												langArray.push(lang01);
+											}
+						
+											//console.log(`langArray: ${langArray}`);
+						
+											let guildID03 = data.split("guild:");
+											//console.log(`guildID03.length: ${guildID03.length}`);
+											let guildIDArray = [];
+											for (i=2; i <= guildID03.length - 1; i++) { //first two will always be undefined
+												let guildID02 = guildID03[i].split(" -");
+												//console.log(`lang02 at ${i}: ${lang02}`);
+												
+												let guildID01 = guildID02[0];
+												//console.log(`lang01 at ${i}: ${lang01}`);
+						
+												guildIDArray.push(guildID01);
+											}
+						
+											//console.log(`guildIDArray: ${guildIDArray}`);	
+						
+											let lang = "";
+											for (i=0; i <= guildIDArray.length - 1; i++) {
+												//console.log(`guildIDArray at ${i}: ${guildIDArray[i]}`);
+												//console.log(`langArray at ${i}: ${langArray[i]}`);
+												//console.log(`interaction.guildID at ${i}: ${interaction.guild.id}`);
+						
+												if (interaction.guild.id === guildIDArray[i]) {
+													lang += `${langArray[i]}`;
+												}
+											}
+						
+											//console.log(`lang: ${lang}`);	
+
+	function success() {
+		if (lang === "en") {
+			return `Success`;
+		}
+		else if (lang === "es") {
+			return `Éxito`;
+		}
+		else if (lang === "ru") {
+			return `Успех`;
+		}
+		else if (lang === "de") {
+			return `Erfolg`;
+		}
+		else if (lang === "pt") {
+			return `Éxito`;
+		}
+		else {
+			return `Success`;
+		}		
+	}	
+	
+	function gtaRemoveDesc() {
+		if (lang === "en") {
+			return `You will now no longer get GTA auto posts in the <#${menuChannelID}> channel.`;
+		}
+		else if (lang === "es") {
+			return `Ahora ya no obtendrá publicaciones automáticas de GTA en el canal <#${menuChannelID}>.`;
+		}
+		else if (lang === "ru") {
+			return `Теперь вы больше не будете получать автоматические сообщения GTA в канале <#${menuChannelID}>.`;
+		}
+		else if (lang === "de") {
+			return `Sie erhalten jetzt keine automatischen GTA-Beiträge mehr im <#${menuChannelID}>-Kanal.`;
+		}
+		else if (lang === "pt") {
+			return `Agora você não receberá mais postagens automáticas do GTA no canal <#${menuChannelID}>.`;
+		}
+		else {
+			return `You will now no longer get GTA auto posts in the <#${menuChannelID}> channel.`;
+		}		
+	}
+
+	function notYourOption() {
+		if (lang === "en") {
+			return `These options aren't for you.`;
+		}
+		else if (lang === "es") {
+			return `Estas opciones no son para ti.`;
+		}
+		else if (lang === "ru") {
+			return `Эти варианты не для вас.`;
+		}
+		else if (lang === "de") {
+			return `Diese Optionen sind nichts für Sie.`;
+		}
+		else if (lang === "pt") {
+			return `Essas opções não são para você.`;
+		}
+		else {
+			return `These options aren't for you.`;
+		}		
+	}		
+
+	function confirmSettingsString() {
+		if (lang === "en") {
+				return `Confirm Settings`;
+		}
+		else if (lang === "es") {
+			return `Confirmar la configuración`;
+		}
+		else if (lang === "ru") {
+			return `Подтвердить настройки`;
+		}
+		else if (lang === "de") {
+			return `Einstellungen bestätigen`;
+		}
+		else if (lang === "pt") {
+			return `Confirmar configurações`;
+		}
+		else {
+			return `Confirm Settings`;
+		}					
+	}												
+											
+//-----END TRANSLATIONS-----//											
+
 				const gtaConfirmEmbed = new EmbedBuilder()
 						.setColor(`Green`) 
-						.setTitle(`Success`)
-						.setDescription(`You will now no longer get GTA auto posts in the <#${menuChannelID}> channel.`)
+						.setTitle(`${success()}`)
+						.setDescription(`${gtaRemoveDesc()}`)		
 
-				const gtaConfirmEmbedEs = new EmbedBuilder()
-						.setColor(`Green`) 
-						.setTitle(`Éxito`)
-						.setDescription(`Ahora ya no obtendrá publicaciones automáticas de GTA en el canal <#${menuChannelID}>.`)		
-
-				const gtaConfirmEmbedRu = new EmbedBuilder()
-						.setColor(`Green`) 
-						.setTitle(`Успех`)
-						.setDescription(`Теперь вы больше не будете получать автоматические сообщения GTA в канале <#${menuChannelID}>.`)		
-
-				const gtaConfirmEmbedDe = new EmbedBuilder()
-						.setColor(`Green`) 
-						.setTitle(`Erfolg`)
-						.setDescription(`Sie erhalten jetzt keine automatischen GTA-Beiträge mehr im <#${menuChannelID}>-Kanal.`)		
-
-				const gtaConfirmEmbedPt = new EmbedBuilder()
-						.setColor(`Green`) 
-						.setTitle(`Éxito`)
-						.setDescription(`Agora você não receberá mais postagens automáticas do GTA no canal <#${menuChannelID}>.`)				
+				const confirmSettingsButton = new ActionRowBuilder()
+				.addComponents(
+						new ButtonBuilder()
+								.setCustomId(`initialback - ${interaction.user.id}`)
+								.setLabel(`${confirmSettingsString()}`)
+								.setStyle(ButtonStyle.Secondary),	
+				);											
 				
 				await interaction.deferUpdate();
 				if (interaction.user.id === menuUserID) { //begin removing an gta channel
-
-						fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
-							if (err) {console.log(`Error: ${err}`)} //If an error, console.log
-
-								// console.log(`interaction.guild.id: ${interaction.guild.id}`)
-								// console.log(`menuChannelID: ${menuChannelID}`)
-								// console.log(`data.replace: ${data.replace(`\nguild:${interaction.guild.id} - channel:${menuChannelID} - rdo_gta:gtaStartMenu - `, "")}`);
-								fs.writeFile('./GTADataBase.txt', `${data.replace(`\nguild:${interaction.guild.id} - channel:${menuChannelID} - rdo_gta:gtaStartMenu - `, "")}`, async function (err) {
-										if (err) {
-											throw err;
-										}
-										else {
-											fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
-												if (err) {console.log(`Error: ${err}`)} 
-												else {
-													let lang03 = data.split("lang:");
-													//console.log(`lang03.length: ${lang03.length}`);
-								
-													let langArray = [];
-													for (i=1; i <= lang03.length - 1; i++) { //first will always be undefined
-														let lang02 = lang03[i].split(" -");
-														//console.log(`lang02 at ${i}: ${lang02}`);
-														
-														let lang01 = lang02[0];
-														//console.log(`lang01 at ${i}: ${lang01}`);
-								
-														langArray.push(lang01);
-													}
-								
-													//console.log(`langArray: ${langArray}`);
-								
-													let guildID03 = data.split("guild:");
-													//console.log(`guildID03.length: ${guildID03.length}`);
-													let guildIDArray = [];
-													for (i=2; i <= guildID03.length - 1; i++) { //first two will always be undefined
-														let guildID02 = guildID03[i].split(" -");
-														//console.log(`lang02 at ${i}: ${lang02}`);
-														
-														let guildID01 = guildID02[0];
-														//console.log(`lang01 at ${i}: ${lang01}`);
-								
-														guildIDArray.push(guildID01);
-													}
-								
-													//console.log(`guildIDArray: ${guildIDArray}`);	
-								
-													let lang = "";
-													for (i=0; i <= guildIDArray.length - 1; i++) {
-														//console.log(`guildIDArray at ${i}: ${guildIDArray[i]}`);
-														//console.log(`langArray at ${i}: ${langArray[i]}`);
-														//console.log(`interaction.guildID at ${i}: ${interaction.guild.id}`);
-								
-														if (interaction.guild.id === guildIDArray[i]) {
-															lang += `${langArray[i]}`;
-														}
-													}
-								
-													//console.log(`lang: ${lang}`);												
-											if (lang === "en") {
-												await interaction.editReply({ embeds: [gtaConfirmEmbed], components: [] })
-												.catch(err => console.log(`gtaConfirmEmbed Error: ${err}`));	
-											}
-											else if (lang === "es") {
-												await interaction.editReply({ embeds: [gtaConfirmEmbedEs], components: [] })
-												.catch(err => console.log(`gtaConfirmEmbed Error: ${err}`));
-											}
-											else if (lang === "ru") {
-												await interaction.editReply({ embeds: [gtaConfirmEmbedRu], components: [] })
-												.catch(err => console.log(`gtaConfirmEmbed Error: ${err}`));
-											}
-											else if (lang === "de") {
-												await interaction.editReply({ embeds: [gtaConfirmEmbedDe], components: [] })
-												.catch(err => console.log(`gtaConfirmEmbed Error: ${err}`));
-											}
-											else if (lang === "pt") {
-												await interaction.editReply({ embeds: [gtaConfirmEmbedPt], components: [] })
-												.catch(err => console.log(`gtaConfirmEmbed Error: ${err}`));
-											}
-											else {
-											  await interaction.editReply({ embeds: [gtaConfirmEmbed], components: [] })
-												.catch(err => console.log(`gtaConfirmEmbed Error: ${err}`));  
-											}											
-
-											if ((interaction.user.id === process.env.USER_ID_1) || (interaction.user.id === process.env.USER_ID_2)) {
-												console.log('You unsubscribed from GTA auto posts.');	
-											}
-											else {
-												console.log('A user unsubscribed from GTA auto posts.');	
-											}										
-										}
-											
-									}); //end fs:writeFile to remove channel from autoposts
-								}}); //end fs.readFile for LANGDataBase.txt
-							}); //end fs:readFile GTADataBase.txt
-						
-					} else {
-						if (lang === "en") {
-							interaction.followUp({ content: `These options aren't for you.`, ephemeral: true });		
-						}
-						else if (lang === "es") {
-							interaction.followUp({ content: `Estas opciones no son para ti.`, ephemeral: true });
-						}
-						else if (lang === "ru") {
-							interaction.followUp({ content: `Эти варианты не для вас.`, ephemeral: true });
-						}
-						else if (lang === "de") {
-							interaction.followUp({ content: `Diese Optionen sind nichts für Sie.`, ephemeral: true });
-						}
-						else if (lang === "pt") {
-							interaction.followUp({ content: `Essas opções não são para você.`, ephemeral: true });
-						}
-						else {
-							interaction.followUp({ content: `These options are not for you.`, ephemeral: true });
-						}	
+						await interaction.editReply({ embeds: [gtaConfirmEmbed], components: [confirmSettingsButton] })
+						.catch(err => {console.log(`gtaConfirmEmbed Error: ${err}`); process.kill(1);});			
+				}
+				else {
+					interaction.followUp({ content: `${notYourOption()}`, ephemeral: true });		
 					}
 
-				} //end remove channel
+				}}); //end fs.readFile for LANGDataBase.txt
+			} //end if button is gtaRemove
+			}); //end fs:writeFile to remove channel from autoposts
+	}); //end fs:readFile GTADataBase.txt
 
-		});//end fs:readFile	
 
 		setTimeout(() => {
 			interaction.editReply({components: []})
-		}, (60000 * 5))			
+		}, (60000 * 5))		
 			
 		}// end if interaction.customId === 'gtaStopMenu'
 		
+	}); //end fsreadfile for roles.database
 
+	} //end if interaction ID is gta StopMenu
+	
 	},
 };
-
-
-
-
-	
