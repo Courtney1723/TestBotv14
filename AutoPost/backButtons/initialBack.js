@@ -255,7 +255,28 @@ Click **\'Confirm\'** to view and test current settings.`;
 			else {
 				return `Confirm`;
 			}			
-		}		
+		}	
+
+				function notYourButtonString() {
+					if (lang === "en") {
+						return `These buttons are not for you.`;
+					}
+					else if (lang === "es") {
+						return `Estos botones no son para ti.`;
+					}
+					else if (lang === "ru") {
+						return `Эти кнопки не для вас.`;
+					}
+					else if (lang === "de") {
+						return `Diese Schaltflächen sind nicht für Sie.`;
+					}
+					else if (lang === "pt") {
+						return `Esses botões não são para você.`;
+					}
+					else {
+						return `These buttons are not for you.`;
+					}				
+			}												
 
 //--END TRANSLATIONS--//						
 
@@ -284,29 +305,6 @@ Click **\'Confirm\'** to view and test current settings.`;
 					.setLabel(`${confirm()}`)
 					.setStyle(ButtonStyle.Secondary),					
 			);	
-
-				function notYourButtonString() {
-					if (lang === "en") {
-						return `These buttons are not for you.`;
-					}
-					else if (lang === "es") {
-						return `Estos botones no son para ti.`;
-					}
-					else if (lang === "ru") {
-						return `Эти кнопки не для вас.`;
-					}
-					else if (lang === "de") {
-						return `Diese Schaltflächen sind nicht für Sie.`;
-					}
-					else if (lang === "pt") {
-						return `Esses botões não são para você.`;
-					}
-					else {
-						return `These buttons are not for you.`;
-					}				
-			}							
-
-//--END TRANSLATIONS--//
 					
 					await interaction.deferUpdate();
 					if (buttonUserID === interaction.user.id) {
@@ -319,8 +317,7 @@ Click **\'Confirm\'** to view and test current settings.`;
 
 				}
 			});
-
-			
+	
 				setTimeout(() => {
 					interaction.editReply({components: [expiredButton]})
 				}, (60000 * 2))	

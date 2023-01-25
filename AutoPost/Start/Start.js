@@ -385,7 +385,7 @@ Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for **the first Tu
 		}
 			
 		else {
-				await interaction.followUp({ content: `${errorString()}`, ephemeral: true });
+			await interaction.followUp({ content: `${errorString()}`, ephemeral: true });
 		} //end checking for permissions		
 
 				setTimeout(() => {

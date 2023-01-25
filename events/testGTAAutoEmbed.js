@@ -387,13 +387,15 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 
 					//-----BEGIN populating gtaFinalString01 -----//
 					if ((i.toString() === nextGenIndex1) || (i.toString() === nextGenIndex2)) {
-						let gtaParas = GTA_Bonus.split("<p>");
-						//gtaFinalString01 += `**Only on PlayStation 5 and Xbox Series X|S:**\n`;
-						if (!GTA_Title.toLowerCase().includes("motorsport showroom")) {
-							gtaFinalString01 += `• ${GTA_Title}\n`;
-						}
-						else {
-							gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
+						if (!GTA_Bonus === undefined) {
+							let gtaParas = GTA_Bonus.split("<p>");
+							//gtaFinalString01 += `**Only on PlayStation 5 and Xbox Series X|S:**\n`;
+							if (!GTA_Title.toLowerCase().includes("motorsport showroom")) {
+								gtaFinalString01 += `• ${GTA_Title}\n`;
+							}
+							else {
+								gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
+							}
 						}
 					}
 					else if (i === 0) { //if the bonus is an intro paragraph.

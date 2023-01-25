@@ -67,123 +67,7 @@ module.exports = {
 			}		
 				//console.log(`AdminRequired(): ${AdminRequired()}`)
 
-		const startEmbed = new EmbedBuilder()
-			.setColor(`Green`) 
-			.setTitle(`Start Auto Posting`)
-			.setDescription(`Click **\'GTA\'** to set up Grand Theft Auto V Online Auto Posts for **every Thursday at 2:00 PM EST**.
-
-Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for **the first Tuesday of every month at 2:00 PM EST**.`)	
-			
-		const startButtons = new ActionRowBuilder()
-			.addComponents(
-			    new ButtonBuilder()
-			        .setCustomId(`gtastart - ${interaction.user.id}`)
-			        .setLabel('GTA')
-			        .setStyle(ButtonStyle.Success),
-			    new ButtonBuilder()
-			        .setCustomId(`rdostart - ${interaction.user.id}`)
-			        .setLabel('RDO')
-			        .setStyle(ButtonStyle.Danger),		
-					new ButtonBuilder()
-			        .setCustomId(`startback - ${interaction.user.id}`)
-			        .setLabel('Go Back')
-			        .setStyle(ButtonStyle.Secondary),	
-			);	
-
-		const startEmbedEs = new EmbedBuilder()
-			.setColor(`Green`) 
-			.setTitle(`Iniciar publicación automática`)
-			.setDescription(`Clic **\'GTA\'** para comenzar a publicar publicaciones automáticas en línea de Grand Theft Auto V para **todos los jueves a las 2:00 PM EST**.
-
-Clic **\'RDO\'** para comenzar a publicar publicaciones automáticas de Red Dead Redemption II para **el primer martes de cada mes a las 2:00 PM EST**.`)	
-			
-		const startButtonsEs = new ActionRowBuilder()
-			.addComponents(
-			    new ButtonBuilder()
-			        .setCustomId(`gtastart - ${interaction.user.id}`)
-			        .setLabel('GTA')
-			        .setStyle(ButtonStyle.Success),
-			    new ButtonBuilder()
-			        .setCustomId(`rdostart - ${interaction.user.id}`)
-			        .setLabel('RDO')
-			        .setStyle(ButtonStyle.Danger),		
-					new ButtonBuilder()
-			        .setCustomId(`startback - ${interaction.user.id}`)
-			        .setLabel('Volver')
-			        .setStyle(ButtonStyle.Secondary),	
-			);			
-
-		const startEmbedRu = new EmbedBuilder()
-			.setColor(`Green`) 
-			.setTitle(`Запуск автоматических записей`)
-			.setDescription(`Щелчок **\'GTA\'** для запуска Grand Theft Auto V Online Auto Posts для **каждый четверг в 14:00 EST**.
-
-Щелчок **\'RDO\'** чтобы начать автоматическую публикацию Red Dead Redemption II для **первого вторника каждого месяца в 14:00 EST**.`)	
-			
-		const startButtonsRu = new ActionRowBuilder()
-			.addComponents(
-			    new ButtonBuilder()
-			        .setCustomId(`gtastart - ${interaction.user.id}`)
-			        .setLabel('GTA')
-			        .setStyle(ButtonStyle.Success),
-			    new ButtonBuilder()
-			        .setCustomId(`rdostart - ${interaction.user.id}`)
-			        .setLabel('RDO')
-			        .setStyle(ButtonStyle.Danger),		
-					new ButtonBuilder()
-			        .setCustomId(`startback - ${interaction.user.id}`)
-			        .setLabel('Вернуться')
-			        .setStyle(ButtonStyle.Secondary),	
-			);	
-
-		const startEmbedDe = new EmbedBuilder()
-			.setColor(`Green`) 
-			.setTitle(`Automatische Beiträge starten`)
-			.setDescription(`Klicken Sie auf **\'GTA\'**, um GTA Online Auto-Beiträge für jeden Donnerstag um **14:00 Uhr EST** zu starten.
-
-Klicken Sie auf **\'RDO\'**, um Red Dead Online Auto-Posts für **den ersten Dienstag jedes Monats 2:00pm EST** zu starten.`)	
-			
-		const startButtonsDe = new ActionRowBuilder()
-			.addComponents(
-			    new ButtonBuilder()
-			        .setCustomId(`gtastart - ${interaction.user.id}`)
-			        .setLabel('GTA')
-			        .setStyle(ButtonStyle.Success),
-			    new ButtonBuilder()
-			        .setCustomId(`rdostart - ${interaction.user.id}`)
-			        .setLabel('RDO')
-			        .setStyle(ButtonStyle.Danger),		
-					new ButtonBuilder()
-			        .setCustomId(`startback - ${interaction.user.id}`)
-			        .setLabel('Zurück')
-			        .setStyle(ButtonStyle.Secondary),	
-			);
-
-		const startEmbedPt = new EmbedBuilder()
-			.setColor(`Green`) 
-			.setTitle(`Iniciar postagens automáticas`)
-			.setDescription(`Clique **\'GTA\'** para iniciar Grand Theft Auto V Online auto posts para **todas as quintas-feiras às 14:00 EST**.
-
-Clique **\'RDO\'** para iniciar Red Dead Redemption II auto posts para **a primeira terça-feira de cada mês às 14:00 EST **.`)	
-			
-		const startButtonsPt = new ActionRowBuilder()
-			.addComponents(
-			    new ButtonBuilder()
-			        .setCustomId(`gtastart - ${interaction.user.id}`)
-			        .setLabel('GTA')
-			        .setStyle(ButtonStyle.Success),
-			    new ButtonBuilder()
-			        .setCustomId(`rdostart - ${interaction.user.id}`)
-			        .setLabel('RDO')
-			        .setStyle(ButtonStyle.Danger),		
-					new ButtonBuilder()
-			        .setCustomId(`startback - ${interaction.user.id}`)
-			        .setLabel('Voltar')
-			        .setStyle(ButtonStyle.Secondary),	
-			);	
-
-
-
+//--BEGIN TRANSLATIONS--//
 			fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
 			  if (err) {console.log(`Error: ${err}`)} 
 				else {
@@ -229,115 +113,263 @@ Clique **\'RDO\'** para iniciar Red Dead Redemption II auto posts para **a prime
 						}
 					}
 
-					//console.log(`lang: ${lang}`);			
+					//console.log(`lang: ${lang}`);	
+
+		function startTitle() {
+			if (lang === "en") {
+				return `Start Auto Posting`;
+			}
+			if (lang === "es") {
+				return `Iniciar publicación automática`;
+			}			
+			if (lang === "ru") {
+				return `Запуск автоматических записей`;
+			}		
+			if (lang === "de") {
+				return `Automatische Beiträge starten`;
+			}		
+			if (lang === "pt") {
+				return `Iniciar postagens automáticas`;
+			}			
+			else {
+				return `Start Auto Posting`;
+			}
+		}
+
+		function startDesc() {
+			if (lang === "en") {
+				return `Click **\'GTA\'** to set up Grand Theft Auto V Online Auto Posts for **every Thursday at 2:00 PM EST**.
+
+Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for **the first Tuesday of every month at 2:00 PM EST**.`;
+			}
+			if (lang === "es") {
+				return `Clic **\'GTA\'** para comenzar a publicar publicaciones automáticas en línea de Grand Theft Auto V para **todos los jueves a las 2:00 PM EST**.
+
+Clic **\'RDO\'** para comenzar a publicar publicaciones automáticas de Red Dead Redemption II para **el primer martes de cada mes a las 2:00 PM EST**.`;
+			}
+			if (lang === "ru") {
+				return `Щелчок **\'GTA\'** для запуска Grand Theft Auto V Online Auto Posts для **каждый четверг в 14:00 EST**.
+
+Щелчок **\'RDO\'** чтобы начать автоматическую публикацию Red Dead Redemption II для **первого вторника каждого месяца в 14:00 EST**.`;
+			}
+			if (lang === "de") {
+				return `Klicken Sie auf **\'GTA\'**, um GTA Online Auto-Beiträge für jeden Donnerstag um **14:00 Uhr EST** zu starten.
+
+Klicken Sie auf **\'RDO\'**, um Red Dead Online Auto-Posts für **den ersten Dienstag jedes Monats 2:00pm EST** zu starten.`;
+			}		
+			if (lang === "pt") {
+				return `Clique **\'GTA\'** para iniciar Grand Theft Auto V Online auto posts para **todas as quintas-feiras às 14:00 EST**.
+
+Clique **\'RDO\'** para iniciar Red Dead Redemption II auto posts para **a primeira terça-feira de cada mês às 14:00 EST **.`;
+			}
+			else {
+				return `Click **\'GTA\'** to set up Grand Theft Auto V Online Auto Posts for **every Thursday at 2:00 PM EST**.
+
+Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for **the first Tuesday of every month at 2:00 PM EST**.`;				
+			}
+		}
+
+		function goBack() {
+			if (lang === "en") {
+					return `Go Back`;
+			}
+			else if (lang === "es") {
+				return `Volver`;
+			}
+			else if (lang === "ru") {
+				return `Вернуться`;
+			}
+			else if (lang === "de") {
+				return `Zurück`;
+			}
+			else if (lang === "pt") {
+				return `Voltar`;
+			}
+			else {
+				return `Go Back`;
+			}					
+		}				
+
+				function notYourButtonString() {
+					if (lang === "en") {
+						return `These buttons are not for you.`;
+					}
+					else if (lang === "es") {
+						return `Estos botones no son para ti.`;
+					}
+					else if (lang === "ru") {
+						return `Эти кнопки не для вас.`;
+					}
+					else if (lang === "de") {
+						return `Diese Schaltflächen sind nicht für Sie.`;
+					}
+					else if (lang === "pt") {
+						return `Esses botões não são para você.`;
+					}
+					else {
+						return `These buttons are not for you.`;
+					}				
+			}	
+
+			function firstCommandString() {
+					if (lang === "en") {
+						return `It looks like this is your first time using this command. Please try the start button again.`;
+					}
+					else if (lang === "es") {
+						return `Esta es la primera vez que ha utilizado este comando. Intenta presionar el botón de Empezar.`;
+					}
+					else if (lang === "ru") {
+						return `Вы впервые используете эту команду. Повторите попытку нажатия кнопки «Пуск».`;
+					}
+					else if (lang === "de") {
+						return `Dies ist das erste Mal, dass Sie diesen Befehl verwenden. Wiederholen Sie die Startschaltfläche.`;
+					}
+					else if (lang === "pt") {
+						return `Esta é a primeira vez que você usa este comando. Tente o botão Começar novamente.`;
+					}
+					else {
+						return `It looks like this is your first time using this command. Please try the start button again.`;
+					}				
+			}
+
+			function missingPermissions()	{
+				if (lang === "en") {
+					return `You do not have the required permissions to do that.`;
+				}
+				else if (lang === "es") {
+				  return `No tienes permiso para hacer eso.`;
+				}
+				else if (lang === "ru") {
+				  return `У вас нет разрешения на это.`;
+				}
+				else if (lang === "de") {
+				  return `Sie haben keine Erlaubnis dazu.`;
+				}
+				else if (lang === "pt") {
+				  return `Você não tem permissão para fazer isso.`;
+				}
+				else {
+				  return `You do not have the required permissions to do that.`;
+				}				
+			}			
+
+			function notYourButtonString() {
+					if (lang === "en") {
+						return `These buttons are not for you.`;
+					}
+					else if (lang === "es") {
+						return `Estos botones no son para ti.`;
+					}
+					else if (lang === "ru") {
+						return `Эти кнопки не для вас.`;
+					}
+					else if (lang === "de") {
+						return `Diese Schaltflächen sind nicht für Sie.`;
+					}
+					else if (lang === "pt") {
+						return `Esses botões não são para você.`;
+					}
+					else {
+						return `These buttons are not for you.`;
+					}				
+			}		
+
+		function errorString() {
+			if (lang === "en") {
+				return `There was an error executing this button.`;
+			}
+			if (lang === "es") {
+				return `Se ha producido un error.`;
+			}
+			if (lang === "ru") {
+				return `Произошла ошибка.`;
+			}
+			if (lang === "de") {
+				return `Es ist ein Fehler aufgetreten.`;
+			}
+			if (lang === "pt") {
+				return `Ocorreu um erro.`;
+			}			
+			else {
+				return `There was an error executing this button.`;
+			}			
+		}	
+
+		function expiredLabel() {
+			if (lang === "en") {
+				return `This interaction expired.`;
+			}
+			if (lang === "es") {
+				return `Esta interacción expiró.`;
+			}
+			if (lang === "ru") {
+				return `Срок действия этого взаимодействия истек.`;
+			}
+			if (lang === "de") {
+				return `Diese Interaktion ist abgelaufen.`;
+			}
+			if (lang === "pt") {
+				return `Esta interação expirou.`;
+			}
+			else {
+				return `This interaction expired.`;
+			}			
+		}			
+
+//--END TRANSLATIONS--//
+
+		const startEmbed = new EmbedBuilder()
+			.setColor(`Green`) 
+			.setTitle(`${startTitle()}`)
+			.setDescription(`${startDesc()}`)	
+			
+		const startButtons = new ActionRowBuilder()
+			.addComponents(
+			    new ButtonBuilder()
+			        .setCustomId(`gtastart - ${interaction.user.id}`)
+			        .setLabel('GTA')
+			        .setStyle(ButtonStyle.Success),
+			    new ButtonBuilder()
+			        .setCustomId(`rdostart - ${interaction.user.id}`)
+			        .setLabel('RDO')
+			        .setStyle(ButtonStyle.Danger),		
+					new ButtonBuilder()
+			        .setCustomId(`startback - ${interaction.user.id}`)
+			        .setLabel(`${goBack()}`)
+			        .setStyle(ButtonStyle.Secondary),	
+			);		
+
+			const expiredButton = new ActionRowBuilder()
+				.addComponents(
+					new ButtonBuilder()
+						.setCustomId(`expired`)
+						.setLabel(`${expiredLabel()}`)
+						.setStyle(ButtonStyle.Secondary)
+						.setEmoji(':RSWeekly:1025248227248848940')
+						.setDisabled(true),			
+			);					
 
 			
 
 //begin checking for permissions
-					await interaction.deferUpdate();
+		await interaction.deferUpdate();
 		//console.log(`AdminRequired(): ${AdminRequired()}`)
-				if (interaction.user.id != buttonUserID) {
-					if (lang === "en") {
-						await interaction.followUp({ content: `These buttons are not for you.`, ephemeral: true });
-					}
-					else if (lang === "es") {
-						await interaction.followUp({ content: `Estos botones no son para ti.`, ephemeral: true });
-					}
-					else if (lang === "ru") {
-						await interaction.followUp({ content: `Эти кнопки не для вас.`, ephemeral: true });
-					}
-					else if (lang === "de") {
-						await interaction.followUp({ content: `Diese Schaltflächen sind nicht für Sie.`, ephemeral: true });
-					}
-					else if (lang === "pt") {
-						await interaction.followUp({ content: `Esses botões não são para você.`, ephemeral: true });
-					}
-					else {
-						await interaction.followUp({ content: `These buttons are not for you.`, ephemeral: true });
-					}
-				}	
+		if (interaction.user.id != buttonUserID) {
+			await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });
+		}	
 		else if (AdminRequired() === undefined) {
-			if (lang === "en") {
-				await interaction.followUp({ content: `It looks like this is your first time using this command. Please try the start button again.`, ephemeral: true });
-			}
-			else if (lang === "es") {
-				await interaction.followUp({ content: `Esta es la primera vez que usas este comando. Vuelva a intentar el botón Inicio.`, ephemeral: true });
-			}
-			else if (lang === "ru") {
-				await interaction.followUp({ content: `Вы впервые используете эту команду. Повторите попытку нажатия кнопки «Пуск».`, ephemeral: true });
-			}
-			else if (lang === "de") {
-				await interaction.followUp({ content: `Dies ist das erste Mal, dass Sie diesen Befehl verwenden. Wiederholen Sie die Startschaltfläche.`, ephemeral: true });
-			}
-			else if (lang === "pt") {
-				await interaction.followUp({ content: `Esta é a primeira vez que você usa este comando. Tente o botão Iniciar novamente.`, ephemeral: true });
-			}
-			else {
-				await interaction.followUp({ content: `It looks like this is your first time using this command. Please try the start button again.`, ephemeral: true });
-			}
+				await interaction.followUp({ content: `${firstCommandString()}`, ephemeral: true });
 		}
-			
 		else if (AdminRequired() === "AdminRequiredYes") { //if admin permissions are required
 			if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) {
-				if (lang === "en") {
 					await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`startEmbed Error: ${err}`));	
-				}
-				else if (lang === "es") {
-					await interaction.editReply({ embeds: [startEmbedEs], components: [startButtonsEs] }).catch(err => console.log(`startEmbed Error: ${err}`));
-				}
-				else if (lang === "ru") {
-					await interaction.editReply({ embeds: [startEmbedRu], components: [startButtonsRu] }).catch(err => console.log(`startEmbed Error: ${err}`));
-				}
-				else if (lang === "de") {
-					await interaction.editReply({ embeds: [startEmbedDe], components: [startButtonsDe] }).catch(err => console.log(`startEmbed Error: ${err}`));	
-				}
-				else if (lang === "pt") {
-					await interaction.editReply({ embeds: [startEmbedPt], components: [startButtonsPt] }).catch(err => console.log(`startEmbed Error: ${err}`));
-				}
-				else {
-					await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`startEmbed Error: ${err}`));
-				}
 			} 
 			else if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
-				if (lang === "en") {
-					await interaction.followUp({content: `You do not have the required permissions to do that.`, ephemeral: true});
-				}
-				else if (lang === "es") {
-				  await interaction.followUp({content: `No tienes permiso para hacer eso.`, ephemeral: true});
-				}
-				else if (lang === "ru") {
-				  await interaction.followUp({content: `У вас нет разрешения на это.`, ephemeral: true});
-				}
-				else if (lang === "de") {
-				  await interaction.followUp({content: `Sie haben keine Erlaubnis dazu.`, ephemeral: true});
-				}
-				else if (lang === "pt") {
-				  await interaction.followUp({content: `Você não tem permissão para fazer isso.`, ephemeral: true});
-				}
-				else {
-				  await interaction.followUp({content: `You do not have the required permissions to do that.`, ephemeral: true});
-				}
+					await interaction.followUp({content: `${missingPermissions()}`, ephemeral: true});
 			}
 				
 			else if (!interaction.user.id === buttonUserID)  {
-				if (lang === "en") {
-					await interaction.followUp({ content: `These buttons are not for you.`, ephemeral: true });	
-				}
-				else if (lang === "es") {
-				  await interaction.followUp({ content: `Estos botones no son para ti.`, ephemeral: true });
-				}
-				else if (lang === "ru") {
-				  await interaction.followUp({ content: `Эти кнопки не для вас.`, ephemeral: true });
-				}
-				else if (lang === "de") {
-				  await interaction.followUp({ content: `Diese Schaltflächen sind nicht für Sie.`, ephemeral: true });
-				}
-				else if (lang === "pt") {
-				  await interaction.followUp({ content: `Esses botões não são para você.`, ephemeral: true });
-				}
-				else {
-				  await interaction.followUp({ content: `These buttons aren't for you!`, ephemeral: true });
-				}
+					await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });	
 			}
 		}
 			
@@ -353,118 +385,32 @@ Clique **\'RDO\'** para iniciar Red Dead Redemption II auto posts para **a prime
 				} //end loop to check for hasARole
 					//console.log(`hasARole: ${hasARole} && required roles:${guildRoleIds.length}`)
 				if ( (guildRoleIds.length === 0) && (interaction.user.id === buttonUserID) ) { //no role required
-					if (lang === "en") {
-						await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`startButtons Error: ${err.stack}`));
-					}
-					else if (lang === "es") {
-					  await interaction.editReply({ embeds: [startEmbedEs], components: [startButtonsEs] }).catch(err => console.log(`startButtonsEs Error: ${err.stack}`));
-					}
-					else if (lang === "ru") {
-					  await interaction.editReply({ embeds: [startEmbedRu], components: [startButtonsRu] }).catch(err => console.log(`startButtonsRu Error: ${err.stack}`));
-					}
-					else if (lang === "de") {
-					  await interaction.editReply({ embeds: [startEmbedDe], components: [startButtonsDe] }).catch(err => console.log(`startButtonsDe Error: ${err.stack}`));
-					}
-					else if (lang === "pt") {
-					  await interaction.editReply({ embeds: [startEmbedPt], components: [startButtonsPt] }).catch(err => console.log(`startButtonsPt Error: ${err.stack}`));
-					}
-					else {
-					  await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`startButtons Error: ${err.stack}`));
-					}
+					await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`startButtons Error: ${err.stack}`));
 				}
 					
 				else if ( (hasARole >= 1) && (interaction.user.id === buttonUserID) ) { //if the user has at least one role listed
-					if (lang === "en") {
 						await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`startButtons Error: ${err.stack}`));
-					}
-					else if (lang === "es") {
-					  await interaction.editReply({ embeds: [startEmbedEs], components: [startButtonsEs] }).catch(err => console.log(`startButtons Error: ${err.stack}`));
-					}
-					else if (lang === "ru") {
-					  await interaction.editReply({ embeds: [startEmbedRu], components: [startButtonsRu] }).catch(err => console.log(`startButtons Error: ${err.stack}`));
-					}
-					else if (lang === "de") {
-					  await interaction.editReply({ embeds: [startEmbedDe], components: [startButtonsDe] }).catch(err => console.log(`startButtons Error: ${err.stack}`));
-					}
-					else if (lang === "pt") {
-					  await interaction.editReply({ embeds: [startEmbedPt], components: [startButtonsPt] }).catch(err => console.log(`startButtons Error: ${err.stack}`));
-					}
-					else {
-					  await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`startButtons Error: ${err.stack}`));
-					}
 				}
 					
 				else if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) { //If the user is an administrator
-					if (lang === "en") {
-						await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`startButtons Error: ${err.stack}`));
-					}
-					else if (lang === "es") {
-						await interaction.editReply({ embeds: [startEmbedEs], components: [startButtonsEs] }).catch(err => console.log(`startButtons Error: ${err.stack}`));
-					}
-					else if (lang === "ru") {
-						await interaction.editReply({ embeds: [startEmbedRu], components: [startButtonsRu] }).catch(err => console.log(`startButtons Error: ${err.stack}`));
-					}
-					else if (lang === "de") {
-						await interaction.editReply({ embeds: [startEmbedDe], components: [startButtonsDe] }).catch(err => console.log(`startButtons Error: ${err.stack}`));
-					}
-					else if (lang === "pt") {
-						await interaction.editReply({ embeds: [startEmbedPt], components: [startButtonsPt] }).catch(err => console.log(`startButtons Error: ${err.stack}`));
-					}
-					else {
-						await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`startButtons Error: ${err.stack}`));
-					}
+						await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => {console.log(`startButtons Error: ${err.stack}`); process.kill(1);});
 				}		
-					
 				else if (hasARole <= 0) { //if the user does not have a listed role and is not an administrator
-				if (lang === "en") {
-					await interaction.followUp({content: `You do not have the required permissions to do that.`, ephemeral: true});
-				}
-				else if (lang === "es") {
-				  await interaction.followUp({content: `No tienes permiso para hacer eso.`, ephemeral: true});
-				}
-				else if (lang === "ru") {
-				  await interaction.followUp({content: `У вас нет разрешения на это.`, ephemeral: true});
-				}
-				else if (lang === "de") {
-				  await interaction.followUp({content: `Sie haben keine Erlaubnis dazu.`, ephemeral: true});
-				}
-				else if (lang === "pt") {
-				  await interaction.followUp({content: `Você não tem permissão para fazer isso.`, ephemeral: true});
-				}
-				else {
-				  await interaction.followUp({content: `You do not have the required permissions to do that.`, ephemeral: true});
-				}
+					await interaction.followUp({content: `${missingPermissions()}`, ephemeral: true});
 				}											
 		}
 			
 		else {
-			if (lang === "en") {
-				await interaction.followUp({ content: `There was an error executing this button.`, ephemeral: true });
-			}
-			else if (lang === "es") {
-				await interaction.followUp({ content: `Se ha producido un error.`, ephemeral: true });
-			}
-			else if (lang === "ru") {
-				await interaction.followUp({ content: `Произошла ошибка.`, ephemeral: true });
-			}
-			else if (lang === "de") {
-				await interaction.followUp({ content: `Es ist ein Fehler aufgetreten.`, ephemeral: true });
-			}
-			else if (lang === "pt") {
-				await interaction.followUp({ content: `Ocorreu um erro.`, ephemeral: true });
-			}
-			else {
-				await interaction.followUp({ content: `There was an error executing this button.`, ephemeral: true });
-			}
+			await interaction.followUp({ content: `${errorString()}`, ephemeral: true });
 		} //end checking for permissions		
 
-				}});// end fs:readFile for LANGData.txt
-		}); //end fs:readFile		
 				setTimeout(() => {
 					interaction.editReply({components: [expiredButton]})
-				}, (60000 * 2))	
-			
-		} //end if interaction starts with rdostartback - gtastartback
+				}, (60000 * 5))						
 
+				}});// end fs:readFile for LANGData.txt
+		}); //end fs:readFile			
+	
+	} //end if start
 	},
 }
