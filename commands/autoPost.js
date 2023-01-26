@@ -6,16 +6,6 @@ const client = new Client({
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
 const { exec } = require('node:child_process');
 
-const expiredButton = new ActionRowBuilder()
-	.addComponents(
-		new ButtonBuilder()
-			.setCustomId(`expired`)
-			.setLabel('This interaction timed out.')
-			.setStyle(ButtonStyle.Secondary)
-			.setEmoji(':RSWeekly:1025248227248848940')
-			.setDisabled(true),			
-	);
-
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('autopost')
@@ -268,13 +258,42 @@ Click **\'Confirm\'** to view and test current settings.`;
 						//Initial Embed + Buttons (start, stop, confirm, configure)
 						interaction.reply({ embeds: [initialEmbed], components:[initialButtons] });
 
+			function expiredDesc() {
+				if (lang === "en") {
+					return `This interaction expired`;
 				}
-			}); //end fs.readFile LANGDataBase.txt
+				if (lang === "es") {
+					return `Esta interacción expiró.`;
+				}
+				if (lang === "ru") {
+					return `Срок действия этого взаимодействия истек.`;
+				}
+				if (lang === "de") {
+					return `Diese Interaktion ist abgelaufen`;
+				}
+				if (lang === "pt") {
+					return `Esta interação expirou.`;
+				}
+				else {
+					return `This interaction expired`;
+				}						
+			}
 
+			const expiredButton = new ActionRowBuilder()
+				.addComponents(
+					new ButtonBuilder()
+						.setCustomId(`expired`)
+						.setLabel(`${expiredDesc()}`)
+						.setStyle(ButtonStyle.Secondary)
+						.setEmoji(':RSWeekly:1025248227248848940')
+						.setDisabled(true),			
+				);		
 
-		setTimeout(() => {
-			interaction.editReply({components: [expiredButton]})
-		}, (60000 * 5))
+				setTimeout(() => {
+					interaction.editReply({components: [expiredButton]})
+				}, (60000 * 5))
+				
+				}}); //end fs.readFile LANGDataBase.txt
 		
 
 }}

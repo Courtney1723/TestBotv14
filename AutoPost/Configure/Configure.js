@@ -6,16 +6,6 @@ const client = new Client({
 
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
 
-const expiredButton = new ActionRowBuilder()
-	.addComponents(
-		new ButtonBuilder()
-			.setCustomId(`expired`)
-			.setLabel('This interaction timed out.')
-			.setStyle(ButtonStyle.Secondary)
-			.setEmoji(':RSWeekly:1025248227248848940')
-			.setDisabled(true),			
-	);
-
 module.exports = {
 	name: 'interactionCreate',
 	async execute(interaction) {
@@ -144,7 +134,7 @@ module.exports = {
 				}
 				else if (lang === "es") {
 					return `Haga clic en **\'Agregar\'** para agregar un rol que pueda configurar publicaciones automáticas.
-					Clic **\'Eliminar\'** para quitar un rol de tener la capacidad de configurar publicaciones automáticas.`;
+					Haga clic en **\'Eliminar\'** para quitar un rol de tener la capacidad de configurar publicaciones automáticas.`;
 				}
 				else if (lang === "ru") {
 					return `Щелчок **\'Добавлять\'** чтобы добавить роль, которая может настраивать автоматические записи.
@@ -344,15 +334,15 @@ module.exports = {
 		.addComponents(
 			new ButtonBuilder()
 				.setCustomId(`configureadd - ${interaction.user.id}`)
-				.setLabel('Add')
+				.setLabel(`${configureAdd()}`)
 				.setStyle(ButtonStyle.Success),
 			new ButtonBuilder()
 				.setCustomId(`configurestop - ${interaction.user.id}`)
-				.setLabel('Remove')
+				.setLabel(`${configureRemove()}`)
 				.setStyle(ButtonStyle.Danger),
 				new ButtonBuilder()
 					.setCustomId(`configureback - ${interaction.user.id}`)
-					.setLabel('Go Back')
+					.setLabel(`${goBack()}`)
 					.setStyle(ButtonStyle.Secondary),	
 		);				
 
@@ -416,13 +406,44 @@ module.exports = {
 				await interaction.followUp({ content: `${errorString()}`, ephemeral: true });
 		} //end checking for permissions
 
-				}}); //end fs.readFile for LANGDataBase.txt
-	
-		}); //end fs:readFile for guildID and Admin check
+			function expiredDesc() {
+				if (lang === "en") {
+					return `This interaction expired`;
+				}
+				if (lang === "es") {
+					return `Esta interacción expiró.`;
+				}
+				if (lang === "ru") {
+					return `Срок действия этого взаимодействия истек.`;
+				}
+				if (lang === "de") {
+					return `Diese Interaktion ist abgelaufen`;
+				}
+				if (lang === "pt") {
+					return `Esta interação expirou.`;
+				}
+				else {
+					return `This interaction expired`;
+				}						
+			}
+
+			const expiredButton = new ActionRowBuilder()
+				.addComponents(
+					new ButtonBuilder()
+						.setCustomId(`expired`)
+						.setLabel(`${expiredDesc()}`)
+						.setStyle(ButtonStyle.Secondary)
+						.setEmoji(':RSWeekly:1025248227248848940')
+						.setDisabled(true),			
+				);		
 
 				setTimeout(() => {
 					interaction.editReply({components: [expiredButton]})
-				}, (60000 * 2))				
+				}, (60000 * 2))					
+
+				}}); //end fs.readFile for LANGDataBase.txt
+	
+		}); //end fs:readFile for guildID and Admin check			
 		
 		} //end if configure
 	},

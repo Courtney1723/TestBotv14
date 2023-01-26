@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, Collection, Partials, EmbedBuilder } = require('discord.js');
+const { Client, GatewayIntentBits, Collection, Partials, EmbedBuilder, PermissionsBitField } = require('discord.js');
 const client = new Client({
 	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions],
 	partials: [Partials.Message, Partials.Channel, Partials.Reaction],
@@ -7,6 +7,7 @@ const { exec } = require('node:child_process');
 const keepAlive = require('./server');
 var cron = require('node-cron'); //https://github.com/node-cron/node-cron
 const { get } = require("https");
+const fetch = require("node-fetch");
 
 // node deploy-commands.js 
 //^^ type in shell to register a command
@@ -48,6 +49,30 @@ const { get } = require("https");
 
 // });
 
+//Check channel permissions - uncomment for main bot
+// client.on("ready", () => {
+// 		fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
+// 			if (err) {console.log(`Error: ${err}`)} 
+// 			else {
+// 				let channelIDs01 = data.split("channel:");
+// 				let channelIDs = [];
+// 				for (i = 1; i <= channelIDs01.length - 1; i++) {
+// 					let channelIDs02 = channelIDs01[i].split("-");
+// 					let channelIDs03 = channelIDs02[0];
+
+// 					channelIDs.push(channelIDs03);
+// 				}
+// 				console.log(`channelIDs: ${channelIDs}`);
+// 				for (c = 1; c <= channelIDs.length - 1; c++) {
+					
+// 					client.channels.fetch(channelIDs[c]).then(channel => {
+// 						console.log(`Send message permission in ${channel.id}: ${channel.permissionsFor(process.env.CLIENT_ID).has(PermissionsBitField.Flags.SendMessages)}`);
+// 					});
+// 				}
+// 			}
+// 		}); //end fs.readFile for GTADataBase.txt
+// }); 
+
 //prevents errors from shutting the bot off
 process.on("unhandledRejection", async (err) => {
 	console.error("Unhandled Promise Rejection:\n", err.stack);
@@ -63,7 +88,9 @@ client.setMaxListeners(50); // prevents max listeners error for buttons (DO NOT 
 //checks for 429 errors at startup and every 5 minutes
 function handleRateLimit() {
 	get(`https://discord.com/api/v10/gateway`, ({ statusCode }) => {
-		if (statusCode == 429) { process.kill(1) }
+		if ((statusCode === 429) || (statusCode === 404)) { 
+			process.kill(1) 
+		}
 		//console.log(`StatusCode: ${statusCode}`);
 	});
 };
@@ -157,6 +184,20 @@ for (const file of eventFiles) {
 		client.once(event.name, (...args) => event.execute(...args));
 	} else {
 		client.on(event.name, (...args) => event.execute(...args));
+	}
+}
+
+//Access Language files
+const languagePath = path.join(__dirname, 'language');
+const languageFiles = fs.readdirSync(languagePath).filter(file => file.endsWith('.js'));
+
+for (const file of languageFiles) {
+	const filePath = path.join(languagePath, file);
+	const language = require(filePath);
+	if (language.once) {
+		client.once(language.name, (...args) => language.execute(...args));
+	} else {
+		client.on(language.name, (...args) => language.execute(...args));
 	}
 }
 

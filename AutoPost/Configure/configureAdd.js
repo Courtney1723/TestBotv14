@@ -268,7 +268,28 @@ module.exports = {
 					else {
 						return `These buttons are not for you.`;
 					}				
-			}					
+			}		
+
+	function confirmSettingsString() {
+		if (lang === "en") {
+				return `Confirm Settings`;
+		}
+		else if (lang === "es") {
+			return `Confirmar la configuración`;
+		}
+		else if (lang === "ru") {
+			return `Подтвердить настройки`;
+		}
+		else if (lang === "de") {
+			return `Einstellungen bestätigen`;
+		}
+		else if (lang === "pt") {
+			return `Confirmar configurações`;
+		}
+		else {
+			return `Confirm Settings`;
+		}					
+	}						
 
 
 //--END TRANSLATIONS --//					
@@ -307,9 +328,17 @@ else if (menuRoleID === `undefinedrole`) { //if the Admin role is already requir
         .setDescription(`${adminNowRequired()}
 				\n• ${adminWhitelist()}`)	
 
+		const confirmSettingsButton = new ActionRowBuilder()
+		.addComponents(
+				new ButtonBuilder()
+						.setCustomId(`initialback - ${interaction.user.id}`)
+						.setLabel(`${confirmSettingsString()}`)
+						.setStyle(ButtonStyle.Secondary),	
+		);				
+
 		    await interaction.deferUpdate();
 		    if (interaction.user.id === menuUserID) {
-		        await interaction.editReply({ embeds: [configureConfirmAddEmbed], components: [] })
+		        await interaction.editReply({ embeds: [configureConfirmAddEmbed], components: [confirmSettingsButton] })
 		        .catch(err => console.log(`configureConfirmAddEmbed Error: ${err}`));					
 		
 				let guildIdDB = `${interaction.guild.id}`;
@@ -345,17 +374,46 @@ else if (menuRoleID === `undefinedrole`) { //if the Admin role is already requir
 				AdminCheck += `\n• The Administrator privilege is required! \n• Any user with the <@&${menuRoleID}> role must also have administrator privileges in order to configure auto posts.\n• Try the **/autopost** comand again and click **\'Configure\'** to remove the administrator requirement.`;
 			}
 
+		function 	configureAddDesc() {
+			if (lang === "en") {
+				return `Anyone with the <@&${menuRoleID}> role can now configure auto posts.\n${AdminCheck}`;
+			}
+			if (lang === "es") {
+				return `Cualquier persona con el rol <@&${menuRoleID}> ahora puede configurar publicaciones automáticas.\n${AdminCheck}`;
+			}		
+			if (lang === "ru") {
+				return `Теперь любой пользователь с ролью <@&${menuRoleID}> может настраивать автоматические сообщения.\n${AdminCheck}`;
+			}		
+			if (lang === "de") {
+				return `Jeder mit der Rolle <@&${menuRoleID}> kann jetzt automatische Beiträge konfigurieren.\n${AdminCheck}`;
+			}		
+			if (lang === "pt") {
+				return `Qualquer pessoa com a função <@&${menuRoleID}> agora pode configurar publicações automáticas.\n${AdminCheck}`;
+			}		
+			else {
+				return `Anyone with the <@&${menuRoleID}> role can now configure auto posts.\n${AdminCheck}`;
+			}	
+		}			
+
 			const configureAddEmbed = new EmbedBuilder()
 				.setColor(`Green`) 
 				.setTitle(`${success()}`)
-				.setDescription(`Anyone with the <@&${menuRoleID}> role can now configure auto posts.\n${AdminCheck}`)	
+				.setDescription(`${configureAddDesc()}`)	
+
+		const confirmSettingsButton = new ActionRowBuilder()
+		.addComponents(
+				new ButtonBuilder()
+						.setCustomId(`initialback - ${interaction.user.id}`)
+						.setLabel(`${confirmSettingsString()}`)
+						.setStyle(ButtonStyle.Secondary),	
+		);			
 
 	    await interaction.deferUpdate();
 			if (interaction.user.id != menuUserID) {
 				interaction.followUp({ content: `These options aren't for you!`, ephemeral: true });
 			}
 	    else if (interaction.user.id === menuUserID) {
-	        await interaction.editReply({ embeds: [configureAddEmbed], components: [] })
+	        await interaction.editReply({ embeds: [configureAddEmbed], components: [confirmSettingsButton] })
 	        .catch(err => console.log(`configureAddEmbed Error: ${err}`));
 
 					let guildIdDB = `${interaction.guild.id}`;
@@ -396,18 +454,47 @@ else if (menuRoleID === `undefinedrole`) { //if the Admin role is already requir
 
 				}); //end fs.readFile for rolesDataBase.txt
 
+			function expiredDesc() {
+				if (lang === "en") {
+					return `This interaction expired`;
+				}
+				if (lang === "es") {
+					return `Esta interacción expiró.`;
+				}
+				if (lang === "ru") {
+					return `Срок действия этого взаимодействия истек.`;
+				}
+				if (lang === "de") {
+					return `Diese Interaktion ist abgelaufen`;
+				}
+				if (lang === "pt") {
+					return `Esta interação expirou.`;
+				}
+				else {
+					return `This interaction expired`;
+				}						
+			}
+
+			const expiredButton = new ActionRowBuilder()
+				.addComponents(
+					new ButtonBuilder()
+						.setCustomId(`expired`)
+						.setLabel(`${expiredDesc()}`)
+						.setStyle(ButtonStyle.Secondary)
+						.setEmoji(':RSWeekly:1025248227248848940')
+						.setDisabled(true),			
+				);		
+
+				setTimeout(() => {
+					interaction.editReply({components: [expiredButton]})
+				}, (60000 * 2))					
+
 				}}); //end fs.readFile for LANGDataBase.txt
 			
-
 		});//end fs:readFile	
-
-		setTimeout(() => {
-			interaction.editReply({components: []})
-		}, (60000 * 2))
 			
 		}// end if interaction.customId === 'configureStartMenu'
 		
-
 	},
 };
 

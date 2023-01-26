@@ -451,12 +451,12 @@ module.exports = {
 
 				//console.log(`gtaFinalString: ${gtaFinalString}`);
 				function gtaPost() {
-					return gtaFinalString.slice(0, 3822); //FIXME: adjust this for the best break - up to 4000
+					return gtaFinalString.slice(0, 3932); //FIXME: adjust this for the best break - up to 4000
 				}
 				//console.log(`1: ${gtaFinalString.length}\n`) 
 				function gtaPost2() {
 					if (gtaFinalString.length > 4000) {
-						let post02 = gtaFinalString.substr(3822, 1500); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
+						let post02 = gtaFinalString.substr(3932, 1828); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
 						return post02;
 					} else {
 						return "";
@@ -496,10 +496,10 @@ module.exports = {
 				function gtaFooterMin() {
 					if (gtaFinalString.length <= 4000) {
 						if (lang === "en") {
-							return `** [click here](${url}) for more details**`;
+							return `** [Click here](${url}) for more details**`;
 						}
 						else if (lang === "es" ) {
-							return `** [haga clic aquí](${url}) para más detalles**`;
+							return `** [Haga clic aquí](${url}) para más detalles**`;
 						}
 						else if (lang === "ru" ) {
 							return `** [нажмите здесь](${url}) для получения более подробной информации**`;
@@ -511,7 +511,7 @@ module.exports = {
 							return `** [Clique aqui](${url}) para mais detalhes**`;
 						}									
 						else {
-							return `** [click here](${url}) clique aqui para mais detalhes**`;
+							return `** [Click here](${url}) clique aqui para mais detalhes**`;
 						}			
 					} else {
 						return "";

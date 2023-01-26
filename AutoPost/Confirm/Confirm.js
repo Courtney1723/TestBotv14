@@ -6,16 +6,6 @@ const client = new Client({
 
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
 
-const expiredButton = new ActionRowBuilder()
-	.addComponents(
-		new ButtonBuilder()
-			.setCustomId(`expired`)
-			.setLabel('This interaction timed out.')
-			.setStyle(ButtonStyle.Secondary)
-			.setEmoji(':RSWeekly:1025248227248848940')
-			.setDisabled(true),			
-	);
-
 module.exports = {
 	name: 'interactionCreate',
 	async execute(interaction) {
@@ -314,7 +304,7 @@ module.exports = {
 					return `Click **\'Test GTA\'** to send a test post to your subscribed GTA Online channel(s).`;
 			}
 			else if (lang === "es") {
-				return `Clic **\'Prueba GTA\'** para enviar una publicación de prueba a sus canal(es) GTA Online suscritos.`;
+				return `Haga clic en **\'Prueba GTA\'** para enviar una publicación de prueba a sus canal(es) GTA Online suscritos.`;
 			}
 			else if (lang === "ru") {
 				return `Щелчок **\'Тест GTA\'** для того, чтобы отправить тестовое сообщение на подписанные каналы GTA Online.`;
@@ -524,15 +514,46 @@ ${testRDOString()}`)
 	
 	}); //end fs.readFile GTADataBase
 	}); //end fs.readFile RDODataBase
-	}) //end fs.readFile rolesDataBase			
+	}) //end fs.readFile rolesDataBase	
+
+			function expiredDesc() {
+				if (lang === "en") {
+					return `This interaction expired`;
+				}
+				if (lang === "es") {
+					return `Esta interacción expiró.`;
+				}
+				if (lang === "ru") {
+					return `Срок действия этого взаимодействия истек.`;
+				}
+				if (lang === "de") {
+					return `Diese Interaktion ist abgelaufen`;
+				}
+				if (lang === "pt") {
+					return `Esta interação expirou.`;
+				}
+				else {
+					return `This interaction expired`;
+				}						
+			}
+
+			const expiredButton = new ActionRowBuilder()
+				.addComponents(
+					new ButtonBuilder()
+						.setCustomId(`expired`)
+						.setLabel(`${expiredDesc()}`)
+						.setStyle(ButtonStyle.Secondary)
+						.setEmoji(':RSWeekly:1025248227248848940')
+						.setDisabled(true),			
+				);	
+
+		setTimeout(() => {
+			interaction.editReply({components: [expiredButton]})
+		}, (60000 * 2))					
 
 	}}); //end fs.readFile LANGDataBase
 	
-		}); //end fs:readFile for guildID and Admin check
-
-				setTimeout(() => {
-					interaction.editReply({components: [expiredButton]})
-				}, (60000 * 5))				
+		}); //end fs:readFile for guildID and Admin check					
 		
 		} //end if start
 	},

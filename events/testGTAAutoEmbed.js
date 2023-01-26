@@ -97,9 +97,9 @@ module.exports = {
 			let channelIDArray = channelIDs.split('  - ');
 			channelIDArray.shift(); //removes the undefined element
 			let guildLangs = guildIDLangArray.join(` - `);
-					console.log(`guildIDsArray: ${guildIDsArray}`);
-					console.log(`guildIDLangArray: ${guildIDLangArray}`);
-					console.log(`channelIDArray: ${channelIDArray}`);
+					//console.log(`guildIDsArray: ${guildIDsArray}`);
+					//console.log(`guildIDLangArray: ${guildIDLangArray}`);
+					//console.log(`channelIDArray: ${channelIDArray}`);
 			for (c = 0; c <= channelIDArray.length - 2; c++) { //first & last elements will always be undefined	
 					let lang = "";
 				
@@ -534,10 +534,10 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
     function gtaFooterMax() {
       if (gtaFinalString.length > 4000) {
         if (lang === "en") {
-					return `\n** [click here](${url}) for more details**`;
+					return `\n** [Click here](${url}) for more details**`;
 				}
 				else if (lang === "es" ) {
-					return `\n** [haga clic aquí](${url}) para más detalles**`;
+					return `\n** [Haga clic aquí](${url}) para más detalles**`;
 				}
 				else if (lang === "ru" ) {
 					return `\n** [нажмите здесь](${url}) для получения более подробной информации**`;
@@ -546,10 +546,10 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 					return `\n** [Klicken Sie hier](${url}) für weitere Details**`;
 				}		
 				else if (lang === "pt" ) {
-					return `\n** [clique aqui](${url}) para mais detalhes**`;
+					return `\n** [Clique aqui](${url}) para mais detalhes**`;
 				}								
 				else {
-					return `\n** [click here](${url}) for more details**`;
+					return `\n** [Click here](${url}) for more details**`;
 				}	
       } else {
         return "";
@@ -558,10 +558,10 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
     function gtaFooterMin() { 
       if (gtaFinalString.length <= 4000) {
 				if (lang === "en") {
-					return `\n** [click here](${url}) for more details**`;
+					return `\n** [Click here](${url}) for more details**`;
 				}
 				else if (lang === "es" ) {
-					return `\n** [haga clic aquí](${url}) para más detalles**`;
+					return `\n** [Haga clic aquí](${url}) para más detalles**`;
 				}
 				else if (lang === "ru" ) {
 					return `\n** [нажмите здесь](${url}) для получения более подробной информации**`;
@@ -570,10 +570,10 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 					return `\n** [Klicken Sie hier](${url}) für weitere Details**`;
 				}		
 				else if (lang === "pt" ) {
-					return `\n** [clique aqui](${url}) para mais detalhes**`;
+					return `\n** [Clique aqui](${url}) para mais detalhes**`;
 				}								
 				else {
-					return `\n** [click here](${url}) for more details**`;
+					return `\n** [Click here](${url}) for more details**`;
 				}	
       } else {
         return "";

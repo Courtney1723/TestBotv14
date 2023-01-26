@@ -323,7 +323,7 @@ module.exports = {
 							gtaFinalString01 += `**${GTA_Title}** \n`;
 						}
 						else if (GTA_Title.toLowerCase().includes("gta+")) {
-							gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n${gtaParas[2]})\n`;
+							gtaFinalString01 += `**${GTA_Title}\n• ${gtaParas[1]}\n${gtaParas[2]})\n`;
 						}
 						else if (GTA_Title.toLowerCase().includes("discount")) {
 							gtaFinalString01 += `**${GTA_Title}**\n• ${GTA_Bonus}:\n`; 
@@ -373,15 +373,16 @@ module.exports = {
 					.replace(/• undefined/g, "• ")
 					.replace(/\n• undefine/g, "")
 					.replace(/• \n\n/g, "")
+					.replace(/\*\*Railgun/g, "Railgun")
 
 				//console.log(`gtaFinalString: ${gtaFinalString}`);
 				function gtaPost() {
-					return gtaFinalString.slice(0, 3919); //FIXME: adjust this for the best break - up to 4000
+					return gtaFinalString.slice(0, 3932); //FIXME: adjust this for the best break - up to 4000
 				}
 				//console.log(`1: ${gtaFinalString.length}\n`) 
 				function gtaPost2() {
 					if (gtaFinalString.length > 4000) {
-						let post02 = gtaFinalString.substr(3919, 1900); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
+						let post02 = gtaFinalString.substr(3932, 1828); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
 						return post02;
 					} else {
 						return "";

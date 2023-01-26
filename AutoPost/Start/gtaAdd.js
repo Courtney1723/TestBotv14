@@ -270,12 +270,43 @@ module.exports = {
 						
 					} //end add new channel
 
+			function expiredDesc() {
+				if (lang === "en") {
+					return `This interaction expired`;
+				}
+				if (lang === "es") {
+					return `Esta interacción expiró.`;
+				}
+				if (lang === "ru") {
+					return `Срок действия этого взаимодействия истек.`;
+				}
+				if (lang === "de") {
+					return `Diese Interaktion ist abgelaufen`;
+				}
+				if (lang === "pt") {
+					return `Esta interação expirou.`;
+				}
+				else {
+					return `This interaction expired`;
+				}						
+			}
+
+			const expiredButton = new ActionRowBuilder()
+				.addComponents(
+					new ButtonBuilder()
+						.setCustomId(`expired`)
+						.setLabel(`${expiredDesc()}`)
+						.setStyle(ButtonStyle.Secondary)
+						.setEmoji(':RSWeekly:1025248227248848940')
+						.setDisabled(true),			
+				);		
+
+				setTimeout(() => {
+					interaction.editReply({components: [expiredButton]})
+				}, (60000 * 2))					
+
 				}}); //end fs.readFileLANGDataBase
 		});//end fs:readFileRolesDataBase	
-			
-		setTimeout(() => {
-			interaction.editReply({components: []})
-		}, (60000 * 5))
 			
 		}// end if interaction.customId === 'gtaStartMenu'
 		

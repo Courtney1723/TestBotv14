@@ -6,16 +6,6 @@ const client = new Client({
 
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
 
-const expiredButton = new ActionRowBuilder()
-	.addComponents(
-		new ButtonBuilder()
-			.setCustomId(`expired`)
-			.setLabel('This interaction timed out.')
-			.setStyle(ButtonStyle.Secondary)
-			.setEmoji(':RSWeekly:1025248227248848940')
-			.setDisabled(true),			
-	);
-
 module.exports = {
 	name: 'interactionCreate',
 	async execute(interaction) {
@@ -120,7 +110,7 @@ module.exports = {
 						return `Click **the dropdown menu** to allow a role to configure auto posts.`;	
 					}
 					else if (lang === "es") {
-						return `Haz clic en el menú desplegable para permitir que un rol configure publicaciones automáticas.`;
+						return `Haga clic en el menú desplegable para permitir que un rol configure publicaciones automáticas.`;
 					}
 					else if (lang === "ru") {
 						return `щелкните раскрывающееся меню, чтобы разрешить роли настраивать автоматические записи.`;
@@ -321,7 +311,36 @@ module.exports = {
 				
 			} //end if configureRoleCount >24				
 
-		
+			function expiredDesc() {
+				if (lang === "en") {
+					return `This interaction expired`;
+				}
+				if (lang === "es") {
+					return `Esta interacción expiró.`;
+				}
+				if (lang === "ru") {
+					return `Срок действия этого взаимодействия истек.`;
+				}
+				if (lang === "de") {
+					return `Diese Interaktion ist abgelaufen`;
+				}
+				if (lang === "pt") {
+					return `Esta interação expirou.`;
+				}
+				else {
+					return `This interaction expired`;
+				}						
+			}
+
+			const expiredButton = new ActionRowBuilder()
+				.addComponents(
+					new ButtonBuilder()
+						.setCustomId(`expired`)
+						.setLabel(`${expiredDesc()}`)
+						.setStyle(ButtonStyle.Secondary)
+						.setEmoji(':RSWeekly:1025248227248848940')
+						.setDisabled(true),			
+				);			
 
 				setTimeout(() => {
 					interaction.editReply({components: [expiredButton]})

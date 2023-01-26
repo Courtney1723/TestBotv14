@@ -114,7 +114,7 @@ module.exports = {
 
 			function languagesDesc() {
 				if (lang === "en") {
-					return `Clic **\'español\'** para cambiar el idioma a español.
+					return `Haga clic en **\'español\'** para cambiar el idioma a español.
 		Щелчок **\'Pусский\'** изменить язык на русский.
 		Klicken **\'Deutsch\'** um die Sprache auf Deutsch zu ändern.
 		Clique **\'português\'** para alterar o idioma para português.`;
@@ -127,24 +127,24 @@ module.exports = {
 				}
 				else if (lang === "ru") {
 					return `Click **\'English\'** to change the language to English.
-				Clic **\'español\'** para cambiar el idioma a español.
+				Haga clic en **\'español\'** para cambiar el idioma a español.
 				Klicken **\'Deutsch\'** um die Sprache auf Deutsch zu ändern.
 				Clique **\'português\'** para alterar o idioma para português.`;
 				}
 				else if (lang === "de") {
 					return `Click **\'English\'** to change the language to English.
-				Clic **\'español\'** para cambiar el idioma a español.
+				Haga clic en **\'español\'** para cambiar el idioma a español.
 				Щелчок **\'Pусский\'** изменить язык на русский.
 				Clique **\'português\'** para alterar o idioma para português.`;
 				}
 				else if (lang === "pt") {
 					return `Click **\'English\'** to change the language to English.
-				Clic **\'español\'** para cambiar el idioma a español.
+				Haga clic en **\'español\'** para cambiar el idioma a español.
 				Щелчок **\'Pусский\'** изменить язык на русский.
 		Klicken **\'Deutsch\'** um die Sprache auf Deutsch zu ändern.`;
 				}
 				else {
-					return `Clic **\'español\'** para cambiar el idioma a español.
+					return `Haga clic en **\'español\'** para cambiar el idioma a español.
 		Щелчок **\'Pусский\'** изменить язык на русский.
 		Klicken **\'Deutsch\'** um die Sprache auf Deutsch zu ändern.
 		Clique **\'português\'** para alterar o idioma para português.`;

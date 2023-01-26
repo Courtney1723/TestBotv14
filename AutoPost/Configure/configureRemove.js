@@ -242,8 +242,30 @@ module.exports = {
 				}				
 			}
 
+	function confirmSettingsString() {
+		if (lang === "en") {
+				return `Confirm Settings`;
+		}
+		else if (lang === "es") {
+			return `Confirmar la configuración`;
+		}
+		else if (lang === "ru") {
+			return `Подтвердить настройки`;
+		}
+		else if (lang === "de") {
+			return `Einstellungen bestätigen`;
+		}
+		else if (lang === "pt") {
+			return `Confirmar configurações`;
+		}
+		else {
+			return `Confirm Settings`;
+		}					
+	}							
+
 
 //--END TRANSLATIONS--//		
+					
 	fs.readFile('./rolesDataBase.txt', 'utf8', async function (err, data) {
 	if (err) {console.log(`Error: ${err}`)} //If an error, console.log			
 
@@ -290,10 +312,18 @@ else if (menuRoleID === `undefinedrole`) { //if the Admin role is already requir
         .setTitle(`${success()}`)
         .setDescription(`${adminNotRequired()}\n${everyoneCheck}`)	
 
+		const confirmSettingsButton = new ActionRowBuilder()
+		.addComponents(
+				new ButtonBuilder()
+						.setCustomId(`initialback - ${interaction.user.id}`)
+						.setLabel(`${confirmSettingsString()}`)
+						.setStyle(ButtonStyle.Secondary),	
+		);		
+
     await interaction.deferUpdate();
 		
     if (interaction.user.id === menuUserID) { //begin removing admin permissions
-        await interaction.editReply({ embeds: [configureConfirmAddEmbed], components: [] })
+        await interaction.editReply({ embeds: [configureConfirmAddEmbed], components: [confirmSettingsButton] })
         .catch(err => console.log(`configureConfirmAddEmbed Error: ${err}`));
 
 				let guildIdDB = `${interaction.guild.id}`;
@@ -344,13 +374,21 @@ else if (menuRoleID === `undefinedrole`) { //if the Admin role is already requir
 						.setColor(`Green`) 
 						.setTitle(`${success()}`)
 						.setDescription(`${removeRoleDesc()}\n${everyoneCheck}`)	
+
+		const confirmSettingsButton = new ActionRowBuilder()
+		.addComponents(
+				new ButtonBuilder()
+						.setCustomId(`initialback - ${interaction.user.id}`)
+						.setLabel(`${confirmSettingsString()}`)
+						.setStyle(ButtonStyle.Secondary),	
+		);					
 		
 			    await interaction.deferUpdate();
 					if (interaction.user.id != menuUserID) {
 						interaction.followUp({ content: `These options aren't for you!`, ephemeral: true });
 					}					
 			    else if (interaction.user.id === menuUserID) {
-			        await interaction.editReply({ embeds: [configureAddEmbed], components: [] })
+			        await interaction.editReply({ embeds: [configureAddEmbed], components: [confirmSettingsButton] })
 			        .catch(err => console.log(`configureAddEmbed Error: ${err}`));
 		
 					let guildIdDB = `${interaction.guild.id}`;
@@ -393,14 +431,44 @@ else if (menuRoleID === `undefinedrole`) { //if the Admin role is already requir
 
 	}); //end fs.readFile for rolesDataBase.txt
 
+			function expiredDesc() {
+				if (lang === "en") {
+					return `This interaction expired`;
+				}
+				if (lang === "es") {
+					return `Esta interacción expiró.`;
+				}
+				if (lang === "ru") {
+					return `Срок действия этого взаимодействия истек.`;
+				}
+				if (lang === "de") {
+					return `Diese Interaktion ist abgelaufen`;
+				}
+				if (lang === "pt") {
+					return `Esta interação expirou.`;
+				}
+				else {
+					return `This interaction expired`;
+				}						
+			}
+
+			const expiredButton = new ActionRowBuilder()
+				.addComponents(
+					new ButtonBuilder()
+						.setCustomId(`expired`)
+						.setLabel(`${expiredDesc()}`)
+						.setStyle(ButtonStyle.Secondary)
+						.setEmoji(':RSWeekly:1025248227248848940')
+						.setDisabled(true),			
+				);		
+
+				setTimeout(() => {
+					interaction.editReply({components: [expiredButton]})
+				}, (60000 * 2))					
+
 				}}); //end fs.readFile for LANGDataBase.txt
 			
-
 		});//end fs:readFile	
-
-		setTimeout(() => {
-			interaction.editReply({components: []})
-		}, (60000 * 5))
 			
 		}// end if interaction.customId === 'configureStartMenu'
 		

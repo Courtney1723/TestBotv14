@@ -6,16 +6,6 @@ const client = new Client({
 
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
 
-const expiredButton = new ActionRowBuilder()
-	.addComponents(
-		new ButtonBuilder()
-			.setCustomId(`expired`)
-			.setLabel('Essa interação expirou.')
-			.setStyle(ButtonStyle.Secondary)
-			.setEmoji(':RSWeekly:1025248227248848940')
-			.setDisabled(true),			
-	);
-
 module.exports = {
 	name: 'interactionCreate',
 	async execute(interaction) {
@@ -24,10 +14,10 @@ module.exports = {
     if (err) {console.log(`Error: ${err}`)} //If an error, console.log
 
 			if (!interaction.isButton()) {return};
-			if (interaction.customId.includes(`portuguese - `)) {
+			if (interaction.customId.includes(`russian - `)) {
 						await interaction.deferUpdate();	
 
-			let buttonUserID01 = (interaction.customId).split("portuguese - ");
+			let buttonUserID01 = (interaction.customId).split("russian - ");
 			let buttonUserID = buttonUserID01[1];
 				//console.log(`buttonUserID: ${buttonUserID}`);
 				//console.log(`interaction.user.id === buttonUserID? ${interaction.user.id === buttonUserID}`)						
@@ -78,57 +68,53 @@ module.exports = {
 
 			//console.log(`lang: ${lang}`);				
 			
-			const portugueseStartEmbed = new EmbedBuilder()
+			const russianStartEmbed = new EmbedBuilder()
 			.setColor(`Green`) 
-			.setTitle(`Êxito`)
-			.setDescription(`O idioma deste servidor foi alterado para português.`)
-			.setFooter({ text: 'O idioma padrão é o inglês. Algumas informações podem estar faltando ou mal traduzidas.', iconURL: process.env.logo_link });
+			.setTitle(`Успех`)
+			.setDescription(`Язык этого сервера был изменен на русский.`)	
+			.setFooter({ text: 'Языком по умолчанию является английский. Некоторая информация может отсутствовать или плохо переведена.', iconURL: process.env.logo_link });
+
 				
 		if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) { 
-        await interaction.editReply({ embeds: [portugueseStartEmbed], components: [] })
-        .catch(err => console.log(`portugueseEmbed Error: ${err.stack}`));
+        await interaction.editReply({ embeds: [russianStartEmbed], components: [] })
+        .catch(err => console.log(`russianEmbed Error: ${err.stack}`));
 
 			if (lang === "") {
-				fs.appendFile(`./LANGDataBase.txt`,`guild:${interaction.guild.id} - lang:pt - \n`, err => {
+				fs.appendFile(`./LANGDataBase.txt`,`guild:${interaction.guild.id} - lang:ru - \n`, err => {
 					 if (err) {
 						 console.error(err);
 						 throw err;
 						}	
 					 else {
 						 if ((interaction.user.id === process.env.USER_ID_1) || (interaction.user.id === process.env.USER_ID_2)) {
-						console.log(`You added Portuguese as the server language.`);
+							 console.log(`You added Russian as the server language.`);
 						 }
 						 else {
-						console.log(`A user added Portuguese as the server language.`);
-						 } 
+							 console.log(`A user added Russian as the server language.`);
+						 }						 
 					 }	
-				}); // end fs:appendFile to add a channel for gta autop posts	
+				}); // end fs:appendFile to add server language to russian
 			}	
 			else {
-				fs.writeFile('./LANGDataBase.txt', `${data.replace(`guild:${interaction.guild.id} - lang:${lang} - `, `guild:${interaction.guild.id} - lang:pt - `)}`, function (err) {
+				fs.writeFile('./LANGDataBase.txt', `${data.replace(`guild:${interaction.guild.id} - lang:${lang} - `, `guild:${interaction.guild.id} - lang:ru - `)}`, function (err) {
 					if (err) throw err;
 						 if ((interaction.user.id === process.env.USER_ID_1) || (interaction.user.id === process.env.USER_ID_2)) {
-					console.log('You changed the server language to portuguese.');
+							 console.log('You changed the server language to russian.');
 						 }
 						 else {
-					console.log('A user changed the server language to portuguese.');
-						 } 					
-				}); //end fs:writeFile to remove a role from autoposts				
+							 console.log('A user changed the server language to russian.');
+						 } 
+				}); //end fs:writeFile to change server language to russian		
 			}
     } 
 		if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
-			interaction.followUp({ content: `Somente os administradores podem alterar o idioma.`, ephemeral: true });
+			interaction.followUp({ content: `Только администраторы могут изменять язык.`, ephemeral: true });
 		}
 		else if (!interaction.user.id === buttonUserID) {
-       interaction.followUp({ content: `Esses botões não são para você.`, ephemeral: true });
-    }
-				
-
-				setTimeout(() => {
-					interaction.editReply({components: [expiredButton]})
-				}, (60000 * 5))					
+       interaction.followUp({ content: `Эти кнопки не для вас.`, ephemeral: true });
+    }				
 		
-		} // end if portuguese button
+		} // end if russian button
 		
 		}); //end fs:readFile
 

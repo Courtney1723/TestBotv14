@@ -6,16 +6,6 @@ const client = new Client({
 
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
 
-const expiredButton = new ActionRowBuilder()
-	.addComponents(
-		new ButtonBuilder()
-			.setCustomId(`expired`)
-			.setLabel('This interaction timed out.')
-			.setStyle(ButtonStyle.Secondary)
-			.setEmoji(':RSWeekly:1025248227248848940')
-			.setDisabled(true),			
-	);
-
 module.exports = {
 	name: 'interactionCreate',
 	async execute(interaction) {
@@ -136,7 +126,7 @@ module.exports = {
 						return `Click **the dropdown menu** to remove a role from being able to configure auto posts.`;	
 					}
 					else if (lang === "es") {
-						return `Haz clic en el menú desplegable para eliminar un rol de poder configurar publicaciones automáticas.`;
+						return `Haga clic en el menú desplegable para eliminar un rol de poder configurar publicaciones automáticas.`;
 					}
 					else if (lang === "ru") {
 						return `Щелкните раскрывающееся меню, чтобы удалить роль из возможности настройки автоматических записей.`;
@@ -157,7 +147,7 @@ module.exports = {
 						return `Administrators can always configure auto posts.`;	
 					}
 					else if (lang === "es") {
-						return `Administrators can always configure auto posts.`;
+						return `Los administradores siempre pueden configurar publicaciones automáticas.`;
 					}
 					else if (lang === "ru") {
 						return `Los administradores siempre pueden configurar publicaciones automáticas.`;
@@ -237,7 +227,7 @@ module.exports = {
 				            value: `configureStopMenu - u:${interaction.user.id} - r:${AdminYesNoStop}`,
 				        }])
 				    )
-				interaction.guild.roles.cache.first(24).forEach(role => {
+				interaction.guild.roles.cache.forEach(role => {
 					//console.log(`role names: ${role.name}`)				
 					if ((role.name != "@everyone") && (data.includes(`${role.id}`)) && (role.rawPosition <= userHighestRoleRawPosition) ) {
 							//console.log(`role.rawPosition: ${role.rawPosition}`);
@@ -264,6 +254,37 @@ module.exports = {
        interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });
     }
 
+
+			function expiredDesc() {
+				if (lang === "en") {
+					return `This interaction expired`;
+				}
+				if (lang === "es") {
+					return `Esta interacción expiró.`;
+				}
+				if (lang === "ru") {
+					return `Срок действия этого взаимодействия истек.`;
+				}
+				if (lang === "de") {
+					return `Diese Interaktion ist abgelaufen`;
+				}
+				if (lang === "pt") {
+					return `Esta interação expirou.`;
+				}
+				else {
+					return `This interaction expired`;
+				}						
+			}
+
+			const expiredButton = new ActionRowBuilder()
+				.addComponents(
+					new ButtonBuilder()
+						.setCustomId(`expired`)
+						.setLabel(`${expiredDesc()}`)
+						.setStyle(ButtonStyle.Secondary)
+						.setEmoji(':RSWeekly:1025248227248848940')
+						.setDisabled(true),			
+				);				
 
 				setTimeout(() => {
 					interaction.editReply({components: [expiredButton]})

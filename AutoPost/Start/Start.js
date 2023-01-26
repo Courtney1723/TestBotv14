@@ -127,9 +127,9 @@ module.exports = {
 Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for **the first Tuesday of every month at 2:00 PM EST**.`;
 			}
 			if (lang === "es") {
-				return `Clic **\'GTA\'** para comenzar a publicar publicaciones automáticas en línea de Grand Theft Auto V para **todos los jueves a las 2:00 PM EST**.
+				return `Haga clic en **\'GTA\'** para comenzar a publicar publicaciones automáticas en línea de Grand Theft Auto V para **todos los jueves a las 2:00 PM EST**.
 
-Clic **\'RDO\'** para comenzar a publicar publicaciones automáticas de Red Dead Redemption II para **el primer martes de cada mes a las 2:00 PM EST**.`;
+Hga clic en **\'RDO\'** para comenzar a publicar publicaciones automáticas de Red Dead Redemption II para **el primer martes de cada mes a las 2:00 PM EST**.`;
 			}
 			if (lang === "ru") {
 				return `Щелчок **\'GTA\'** для запуска Grand Theft Auto V Online Auto Posts для **каждый четверг в 14:00 EST**.
@@ -277,27 +277,6 @@ Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for **the first Tu
 			else {
 				return `There was an error executing this button.`;
 			}			
-		}	
-
-		function expiredLabel() {
-			if (lang === "en") {
-				return `This interaction expired.`;
-			}
-			if (lang === "es") {
-				return `Esta interacción expiró.`;
-			}
-			if (lang === "ru") {
-				return `Срок действия этого взаимодействия истек.`;
-			}
-			if (lang === "de") {
-				return `Diese Interaktion ist abgelaufen.`;
-			}
-			if (lang === "pt") {
-				return `Esta interação expirou.`;
-			}
-			else {
-				return `This interaction expired.`;
-			}			
 		}			
 
 //--END TRANSLATIONS--//
@@ -321,19 +300,7 @@ Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for **the first Tu
 			        .setCustomId(`startback - ${interaction.user.id}`)
 			        .setLabel(`${goBack()}`)
 			        .setStyle(ButtonStyle.Secondary),	
-			);		
-
-			const expiredButton = new ActionRowBuilder()
-				.addComponents(
-					new ButtonBuilder()
-						.setCustomId(`expired`)
-						.setLabel(`${expiredLabel()}`)
-						.setStyle(ButtonStyle.Secondary)
-						.setEmoji(':RSWeekly:1025248227248848940')
-						.setDisabled(true),			
-			);					
-
-			
+			);						
 
 //begin checking for permissions
 		await interaction.deferUpdate();
@@ -386,7 +353,38 @@ Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for **the first Tu
 			
 		else {
 			await interaction.followUp({ content: `${errorString()}`, ephemeral: true });
-		} //end checking for permissions		
+		} //end checking for permissions	
+
+			function expiredDesc() {
+				if (lang === "en") {
+					return `This interaction expired`;
+				}
+				if (lang === "es") {
+					return `Esta interacción expiró.`;
+				}
+				if (lang === "ru") {
+					return `Срок действия этого взаимодействия истек.`;
+				}
+				if (lang === "de") {
+					return `Diese Interaktion ist abgelaufen`;
+				}
+				if (lang === "pt") {
+					return `Esta interação expirou.`;
+				}
+				else {
+					return `This interaction expired`;
+				}						
+			}
+
+			const expiredButton = new ActionRowBuilder()
+				.addComponents(
+					new ButtonBuilder()
+						.setCustomId(`expired`)
+						.setLabel(`${expiredDesc()}`)
+						.setStyle(ButtonStyle.Secondary)
+						.setEmoji(':RSWeekly:1025248227248848940')
+						.setDisabled(true),			
+				);						
 
 				setTimeout(() => {
 					interaction.editReply({components: [expiredButton]})

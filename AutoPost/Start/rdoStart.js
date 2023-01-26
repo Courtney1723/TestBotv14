@@ -6,16 +6,6 @@ const client = new Client({
 
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
 
-const expiredButton = new ActionRowBuilder()
-	.addComponents(
-		new ButtonBuilder()
-			.setCustomId(`expired`)
-			.setLabel('This interaction timed out.')
-			.setStyle(ButtonStyle.Secondary)
-			.setEmoji(':RSWeekly:1025248227248848940')
-			.setDisabled(true),			
-	);
-
 module.exports = {
 	name: 'interactionCreate',
 	async execute(interaction) {
@@ -43,7 +33,7 @@ module.exports = {
 			const rdoStartEmbedEs = new EmbedBuilder()
 			.setColor(`Green`) 
 			.setTitle(`Comience a publicar automáticamente bonos y descuentos de RDRO`)
-			.setDescription(`Clic **El menú desplegable** para confirmar el canal al que desea enviar publicaciones automáticas de RDO \n**el primer martes de cada mes a las 2:00 PM EST**.`)	
+			.setDescription(`Haga clic en **El menú desplegable** para confirmar el canal al que desea enviar publicaciones automáticas de RDO \n**el primer martes de cada mes a las 2:00 PM EST**.`)	
 			.setFooter({ text: 'Las publicaciones automáticas solo se pueden enviar a canales de texto en los que el bot tiene permiso para \'Enviar mensajes\'.', iconURL: process.env.logo_link });	
 
 			const rdoStartEmbedRu = new EmbedBuilder()
@@ -283,6 +273,37 @@ module.exports = {
 		  			
 				
 			} //end if rdoChannelCount >24
+
+			function expiredDesc() {
+				if (lang === "en") {
+					return `This interaction expired`;
+				}
+				if (lang === "es") {
+					return `Esta interacción expiró.`;
+				}
+				if (lang === "ru") {
+					return `Срок действия этого взаимодействия истек.`;
+				}
+				if (lang === "de") {
+					return `Diese Interaktion ist abgelaufen`;
+				}
+				if (lang === "pt") {
+					return `Esta interação expirou.`;
+				}
+				else {
+					return `This interaction expired`;
+				}						
+			}
+
+			const expiredButton = new ActionRowBuilder()
+				.addComponents(
+					new ButtonBuilder()
+						.setCustomId(`expired`)
+						.setLabel(`${expiredDesc()}`)
+						.setStyle(ButtonStyle.Secondary)
+						.setEmoji(':RSWeekly:1025248227248848940')
+						.setDisabled(true),			
+				);				
 
 				setTimeout(() => {
 					interaction.editReply({components: [expiredButton]})

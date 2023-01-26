@@ -137,11 +137,29 @@ module.exports = {
 		let urlHash = urlHash01[0];
 			//console.log(`urlHash: ${urlHash}`);
 
+		let urlLink02 = content.split("linkToUrl\":");
+		let urlLink01 = urlLink02[1].split("\"");
+		//let urlLink = urlLink01[1];
+			//console.log(`urlLink: ${urlLink01[1]}`);
+
+			function urlLink() {
+				if (urlLink01[1].includes(`\?`)) {
+					let urlLinkFix = urlLink01[1].split(`\?`);
+					let urlLink = urlLinkFix[0];
+					return urlLink;
+				}
+				else {
+					let urlLink = urlLink01[1];
+					return urlLink;
+				}					
+			}
+			//console.log(`urlLink: ${urlLink()}`);		
+
 			let langBase = `/?lang=`;
 			let langURL = `${langBase}${lang}`;
-
-		let url = `${baseURL}${urlHash}${langURL}`;
-			//console.log(`url: ${url}`);
+			
+			let url = `${baseURL}/${urlLink()}${langURL}`;
+			//console.log(`url: ${url}`);	
 
 		const rdoStatus = await page.open(url);
 		if (rdoStatus === `success`) {
@@ -409,12 +427,12 @@ if (RDO_Bonus != undefined) {
 
 			//console.log(`rdoFinalString: ${rdoFinalString}`);
     function rdoPost() {
-        return rdoFinalString.slice(0, 3663); //FIXME: adjust this for the best break - up to 4000
+        return rdoFinalString.slice(0, 3909); //FIXME: adjust this for the best break - up to 4000
     }
     //console.log(`1: ${rdoFinalString.length}\n`) 
     function rdoPost2() {
       if (rdoFinalString.length > 4000) {
-        let post02 = rdoFinalString.substr(3663, 1800); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
+        let post02 = rdoFinalString.substr(3909, 1790); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
         return post02;
       } else {
         return "";

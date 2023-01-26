@@ -7,7 +7,7 @@ module.exports = {
 	name: 'ready',
 	async execute(client) {
 
-		//cron.schedule('* * * * *', () => { //(second),minute,hour,date,month,weekday 
+		//cron.schedule('*/20 * * * * *', () => { //(second),minute,hour,date,month,weekday 
 		cron.schedule('50 11 * * 4', () => { //(second),minute,hour,date,month,weekday '0 12 * * 4' = 12:00 PM on Thursday
 		  console.log('sending GTA Auto Posts...');
 
@@ -314,7 +314,7 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 						let gtaParas = GTA_Bonus.split("<p>");
 							//gtaFinalString01 += `**Only on PlayStation 5 and Xbox Series X|S:**\n`;
 							if (!GTA_Title.toLowerCase().includes("motorsport showroom")) {
-								gtaFinalString01 += `• ${GTA_Title}*\n`;
+								gtaFinalString01 += `• ${GTA_Title}\n`;
 							}
 							else {
 								gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
@@ -327,7 +327,7 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 						gtaFinalString01 += `• ${introParas[1].charAt(0).toUpperCase()}${introParas[1].substr(1)}\n`; //not sure why the first word is lowercase?
 						if (introParas[2] != undefined) {
 							gtaFinalString01 += `• ${introParas[2].charAt(0).toUpperCase()}${introParas[2].substr(1)}\n`; //not sure why the first word is lowercase?
-						}						
+						}
 					}
 					else if (GTA_Bonus != null) { //if the bonus is not an intro paraghraph
 						let gtaParas = GTA_Bonus.split("<p>");
@@ -342,9 +342,9 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 						else if (GTA_Title.toLowerCase().includes("hsw time trial")) { //fail safe for if the NextGenIndex does not work properly
 							gtaFinalString01 += `• ${GTA_Title}\n`;
 						}
-						else if (GTA_Title.toLowerCase().includes("candy cane")) {
+						else if (GTA_Bonus.toLowerCase().includes("luxury autos")) {
 							gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
-						}							
+						}
 						else if (GTA_Title.toLowerCase().includes("new community series")) {
 							gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
 						}
@@ -362,7 +362,7 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 						}					
 						else if (GTA_Title.toLowerCase().includes("new year")) {
 							gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
-						}	
+						}								
 						else if (GTA_Title.toLowerCase().includes("2.5x")) {
 							gtaFinalString01 += `**${GTA_Title}** \n`;
 						}
@@ -370,10 +370,10 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 							gtaFinalString01 += `**${GTA_Title}** \n`;
 						}
 						else if (GTA_Title.toLowerCase().includes("gta+")) {
-							gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n${gtaParas[2]})\n`; //FIXME - remove parenthesis
+							gtaFinalString01 += `**${GTA_Title}\n• ${gtaParas[1]}\n${gtaParas[2]})\n`;
 						}
 						else if (GTA_Title.toLowerCase().includes("discount")) {
-							gtaFinalString01 += `**${GTA_Title}**\n• ${GTA_Bonus}:\n`;
+							gtaFinalString01 += `**${GTA_Title}**\n• ${GTA_Bonus}:\n`; 
 						}
 						else if (GTA_Bonus.includes("• ")) { //if the bonus includes lists
 							if (gtaParas[0] != null) {
@@ -391,9 +391,6 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 								gtaFinalString01 += `**${GTA_Title}**\n\n`;
 							}
 						}
-						else if (GTA_Bonus.toLowerCase().includes("luxury autos")) {
-							gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
-						}
 						else if (i === GTABonuses01.length - 2) { //if the bonus is the last bonus
 							gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n• ${gtaParas[2]}\n• ${gtaParas[3]}`;
 						}
@@ -404,33 +401,35 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 							gtaFinalString01 += `\n**${GTA_Title}**\n\n`;
 						}
 					}
-					// else { //if the bonus only has 1 paragraph only post the title
-					// 	gtaFinalString01 += `\n**${GTA_Title}**\n\n`;
-					// }
+					else { //if the bonus only has 1 paragraph only post the title
+					gtaFinalString01 += `\n**${GTA_Title}**\n\n`;
+					}
 
 				}
-//-----------END for loop----------//		
-	//console.log(`gtaFinalString01: ${gtaFinalString01}`); //gtaFinalString before HTML formatting
-		let gtaFinalString = gtaFinalString01.replace(/<p>/g, "")
-											.replace(/<\/p>/g, "")
-										  .replace(/<\/b>/g, "")
-										  .replace(/<b>/g, "")
-											.replace(/\n\n• /g, "\n• ") //removes spaces before a list item
-											.replace(/.\n\*\*/g, "\n\n**")
-											.replace(/\n\n\n/g, "\n\n")
-											.replace(/\n\n\n/g, "\n\n")
-											.replace(/• undefined/g, "• ")
-											.replace(/\n• undefine/g, "")
-											.replace(/• \n\n/g, "")
+
+				//-----------END for loop----------//		
+				//console.log(`gtaFinalString01: ${gtaFinalString01}`); //gtaFinalString before HTML formatting
+				let gtaFinalString = gtaFinalString01.replace(/<p>/g, "")
+					.replace(/<\/p>/g, "")
+					.replace(/<\/b>/g, "")
+					.replace(/<b>/g, "")
+					.replace(/\n\n• /g, "\n• ") //removes spaces before a list item
+					.replace(/.\n\*\*/g, "\n\n**")
+					.replace(/\n\n\n/g, "\n\n")
+					.replace(/\n\n\n/g, "\n\n")
+					.replace(/• undefined/g, "• ")
+					.replace(/\n• undefine/g, "")
+					.replace(/• \n\n/g, "")
+					.replace(/\*\*Railgun/g, "Railgun")
 
 			//console.log(`gtaFinalString: ${gtaFinalString}`);
     function gtaPost() {
-        return gtaFinalString.slice(0, 3921); //FIXME: adjust this for the best break - up to 4000
+        return gtaFinalString.slice(0, 3932); //FIXME: adjust this for the best break - up to 4000
     }
     //console.log(`1: ${gtaFinalString.length}\n`) 
     function gtaPost2() {
       if (gtaFinalString.length > 4000) {
-        let post02 = gtaFinalString.substr(3921, 1800); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
+        let post02 = gtaFinalString.substr(3932, 1747); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
         return post02;
       } else {
         return "";
@@ -473,15 +472,6 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 		 // console.log(`gtaEmbed length: ${gtaEmbed.length}`); //no more than 4096 (line 199)
 		 // console.log(`gtaEmbed2 length: ${gtaEmbed2.length}`); //no more than 6000 - gtaEmbed.length (line 204)
 
-				travelEmbed = new EmbedBuilder()
-					.setColor('0xFF8B2B') //Orange
-					.setDescription(`Please note: The developer is travelling and some information may be missing or incorrectly formatted.`)
-					.setFooter({ text: `Thank you for supporting the Rockstar Weekly bot.`, iconURL: process.env.logo_link })				
-
-				//await interaction.followUp({ embeds: [travelEmbed], ephemeral: true }).catch(err => console.log(`travelEmbed Error: ${err.stack}`));			//NOT APPLICABLE FOR AUTO POSTS	
-
-
-
 //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
 //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//		
 //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
@@ -494,10 +484,10 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 			if (channelIDArray[c].includes("undefined")) {}
 			else {
 				if (gtaFinalString.length <= 4000) {
-					client.channels.fetch(channelIDArray[c]).then(channel => channel.send(({embeds: [gtaImageEmbed, gtaEmbed, travelEmbed]}))).catch(err => console.log(`Min Error: ${err}`));
+					client.channels.fetch(channelIDArray[c]).then(channel => channel.send(({embeds: [gtaImageEmbed, gtaEmbed]}))).catch(err => console.log(`Min Error: ${err}`));
 				} 
 				else {
-					client.channels.fetch(channelIDArray[c]).then(channel => channel.send({embeds: [gtaImageEmbed, gtaEmbed, gtaEmbed2, travelEmbed]})).catch(err => console.log(`Max Error: ${err}`));
+					client.channels.fetch(channelIDArray[c]).then(channel => channel.send({embeds: [gtaImageEmbed, gtaEmbed, gtaEmbed2]})).catch(err => console.log(`Max Error: ${err}`));
 				}
 			} //end if not undefined channel
 		} //end c loop
