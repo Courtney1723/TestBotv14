@@ -2,16 +2,15 @@ var cron = require('node-cron'); //https://github.com/node-cron/node-cron
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const phantom = require('phantom'); //https://github.com/amir20/phantomjs-node
-		let errorText = `There was an error while executing this command!\nThe error has been sent to the developer and it will be fixed as soon as possible. \nIf the error persists you can try re-inviting the Rockstar Weekly bot by [clicking here](<${process.env.invite_link}>). \nReport the error by joining the Rockstar Weekly bot support server: [click here](<${process.env.support_link}>).`;
 
 module.exports = {
 	name: 'ready',
 	async execute(client) {
 
-		//cron.schedule('*/20 * * * * *', () => { //(second),minute,hour,date,month,weekday 
-		cron.schedule('35 11 * * 4', () => { //(second),minute,hour,date,month,weekday '0 12 * * 4' = 12:00 PM on Thursday
-		  console.log('sending RDO Auto Posts...');
-			
+		//cron.schedule('*/20 * * * * *', () => { //every 20 seconds - testbench
+		cron.schedule('50 11 1-7 * 2', () => { //(second),minute,hour,date,month,weekday '0 12 1-7 * 2' = 12:00 PM on 1st Tuesday
+		  //console.log('running a task');
+
 			fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
 			  if (err) {console.log(`Error: ${err}`)} 
 				else {
@@ -43,9 +42,8 @@ module.exports = {
 						guildIDLangArray.push(guildID01);
 					}
 
-					//console.log(`guildIDLangArray: ${guildIDLangArray}`);	
+					//console.log(`guildIDLangArray: ${guildIDLangArray}`);				
 
-					
 //----------Begin Formatting GuildIds, ChannelIds, and rdo_gtaIDs-----------//	
 			fs.readFile('./RDODataBase.txt', 'utf8', async function (err, data) {
 			  if (err) {console.log(`Error: ${err}`)} 
@@ -66,7 +64,7 @@ module.exports = {
 					let guildIDs = [];
 					let channelIDs = [];
 					let rdo_gtaIDs = [];
-					for (i = 1; i <= rdo_gtaIDs01.length - 1; i++) { //iterated through the subbbed channels 
+					for (i = 1; i <= rdo_gtaIDs01.length - 1; i++) {
 						let guildIDs02 = guildIDs01[i].split("-");
 						let guildIDs03 = guildIDs02[0];
 							//console.log(`guildIDs at ${i}: ${guildIDs03}`);
@@ -85,12 +83,13 @@ module.exports = {
 
 							rdo_gtaIDs += `${rdo_gtaIDs03} - `;
 
-						//client.channels.fetch(channelIDs03).then(channel => channel.send('<content>')) //example DO NOT UNCOMMENT				
+
+						//client.channels.fetch(channelIDs03).then(channel => channel.send('<content>')) //example DO NOT UNCOMMENT
 
 					}
 
 					//console.log(`guildIDs: ${guildIDs}`);
-					console.log(`channelIDs: ${channelIDs}`); //do not comment out 
+					console.log(`channelIDs: ${channelIDs}`); //do not comment out - no idea why 
 					//console.log(`rdo_gtaIDs: ${rdo_gtaIDs}`);
 
 			let guildIDsArray = guildIDs.split('  - ');
@@ -119,12 +118,13 @@ module.exports = {
 					}
 				}
 				console.log(`lang: ${lang}`);
-					
-//----------END Formatting GuildIds, ChannelIds, rdo_gtaIDs, and language-----------//	
+				
+//----------END Formatting GuildIds, ChannelIds, and rdo_gtaIDs-----------//	
 
 					
 
 //Begin RDO Formatting	
+
 				let rdoURL = process.env.SOCIAL_URL_RDO2;
 
 		//await interaction.editReply(`Console Logged 👍`).catch(console.error);
@@ -146,8 +146,10 @@ module.exports = {
 		let urlHash = urlHash01[0];
 			//console.log(`urlHash: ${urlHash}`);
 
-			let urlLink02 = content.split("linkToUrl\":");
-			let urlLink01 = urlLink02[1].split("\"");					
+		let urlLink02 = content.split("linkToUrl\":");
+		let urlLink01 = urlLink02[1].split("\"");
+		//let urlLink = urlLink01[1];
+			//console.log(`urlLink: ${urlLink01[1]}`);
 
 			function urlLink() {
 				if (urlLink01[1].includes(`\?`)) {
@@ -160,25 +162,16 @@ module.exports = {
 					return urlLink;
 				}					
 			}
-			//console.log(`urlLink: ${urlLink()}`);					
+			//console.log(`urlLink: ${urlLink()}`);		
 
 			let langBase = `/?lang=`;
 			let langURL = `${langBase}${lang}`;
-
-			//let url = `${baseURL}${urlHash}/${urlSlug}${langURL}`;
+			
 			let url = `${baseURL}/${urlLink()}${langURL}`;
-				//console.log(`url: ${url}`);
+			//console.log(`url: ${url}`);
 
 		const rdoStatus = await page.open(url);
-		if (rdoStatus === `success`) {
-		
-		const instance = await phantom.create();
-		const page = await instance.createPage();
-
-		await page.property('viewportSize', { width: 1024, height: 600 });
-		const status = await page.open(url);
-			//console.log(`Page opened with status [${status}].`);
-	if (status === `success`) { //checks if Rockstar Social Club website is down
+		if (rdoStatus === `success`) {				
 		const content = await page.property('content'); // Gets the latest rdo updates
 			//console.log(content); 
 		let rdoString001 = content.toString(); //converts HTML to string (necessary? not sure.);
@@ -246,7 +239,7 @@ module.exports = {
 		}
 		//console.log(`rdoLinkFormatted: ${rdoLinkFormatted}`);
 //--------------------END formatting for links--------------------//
-
+						
 //--------------------BEGIN checking for words that are bold at the beginning of a paragraph-------------------//
 
 	function notATitleIndex() {
@@ -288,7 +281,7 @@ module.exports = {
 			return rdoLinkFormatted;
 		}
 	}
-	//console.log(`rdoBoldFormatted(): ${rdoBoldFormatted()}`);
+			//console.log(`rdoBoldFormatted(): ${rdoBoldFormatted()}`);
 
 //--------------------END checking for words that are bold at the beginning of a paragraph-------------------//
 
@@ -315,8 +308,7 @@ for (i = 0; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 					//console.log(`Titles2 size at ${i}: ${titlesLength}\n`);
 				let rdoTitleString = ""; //initial empty title, will be populated in the j loop
 				
-			for (j = 0; j <= titlesLength; ++j) {
-				while (j <= (titlesLength)) { 
+			for (j = 0; j <= titlesLength; j++) { 
 					//console.log(`I: ${i}, J: ${j}\n`); //while loop check, expected: i = title number, j = index of title words
 					if ( (Titles2[j] != null) && (Titles2[j] != "") ) { //ignores blank space elements
 						//console.log(`Titles2 at J: ${j}: ${Titles2[j]}\n`); //checks for blank elements
@@ -338,14 +330,13 @@ for (i = 0; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 						rdoTitleString += `${Titles2[j].charAt(0)}${Titles2[j].toLowerCase().slice(1)} `; 
 						}
 					}
-					++j;
-				}
 			}
 			//return Titles2[0]; //Testbench if rdoTitleString has an error, this returns the first word of every title
 			return `${rdoTitleString}`;
 			}
 		let RDO_Title = titleCapitalization(RDOBonuses);
-			//console.log(`RDO_Title at ${i}: ${RDO_Title}`);		
+		//console.log(`RDO_Title at ${i}: ${RDO_Title}`);		
+	
 //--------------------END capitalization Function-----------------//		
 
 		//-----BEGIN get the index of "Only on PlayStation..." title-----//
@@ -378,15 +369,16 @@ for (i = 0; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 			}
 				//console.log(`nextGenIndex2 at ${i}: ${nextGenIndex2}`);								
 		//-----END get the index of "Only on PlayStation..." title-----//			
+	
 	let RDO_Bonus = RDOBonuses[1];
 		//console.log(`RDO_Bonus at ${i}: ${RDO_Bonus}`);
-	
+
 //-----BEGIN populating rdoFinalString01 -----//
 	if (i === 0) {
 		let rdoParas = RDO_Title.split("<p>");
-		for (c = 1; c <= rdoParas.length - 1; c++) {
+		for (d = 1; d <= rdoParas.length - 1; d++) {
 			
-			rdoFinalString01 += `• ${rdoParas[c].charAt(0).toUpperCase()}${rdoParas[c].substring(1)}\n`;
+			rdoFinalString01 += `• ${rdoParas[d].charAt(0).toUpperCase()}${rdoParas[d].substring(1)}\n`;
 		}
 	}
 if (RDO_Bonus != undefined) {
@@ -409,8 +401,8 @@ if (RDO_Bonus != undefined) {
 			//console.log(`rdoParas length at ${i}: ${rdoParas.length}`);
 			let rdoParaBonuses = "";
 		
-		for (c = 1; c <= rdoParas.length - 1; c++) {
-			rdoParaBonuses += `• ${rdoParas[c]}\n`;
+		for (e = 1; e <= rdoParas.length - 1; e++) {
+			rdoParaBonuses += `• ${rdoParas[e]}\n`;
 		}			
 		
 		rdoFinalString01 += `**${RDO_Title}**\n${rdoParaBonuses}\n`;
@@ -420,8 +412,8 @@ if (RDO_Bonus != undefined) {
 			//console.log(`rdoParas at ${i}: ${rdoParas}`);
 			//console.log(`rdoParas length at ${i}: ${rdoParas.length}`);
 			let rdoParaBonuses = "";		
-		for (c = 1; c <= rdoParas.length - 1; c++) {
-			rdoParaBonuses += `• ${rdoParas[c]}\n`;
+		for (f = 1; f <= rdoParas.length - 1; f++) {
+			rdoParaBonuses += `• ${rdoParas[f]}\n`;
 		}			
 		rdoFinalString01 += `**${RDO_Title}**\n${rdoParaBonuses}\n`;
 	}
@@ -439,15 +431,16 @@ if (RDO_Bonus != undefined) {
 											.replace(/\*\*\n\*\*/g, "**\n\n**")
 											.replace(/• undefined/g, "• ")
 											.replace(/\)• /g, ")\n• ") //adds a newline between link lists
+											.replace(/• Jan 3 – Jan 9:/g, "• Click the link below for more details\n");
 
 			//console.log(`rdoFinalString: ${rdoFinalString}`);
     function rdoPost() {
-        return rdoFinalString.slice(0, 3909); //FIXME: adjust this for the best break - up to 4000
+        return rdoFinalString.slice(0, 3663); //FIXME: adjust this for the best break - up to 4000
     }
     //console.log(`1: ${rdoFinalString.length}\n`) 
     function rdoPost2() {
       if (rdoFinalString.length > 4000) {
-        let post02 = rdoFinalString.substr(3909, 1790); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
+        let post02 = rdoFinalString.substr(3663, 1800); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
         return post02;
       } else {
         return "";
@@ -462,87 +455,30 @@ if (RDO_Bonus != undefined) {
     }		
     function rdoFooterMax() {
       if (rdoFinalString.length > 4000) {
-        if (lang === "en") {
-					return `\n** [Click here](${url}) for more details**`;
-				}
-				else if (lang === "es" ) {
-					return `\n** [Haga clic aquí](${url}) para más detalles**`;
-				}
-				else if (lang === "ru" ) {
-					return `\n** [нажмите здесь](${url}) для получения более подробной информации**`;
-				}				
-				else if (lang === "de" ) {
-					return `\n** [Klicken Sie hier](${url}) für weitere Details**`;
-				}		
-				else if (lang === "pt" ) {
-					return `\n** [clique aqui](${url}) para mais detalhes**`;
-				}								
-				else {
-					return `\n** [Click here](${url}) for more details**`;
-				}
+        return `** [click here](${url}) for more details**`;
       } else {
         return "";
       }
     }
     function rdoFooterMin() { 
       if (rdoFinalString.length <= 4000) {
-				if (lang === "en") {
-					return `\n** [Click here](${url}) for more details**`;
-				}
-				else if (lang === "es" ) {
-					return `\n** [Haga clic aquí](${url}) para más detalles**`;
-				}
-				else if (lang === "ru" ) {
-					return `\n** [нажмите здесь](${url}) для получения более подробной информации**`;
-				}				
-				else if (lang === "de" ) {
-					return `\n** [Klicken Sie hier](${url}) für weitere Details**`;
-				}		
-				else if (lang === "pt" ) {
-					return `\n** [Clique aqui](${url}) para mais detalhes**`;
-				}								
-				else {
-					return `\n** [Click here](${url}) for more details**`;
-				}
+        return `** [click here](${url}) for more details**`;
       } else {
         return "";
       }
     } 		
-
-		function rdoTitleFunction() {
-					
-			if (lang === "en") {
-				return `Red Dead Online Bonuses:`;
-			}
-			else if (lang === "es") {
-				return `Bonificaciones de Red Dead Online:`;
-			}
-			else if (lang === "ru") {
-				return `Бонусы Red Dead Online:`;
-			}
-			else if (lang === "de") {
-				return `Boni in Red Dead Online:`;
-			}
-			else if (lang === "pt") {
-				return `Bônus no Red Dead Online:`;
-			}
-			else {
-    		return `Red Dead Online Bonuses & Discounts:`;
-			}		
-		}
-		//console.log(`rdoTitleFunction: ${rdoTitleFunction()}`);
 		
 
 		let rdoEmbed = new EmbedBuilder()
 			.setColor('0xC10000') //Red
-			.setTitle(`${rdoTitleFunction()}`) //Red Dead Redemption II Online Bonuses & Discounts:
+			.setTitle('Red Dead Redemption II Online Bonuses & Discounts:')
 			.setDescription(`${rdoDate[0]}\n\n${rdoPost()} \n${rdoFooterMin()} ${elipseFunction()}`)
 		let rdoEmbed2 = new EmbedBuilder()
 			.setColor('0xC10000') //Red
 			.setDescription(`${elipseFunction()} \n${rdoPost2()} ${rdoFooterMax()}`)	
 		let rdoImageEmbed = new EmbedBuilder()
 			.setColor('0xC10000') //Red
-			.setImage(`${rdoImage[0]}`);	
+			.setImage(`${rdoImage[0]}`);
 
 		 // console.log(`rdoEmbed length: ${rdoEmbed.length}`); //no more than 4096 (line 199)
 		 // console.log(`rdoEmbed2 length: ${rdoEmbed2.length}`); //no more than 6000 - rdoEmbed.length (line 204)
@@ -553,52 +489,44 @@ if (RDO_Bonus != undefined) {
 //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//		
 //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
 
-		console.log(`channelIDArray[c]: ${channelIDArray[c]}`);
-		if (channelIDArray[c].includes("undefined")) {return;}
+			//console.log(`channelIDArray length: ${channelIDArray.length}`);
+			//console.log(`channelIDArray: ${channelIDArray}`);
+			//console.log(`channelIDArray at c${c}: ${channelIDArray[c]}`);
+			if (channelIDArray[c].startsWith("undefined")) {}
 			else {
-				if (gtaFinalString.length <= 4000) {
-					client.channels.fetch(channelIDArray[c]).then(channel => channel.send(({embeds: [rdoImageEmbed, rdoEmbed]}))).catch(err => console.log(`Min Error: ${err.stack}`));
+				if (rdoFinalString.length <= 4000) {
+					client.channels.fetch(channelIDArray[c]).then(channel => channel.send(({embeds: [rdoImageEmbed, rdoEmbed]}))).catch(err => console.log(`Min Error: ${err}`));
 				} 
 				else {
-					client.channels.fetch(channelIDArray[c]).then(channel => channel.send({embeds: [rdoImageEmbed, rdoEmbed, rdoEmbed2]})).catch(err => console.log(`Max Error: ${err.stack}`));
+					client.channels.fetch(channelIDArray[c]).then(channel => channel.send({embeds: [rdoImageEmbed, rdoEmbed, rdoEmbed2]})).catch(err => console.log(`Max Error: ${err}`));
 				}
-			} //end if not undefined channel
-		} 
-	else {
-			let RStarDownEmbed = new EmbedBuilder()
-				.setColor('0xFF0000') //RED
-				.setDescription(`The Rockstar Social Club website is down. \nPlease try again later.`)
-			client.channels.fetch(process.env.logChannel2).then(channel => channel.send({embeds: [RStarDownEmbed], ephemeral: true}));
-			console.log(`The Rockstar Social Club website is down.`);	
-	}			
-	} 
-	else {
-			let RStarDownEmbed = new EmbedBuilder()
-				.setColor('0xFF0000') //RED
-				.setDescription(`The Rockstar Social Club website is down. \nPlease try again later.`)
-			client.channels.fetch(process.env.logChannel2).then(channel => channel.send({embeds: [RStarDownEmbed], ephemeral: true}));
-			console.log(`The Rockstar Social Club website is down.`);	
-	}	
-	
-				
+			}
+
 	}
 	else {
-			let RStarDownEmbed = new EmbedBuilder()
-				.setColor('0xFF0000') //RED
-				.setDescription(`The Rockstar Social Club website is down. \nPlease try again later.`)
-			client.channels.fetch(process.env.logChannel2).then(channel => channel.send({embeds: [RStarDownEmbed], ephemeral: true}));
-			console.log(`The Rockstar Social Club website is down.`);	
-	}				
-			} //end c loop
-				
-				}}); //end fs.readFile for GTADataBase
-				}}); //end fs.readFile for LANGDataBase
+		let RStarDownEmbed = new EmbedBuilder()
+			.setColor('0xFF0000') //RED
+			.setDescription(`The Rockstar Social Club website is down. \nPlease try again later. \nSorry for the inconvenience.`)
+		client.channels.fetch(process.env.logChannel).then(channel => channel.send({embeds: [RStarDownEmbed], ephemeral: true}));
+		console.log(`The Rockstar Social Club website is down.`);	
+	}		
+	}
+	else {
+		let RStarDownEmbed = new EmbedBuilder()
+			.setColor('0xFF0000') //RED
+			.setDescription(`The Rockstar Social Club website is down. \nPlease try again later. \nSorry for the inconvenience.`)
+		client.channels.fetch(process.env.logChannel).then(channel => channel.send({embeds: [RStarDownEmbed], ephemeral: true}));
+		console.log(`The Rockstar Social Club website is down.`);	
+	}			
+	} //end c loop
+				}}); //end fs.readFile for RDODataBase? 
 
+				}}); //end fs.readFile for LANGDataBase
 		}, {
    scheduled: true,
    timezone: "America/Denver"
- });		//end cron.schedule
-	
-	
-	},
+ });
+
+		
+	}
 }

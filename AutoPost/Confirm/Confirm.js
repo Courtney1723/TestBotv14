@@ -400,7 +400,7 @@ module.exports = {
 				return `Testar RDO`;
 			}
 			else {
-				return `Test GTA`;
+				return `Test RDO`;
 			}			
 		}	
 

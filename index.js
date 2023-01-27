@@ -7,7 +7,7 @@ const { exec } = require('node:child_process');
 const keepAlive = require('./server');
 var cron = require('node-cron'); //https://github.com/node-cron/node-cron
 const { get } = require("https");
-const fetch = require("node-fetch");
+const fetch = require("@replit/node-fetch");
 
 // node deploy-commands.js 
 //^^ type in shell to register a command

@@ -305,7 +305,7 @@ Click **\'Confirm\'** to view and test current settings.`;
 						await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });
 					}
 
-				}
+				
 
 			function expiredDesc() {
 				if (lang === "en") {
@@ -342,7 +342,7 @@ Click **\'Confirm\'** to view and test current settings.`;
 					interaction.editReply({components: [expiredButton]})
 				}, (60000 * 2))					
 				
-			}); //end readFile for LANGDataBase
+				}}); //end readFile for LANGDataBase
 			
 		} //end if interaction starts with startback - stopback - configureback
 

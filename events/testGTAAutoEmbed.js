@@ -623,7 +623,7 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//		
 //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
 
-		console.log(`channelIDArray[c]: ${channelIDArray[c]}`);
+		console.log(`channelIDArray[c] at c${c}: ${channelIDArray[c]}`);
 		if (channelIDArray[c].includes("undefined")) {return;}
 			else {
 				if (gtaFinalString.length <= 4000) {
