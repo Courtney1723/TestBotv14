@@ -129,7 +129,7 @@ module.exports = {
 						return `Haga clic en el menú desplegable para eliminar un rol de poder configurar publicaciones automáticas.`;
 					}
 					else if (lang === "ru") {
-						return `Щелкните раскрывающееся меню, чтобы удалить роль из возможности настройки автоматических записей.`;
+						return `Щелкните раскрывающееся меню, чтобы удалить роль из возможности настройки автоматических публикации.`;
 					}
 					else if (lang === "de") {
 						return `Klicken Sie auf das Dropdown-Menü, um eine Rolle von der Konfiguration automatischer Beiträge auszuschließen.`;
@@ -150,7 +150,7 @@ module.exports = {
 						return `Los administradores siempre pueden configurar publicaciones automáticas.`;
 					}
 					else if (lang === "ru") {
-						return `Los administradores siempre pueden configurar publicaciones automáticas.`;
+						return `Администраторы всегда могут настроить автоматические публикации.`;
 					}
 					else if (lang === "de") {
 						return `Administratoren können automatische Beiträge jederzeit konfigurieren.`;

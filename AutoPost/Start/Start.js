@@ -107,13 +107,13 @@ module.exports = {
 				return `Iniciar publicación automática`;
 			}			
 			if (lang === "ru") {
-				return `Запуск автоматических записей`;
+				return `Начать автоматические публикации`;
 			}		
 			if (lang === "de") {
 				return `Automatische Beiträge starten`;
 			}		
 			if (lang === "pt") {
-				return `Iniciar postagens automáticas`;
+				return `Iniciar publicações automáticas`;
 			}			
 			else {
 				return `Start Auto Posting`;
@@ -122,34 +122,34 @@ module.exports = {
 
 		function startDesc() {
 			if (lang === "en") {
-				return `Click **\'GTA\'** to set up Grand Theft Auto V Online Auto Posts for **every Thursday at 2:00 PM EST**.
+				return `Click **\'GTA\'** to set up GTA Online Auto Posts for **every Thursday at 2:00 PM EST**.
 
-Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for **the first Tuesday of every month at 2:00 PM EST**.`;
+Click **\'RDO\'** to set up Red Dead Online Auto Posts for **the first Tuesday of every month at 2:00 PM EST**.`;
 			}
 			if (lang === "es") {
-				return `Haga clic en **\'GTA\'** para comenzar a publicar publicaciones automáticas en línea de Grand Theft Auto V para **todos los jueves a las 2:00 PM EST**.
+				return `Haga clic en **\'GTA\'** para comenzar a publicar publicaciones automáticas en línea de GTA Online para **todos los jueves a las 14:00 EST**.
 
-Hga clic en **\'RDO\'** para comenzar a publicar publicaciones automáticas de Red Dead Redemption II para **el primer martes de cada mes a las 2:00 PM EST**.`;
+Hga clic en **\'RDO\'** para comenzar a publicar publicaciones automáticas de Red Dead Online para **el primer martes de cada mes a las 14:00 EST**.`;
 			}
 			if (lang === "ru") {
-				return `Щелчок **\'GTA\'** для запуска Grand Theft Auto V Online Auto Posts для **каждый четверг в 14:00 EST**.
+				return `Щелчок **\'GTA\'** для запуска GTA Online Auto Posts для **каждый четверг в 14:00 EST**.
 
-Щелчок **\'RDO\'** чтобы начать автоматическую публикацию Red Dead Redemption II для **первого вторника каждого месяца в 14:00 EST**.`;
+Щелчок **\'RDO\'** чтобы начать автоматическую публикацию Red Dead Online для **первого вторника каждого месяца в 14:00 EST**.`;
 			}
 			if (lang === "de") {
-				return `Klicken Sie auf **\'GTA\'**, um GTA Online Auto-Beiträge für jeden Donnerstag um **14:00 Uhr EST** zu starten.
+				return `Klicken Sie auf **\'GTA\'**, GTA Online Auto-Beiträge für jeden Donnerstag um **14:00 EST** zu starten.
 
-Klicken Sie auf **\'RDO\'**, um Red Dead Online Auto-Posts für **den ersten Dienstag jedes Monats 2:00pm EST** zu starten.`;
+Klicken Sie auf **\'RDO\'**, Red Dead Online Auto-Beiträge für **den ersten Dienstag um jedes Monats 14:00 EST** zu starten.`;
 			}		
 			if (lang === "pt") {
-				return `Clique **\'GTA\'** para iniciar Grand Theft Auto V Online auto posts para **todas as quintas-feiras às 14:00 EST**.
+				return `Clique **\'GTA\'** para iniciar GTA Online auto posts para **todas as quintas-feiras às 14:00 EST**.
 
-Clique **\'RDO\'** para iniciar Red Dead Redemption II auto posts para **a primeira terça-feira de cada mês às 14:00 EST **.`;
+Clique **\'RDO\'** para iniciar Red Dead Online auto posts para **a primeira terça-feira de cada mês às 14:00 EST**.`;
 			}
 			else {
-				return `Click **\'GTA\'** to set up Grand Theft Auto V Online Auto Posts for **every Thursday at 2:00 PM EST**.
+				return `Click **\'GTA\'** to set up GTA Online Auto Posts for **every Thursday at 2:00 PM EST**.
 
-Click **\'RDO\'** to set up Red Dead Redemption II Auto Posts for **the first Tuesday of every month at 2:00 PM EST**.`;				
+Click **\'RDO\'** to set up Red Dead Online Auto Posts for **the first Tuesday of every month at 2:00 PM EST**.`;				
 			}
 		}
 

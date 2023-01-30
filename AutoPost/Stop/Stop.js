@@ -122,28 +122,28 @@ module.exports = {
 
 	function stopDesc() {
 		if (lang === "en") {
-			return `Click **\'GTA\'** to remove a channel from receiving Grand Theft Auto V Online Auto Posts.
-			\nClick **\'RDO\'** to remove a channel from receiving Red Dead Redemption II Online Auto Posts.`;
+			return `Click **\'GTA\'** to remove a channel from receiving GTA Online Auto Posts.
+			\nClick **\'RDO\'** to remove a channel from receiving Red Dead Online Auto Posts.`;
 		}
 		else if (lang === "es") {
-			return `Haga clic en **\'GTA\'** para quitar un canal de GTA.
-			\nHaga clic en **\'RDO\'** para quitar un canal RDO.`;
+			return `Haga clic en **\'GTA\'** para quitar un canal de GTA Online.
+			\nHaga clic en **\'RDO\'** para quitar un canal Red Dead Online.`;
 		}
 		else if (lang === "ru") {
-			return `Щелчок **\'GTA\'** удалить канал GTA.
-			\nЩелчок **\'RDO\'** Удаление канала RDO.`;
+			return `Щелчок **\'GTA\'** удалить канал GTA Online.
+			\nЩелчок **\'RDO\'** удалить канал Red Dead Online.`;
 		}
 		else if (lang === "de") {
-			return `Klicken **\'GTA\'** So entfernen Sie einen GTA-Kanal.
-			\nKlicken **\'RDO\'** So entfernen Sie einen Kanal-RDO.`;
+			return `Klicken **\'GTA\'** So entfernen Sie einen GTA Online-Kanal.
+			\nKlicken **\'RDO\'** So entfernen Sie einen Kanal-Red Dead Online.`;
 		}
 		else if (lang === "pt") {
-			return `Clique **\'GTA\'** para remover um canal GTA.
-			\nClique **\'RDO\'** para remover um canal RDO.`;
+			return `Clique **\'GTA\'** para remover um canal GTA Online.
+			\nClique **\'RDO\'** para remover um canal Red Dead Online.`;
 		}
 		else {
-			return `Click **\'GTA\'** to remove a channel from receiving Grand Theft Auto V Online Auto Posts.
-			\nClick **\'RDO\'** to remove a channel from receiving Red Dead Redemption II Online Auto Posts.`;
+			return `Click **\'GTA\'** to remove a channel from receiving GTA Online Auto Posts.
+			\nClick **\'RDO\'** to remove a channel from receiving Red Dead Online Auto Posts.`;
 		}		
 	}
 

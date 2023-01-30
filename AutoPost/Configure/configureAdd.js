@@ -369,6 +369,27 @@ else if (menuRoleID === `undefinedrole`) { //if the Admin role is already requir
     }    // end adding Admins as a required permission 
 		else {
 
+			function AdminCheckDesc() {
+				if (lang === "en") {
+					return `\n• The Administrator privilege is required! \n• Any user with the <@&${menuRoleID}> role must also have administrator privileges in order to configure auto posts.\n• Try the **_____** comand again and click **\'_____\'** to remove the administrator requirement.`
+				}
+				if (lang === "es") {
+					return `\n• The Administrator privilege is required! \n• Any user with the <@&${menuRoleID}> role must also have administrator privileges in order to configure auto posts.\n• Try the **/autopost** comand again and click **\'Configure\'** to remove the administrator requirement.`
+				}		
+				if (lang === "ru") {
+					return `\n• Требуются права администратора! \n• Любой пользователь с ролью <@&${menuRoleID}> также должен иметь права администратора, чтобы настраивать автоматические сообщения.\n• Повторите команду **/autopost** и нажмите **\'Роли\'* * для удаления требования администратора.`
+				}			
+				if (lang === "de") {
+					return `\n• The Administrator privilege is required! \n• Any user with the <@&${menuRoleID}> role must also have administrator privileges in order to configure auto posts.\n• Try the **/autopost** comand again and click **\'Configure\'** to remove the administrator requirement.`
+				}				
+				if (lang === "pt") {
+					return `\n• The Administrator privilege is required! \n• Any user with the <@&${menuRoleID}> role must also have administrator privileges in order to configure auto posts.\n• Try the **/autopost** comand again and click **\'Configure\'** to remove the administrator requirement.`
+				}	
+				else {
+					return `\n• The Administrator privilege is required! \n• Any user with the <@&${menuRoleID}> role must also have administrator privileges in order to configure auto posts.\n• Try the **/autopost** comand again and click **\'Configure\'** to remove the administrator requirement.`
+				}				
+			}
+
 			let AdminCheck = "";
 			if (AdminRequired() === `AdminRequiredYes`) {
 				AdminCheck += `\n• The Administrator privilege is required! \n• Any user with the <@&${menuRoleID}> role must also have administrator privileges in order to configure auto posts.\n• Try the **/autopost** comand again and click **\'Configure\'** to remove the administrator requirement.`;

@@ -113,7 +113,7 @@ module.exports = {
 						return `Haga clic en el menú desplegable para permitir que un rol configure publicaciones automáticas.`;
 					}
 					else if (lang === "ru") {
-						return `щелкните раскрывающееся меню, чтобы разрешить роли настраивать автоматические записи.`;
+						return `щелкните раскрывающееся меню, чтобы разрешить роли настраивать автоматические публикации.`;
 					}
 					else if (lang === "de") {
 						return `Klicken Sie auf das Dropdown-Menü, damit eine Rolle automatische Beiträge konfigurieren kann.`;
@@ -134,7 +134,7 @@ module.exports = {
 						return `Los administradores siempre pueden configurar publicaciones automáticas.`;
 					}
 					else if (lang === "ru") {
-						return `Администраторы всегда могут настроить автоматические записи.`;
+						return `Администраторы всегда могут настроить автоматические публикации.`;
 					}
 					else if (lang === "de") {
 						return `Administratoren können automatische Beiträge jederzeit konfigurieren.`;

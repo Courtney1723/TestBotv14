@@ -137,8 +137,8 @@ module.exports = {
 					Haga clic en **\'Eliminar\'** para quitar un rol de tener la capacidad de configurar publicaciones automáticas.`;
 				}
 				else if (lang === "ru") {
-					return `Щелчок **\'Добавлять\'** чтобы добавить роль, которая может настраивать автоматические записи.
-					Щелчок **\'Убирать\'** чтобы удалить роль, которая может иметь возможность настраивать автоматические записи.`;
+					return `Щелчок **\'Добавлять\'** чтобы добавить роль, которая может настроить автоматические публикации.
+					Щелчок **\'Убирать\'** чтобы удалить роль, которая может настраивать автоматические публикации.`;
 				}
 				else if (lang === "de") {
 					return `Klicken **\'Hinzufügen\'** um eine Rolle hinzuzufügen, die automatische Beiträge konfigurieren kann.

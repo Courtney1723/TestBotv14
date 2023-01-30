@@ -147,7 +147,7 @@ module.exports = {
 			return `You will now get GTA Online auto posts to the <#${menuChannelID}> channel \n**the first Tuesday of every month at 2:00 PM EST**.`;
 		}
 		if (lang === "es") {
-			return `Ahora recibirás publicaciones automáticas de GTA Online en el canal <#${menuChannelID}> \n**el primer martes de cada mes a las 2:00 PM EST**.`;
+			return `Ahora recibirás publicaciones automáticas de GTA Online en el canal <#${menuChannelID}> \n**el primer martes de cada mes a las 14:00 EST**.`;
 		}	
 		if (lang === "ru") {
 			return `Теперь вы будете получать автоматические сообщения GTA Online на <#${menuChannelID}> канале \n**в первый вторник каждого месяца в 14:00 EST**.`;

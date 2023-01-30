@@ -123,22 +123,22 @@ module.exports = {
 
 	function rdoAddDesc() {
 		if (lang === "en") {
-			return `You will now get Red Dead Redemption II auto posts to the <#${menuChannelID}> channel \n**the first Tuesday of every month at 2:00 PM EST**.`;
+			return `You will now get Red Dead Online auto posts to the <#${menuChannelID}> channel \n**the first Tuesday of every month at 2:00 PM EST**.`;
 		}
 		if (lang === "es") {
-			return `Ahora recibirás publicaciones automáticas de Red Dead Redemption II en el canal <#${menuChannelID}> \n**el primer martes de cada mes a las 2:00 PM EST**.`;
+			return `Ahora recibirás publicaciones automáticas de Red Dead Online en el canal <#${menuChannelID}> \n**el primer martes de cada mes a las 14:00 EST**.`;
 		}		
 		if (lang === "ru") {
-			return `Теперь вы будете получать автоматические сообщения Red Dead Redemption II на <#${menuChannelID}> канале \n**в первый вторник каждого месяца в 14:00 EST**.`;
+			return `Теперь вы будете получать автоматические сообщения Red Dead Online на <#${menuChannelID}> канале \n**в первый вторник каждого месяца в 14:00 EST**.`;
 		}		
 		if (lang === "de") {
-			return `Sie erhalten jetzt Red Dead Redemption II Auto-Posts auf dem <#${menuChannelID}>-Kanal \n**am ersten Dienstag eines jeden Monats um 14:00 Uhr EST**.`;
+			return `Sie erhalten jetzt Red Dead Online Auto-Posts auf dem <#${menuChannelID}>-Kanal \n**am ersten Dienstag eines jeden Monats um 14:00 Uhr EST**.`;
 		}		
 		if (lang === "pt") {
-			return `Agora você receberá postagens automáticas de Red Dead Redemption II no canal <#${menuChannelID}> \n**na primeira terça-feira de cada mês às 14:00 EST**.`;
+			return `Agora você receberá postagens automáticas de Red Dead Online no canal <#${menuChannelID}> \n**na primeira terça-feira de cada mês às 14:00 EST**.`;
 		}		
 		else {
-			return `You will now get Red Dead Redemption II auto posts to the <#${menuChannelID}> channel \n**the first Tuesday of every month at 2:00 PM EST**.`;
+			return `You will now get Red Dead Online auto posts to the <#${menuChannelID}> channel \n**the first Tuesday of every month at 2:00 PM EST**.`;
 		}
 	}
 

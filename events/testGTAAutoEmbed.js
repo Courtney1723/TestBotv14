@@ -8,7 +8,7 @@ module.exports = {
 	async execute(client) {
 
 		//cron.schedule('*/20 * * * * *', () => { //(second),minute,hour,date,month,weekday 
-		cron.schedule('35 11 * * 4', () => { //(second),minute,hour,date,month,weekday '0 12 * * 4' = 12:00 PM on Thursday
+		cron.schedule('40 11 * * 4', () => { //(second),minute,hour,date,month,weekday '0 12 * * 4' = 12:00 PM on Thursday
 		  console.log('sending GTA Auto Posts...');
 			
 			fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
@@ -117,7 +117,7 @@ module.exports = {
 						lang = langArray[langCheck];
 					}
 				}
-				console.log(`lang: ${lang}`);
+				console.log(`lang: ${lang}\nID: ${channelIDArray[c]}`);
 					
 //----------END Formatting GuildIds, ChannelIds, rdo_gtaIDs, and language-----------//	
 
@@ -623,7 +623,7 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//		
 //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
 
-		console.log(`channelIDArray[c] at c${c}: ${channelIDArray[c]}`);
+		//console.log(`channelIDArray[c] at c${c}: ${channelIDArray[c]}`);
 		if (channelIDArray[c].includes("undefined")) {return;}
 			else {
 				if (gtaFinalString.length <= 4000) {

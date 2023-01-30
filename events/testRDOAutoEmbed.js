@@ -8,7 +8,7 @@ module.exports = {
 	async execute(client) {
 
 		//cron.schedule('*/20 * * * * *', () => { //every 20 seconds - testbench
-		cron.schedule('50 11 1-7 * 2', () => { //(second),minute,hour,date,month,weekday '0 12 1-7 * 2' = 12:00 PM on 1st Tuesday
+		cron.schedule('40 11 1-7 * 2', () => { //(second),minute,hour,date,month,weekday '0 12 1-7 * 2' = 12:00 PM on 1st Tuesday
 		  //console.log('running a task');
 
 			fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
@@ -117,7 +117,7 @@ module.exports = {
 						lang = langArray[langCheck];
 					}
 				}
-				console.log(`lang: ${lang}`);
+				console.log(`lang: ${lang}\nID: ${channelIDArray[c]}`);
 				
 //----------END Formatting GuildIds, ChannelIds, and rdo_gtaIDs-----------//	
 
@@ -455,23 +455,84 @@ if (RDO_Bonus != undefined) {
     }		
     function rdoFooterMax() {
       if (rdoFinalString.length > 4000) {
-        return `** [click here](${url}) for more details**`;
+				if (lang === "en") {
+					return `\n** [click here](${url}) for more details**`;
+				}
+				else if (lang === "es" ) {
+					return `\n** [haga clic aquí](${url}) para más detalles**`;
+				}
+				else if (lang === "ru" ) {
+					return `\n** [нажмите здесь](${url}) для получения более подробной информации**`;
+				}				
+				else if (lang === "de" ) {
+					return `\n** [Klicken Sie hier](${url}) für weitere Details**`;
+				}		
+				else if (lang === "pt" ) {
+					return `\n** [clique aqui](${url}) para mais detalhes**`;
+				}								
+				else {
+					return `\n** [click here](${url}) for more details**`;
+				}
       } else {
         return "";
       }
     }
     function rdoFooterMin() { 
       if (rdoFinalString.length <= 4000) {
-        return `** [click here](${url}) for more details**`;
+				if (lang === "en") {
+					return `\n** [click here](${url}) for more details**`;
+				}
+				else if (lang === "es" ) {
+					return `\n** [haga clic aquí](${url}) para más detalles**`;
+				}
+				else if (lang === "ru" ) {
+					return `\n** [нажмите здесь](${url}) для получения более подробной информации**`;
+				}				
+				else if (lang === "de" ) {
+					return `\n** [Klicken Sie hier](${url}) für weitere Details**`;
+				}		
+				else if (lang === "pt" ) {
+					return `\n** [clique aqui](${url}) para mais detalhes**`;
+				}								
+				else {
+					return `\n** [click here](${url}) for more details**`;
+				}
       } else {
         return "";
       }
-    } 		
+    } 	
+
+//--BEGIN TRANSLATIONS--//
+
+function rdoTitleFunction() {
+					
+			if (lang === "en") {
+				return `Red Dead Online Bonuses:`;
+			}
+			else if (lang === "es") {
+				return `Bonificaciones de Red Dead Online:`;
+			}
+			else if (lang === "ru") {
+				return `Бонусы Red Dead Online:`;
+			}
+			else if (lang === "de") {
+				return `Boni in Red Dead Online:`;
+			}
+			else if (lang === "pt") {
+				return `Bônus no Red Dead Online:`;
+			}
+			else {
+    		return `Red Dead Online Bonuses:`;
+			}		
+		}
+		//console.log(`rdoTitleFunction: ${rdoTitleFunction()}`);
+
+//--END TRANSLATIONS--//			
 		
 
 		let rdoEmbed = new EmbedBuilder()
 			.setColor('0xC10000') //Red
-			.setTitle('Red Dead Redemption II Online Bonuses & Discounts:')
+			.setTitle(`${rdoTitleFunction()}`)
 			.setDescription(`${rdoDate[0]}\n\n${rdoPost()} \n${rdoFooterMin()} ${elipseFunction()}`)
 		let rdoEmbed2 = new EmbedBuilder()
 			.setColor('0xC10000') //Red

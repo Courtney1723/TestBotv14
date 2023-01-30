@@ -210,7 +210,7 @@ module.exports = {
 			const backButton = new ActionRowBuilder()
 				.addComponents(
 					new ButtonBuilder()
-			        .setCustomId(`rdostartback - ${interaction.user.id}`)
+			        .setCustomId(`rdostopback - ${interaction.user.id}`)
 			        .setLabel(`${goBack()}`)
 			        .setStyle(ButtonStyle.Secondary),	
 				);

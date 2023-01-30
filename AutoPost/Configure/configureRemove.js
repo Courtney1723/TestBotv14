@@ -166,7 +166,7 @@ module.exports = {
 			    return `\n• <@&${interaction.guild.id}> puede configurar publicaciones automáticas ahora.\n• Vuelva a probar el comando **/autopost** y haga clic en **configurar** para agregar un rol.`;
 			}
 			else if (lang === "ru") {
-				return `\n• <@&${interaction.guild.id}> теперь можно настроить автоматические сообщения.\n• Попробуйте команду **/autopost** еще раз и нажмите кнопку **Настроить**, чтобы добавить роль.`;
+				return `\n• <@&${interaction.guild.id}> теперь можно настроить автоматические сообщения.\n• Попробуйте команду **/autopost** еще раз и нажмите кнопку **Роли**, чтобы добавить роль.`;
 			}
 			else if (lang === "de") {
 				return `\n• <@&${interaction.guild.id}>  kann jetzt automatische Beiträge konfigurieren.\n• Wiederholen Sie den Befehl **/autopost**, und klicken Sie auf **Konfigurieren**, um eine Rolle hinzuzufügen.`;

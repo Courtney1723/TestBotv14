@@ -322,22 +322,22 @@ module.exports = {
 
 		function testRDOString() {
 			if (lang === "en") {
-					return `Click **\'Test RDO\'** to send a test post to your subscribed GTA Online channel(s).`;
+					return `Click **\'Test RDO\'** to send a test post to your subscribed Red Dead Online channel(s).`;
 			}
 			else if (lang === "es") {
-				return `Haga clic en **\'Prueba RDO\'** para enviar una publicación de prueba a sus canal(es) RDO suscritos.`;
+				return `Haga clic en **\'Prueba RDO\'** para enviar una publicación de prueba a sus canal(es) Red Dead Online suscritos.`;
 			}
 			else if (lang === "ru") {
-				return `Щелчок **\'Тест RDO\'** для того, чтобы отправить тестовое сообщение на подписанные каналы RDO.`;
+				return `Щелчок **\'Тест RDO\'** для того, чтобы отправить тестовое сообщение на подписанные каналы Red Dead Online.`;
 			}
 			else if (lang === "de") {
-				return `Klicken Sie auf **\'RDO testen\'**, um einen Testbeitrag an Ihre abonnierten RDO-Kanäle zu senden.`;
+				return `Klicken Sie auf **\'RDO testen\'**, um einen Testbeitrag an Ihre abonnierten Red Dead Online-Kanäle zu senden.`;
 			}
 			else if (lang === "pt") {
-				return `Clique em **\'Testar RDO\'** para enviar uma postagem de teste para seus canais RDO inscritos.`;
+				return `Clique em **\'Testar RDO\'** para enviar uma postagem de teste para seus canais Red Dead Online inscritos.`;
 			}
 			else {
-			  return `Click **\'Test RDO\'** to send a test post to your subscribed GTA Online channel(s).`;
+			  return `Click **\'Test RDO\'** to send a test post to your subscribed Red Dead Online channel(s).`;
 			}			
 		}			
 
@@ -400,7 +400,7 @@ module.exports = {
 				return `Testar RDO`;
 			}
 			else {
-				return `Test GTA`;
+				return `Test RDO`;
 			}			
 		}	
 

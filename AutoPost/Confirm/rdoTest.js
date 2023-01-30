@@ -427,12 +427,12 @@ if (RDO_Bonus != undefined) {
 
 			//console.log(`rdoFinalString: ${rdoFinalString}`);
     function rdoPost() {
-        return rdoFinalString.slice(0, 3909); //FIXME: adjust this for the best break - up to 4000
+        return rdoFinalString.slice(0, 3663); //FIXME: adjust this for the best break - up to 4000
     }
     //console.log(`1: ${rdoFinalString.length}\n`) 
     function rdoPost2() {
       if (rdoFinalString.length > 4000) {
-        let post02 = rdoFinalString.substr(3909, 1790); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
+        let post02 = rdoFinalString.substr(3663, 1790); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
         return post02;
       } else {
         return "";
@@ -514,7 +514,7 @@ function rdoTitleFunction() {
 				return `Bônus no Red Dead Online:`;
 			}
 			else {
-    		return `Red Dead Online Bonuses & Discounts:`;
+    		return `Red Dead Online Bonuses:`;
 			}		
 		}
 		//console.log(`rdoTitleFunction: ${rdoTitleFunction()}`);

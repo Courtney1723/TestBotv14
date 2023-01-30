@@ -76,7 +76,7 @@ module.exports = {
 				return `Einstellungen für die automatische Veröffentlichung`;
 			}
 			else if (lang === "pt") {
-				return `Configurações de lançamento automático`;
+				return `Configurações de Publicação Automática`;
 			}
 			else {
 				return `Auto Post Settings`;
@@ -99,7 +99,7 @@ Haga clic en **\'Confirmar\'** para ver y probar la configuración.`;
 			else if (lang === "ru") {
 				return `Нажмите **\'Начало\'** для того, чтобы добавить канал.
 Нажмите **\'Остановка\'** для удаления канала.
-Нажмите **\'Настроить\'** Чтобы добавить или удалить роль.
+Нажмите **\'Роли\'** Чтобы добавить или удалить роль.
 Нажмите **\'подтвержда́ю\'** чтобы просмотреть и опробовать настройки.`;
 			}
 			else if (lang === "de") {
@@ -193,7 +193,7 @@ Click **\'Confirm\'** to view and test current settings.`;
 				return `Configurar`;
 			}
 			else if (lang === "ru") {
-				return `Настроить`;
+				return `Роли`;
 			}
 			else if (lang === "de") {
 				return `Konfigurieren`;

@@ -155,22 +155,22 @@ module.exports = {
 			//console.log(`RDOConfirmString: ${RDOConfirmString}`);	
 			if (!RDOConfirmString.includes('• ')) {
 				if (lang === "en") {
-					GTAConfirmString += `• There are no channels in this server subscribed to RDO auto posts.\n`;
+					RDOConfirmString += `• There are no channels in this server subscribed to RDO auto posts.\n`;
 				}
 				else if (lang === "es") {
-				  GTAConfirmString += `• No hay canales en este servidor suscritos a publicaciones automáticas RDO.\n`;
+				  RDOConfirmString += `• No hay canales en este servidor suscritos a publicaciones automáticas RDO.\n`;
 				}
 				else if (lang === "ru") {
-				  GTAConfirmString += `• На этом сервере нет каналов, подписанных на автоматические посты RDO.\n`;
+				  RDOConfirmString += `• На этом сервере нет каналов, подписанных на автоматические посты RDO.\n`;
 				}
 				else if (lang === "de") {
-				  GTAConfirmString += `• Es gibt keine Kanäle auf diesem Server, die RDO-Auto-Posts abonniert haben.\n`;
+				  RDOConfirmString += `• Es gibt keine Kanäle auf diesem Server, die RDO-Auto-Posts abonniert haben.\n`;
 				}
 				else if (lang === "pt") {
-				  GTAConfirmString += `• Não há canais neste servidor inscritos para RDO auto posts.\n`;
+				  RDOConfirmString += `• Não há canais neste servidor inscritos para RDO auto posts.\n`;
 				}
 				else {
-				  GTAConfirmString += `• There are no channels in this server subscribed to RDO auto posts.\n`;
+				  RDOConfirmString += `• There are no channels in this server subscribed to RDO auto posts.\n`;
 				}
 			}
 
@@ -262,7 +262,7 @@ module.exports = {
 				return `Your Current Auto Post Channels:`;
 			}
 			else if (lang === "es") {
-				return `Tus canales actuales de publicación automática:`;
+				return `Tus canales de publicación automática actuales:`;
 			}
 			else if (lang === "ru") {
 				return `Текущие настройки автоматической публикации:`;
@@ -292,7 +292,7 @@ module.exports = {
 				return `Rollen, die automatische Beiträge konfigurieren dürfen:`;	
 			}
 			else if (lang === "pt") {
-				return `Posições que têm permissão para configurar postagens automáticas:`;	
+				return `Papéis que têm permissão para configurar publicações automáticas:`;	
 			}
 			else {
 				return `Roles Allowed to Configure Auto Posts`;	
