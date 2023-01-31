@@ -627,10 +627,10 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 		if (channelIDArray[c].includes("undefined")) {return;}
 			else {
 				if (gtaFinalString.length <= 4000) {
-					client.channels.fetch(channelIDArray[c]).then(channel => channel.send(({embeds: [gtaImageEmbed, gtaEmbed]}))).catch(err => console.log(`Min Error: ${err.stack}`));
+					client.channels.fetch(channelIDArray[c]).then(channel => channel.send(({embeds: [gtaImageEmbed, gtaEmbed]}))).catch(err => console.log(`Min Error: ${err}\nChannel ID: ${channelIDArray[c]}`));
 				} 
 				else {
-					client.channels.fetch(channelIDArray[c]).then(channel => channel.send({embeds: [gtaImageEmbed, gtaEmbed, gtaEmbed2]})).catch(err => console.log(`Max Error: ${err.stack}`));
+					client.channels.fetch(channelIDArray[c]).then(channel => channel.send({embeds: [gtaImageEmbed, gtaEmbed, gtaEmbed2]})).catch(err => console.log(`Max Error: ${err}\nChannel ID: ${channelIDArray[c]}`));
 				}
 			} //end if not undefined channel
 		} 

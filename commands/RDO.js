@@ -110,8 +110,12 @@ module.exports = {
 
 		let rdoLinkFormatted = rdoString;
 		for (m = 0; m <= rdoLinks002.length - 1; m++) { // keep - 2; the last element will always be blank
-			rdoLinkFormatted = rdoLinkFormatted.replace(/<a.*?a>/, `[${rdoLinkTitles002[m]}](${rdoLinks002[m]})`); //replaces each link with proper discord formatted link
-			//console.log(`rdoLinkFormatted at ${m}: ${rdoLinkFormatted}`);
+			if (m != 9) { //FIXME - remove next month
+				rdoLinkFormatted = rdoLinkFormatted.replace(/<a.*?a>/, `[${rdoLinkTitles002[m]}](${rdoLinks002[m]})`); //replaces each link with proper discord formatted link
+				//console.log(`rdoLinkFormatted at ${m}: ${rdoLinkFormatted}`);
+				//console.log(`rdoLinkTitles002 at ${m}: ${rdoLinkTitles002[m]}`);
+				//console.log(`rdoLinks002 at ${m}: ${rdoLinks002[m]}`);
+			}
 		}
 		//console.log(`rdoLinkFormatted: ${rdoLinkFormatted}`);
 //--------------------END formatting for links--------------------//
@@ -268,6 +272,12 @@ if (RDO_Bonus != undefined) {
 	else if (RDO_Title.toLowerCase().includes("featured series")) {
 		rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
 	}		
+	else if (RDO_Title.toLowerCase().includes("weekly bonuses")) {
+		rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
+	}	
+	else if (RDO_Title.toLowerCase().includes("monthlong rewards")) {
+		rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
+	}			
 	else if (RDO_Title.toLowerCase().includes(":")) {
 		rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
 	}			
@@ -308,16 +318,16 @@ if (RDO_Bonus != undefined) {
 											.replace(/\*\*\n\*\*/g, "**\n\n**")
 											.replace(/• undefined/g, "• ")
 											.replace(/\)• /g, ")\n• ") //adds a newline between link lists
-											.replace(/• Jan 3 – Jan 9:/g, "• Click the link below for more details\n"); //FIXME - delete next month
+					      .replace(/<a href=\"https:\/\/socialclub.rockstargames.com\/games\/rdr2\/catalogue\/online\/products\/23bc7710\/c\/8bdc1af5" target=\"_blank\">\n\<\/a>•/g, ""); //FIXME - delete next month
 
 			//console.log(`rdoFinalString: ${rdoFinalString}`);
     function rdoPost() {
-        return rdoFinalString.slice(0, 3663); //FIXME: adjust this for the best break - up to 4000
+        return rdoFinalString.slice(0, 3797); //FIXME: adjust this for the best break - up to 4000
     }
     //console.log(`1: ${rdoFinalString.length}\n`) 
     function rdoPost2() {
       if (rdoFinalString.length > 4000) {
-        let post02 = rdoFinalString.substr(3663, 1800); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
+        let post02 = rdoFinalString.substr(3797, 1809); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
         return post02;
       } else {
         return "";
