@@ -9,7 +9,8 @@ module.exports = {
 	async execute(client) {
 
 		//cron.schedule('*/20 * * * * *', () => { //every 20 seconds - testbench
-		cron.schedule('50 11 1-7 * 2', () => { //(second),minute,hour,date,month,weekday '0 12 1-7 * 2' = 12:00 PM on 1st Tuesday
+		//cron.schedule('50 11 1-7 * 2', () => {
+		cron.schedule('00 12 31 * 2', () => {
 		  //console.log('running a task');
 
 //----------Begin Formatting GuildIds, ChannelIds, and rdo_gtaIDs-----------//	
