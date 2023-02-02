@@ -10,7 +10,7 @@ module.exports = {
 
 		//cron.schedule('*/20 * * * * *', () => { //every 20 seconds - testbench
 		//cron.schedule('50 11 1-7 * 2', () => {
-		cron.schedule('00 12 31 * 2', () => {
+		cron.schedule('00 12 31 * 2', () => { //noon on the 31st of every month if it's a Tuesday
 		  //console.log('running a task');
 
 //----------Begin Formatting GuildIds, ChannelIds, and rdo_gtaIDs-----------//	
