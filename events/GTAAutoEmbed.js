@@ -135,6 +135,17 @@ let gtaURL = process.env.SOCIAL_URL_GTA2;
 			.replace(/<ul style="line-height:1.5;">/g, "")
 			.replace(/\n<p>/g, "<p>") //Removes spaces after a bonus
 			.replace(/<p>Only/g, "<p><b>Only")
+
+				//--BEGIN FOREIGN LANGUAGE FORMATTING-----//
+					//--RUSSIAN--//
+					.replace(/=\"\"/g, "")
+					.replace(/<liЗаработайте/g, "")
+					.replace(/<\/liЗаработайте>/g, "")
+					.replace(/< li>/g, "")
+					.replace(/<\/>/g, "")
+
+				//-----END FOREIGN LANGUAGE FORMATTING-----//
+			
 			//console.log(`gtaString: ${gtaString}`);
 
 //--------------------BEGIN formatting for links--------------------//

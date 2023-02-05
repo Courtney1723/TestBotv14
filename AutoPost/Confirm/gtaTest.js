@@ -166,7 +166,7 @@ function gtaTest() {
 			let langURL = `${langBase}${lang}`;
 			
 			let url = `${baseURL}/${urlLink()}${langURL}`;
-			console.log(`url: ${url}`);		
+			//console.log(`url: ${url}`);		
 
 		const gtaStatus = await page.open(url);
 		if (gtaStatus === `success`) {
@@ -205,6 +205,17 @@ function gtaTest() {
 			.replace(/<ul style="line-height:1.5;">/g, "")
 			.replace(/\n<p>/g, "<p>") //Removes spaces after a bonus
 			.replace(/<p>Only/g, "<p><b>Only")
+
+			//--BEGIN FOREIGN LANGUAGE FORMATTING-----//
+				//--RUSSIAN--//
+				.replace(/=\"\"/g, "")
+				.replace(/<liЗаработайте/g, "")
+				.replace(/<\/liЗаработайте>/g, "")
+				.replace(/< li>/g, "")
+				.replace(/<\/>/g, "")
+
+			//-----END FOREIGN LANGUAGE FORMATTING-----//
+
 			//console.log(`gtaString: ${gtaString}`);
 
 //--------------------BEGIN formatting for links--------------------//
@@ -423,13 +434,7 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 						}
 						else if (GTA_Title.toLowerCase().includes("simeon's showroom")) {
 							gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
-						}					
-						else if (GTA_Title.toLowerCase().includes("festive surprises")) {
-							gtaFinalString01 += `**${GTA_Title}***\n`;
-						}					
-						else if (GTA_Title.toLowerCase().includes("new year")) {
-							gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
-						}								
+						}										
 						else if (GTA_Title.toLowerCase().includes("2.5x")) {
 							gtaFinalString01 += `**${GTA_Title}** \n`;
 						}
@@ -439,7 +444,7 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 						else if (GTA_Title.toLowerCase().includes("gta+")) {
 							gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n${gtaParas[2]}\n`;
 						}
-						else if (GTA_Title.toLowerCase().includes("discount")) {
+						else if ((GTA_Title.toLowerCase().includes("discount")) || (GTA_Title.toLowerCase().includes("descuento")) || (GTA_Title.toLowerCase().includes("cкидки")) || (GTA_Title.toLowerCase().includes("rabatte")) || (GTA_Title.toLowerCase().includes("desconto"))) {
 							gtaFinalString01 += `**${GTA_Title}**\n• ${GTA_Bonus}\n`;
 						}
 						else if (GTA_Bonus.includes("• ")) { //if the bonus includes lists
@@ -493,12 +498,12 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 
 			//console.log(`gtaFinalString: ${gtaFinalString}`);
     function gtaPost() {
-        return gtaFinalString.slice(0, 3918); //FIXME: adjust this for the best break - up to 4000
+        return gtaFinalString.slice(0, 3937); //FIXME: adjust this for the best break - up to 4000
     }
     //console.log(`1: ${gtaFinalString.length}\n`) 
     function gtaPost2() {
       if (gtaFinalString.length > 4000) {
-        let post02 = gtaFinalString.substr(3918, 1800); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
+        let post02 = gtaFinalString.substr(3937, 1828); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
         return post02;
       } else {
         return "";

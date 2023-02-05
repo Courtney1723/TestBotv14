@@ -70,7 +70,7 @@ module.exports = {
 				return `Configuración de publicación automática`;
 			}
 			else if (lang === "ru") {
-				return `Автоматические настройки публикации`;
+				return `Настройка и подтверждение изменений автопубликации.`;
 			}
 			else if (lang === "de") {
 				return `Einstellungen für die automatische Veröffentlichung`;
@@ -97,10 +97,10 @@ Haga clic en **\'Configurar\'** para agregar o quitar un rol.
 Haga clic en **\'Confirmar\'** para ver y probar la configuración.`;
 			}
 			else if (lang === "ru") {
-				return `Нажмите **\'Начало\'** для того, чтобы добавить канал.
-Нажмите **\'Остановка\'** для удаления канала.
-Нажмите **\'Роли\'** Чтобы добавить или удалить роль.
-Нажмите **\'подтвержда́ю\'** чтобы просмотреть и опробовать настройки.`;
+				return `Нажмите **\'Старт\'**, чтобы добавить канал.
+Нажмите **\'Стоп\'**, чтобы исключить канал из автоматической публикации.
+Нажмите **\'Роль\'**, чтобы добавить \\\ удалить роль, изменяющая настройки публикации.
+Нажмите **\'Подтвердить\'**, для просмотра и подтверждения настроек.`;
 			}
 			else if (lang === "de") {
 				return `Klicken Sie auf **\'Anfangen\'** so fügen Sie einen Kanal hinzu.
@@ -151,7 +151,7 @@ Click **\'Confirm\'** to view and test current settings.`;
 				return `Empezar`;
 			}
 			else if (lang === "ru") {
-				return `Начало`;
+				return `Старт`;
 			}
 			else if (lang === "de") {
 				return `Anfangen`;
@@ -172,7 +172,7 @@ Click **\'Confirm\'** to view and test current settings.`;
 				return `Detener`;
 			}
 			else if (lang === "ru") {
-				return `Остановка`;
+				return `Стоп`;
 			}
 			else if (lang === "de") {
 				return `Aufhören`;
@@ -193,7 +193,7 @@ Click **\'Confirm\'** to view and test current settings.`;
 				return `Configurar`;
 			}
 			else if (lang === "ru") {
-				return `Роли`;
+				return `Роль`;
 			}
 			else if (lang === "de") {
 				return `Konfigurieren`;
@@ -214,7 +214,7 @@ Click **\'Confirm\'** to view and test current settings.`;
 				return `Confirmar`;
 			}
 			else if (lang === "ru") {
-				return `подтвержда́ю`;
+				return `Подтвердить`;
 			}
 			else if (lang === "de") {
 				return `Bestätigen`;

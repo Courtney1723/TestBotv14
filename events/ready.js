@@ -5,8 +5,6 @@ module.exports = {
 	once: true,
 	async execute(client) {
 		console.log(`Logged in as ${client.user.tag}`);
-		// client.user.setActivity('bonuses', { type: ActivityType.Watching });
-		// client.user.setStatus('idle');
 		client.user.setPresence({ activities: [{ name: 'Bonuses', type: ActivityType.Watching }] })
 
 		//Counts the guilds - uncomment for main bot

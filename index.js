@@ -31,7 +31,7 @@ const fetch = require("@replit/node-fetch");
 
 // 				//console.log(`${mstHour}:${mstMinute} ${amPM}`);			
 
-// 			if ((log.includes(`guilds`)) || (log.includes(`Logged in`)) || (log.includes(`You triggered`)) || (log.includes(`You clicked`)) ) {
+// 			if ((log.includes(`guilds`)) || (log.includes(`Logged in`)) || (log.includes(`You triggered`)) || (log.includes(`You clicked`)) || (log.includes(`You changed`)) || (log.includes(`You added`)) ) {
 // 				const logChannel = client.channels.cache.get(process.env.logChannel2);	
 // 				let logEmbed = new EmbedBuilder()
 // 					.setColor('0xFF008B') //Pink
@@ -89,6 +89,7 @@ client.setMaxListeners(50); // prevents max listeners error for buttons (DO NOT 
 function handleRateLimit() {
 	get(`https://discord.com/api/v10/gateway`, ({ statusCode }) => {
 		if ((statusCode === 429) || (statusCode === 404)) { 
+			console.log(`Status Code: ${statusCode}\nRestarting the bot.`);
 			process.kill(1) 
 		}
 		//console.log(`StatusCode: ${statusCode}`);

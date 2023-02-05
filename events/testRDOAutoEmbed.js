@@ -9,7 +9,7 @@ module.exports = {
 
 		//cron.schedule('*/20 * * * * *', () => { //every 20 seconds - testbench
 		cron.schedule('40 11 1-7 * 2', () => { //(second),minute,hour,date,month,weekday '0 12 1-7 * 2' = 12:00 PM on 1st Tuesday
-		  //console.log('running a task');
+		  console.log('Sending RDO Auto Posts...');
 
 			fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
 			  if (err) {console.log(`Error: ${err}`)} 

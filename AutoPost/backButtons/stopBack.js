@@ -8,26 +8,27 @@ const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.r
 
 module.exports = {
 	name: 'interactionCreate',
-	async execute(interaction) {
+	async execute(interaction, user) {
 
 		if (!interaction.isButton()) {return};
-		if ( (interaction.customId.startsWith(`rdostopback -`)) || (interaction.customId.startsWith(`gtastopback -`)) ) {
+		if ( (interaction.customId.startsWith(`rdostartback -`)) || (interaction.customId.startsWith(`gtastartback -`)) ) {
 
-		let rdo_gta = "";
-			if (interaction.customId.startsWith(`rdostopback -`)) {
+			let rdo_gta = "";
+			if (interaction.customId.startsWith(`rdostartback -`)) {
 				rdo_gta += 'rdo';
 			} else {
 				rdo_gta += 'gta';
-			}
+			} 
 
-		let buttonUserID01 = (interaction.customId).split(`${rdo_gta}stopback - `);
+		let buttonUserID01 = (interaction.customId).split(`${rdo_gta}startback - `);
 		let buttonUserID = buttonUserID01[1];
-			//console.log(`buttonUserID: ${buttonUserID}`);
-			//console.log(`interaction.user.id === buttonUserID? ${interaction.user.id === buttonUserID}`)
+			//console.log(`startBack buttonUserID: ${buttonUserID}`);
+			//console.log(`startBack interaction.user.id === buttonUserID? ${interaction.user.id === buttonUserID}`);
+			//console.log(`startBack interaction.user.id: ${interaction.user.id} && buttonUserID: ${buttonUserID}`);
 
 		let guildRoleIds = [];
 		fs.readFile('./rolesDataBase.txt', 'utf8', async function (err, data) {
-		    if (err) {console.log(`Error: ${err.stack}`)} //If an error, console.log
+		    if (err) {console.log(`Error: ${err}`)} //If an error, console.log
 		
 					interaction.guild.roles.cache.forEach(role => {
 							if (data.includes(role.id)) {
@@ -54,56 +55,55 @@ module.exports = {
 					return "AdminRequiredNo";
 				}
 			}		
-				//console.log(`AdminRequired(): ${AdminRequired()}`);
+				//console.log(`AdminRequired(): ${AdminRequired()}`)
 
-//------BEGIN TRANSLATIONS-----//
+//--BEGIN TRANSLATIONS--//
+			fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
+			  if (err) {console.log(`Error: ${err}`)} 
+				else {
+					let lang03 = data.split("lang:");
+					//console.log(`lang03.length: ${lang03.length}`);
 
-				fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
-					if (err) {console.log(`Error: ${err.stack}`)} 
-					  else {
-						  let lang03 = data.split("lang:");
-						  //console.log(`lang03.length: ${lang03.length}`);
-	  
-						  let langArray = [];
-						  for (i=1; i <= lang03.length - 1; i++) { //first will always be undefined
-							  let lang02 = lang03[i].split(" -");
-							  //console.log(`lang02 at ${i}: ${lang02}`);
-							  
-							  let lang01 = lang02[0];
-							  //console.log(`lang01 at ${i}: ${lang01}`);
-	  
-							  langArray.push(lang01);
-						  }
-	  
-						  //console.log(`langArray: ${langArray}`);
-	  
-						  let guildID03 = data.split("guild:");
-						  //console.log(`guildID03.length: ${guildID03.length}`);
-						  let guildIDArray = [];
-						  for (i=2; i <= guildID03.length - 1; i++) { //first two will always be undefined
-							  let guildID02 = guildID03[i].split(" -");
-							  //console.log(`lang02 at ${i}: ${lang02}`);
-							  
-							  let guildID01 = guildID02[0];
-							  //console.log(`lang01 at ${i}: ${lang01}`);
-	  
-							  guildIDArray.push(guildID01);
-						  }
-	  
-						  //console.log(`guildIDArray: ${guildIDArray}`);	
-	  
-						  let lang = "";
-						  for (i=0; i <= guildIDArray.length - 1; i++) {
-							  //console.log(`guildIDArray at ${i}: ${guildIDArray[i]}`);
-							  //console.log(`langArray at ${i}: ${langArray[i]}`);
-							  //console.log(`interaction.guildID at ${i}: ${interaction.guild.id}`);
-	  
-							  if (interaction.guild.id === guildIDArray[i]) {
-								  lang += `${langArray[i]}`;
-							  }
-						  }
-	  
-						  //console.log(`lang: ${lang}`);	
+					let langArray = [];
+					for (i=1; i <= lang03.length - 1; i++) { //first will always be undefined
+						let lang02 = lang03[i].split(" -");
+						//console.log(`lang02 at ${i}: ${lang02}`);
+						
+						let lang01 = lang02[0];
+						//console.log(`lang01 at ${i}: ${lang01}`);
+
+						langArray.push(lang01);
+					}
+
+					//console.log(`langArray: ${langArray}`);
+
+					let guildID03 = data.split("guild:");
+					//console.log(`guildID03.length: ${guildID03.length}`);
+					let guildIDArray = [];
+					for (i=2; i <= guildID03.length - 1; i++) { //first two will always be undefined
+						let guildID02 = guildID03[i].split(" -");
+						//console.log(`lang02 at ${i}: ${lang02}`);
+						
+						let guildID01 = guildID02[0];
+						//console.log(`lang01 at ${i}: ${lang01}`);
+
+						guildIDArray.push(guildID01);
+					}
+
+					//console.log(`guildIDArray: ${guildIDArray}`);	
+
+					let lang = "";
+					for (i=0; i <= guildIDArray.length - 1; i++) {
+						//console.log(`guildIDArray at ${i}: ${guildIDArray[i]}`);
+						//console.log(`langArray at ${i}: ${langArray[i]}`);
+						//console.log(`interaction.guildID at ${i}: ${interaction.guild.id}`);
+
+						if (interaction.guild.id === guildIDArray[i]) {
+							lang += `${langArray[i]}`;
+						}
+					}
+
+					//console.log(`lang: ${lang}`);	
 
 	function stopTitle() {
 		if (lang === "en") {
@@ -137,7 +137,7 @@ module.exports = {
 		}
 		else if (lang === "ru") {
 			return `Щелчок **\'GTA\'** удалить канал GTA Online.
-			\nЩелчок **\'RDO\'** Удаление канала Red Dead Online.`;
+			\nЩелчок **\'RDO\'** удалить канал Red Dead Online.`;
 		}
 		else if (lang === "de") {
 			return `Klicken **\'GTA\'** So entfernen Sie einen GTA Online-Kanal.
@@ -279,55 +279,52 @@ module.exports = {
 		}			
 	}	
 
-
 //-----END TRANSLATIONS-----//
-						  
-			const stopEmbed = new EmbedBuilder()
-			.setColor(`Red`) 
-			.setTitle(`${stopTitle()}`)
-			.setDescription(`${stopDesc()}`)		
 
-		const stopButtons = new ActionRowBuilder()
+		const startEmbed = new EmbedBuilder()
+			.setColor(`Green`) 
+			.setTitle(`${startTitle()}`)
+			.setDescription(`${startDesc()}`)	
+			
+		const startButtons = new ActionRowBuilder()
 			.addComponents(
-				new ButtonBuilder()
-					.setCustomId(`gtastop - ${interaction.user.id}`)
-					.setLabel('GTA')
-					.setStyle(ButtonStyle.Success),
-				new ButtonBuilder()
-					.setCustomId(`rdostop - ${interaction.user.id}`)
-					.setLabel('RDO')
-					.setStyle(ButtonStyle.Danger),			
+			    new ButtonBuilder()
+			        .setCustomId(`gtastart - ${interaction.user.id}`)
+			        .setLabel('GTA')
+			        .setStyle(ButtonStyle.Success),
+			    new ButtonBuilder()
+			        .setCustomId(`rdostart - ${interaction.user.id}`)
+			        .setLabel('RDO')
+			        .setStyle(ButtonStyle.Danger),		
 					new ButtonBuilder()
-					.setCustomId(`stopback - ${interaction.user.id}`)
-					.setLabel(`${goBack()}`)
-					.setStyle(ButtonStyle.Secondary),			
-			);						  	
+			        .setCustomId(`startback - ${interaction.user.id}`)
+			        .setLabel(`${goBack()}`)
+			        .setStyle(ButtonStyle.Secondary),	
+			);				
 
 //begin checking for permissions
-					await interaction.deferUpdate();
+		await interaction.deferUpdate();
 		//console.log(`AdminRequired(): ${AdminRequired()}`)
 		if (interaction.user.id != buttonUserID) {
 			await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });
-		}		
+		}	
 		else if (AdminRequired() === undefined) {
 				await interaction.followUp({ content: `${firstCommandString()}`, ephemeral: true });
 		}
-		else if (AdminRequired() === "AdminRequiredYes") { //if admin permissions are required			
+		else if (AdminRequired() === "AdminRequiredYes") { //if admin permissions are required
 			if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) {
-				await interaction.editReply({ embeds: [stopEmbed], components: [stopButtons] }).catch(err => {console.log(`stopEmbed Error: ${err.stack}`); process.kill(1)});					
+					await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`startEmbed Error: ${err}`));	
 			} 
-				
-			else if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) { //if the user is not an admin
-				await interaction.followUp({content: `${missingPermissions()}`, ephemeral: true});
+			else if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
+					await interaction.followUp({content: `${missingPermissions()}`, ephemeral: true});
 			}
 				
-			else if (!interaction.user.id === buttonUserID)  { //if the user did not trigger /autopost
-				await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });	
+			else if (!interaction.user.id === buttonUserID)  {
+					await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });	
 			}
 		}
 			
 		else if (AdminRequired() === "AdminRequiredNo") { //if admin permissions are NOT required
-			if ((interaction.user.id === buttonUserID) ) { 
 
 				//console.log(`guildRoleIds.length: ${guildRoleIds.length}`)
 				let hasARole = 0;
@@ -337,31 +334,25 @@ module.exports = {
 						hasARole += 1;
 					}
 				} //end loop to check for hasARole
-				//console.log(`hasARole: ${hasARole} && required roles:${guildRoleIds.length}`)
-				
-				if (guildRoleIds.length === 0) { //no role required
-					await interaction.editReply({ embeds: [stopEmbed], components: [stopButtons] }).catch(err => {console.log(`stopEmbed Error: ${err.stack}`); process.kill(1);});		
+					//console.log(`hasARole: ${hasARole} && required roles:${guildRoleIds.length}`)
+				if ( (guildRoleIds.length === 0) && (interaction.user.id === buttonUserID) ) { //no role required
+					await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`startButtons Error: ${err.stack}`));
 				}
 					
-				else if (hasARole >= 1) { //if the user has at least one role listed
-					await interaction.editReply({ embeds: [stopEmbed], components: [stopButtons] }).catch(err => {console.log(`stopEmbed Error: ${err.stack}`); process.kill(1)});		
+				else if ( (hasARole >= 1) && (interaction.user.id === buttonUserID) ) { //if the user has at least one role listed
+						await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`startButtons Error: ${err.stack}`));
 				}
 					
-				else if ((interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID)) { //if the user is an admin
-					await interaction.editReply({ embeds: [stopEmbed], components: [stopButtons] }).catch(err => {console.log(`stopEmbed Error: ${err.stack}`); process.kill(1)});	
+				else if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) { //If the user is an administrator
+						await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => {console.log(`startButtons Error: ${err.stack}`); process.kill(1);});
 				}		
-				else {
+				else if (hasARole <= 0) { //if the user does not have a listed role and is not an administrator
 					await interaction.followUp({content: `${missingPermissions()}`, ephemeral: true});
-				}
-				
-			} 
-			else  {
-				await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });	
-			}
+				}											
 		}
 			
 		else {
-				await interaction.followUp({ content: `${errorString()}`, ephemeral: true });
+			await interaction.followUp({ content: `${errorString()}`, ephemeral: true });
 		} //end checking for permissions	
 
 			function expiredDesc() {
@@ -393,16 +384,15 @@ module.exports = {
 						.setStyle(ButtonStyle.Secondary)
 						.setEmoji(':RSWeekly:1025248227248848940')
 						.setDisabled(true),			
-				);	
+				);						
 
 				setTimeout(() => {
 					interaction.editReply({components: [expiredButton]})
-				}, (60000 * 5))									
+				}, (60000 * 5))						
 
-				}}); //end fs.readFile for LANGData.txt
-		}); //end fs:readFile					
+				}});// end fs:readFile for LANGData.txt
+		}); //end fs:readFile			
 	
-	} //end if stop
-
+	} //end if start
 	},
 }

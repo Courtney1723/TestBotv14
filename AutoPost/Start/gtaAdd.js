@@ -144,26 +144,26 @@ module.exports = {
 
 	function gtaAddDesc() {
 		if (lang === "en") {
-			return `You will now get GTA Online auto posts to the <#${menuChannelID}> channel \n**the first Tuesday of every month at 2:00 PM EST**.`;
+			return `You will now get GTA Online auto posts to the <#${menuChannelID}> channel \n**every Thursday at 2:00 PM EST**.`;
 		}
 		if (lang === "es") {
-			return `Ahora recibirás publicaciones automáticas de GTA Online en el canal <#${menuChannelID}> \n**el primer martes de cada mes a las 14:00 EST**.`;
+			return `Ahora recibirás publicaciones automáticas de GTA Online en el canal <#${menuChannelID}> \n** todos los jueves a las 14:00 EST**.`;
 		}	
 		if (lang === "ru") {
-			return `Теперь вы будете получать автоматические сообщения GTA Online на <#${menuChannelID}> канале \n**в первый вторник каждого месяца в 14:00 EST**.`;
+			return `Теперь вы будете получать автоматические сообщения GTA Online на <#${menuChannelID}> канале \n**каждый четверг в 14:00 EST**.`;
 		}		
 		if (lang === "de") {
-			return `Sie erhalten jetzt GTA Online Auto-Posts auf dem <#${menuChannelID}>-Kanal \n**am ersten Dienstag eines jeden Monats um 14:00 Uhr EST**.`;
+			return `Sie erhalten jetzt GTA Online Auto-Posts auf dem <#${menuChannelID}>-Kanal \n**jeden Donnerstag um 14:00 EST**.`;
 		}		
 		if (lang === "pt") {
-			return `Agora você receberá postagens automáticas de GTA Online no canal <#${menuChannelID}> \n**na primeira terça-feira de cada mês às 14:00 EST**.`;
+			return `Agora você receberá postagens automáticas de GTA Online no canal <#${menuChannelID}> \n**todas as quintas-feiras às 14:00 EST**.`;
 		}		
 		else {
-			return `You will now get GTA Online auto posts to the <#${menuChannelID}> channel \n**the first Tuesday of every month at 2:00 PM EST**.`;
+			return `You will now get GTA Online auto posts to the <#${menuChannelID}> channel \n**every Thursday at 2:00 PM EST**.`;
 		}		
 	}			
 
-	function confirmSettingsString() {
+	function confirmSettingsString() {arguments
 		if (lang === "en") {
 				return `Confirm Settings`;
 		}
@@ -254,7 +254,7 @@ module.exports = {
 							await interaction.editReply({ embeds: [gtaConfirmEmbed], components: [confirmSettingsButton] })
 							.catch(err => console.log(`gtaConfirmEmbed Error: ${err.stack}`));
 
-							if ((interaction.user.ID === process.env.USER_ID_1) || (interaction.user.ID === process.env.USER_ID_2)) {
+							if ((interaction.user.id === process.env.USER_ID_1) || (interaction.user.id === process.env.USER_ID_2)) {
 								console.log(`You added a channel for GTA Online auto posts.`);
 							}
 							else {
