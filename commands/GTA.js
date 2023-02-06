@@ -57,6 +57,14 @@ module.exports = {
 			}
 			//console.log(`urlLink: ${urlLink()}`);
 
+						function isPast() {
+							let isPast003 = content.split("isPast\":");
+							let isPast002 = isPast003[1].split(",\"");
+
+							return isPast002[0];
+						}
+						//console.log(`isPast: ${isPast()}`);
+
 
 			fs.readFile('./LANGDataBase.txt', 'utf8', async function(err, data) {
 				if (err) { console.log(`Error: ${err}`) }
@@ -196,9 +204,10 @@ module.exports = {
 							//console.log(`gtaLinkFormatted at ${m}: ${gtaLinkFormatted}`);
 						}
 						//console.log(`gtaLinkFormatted: ${gtaLinkFormatted}`);
-						//--------------------END formatting for links--------------------//
 
-						//--------------------BEGIN checking for words that are bold at the beginning of a paragraph-------------------//
+			//--------------------END formatting for links--------------------//
+
+			//--------------------BEGIN checking for words that are bold at the beginning of a paragraph-------------------//
 
 						function notATitleIndex() {
 							let gtaTitles001 = gtaLinkFormatted.split("<p><b>");
@@ -595,9 +604,9 @@ module.exports = {
 							.setDescription(`These bonuses & discounts may be expired. \nRockstar typically releases the latest weekly bonuses & discounts every \nThursday after 1:00 PM EST.`)
 							.setFooter({ text: `It is ${estHour}:${estMinute} ${amPM} EST now.`, iconURL: process.env.logo_link })
 
-						//   if ( (aDay === 0) ) { //Test for today 0 = Sunday, 1 = Monday ... 6 = Saturday
-						if ((aDay === 4) && (aHour > 3) && (aHour < 17)) { //If it's Thursday(4) before 1:00PM EST (3>17)
-							await interaction.followUp({ embeds: [gtaExpiredEmbed], ephemeral: true }).catch(err => console.log(`gtaExpiredEmbed Error: ${err.stack}`));
+						//console.log(`isPast: ${isPast()}`);
+						if (isPast() === "true") {
+							await interaction.followUp({ embeds: [gtaExpiredEmbed], ephemeral: true }).catch(err => console.log(`gtaExpiredEmbed Error: ${err.stack}`));							
 						}
 
 						//interaction.editReply(`Console logged! 👍`);
