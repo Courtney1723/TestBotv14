@@ -377,7 +377,7 @@ for (i = 0; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 			rdoFinalString01 += `• ${rdoParas[c].charAt(0).toUpperCase()}${rdoParas[c].substring(1)}\n`;
 		}
 	}
-if (RDO_Bonus != undefined) {
+else if (RDO_Bonus != undefined) {
 	if (RDO_Title.toLowerCase().includes("discounts")) {
 			rdoFinalString01 += `\n**${RDO_Title}**${RDO_Bonus}\n`;
 	}	

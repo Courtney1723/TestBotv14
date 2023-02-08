@@ -9,7 +9,7 @@ let errorEmbed = new EmbedBuilder()
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('gta')
+		.setName('testgta')
 		.setDescription('Latest GTA Online Bonuses')
 		.setDMPermission(true),
 	async execute(interaction) {

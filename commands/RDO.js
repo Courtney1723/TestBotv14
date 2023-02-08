@@ -334,7 +334,7 @@ for (i = 0; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 			rdoFinalString01 += `• ${rdoParas[c].charAt(0).toUpperCase()}${rdoParas[c].substring(1)}\n`;
 		}
 	}
-if (RDO_Bonus != undefined) {
+else if (RDO_Bonus != undefined) {
 	if (RDO_Title.toLowerCase().includes("discounts")) {
 			rdoFinalString01 += `\n**${RDO_Title}**${RDO_Bonus}\n`;
 	}	
@@ -390,7 +390,8 @@ if (RDO_Bonus != undefined) {
 											.replace(/\*\*\n\*\*/g, "**\n\n**")
 											.replace(/• undefined/g, "• ")
 											.replace(/\)• /g, ")\n• ") //adds a newline between link lists
-					      .replace(/<a href=\"https:\/\/socialclub.rockstargames.com\/games\/rdr2\/catalogue\/online\/products\/23bc7710\/c\/8bdc1af5" target=\"_blank\">\n\<\/a>•/g, ""); //FIXME - delete next month
+					      .replace(/<a href=\"https:\/\/socialclub.rockstargames.com\/games\/rdr2\/catalogue\/online\/products\/23bc7710\/c\/8bdc1af5" target=\"_blank\" draggable=\"false\">\n\<\/a>•/g, "") //FIXME - delete next month
+					      .replace(/<a href=\"https:\/\/socialclub.rockstargames.com\/games\/rdr2\/catalogue\/online\/products\/23bc7710\/c\/8bdc1af5" target=\"_blank\">\n\<\/a>•/g, ""); //FIXME - delete next month		
 
 			//console.log(`rdoFinalString: ${rdoFinalString}`);
     function rdoPost() {

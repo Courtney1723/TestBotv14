@@ -2,16 +2,47 @@ var cron = require('node-cron'); //https://github.com/node-cron/node-cron
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const phantom = require('phantom'); //https://github.com/amir20/phantomjs-node
-		let errorText = `There was an error while executing this command!\nThe error has been sent to the developer and it will be fixed as soon as possible. \nIf the error persists you can try re-inviting the Rockstar Weekly bot by [clicking here](<${process.env.invite_link}>). \nReport the error by joining the Rockstar Weekly bot support server: [click here](<${process.env.support_link}>).`;
 
 module.exports = {
 	name: 'ready',
 	async execute(client) {
 
 		//cron.schedule('*/20 * * * * *', () => { //every 20 seconds - testbench
-		//cron.schedule('50 11 1-7 * 2', () => {
-		cron.schedule('00 12 31 * 2', () => { //noon on the 31st of every month if it's a Tuesday
-		  //console.log('running a task');
+		cron.schedule('40 11 1-7 * 2', () => { //(second),minute,hour,date,month,weekday '0 12 1-7 * 2' = 12:00 PM on 1st Tuesday
+		  console.log('Sending RDO Auto Posts...');
+
+			fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
+			  if (err) {console.log(`Error: ${err}`)} 
+				else {
+					let lang03 = data.split("lang:");
+					//console.log(`lang03.length: ${lang03.length}`);
+
+					let langArray = [];
+					for (i=1; i <= lang03.length - 1; i++) { //first language will always be undefined
+						let lang02 = lang03[i].split(" -");
+						//console.log(`lang02 at ${i}: ${lang02}`);
+						
+						let lang01 = lang02[0];
+						//console.log(`lang01 at ${i}: ${lang01}`);
+
+						langArray.push(lang01);
+					}
+					//console.log(`langArray: ${langArray}`);
+
+					let guildID03 = data.split("guild:");
+					//console.log(`guildID03.length: ${guildID03.length}`);
+					let guildIDLangArray = [];
+					for (i=2; i <= guildID03.length - 1; i++) { //first two will always be undefined
+						let guildID02 = guildID03[i].split(" -");
+						//console.log(`lang02 at ${i}: ${lang02}`);
+						
+						let guildID01 = guildID02[0];
+						//console.log(`lang01 at ${i}: ${lang01}`);
+
+						guildIDLangArray.push(guildID01);
+					}
+
+					//console.log(`guildIDLangArray: ${guildIDLangArray}`);				
 
 //----------Begin Formatting GuildIds, ChannelIds, and rdo_gtaIDs-----------//	
 			fs.readFile('./RDODataBase.txt', 'utf8', async function (err, data) {
@@ -60,6 +91,34 @@ module.exports = {
 					//console.log(`guildIDs: ${guildIDs}`);
 					console.log(`channelIDs: ${channelIDs}`); //do not comment out - no idea why 
 					//console.log(`rdo_gtaIDs: ${rdo_gtaIDs}`);
+
+			let guildIDsArray = guildIDs.split('  - ');
+			guildIDsArray.shift(); //removes the undefined element
+			let channelIDArray = channelIDs.split('  - ');
+			channelIDArray.shift(); //removes the undefined element
+			let guildLangs = guildIDLangArray.join(` - `);
+					//console.log(`guildIDsArray: ${guildIDsArray}`);
+					//console.log(`guildIDLangArray: ${guildIDLangArray}`);
+					//console.log(`channelIDArray: ${channelIDArray}`);
+			for (c = 0; c <= channelIDArray.length - 2; c++) { //first & last elements will always be undefined	
+					let lang = "";
+				
+				for (langCheck=0;langCheck <= langArray.length - 1; langCheck++) { //iterates through all the languages
+						// console.log(`guildIDsArray[c] === guildIDLangArray[langCheck]? ${guildIDsArray[c] === guildIDLangArray[langCheck]}`);
+						// console.log(`guildIDsArray at c${c}: ${guildIDsArray[c]}`);
+						// console.log(`guildIDLangArray at c${c}: ${guildIDLangArray[c]}`);
+						// console.log(`channelIDArray at c${c}: ${channelIDArray[c]}`);
+						// console.log(`langArray at c${c}: ${langArray[c]}`);					
+						// console.log(`guildIDsArray at langCheck${langCheck}: ${guildIDsArray[langCheck]}`);
+						// console.log(`guildIDLangArray at langCheck${langCheck}: ${guildIDLangArray[langCheck]}`);
+						// console.log(`channelIDArray at langCheck${langCheck}: ${channelIDArray[langCheck]}`);
+						// console.log(`langArray at langCheck${langCheck}: ${langArray[langCheck]}`);						
+					if (guildIDsArray[c] === guildIDLangArray[langCheck]) { //if the subscribed channel is in a guild that has a language chosen
+						lang = langArray[langCheck];
+					}
+				}
+				console.log(`lang: ${lang}\nID: ${channelIDArray[c]}`);
+				
 //----------END Formatting GuildIds, ChannelIds, and rdo_gtaIDs-----------//	
 
 					
@@ -77,7 +136,7 @@ module.exports = {
 		const status = await page.open(rdoURL);
 			//console.log(`Page opened with status [${status}].`);
 	if (status === `success`) { //checks if Rockstar Social Club website is down
-		const content = await page.property('content'); // Gets the latest gta updates
+		const content = await page.property('content'); // Gets the latest rdo updates
 			//console.log(content); 
 
 		let baseURL = "https://socialclub.rockstargames.com/";
@@ -87,7 +146,28 @@ module.exports = {
 		let urlHash = urlHash01[0];
 			//console.log(`urlHash: ${urlHash}`);
 
-		let url = `${baseURL}${urlHash}`;
+		let urlLink02 = content.split("linkToUrl\":");
+		let urlLink01 = urlLink02[1].split("\"");
+		//let urlLink = urlLink01[1];
+			//console.log(`urlLink: ${urlLink01[1]}`);
+
+			function urlLink() {
+				if (urlLink01[1].includes(`\?`)) {
+					let urlLinkFix = urlLink01[1].split(`\?`);
+					let urlLink = urlLinkFix[0];
+					return urlLink;
+				}
+				else {
+					let urlLink = urlLink01[1];
+					return urlLink;
+				}					
+			}
+			//console.log(`urlLink: ${urlLink()}`);		
+
+			let langBase = `/?lang=`;
+			let langURL = `${langBase}${lang}`;
+			
+			let url = `${baseURL}/${urlLink()}${langURL}`;
 			//console.log(`url: ${url}`);
 
 		const rdoStatus = await page.open(url);
@@ -154,16 +234,12 @@ module.exports = {
 
 		let rdoLinkFormatted = rdoString;
 		for (m = 0; m <= rdoLinks002.length - 1; m++) { // keep - 2; the last element will always be blank
-			if (m != 9) { //FIXME - remove next month
-				rdoLinkFormatted = rdoLinkFormatted.replace(/<a.*?a>/, `[${rdoLinkTitles002[m]}](${rdoLinks002[m]})`); //replaces each link with proper discord formatted link
-				//console.log(`rdoLinkFormatted at ${m}: ${rdoLinkFormatted}`);
-				//console.log(`rdoLinkTitles002 at ${m}: ${rdoLinkTitles002[m]}`);
-				//console.log(`rdoLinks002 at ${m}: ${rdoLinks002[m]}`);
-			}
+			rdoLinkFormatted = rdoLinkFormatted.replace(/<a.*?a>/, `[${rdoLinkTitles002[m]}](${rdoLinks002[m]})`); //replaces each link with proper discord formatted link
+			//console.log(`rdoLinkFormatted at ${m}: ${rdoLinkFormatted}`);
 		}
 		//console.log(`rdoLinkFormatted: ${rdoLinkFormatted}`);
 //--------------------END formatting for links--------------------//
-
+						
 //--------------------BEGIN checking for words that are bold at the beginning of a paragraph-------------------//
 
 	function notATitleIndex() {
@@ -232,8 +308,7 @@ for (i = 0; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 					//console.log(`Titles2 size at ${i}: ${titlesLength}\n`);
 				let rdoTitleString = ""; //initial empty title, will be populated in the j loop
 				
-			for (j = 0; j <= titlesLength; ++j) {
-				while (j <= (titlesLength)) { 
+			for (j = 0; j <= titlesLength; j++) { 
 					//console.log(`I: ${i}, J: ${j}\n`); //while loop check, expected: i = title number, j = index of title words
 					if ( (Titles2[j] != null) && (Titles2[j] != "") ) { //ignores blank space elements
 						//console.log(`Titles2 at J: ${j}: ${Titles2[j]}\n`); //checks for blank elements
@@ -255,14 +330,13 @@ for (i = 0; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 						rdoTitleString += `${Titles2[j].charAt(0)}${Titles2[j].toLowerCase().slice(1)} `; 
 						}
 					}
-					++j;
-				}
 			}
 			//return Titles2[0]; //Testbench if rdoTitleString has an error, this returns the first word of every title
 			return `${rdoTitleString}`;
 			}
 		let RDO_Title = titleCapitalization(RDOBonuses);
 		//console.log(`RDO_Title at ${i}: ${RDO_Title}`);		
+	
 //--------------------END capitalization Function-----------------//		
 
 		//-----BEGIN get the index of "Only on PlayStation..." title-----//
@@ -302,12 +376,12 @@ for (i = 0; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 //-----BEGIN populating rdoFinalString01 -----//
 	if (i === 0) {
 		let rdoParas = RDO_Title.split("<p>");
-		for (c = 1; c <= rdoParas.length - 1; c++) {
+		for (d = 1; d <= rdoParas.length - 1; d++) {
 			
-			rdoFinalString01 += `• ${rdoParas[c].charAt(0).toUpperCase()}${rdoParas[c].substring(1)}\n`;
+			rdoFinalString01 += `• ${rdoParas[d].charAt(0).toUpperCase()}${rdoParas[d].substring(1)}\n`;
 		}
 	}
-if (RDO_Bonus != undefined) {
+else if (RDO_Bonus != undefined) {
 	if (RDO_Title.toLowerCase().includes("discounts")) {
 			rdoFinalString01 += `\n**${RDO_Title}**${RDO_Bonus}\n`;
 	}	
@@ -327,8 +401,8 @@ if (RDO_Bonus != undefined) {
 			//console.log(`rdoParas length at ${i}: ${rdoParas.length}`);
 			let rdoParaBonuses = "";
 		
-		for (c = 1; c <= rdoParas.length - 1; c++) {
-			rdoParaBonuses += `• ${rdoParas[c]}\n`;
+		for (e = 1; e <= rdoParas.length - 1; e++) {
+			rdoParaBonuses += `• ${rdoParas[e]}\n`;
 		}			
 		
 		rdoFinalString01 += `**${RDO_Title}**\n${rdoParaBonuses}\n`;
@@ -338,8 +412,8 @@ if (RDO_Bonus != undefined) {
 			//console.log(`rdoParas at ${i}: ${rdoParas}`);
 			//console.log(`rdoParas length at ${i}: ${rdoParas.length}`);
 			let rdoParaBonuses = "";		
-		for (c = 1; c <= rdoParas.length - 1; c++) {
-			rdoParaBonuses += `• ${rdoParas[c]}\n`;
+		for (f = 1; f <= rdoParas.length - 1; f++) {
+			rdoParaBonuses += `• ${rdoParas[f]}\n`;
 		}			
 		rdoFinalString01 += `**${RDO_Title}**\n${rdoParaBonuses}\n`;
 	}
@@ -357,17 +431,16 @@ if (RDO_Bonus != undefined) {
 											.replace(/\*\*\n\*\*/g, "**\n\n**")
 											.replace(/• undefined/g, "• ")
 											.replace(/\)• /g, ")\n• ") //adds a newline between link lists
-											.replace(/• Jan 3 – Jan 9:/g, "• Click the link below for more details\n")
-								      .replace(/<a href=\"https:\/\/socialclub.rockstargames.com\/games\/rdr2\/catalogue\/online\/products\/23bc7710\/c\/8bdc1af5" target=\"_blank\">\n\<\/a>•/g, ""); //FIXME - delete next month
+											.replace(/• Jan 3 – Jan 9:/g, "• Click the link below for more details\n");
 
 			//console.log(`rdoFinalString: ${rdoFinalString}`);
     function rdoPost() {
-        return rdoFinalString.slice(0, 3797); //FIXME: adjust this for the best break - up to 4000
+        return rdoFinalString.slice(0, 3663); //FIXME: adjust this for the best break - up to 4000
     }
     //console.log(`1: ${rdoFinalString.length}\n`) 
     function rdoPost2() {
       if (rdoFinalString.length > 4000) {
-        let post02 = rdoFinalString.substr(3797, 1800); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
+        let post02 = rdoFinalString.substr(3663, 1800); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
         return post02;
       } else {
         return "";
@@ -382,23 +455,84 @@ if (RDO_Bonus != undefined) {
     }		
     function rdoFooterMax() {
       if (rdoFinalString.length > 4000) {
-        return `** [click here](${url}) for more details**`;
+				if (lang === "en") {
+					return `\n** [click here](${url}) for more details**`;
+				}
+				else if (lang === "es" ) {
+					return `\n** [haga clic aquí](${url}) para más detalles**`;
+				}
+				else if (lang === "ru" ) {
+					return `\n** [нажмите здесь](${url}) для получения более подробной информации**`;
+				}				
+				else if (lang === "de" ) {
+					return `\n** [Klicken Sie hier](${url}) für weitere Details**`;
+				}		
+				else if (lang === "pt" ) {
+					return `\n** [clique aqui](${url}) para mais detalhes**`;
+				}								
+				else {
+					return `\n** [click here](${url}) for more details**`;
+				}
       } else {
         return "";
       }
     }
     function rdoFooterMin() { 
       if (rdoFinalString.length <= 4000) {
-        return `** [click here](${url}) for more details**`;
+				if (lang === "en") {
+					return `\n** [click here](${url}) for more details**`;
+				}
+				else if (lang === "es" ) {
+					return `\n** [haga clic aquí](${url}) para más detalles**`;
+				}
+				else if (lang === "ru" ) {
+					return `\n** [нажмите здесь](${url}) для получения более подробной информации**`;
+				}				
+				else if (lang === "de" ) {
+					return `\n** [Klicken Sie hier](${url}) für weitere Details**`;
+				}		
+				else if (lang === "pt" ) {
+					return `\n** [clique aqui](${url}) para mais detalhes**`;
+				}								
+				else {
+					return `\n** [click here](${url}) for more details**`;
+				}
       } else {
         return "";
       }
-    } 		
+    } 	
+
+//--BEGIN TRANSLATIONS--//
+
+function rdoTitleFunction() {
+					
+			if (lang === "en") {
+				return `Red Dead Online Bonuses:`;
+			}
+			else if (lang === "es") {
+				return `Bonificaciones de Red Dead Online:`;
+			}
+			else if (lang === "ru") {
+				return `Бонусы Red Dead Online:`;
+			}
+			else if (lang === "de") {
+				return `Boni in Red Dead Online:`;
+			}
+			else if (lang === "pt") {
+				return `Bônus no Red Dead Online:`;
+			}
+			else {
+    		return `Red Dead Online Bonuses:`;
+			}		
+		}
+		//console.log(`rdoTitleFunction: ${rdoTitleFunction()}`);
+
+//--END TRANSLATIONS--//			
 		
 
 		let rdoEmbed = new EmbedBuilder()
 			.setColor('0xC10000') //Red
-			.setTitle('Red Dead Redemption II Online Bonuses & Discounts:')
+			.setTitle(`${rdoTitleFunction()}`)
 			.setDescription(`${rdoDate[0]}\n\n${rdoPost()} \n${rdoFooterMin()} ${elipseFunction()}`)
 		let rdoEmbed2 = new EmbedBuilder()
 			.setColor('0xC10000') //Red
@@ -416,14 +550,11 @@ if (RDO_Bonus != undefined) {
 //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//		
 //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
 
-		
-		let channelIDArray = channelIDs.split(' - ');
 			//console.log(`channelIDArray length: ${channelIDArray.length}`);
 			//console.log(`channelIDArray: ${channelIDArray}`);
-		for (c = 0; c <= channelIDArray.length - 2; c++) { //last element will always be blank
-			//console.log(`channelIDArray at ${c}: ${channelIDArray[c]}`);
+			//console.log(`channelIDArray at c${c}: ${channelIDArray[c]}`);
 			if (channelIDArray[c].startsWith("undefined")) {}
-			else {			
+			else {
 				if (rdoFinalString.length <= 4000) {
 					client.channels.fetch(channelIDArray[c]).then(channel => channel.send(({embeds: [rdoImageEmbed, rdoEmbed]}))).catch(err => console.log(`Min Error: ${err}\nChannel ID: ${channelIDArray[c]}`));
 				} 
@@ -431,19 +562,27 @@ if (RDO_Bonus != undefined) {
 					client.channels.fetch(channelIDArray[c]).then(channel => channel.send({embeds: [rdoImageEmbed, rdoEmbed, rdoEmbed2]})).catch(err => console.log(`Max Error: ${err}\nChannel ID: ${channelIDArray[c]}`));
 				}
 			}
-		} //end c loop
 
-	} else {
-			let RStarDownEmbed = new EmbedBuilder()
-				.setColor('0xFF0000') //RED
-				.setDescription(`The Rockstar Social Club website is down. \nPlease try again later. \nSorry for the inconvenience.`)
-			client.channels.fetch(process.env.logChannel).then(channel => channel.send({embeds: [RStarDownEmbed], ephemeral: true}));
-			console.log(`The Rockstar Social Club website is down.`);	
-	}		
-		}
 	}
-		
-			});
+	else {
+		let RStarDownEmbed = new EmbedBuilder()
+			.setColor('0xFF0000') //RED
+			.setDescription(`The Rockstar Social Club website is down. \nPlease try again later. \nSorry for the inconvenience.`)
+		client.channels.fetch(process.env.logChannel).then(channel => channel.send({embeds: [RStarDownEmbed], ephemeral: true}));
+		console.log(`The Rockstar Social Club website is down.`);	
+	}		
+	}
+	else {
+		let RStarDownEmbed = new EmbedBuilder()
+			.setColor('0xFF0000') //RED
+			.setDescription(`The Rockstar Social Club website is down. \nPlease try again later. \nSorry for the inconvenience.`)
+		client.channels.fetch(process.env.logChannel).then(channel => channel.send({embeds: [RStarDownEmbed], ephemeral: true}));
+		console.log(`The Rockstar Social Club website is down.`);	
+	}			
+	} //end c loop
+				}}); //end fs.readFile for RDODataBase? 
+
+				}}); //end fs.readFile for LANGDataBase
 		}, {
    scheduled: true,
    timezone: "America/Denver"

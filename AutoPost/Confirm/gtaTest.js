@@ -496,14 +496,39 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 											.replace(/\n• undefine/g, "")
 											.replace(/• \n\n/g, "")
 
+						function bestBreak() {
+							var gtaSpaces = gtaFinalString.split(`\n\n`); //counts the newlines
+							var charCount = 0;//( (gtaTitleString().length) + (gtaDate[0].length) + (gtaFooterMin().length) + (elipseFunction().length) ); 
+							//console.log(`( T${(gtaTitleString().length)} + D${(gtaDate[0].length)} + F${(gtaFooterMin().length)} + E${(elipseFunction().length)} )`);
+							
+							var finalZ = 0;
+							var countZ = 0;
+							for (z = 0; charCount <= 3950; z++) {
+								//console.log(`gtaSpaces at ${z}: ${gtaSpaces[z]}`);
+									charCount += gtaSpaces[z].length;
+								//console.log(`charCount at ${z}: ${charCount}`);
+								var finalZ = gtaSpaces[z].length;
+								countZ++;
+							}
+							//console.log(`charCount: ${charCount}`);
+							return (charCount - finalZ) + (countZ * 2) - 3;
+							// ( (gtaTitleString().length) + (gtaDate[0].length) + (gtaFooterMin().length) + (elipseFunction().length) )
+						}
+						//console.log(`bestBreak: ${bestBreak()}`);
+
+						function bestEndBreak() {
+							return (6000 - (bestBreak()) - (gtaFooterMax().length) - (gtaImage[0].length) - 3); //- 3 for the ellipse function
+						}
+						//console.log(`bestEndBreak: ${bestEndBreak()}`);			
+
 			//console.log(`gtaFinalString: ${gtaFinalString}`);
     function gtaPost() {
-        return gtaFinalString.slice(0, 3937); //FIXME: adjust this for the best break - up to 4000
+        return gtaFinalString.slice(0, bestBreak()); //FIXME: adjust this for the best break - up to 4000
     }
     //console.log(`1: ${gtaFinalString.length}\n`) 
     function gtaPost2() {
       if (gtaFinalString.length > 4000) {
-        let post02 = gtaFinalString.substr(3937, 1828); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
+        let post02 = gtaFinalString.substr(bestBreak(), bestEndBreak()); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
         return post02;
       } else {
         return "";
