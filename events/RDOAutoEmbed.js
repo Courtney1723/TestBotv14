@@ -7,8 +7,8 @@ module.exports = {
 	name: 'ready',
 	async execute(client) {
 
-		//cron.schedule('*/20 * * * * *', () => { //every 20 seconds - testbench
-		cron.schedule('40 11 1-7 * 2', () => { //(second),minute,hour,date,month,weekday '0 12 1-7 * 2' = 12:00 PM on 1st Tuesday
+		//cron.schedule('* * * * *', () => { //every 60 seconds - testbench
+		cron.schedule('00 12 1-7 * 2', () => { //(second),minute,hour,date,month,weekday '0 12 1-7 * 2' = 12:00 PM on 1st Tuesday
 		  console.log('Sending RDO Auto Posts...');
 
 			fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
@@ -117,7 +117,7 @@ module.exports = {
 						lang = langArray[langCheck];
 					}
 				}
-				console.log(`lang: ${lang}\nID: ${channelIDArray[c]}`);
+				console.log(`lang: ${lang} - ID: ${channelIDArray[c]}`);
 				
 //----------END Formatting GuildIds, ChannelIds, and rdo_gtaIDs-----------//	
 
@@ -382,15 +382,49 @@ for (i = 0; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 		}
 	}
 else if (RDO_Bonus != undefined) {
-	if (RDO_Title.toLowerCase().includes("discounts")) {
-			rdoFinalString01 += `\n**${RDO_Title}**${RDO_Bonus}\n`;
+	if ( 
+		(RDO_Title.toLowerCase().includes("discounts")) || 
+		(RDO_Title.toLowerCase().includes("descuentos")) || 
+		(RDO_Title.includes("Скидки")) || 
+		(RDO_Title.includes("Rabatte")) || 
+		(RDO_Title.includes("Descontos")) ) { 
+			rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n`;
 	}	
-	else if (RDO_Title.toLowerCase().includes("triple rewards")) {
-		rdoFinalString01 += `**${RDO_Title}**\n\n`;
+	else if ( 
+		(RDO_Title.includes("2x")) || //German, and Portuguese use numbers 
+		(RDO_Title.includes("3x")) || 
+		(RDO_Title.toLowerCase().includes("double rewards")) || //English uses both.. of course 
+		(RDO_Title.toLowerCase().includes("triple rewards")) || 
+		(RDO_Title.includes("Doble De RDO"))  || //Spanish and Russian use words
+		(RDO_Title.includes("Triple De RDO")) || 
+		(RDO_Title.includes("Вдвое больше RDO")) || 
+		(RDO_Title.includes("Втрое больше RDO")) ) {
+			rdoFinalString01 += `**${RDO_Title}**\n\n`;
 	}
-	else if (RDO_Title.toLowerCase().includes("featured series")) {
-		rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
+	else if ( 
+		(RDO_Title.toLowerCase().includes("featured series")) || 
+		(RDO_Title.includes("Calendario De Series Destacadas")) ||
+		(RDO_Title.includes("Расписание избранных серий")) ||
+		(RDO_Title.includes("Übersicht Über Die Präsentierten Serien")) ||
+		(RDO_Title.includes("Calendário De Série Em Destaque")) ) { 
+			rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
 	}		
+	else if ( 
+		(RDO_Title.toLowerCase().includes("weekly bonuses")) || 
+		(RDO_Title.includes("Bonificaciones Semanales")) ||  
+		(RDO_Title.includes("Еженедельные бонусы")) || 
+		(RDO_Title.includes("Wöchentliche Boni")) || 
+		(RDO_Title.includes("Bônus Semanais")) ) { 
+			rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
+	}	
+	else if ( 
+		(RDO_Title.toLowerCase().includes("monthlong rewards")) || 
+		(RDO_Title.includes("Recompensas Durante Todo El Mes")) || 
+		(RDO_Title.includes("Награды месяца")) || 
+		(RDO_Title.includes("Monatsbelohnungen")) || 
+		(RDO_Title.includes("Recompensas O Mês Inteiro")) ){ 
+			rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
+	}	
 	else if (RDO_Title.toLowerCase().includes(":")) {
 		rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
 	}			
@@ -426,21 +460,48 @@ else if (RDO_Bonus != undefined) {
 											.replace(/<\/p>/g, "")
 										  .replace(/<\/b>/g, "")
 										  .replace(/<b>/g, "")
-											.replace(/\n\n• /g, "\n• ") //removes spaces before a list item
+											.replace(/\n\n• /g, "• ") //removes spaces before a list item - titles already have newlines
 											.replace(/\n\n/g, "\n")
+											.replace(/\n\n\n/g, "\n")
 											.replace(/\*\*\n\*\*/g, "**\n\n**")
 											.replace(/• undefined/g, "• ")
 											.replace(/\)• /g, ")\n• ") //adds a newline between link lists
-											.replace(/• Jan 3 – Jan 9:/g, "• Click the link below for more details\n");
+					      .replace(/<a href=\"https:\/\/socialclub.rockstargames.com\/games\/rdr2\/catalogue\/online\/products\/23bc7710\/c\/8bdc1af5" target=\"_blank\" draggable=\"false\">\n\<\/a>•/g, "") //FIXME - delete next month
+					      .replace(/<a href=\"https:\/\/socialclub.rockstargames.com\/games\/rdr2\/catalogue\/online\/products\/23bc7710\/c\/8bdc1af5" target=\"_blank\">\n\<\/a>•/g, ""); //FIXME - delete next month	
+
+						function bestBreak() {
+							var rdoSpaces = rdoFinalString.split(`\n\n`); //counts the newlines
+							var charCount = 0;//( (rdoTitleString().length) + (rdoDate[0].length) + (rdoFooterMin().length) + (elipseFunction().length) ); 
+							//console.log(`( T${(rdoTitleString().length)} + D${(rdoDate[0].length)} + F${(rdoFooterMin().length)} + E${(elipseFunction().length)} )`);
+							
+							var finalZ = 0;
+							var countZ = 0;
+							for (z = 0; charCount <= 3950; z++) {
+								//console.log(`rdoSpaces at ${z}: ${rdoSpaces[z]}`);
+									charCount += rdoSpaces[z].length;
+								//console.log(`charCount at ${z}: ${charCount}`);
+								var finalZ = rdoSpaces[z].length;
+								countZ++;
+							}
+							//console.log(`charCount: ${charCount}`);
+							return (charCount - finalZ) + (countZ * 2) - 3;
+							// ( (rdoTitleString().length) + (rdoDate[0].length) + (rdoFooterMin().length) + (elipseFunction().length) )
+						}
+						//console.log(`bestBreak: ${bestBreak()}`);
+
+						function bestEndBreak() {
+							return (6000 - (bestBreak()) - (rdoFooterMax().length) - (rdoImage[0].length) - 3); //- 3 for the ellipse function
+						}
+						//console.log(`bestEndBreak: ${bestEndBreak()}`);					
 
 			//console.log(`rdoFinalString: ${rdoFinalString}`);
     function rdoPost() {
-        return rdoFinalString.slice(0, 3663); //FIXME: adjust this for the best break - up to 4000
+        return rdoFinalString.slice(0, bestBreak()); //FIXME: adjust this for the best break - up to 4000
     }
     //console.log(`1: ${rdoFinalString.length}\n`) 
     function rdoPost2() {
       if (rdoFinalString.length > 4000) {
-        let post02 = rdoFinalString.substr(3663, 1800); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
+        let post02 = rdoFinalString.substr(bestBreak(), bestEndBreak()); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
         return post02;
       } else {
         return "";
