@@ -291,37 +291,7 @@ for (i = 0; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 		let RDO_Title = titleCapitalization(RDOBonuses);
 			//console.log(`RDO_Title at ${i}: ${RDO_Title}`);		
 //--------------------END capitalization Function-----------------//		
-
-		//-----BEGIN get the index of "Only on PlayStation..." title-----//
-	
-			function onlyOnIndex1() { //returns the index of the title: Only on Playstation...
-				if ( RDO_Title.toLowerCase().includes("only on playstation") ) {
-					return i + 1;
-				} else {
-					return -1;
-					}
-			}
-				//console.log(`onlyOnIndex1() at ${i}: ${onlyOnIndex1()}`);
-	
-			function onlyOnIndex2() { //returns the index of the title: Only on Playstation...
-				if ( RDO_Title.toLowerCase().includes("only on playstation") ) {
-					return i + 2;
-				} else {
-					return -2;
-					}
-			}
-				//console.log(`onlyOnIndex2() at ${i}: ${onlyOnIndex2()}`);		
-
-			if (onlyOnIndex1() > 0) {
-				nextGenIndex1 += onlyOnIndex1(); //populates nextGenIndex1 with the index of the title after "Only on PS5..."
-			}
-				//console.log(`nextGenIndex1 at ${i}: ${nextGenIndex1}`);
-
-			if (onlyOnIndex2() > 0) {
-				nextGenIndex2 += onlyOnIndex2(); //populates nextGenIndex1 with the index of the second title after "Only on PS5..."
-			}
-				//console.log(`nextGenIndex2 at ${i}: ${nextGenIndex2}`);								
-		//-----END get the index of "Only on PlayStation..." title-----//			
+		
 	let RDO_Bonus = RDOBonuses[1];
 		//console.log(`RDO_Title at ${i}: ${RDO_Title}`);
 		//console.log(`RDO_Bonus at ${i}: ${RDO_Bonus}`);
