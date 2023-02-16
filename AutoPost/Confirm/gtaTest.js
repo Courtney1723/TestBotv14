@@ -214,6 +214,9 @@ function gtaTest() {
 				.replace(/< li>/g, "")
 				.replace(/<\/>/g, "")
 
+			//--Spanish--//
+				.replace(/<mq:rxt><\/mq:rxt>/g, "")			
+
 			//-----END FOREIGN LANGUAGE FORMATTING-----//
 
 			//console.log(`gtaString: ${gtaString}`);

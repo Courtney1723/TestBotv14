@@ -222,6 +222,9 @@ let gtaURL = process.env.SOCIAL_URL_GTA2;
 				.replace(/<\/strong>/g, "")
 				.replace(/<strong>/g, "")			
 
+			//--Spanish--//
+				.replace(/<mq:rxt><\/mq:rxt>/g, "")			
+
 			//-----END FOREIGN LANGUAGE FORMATTING-----//
 			
 			//console.log(`gtaString: ${gtaString}`);
