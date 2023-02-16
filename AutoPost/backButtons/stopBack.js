@@ -283,7 +283,7 @@ module.exports = {
 
 		const startEmbed = new EmbedBuilder()
 			.setColor(`Green`) 
-			.setTitle(`${startTitle()}`)
+			.setTitle(`${stopTitle()}`)
 			.setDescription(`${startDesc()}`)	
 			
 		const startButtons = new ActionRowBuilder()

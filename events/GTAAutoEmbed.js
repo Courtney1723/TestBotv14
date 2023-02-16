@@ -8,7 +8,7 @@ module.exports = {
 	async execute(client) {
 
 		//cron.schedule('* * * * *', () => { //(second),minute,hour,date,month,weekday 
-		cron.schedule('00 12 * * 4', () => { //(second),minute,hour,date,month,weekday '0 12 * * 4' = 12:00 PM on Thursday
+		cron.schedule('35 11 * * 4', () => { //(second),minute,hour,date,month,weekday '0 12 * * 4' = 12:00 PM on Thursday
 		  console.log('sending GTA Auto Posts...');
 			
 			fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {

@@ -113,7 +113,7 @@ module.exports = {
 						}
 					}
 
-					console.log(`lang: ${lang}`);
+					//console.log(`lang: ${lang}`);
 
 
 					let langBase = `/?lang=`;
