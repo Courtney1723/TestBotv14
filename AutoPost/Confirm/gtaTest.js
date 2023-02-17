@@ -213,6 +213,8 @@ function gtaTest() {
 				.replace(/<\/liЗаработайте>/g, "")
 				.replace(/< li>/g, "")
 				.replace(/<\/>/g, "")
+				.replace(/<\/strong>/g, "")
+				.replace(/<strong>/g, "")
 
 			//--Spanish--//
 				.replace(/<mq:rxt><\/mq:rxt>/g, "")			
