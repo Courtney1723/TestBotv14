@@ -247,7 +247,7 @@ module.exports = {
 						//Appends the GTADataBase.txt file with guildID, Channel ID, and choice of gta of gta
 					fs.appendFile(`./GTADataBase.txt`,`guild:${interaction.guild.id} - channel:${menuChannelID} - rdo_gta:gtaStartMenu - \n`, async err => {
 							 if (err) {
-								 console.error(err);
+								 console.error(err.stack);
 								 return
 									 }		
 						else {
@@ -258,7 +258,11 @@ module.exports = {
 								console.log(`You added a channel for GTA Online auto posts.`);
 							}
 							else {
-								console.log(`A user added a channel for GTA Online auto posts.`);
+								if ((interaction.user.id === process.env.USER_ID_1) || (interaction.user.id === process.env.USER_ID_2)) {
+									console.log(`You added a channel for GTA Online auto posts.`)
+								} else {
+										console.log(`A user added a channel for GTA Online auto posts.`);
+								}
 							}
 						}
 

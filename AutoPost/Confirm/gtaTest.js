@@ -641,17 +641,242 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 			//console.log(`channelIDArray length: ${channelIDArray.length}`);
 			//console.log(`channelIDArray: ${channelIDArray}`);
 		for (c = 0; c <= channelIDArray.length - 2; c++) { //last element will always be blank
-			//console.log(`channelIDArray at ${c}: ${channelIDArray[c]}`);
+				//console.log(`channelIDArray at ${c}: ${channelIDArray[c]}`);
 			if (channelIDArray[c].startsWith("undefined")) {return}
-			else if (!channelIDArray[c].startsWith("undefined")) {
+			else if (!channelIDArray[c].startsWith("undefined")) {			
 
+			function success() {
+				if (lang === "en") {
+						return `Success`;
+				}
+				else if (lang === "es") {
+					return `Éxito`;
+				}
+				else if (lang === "ru") {
+					return `Успех`;
+				}
+				else if (lang === "de") {
+					return `Erfolg`;
+				}
+				else if (lang === "pt") {
+					return `Êxito`;
+				}
+				else {
+					return `Success`;
+				}				
+			}	
 
-			//BELOW THIS DIFFERS FROM ALL OTHER GTA POSTS
-			if (gtaFinalString.length <= 4000) {
-				interaction.guild.channels.fetch(channelIDArray[c]).then(channel => channel.send(({embeds: [gtaImageEmbed, gtaEmbed]}))).catch(err => console.log(`RDO Test Min Error: ${err.stack}`));
-			} else {
-				interaction.guild.channels.fetch(channelIDArray[c]).then(channel => channel.send({embeds: [gtaImageEmbed, gtaEmbed, gtaEmbed2]})).catch(err => console.log(`RDO Test Max Error: ${err.stack}`));
+		function sentPostDesc() {
+			if (lang === "en") {
+				return `• Posts have been sent to <#${channelIDArray[c]}>!`;
 			}
+			else if (lang === "es") {
+				return `• El mensaje ha sido enviado a <#${channelIDArray[c]}>.`;
+			}
+			else if (lang === "ru") {
+				return `• Cообщение было отправлено на <#${channelIDArray[c]}>.`;
+			}
+			else if (lang === "de") {
+				return `• Eine Nachricht wurde an <#${channelIDArray[c]}> gesendet.`;
+			}
+			else if (lang === "pt") {
+				return `• Uma mensagem foi enviada para <#${channelIDArray[c]}>.`;
+			}
+			else {
+				return `• Posts have been sent to <#${channelIDArray[c]}>!`;
+			}			
+		}		
+
+		function missingPermissionsDesc() {
+			if (lang === "en") {
+				return `The bot is missing the ${permission()} permission in <#${channelIDArray[c]}>.`;
+			}
+			else if (lang === "es") {
+				return `Al bot le falta el permiso ${permission()} en <#${channelIDArray[c]}>.`;
+			}
+			else if (lang === "ru") {
+				return `У бота нет разрешения на ${permission()} в <#${channelIDArray[c]}>.`;
+			}				
+			else if (lang === "de") {
+				return `Dem Bot fehlt die ${permission()} in <#${channelIDArray[c]}>.`;
+			}		
+			else if (lang === "pt") {
+				return `O bot está sem a permissão ${permission()} em <#${channelIDArray[c]}>.`;
+			}				
+			else {
+				return `The bot is missing the ${permission()} permission in <#${channelIDArray[c]}>.`;
+			}
+		}
+
+		const testEmbed = new EmbedBuilder()
+			.setColor(`Green`) 
+			.setTitle(`${success()}`)
+			.setDescription(`${sentPostDesc()}`)
+
+					function permission() {
+										if ( !((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.SendMessages)) && !((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.ViewChannel)) && !((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.EmbedLinks)))
+ { // missing all permissions
+	 if (lang === "en") {
+		 return `View Channel, Send Messages, and Embed Links`;
+	 }
+	 if (lang === "es") {
+		 return `Ver canal y Enviar mensajes y Insertar enlaces`;
+	 }
+	 if (lang === "ru") {
+		 return `Посмотреть каналa и Отправить сообщения и Вставить ссылки`
+	 }	
+	 if (lang === "de") {
+		 return `Kanal anzeigen-Berechtigung und Nachrichten senden-Berechtigung und Links einbetten-Berechtigung`;
+	 }	
+	 if (lang === "pt") {
+		 return `Ver canal e Enviar mensagens e Inserir links`;
+	 }		 
+	 else {
+		 return `View Channel, Send Messages, and Embed Links`;
+	 }
+ }
+										else if ( !((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.SendMessages)) && !((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.ViewChannel)) )
+ { 
+	 if (lang === "en") {
+		 return `View Channel and Send Messages`;
+	 }
+	 if (lang === "es") {
+		 return `Ver canal y Enviar mensajes`;
+	 }
+	 if (lang === "ru") {
+		 return `Посмотреть каналa и Отправить сообщения`
+	 }	
+	 if (lang === "de") {
+		 return `Kanal anzeigen-Berechtigung und Nachrichten senden-Berechtigung`;
+	 }	
+	 if (lang === "pt") {
+		 return `Ver canal e Enviar mensagens`;
+	 }		 
+	 else {
+		 return `View Channel and Send Messages`;
+	 } 
+ }		
+										else if ( !((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.SendMessages)) && !((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.EmbedLinks)))
+ {
+	 if (lang === "en") {
+		 return `Send Messages and Embed Links`;
+	 }
+	 if (lang === "es") {
+		 return `Enviar mensajes y Insertar enlaces`;
+	 }
+	 if (lang === "ru") {
+		 return `Отправить сообщения и Вставить ссылки`
+	 }	
+	 if (lang === "de") {
+		 return `Nachrichten senden-Berechtigung und Links einbetten-Berechtigung`;
+	 }	
+	 if (lang === "pt") {
+		 return `Enviar mensagens e Inserir links`;
+	 }		 
+	 else {
+		 return `Send Messages and Embed Links`;
+	 }
+ }		
+										else if ( !((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.ViewChannel)) && !((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.EmbedLinks)))
+ { 
+	 if (lang === "en") {
+		 return `View Channel and Embed Links`;
+	 }
+	 if (lang === "es") {
+		 return `Ver canal y Insertar enlaces`;
+	 }
+	 if (lang === "ru") {
+		 return `Посмотреть каналa и Вставить ссылки`
+	 }	
+	 if (lang === "de") {
+		 return `Kanal anzeigen-Berechtigung und Links einbetten-Berechtigung`;
+	 }	
+	 if (lang === "pt") {
+		 return `Ver canal e Inserir links`;
+	 }		 
+	 else {
+		 return `View Channel and Embed Links`;
+	 }
+ }							
+						else if (!((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.SendMessages))) {
+	 if (lang === "en") {
+		 return `Send Messages`;
+	 }
+	 if (lang === "es") {
+		 return `Enviar mensajes`;
+	 }
+	 if (lang === "ru") {
+		 return `Отправить сообщения`
+	 }	
+	 if (lang === "de") {
+		 return `Nachrichten senden-Berechtigung`;
+	 }	
+	 if (lang === "pt") {
+		 return `Enviar mensagens`;
+	 }		 
+	 else {
+		 return `Send Messages`;
+	 }
+						}
+						else if (!((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.ViewChannel))) {
+	 if (lang === "en") {
+		 return `View Channel`;
+	 }
+	 if (lang === "es") {
+		 return `Ver canal`;
+	 }
+	 if (lang === "ru") {
+		 return `Посмотреть каналa`;
+	 }	
+	 if (lang === "de") {
+		 return `Kanal anzeigen-Berechtigung`; 
+	 }	
+	 if (lang === "pt") {
+		 return `Ver canal`;
+	 }		 
+	 else {
+		 return `View Channel`;
+	 }
+						}						
+						else if (!((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.EmbedLinks))) {
+	 if (lang === "en") {
+		 return `Embed Links`;
+	 }
+	 if (lang === "es") {
+		 return `Insertar enlaces`;
+	 }
+	 if (lang === "ru") {
+		 return `Вставить ссылки`
+	 }	
+	 if (lang === "de") {
+		 return `Links einbetten-Berechtigung`;
+	 }	
+	 if (lang === "pt") {
+		 return `Inserir links`;
+	 }		 
+	 else {
+		 return `Embed Links`;
+	 }
+						}								
+					}						
+
+			let missingPermissionsEmbed = new EmbedBuilder()
+				.setColor('0xFF0000') //RED
+				.setDescription(`${missingPermissionsDesc()}`)
+
+				if ( ((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.SendMessages)) && ((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.ViewChannel)) && ((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.EmbedLinks)))
+ {	//If the bot has all permissions
+	 			if (gtaFinalString.length <= 4000) {
+				interaction.guild.channels.fetch(channelIDArray[c]).then(channel => channel.send(({embeds: [gtaImageEmbed, gtaEmbed]}))).catch(err => console.log(`GTA Test Min Error: ${err.stack}`));
+			} else {
+				interaction.guild.channels.fetch(channelIDArray[c]).then(channel => channel.send({embeds: [gtaImageEmbed, gtaEmbed, gtaEmbed2]})).catch(err => console.log(`GTA Test Max Error: ${err.stack}`));
+			}	
+	 				await interaction.followUp({ embeds: [testEmbed], components: [], ephemeral: true }).catch(err => console.log(` Error: ${err.stack}`));
+				}
+				else {	
+					interaction.followUp({embeds: [missingPermissionsEmbed], components: [], ephemeral: true});
+				}						
+				
 			} //end if not undefined channel
 		} //end c loop
 
@@ -730,48 +955,6 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 				//console.log(`AdminRequired(): ${AdminRequired()}`)		
 
 //--BEGIN TRANSLATIONS--//
-
-			function success() {
-				if (lang === "en") {
-						return `Success`;
-				}
-				else if (lang === "es") {
-					return `Éxito`;
-				}
-				else if (lang === "ru") {
-					return `Успех`;
-				}
-				else if (lang === "de") {
-					return `Erfolg`;
-				}
-				else if (lang === "pt") {
-					return `Êxito`;
-				}
-				else {
-					return `Success`;
-				}				
-			}	
-
-		function sentPostDesc() {
-			if (lang === "en") {
-				return `• Posts have been sent to your subscribed channels!\n• If a channel you are subscribed to did not get a test post check to make sure the bot has the **\'View Channel\'**, **\'Send Messages\'**, and **\'Embed Links\'** permissions.`;
-			}
-			else if (lang === "es") {
-				return `• Se han enviado publicaciones a tus canales suscritos.\n• Si un canal al que está suscrito no obtuvo una comprobación posterior de prueba para asegurarse de que el bot tiene permiso para ver el canal, enviar mensajes e insertar vínculos.`;
-			}
-			else if (lang === "ru") {
-				return `• Сообщения были отправлены на ваши каналы с подпиской.\n• Если канал, на который вы подписаны, не получил тестовую запись, чтобы убедиться, что бот имеет разрешение на просмотр канала, отправку сообщений и встраивание ссылок.`;
-			}
-			else if (lang === "de") {
-				return `• Beiträge wurden an Ihre abonnierten Kanäle gesendet.\n• Wenn ein Kanal, den Sie abonniert haben, keine Testbeitragsüberprüfung erhalten hat, um sicherzustellen, dass der Bot über die Berechtigung zum Anzeigen des Kanals, zum Senden von Nachrichten und zum Einbetten von Links verfügt.`;
-			}
-			else if (lang === "pt") {
-				return `• Se han enviado publicaciones a sus canales suscritos.\n• Se um canal no qual você está inscrito não recebeu uma verificação de postagem de teste para garantir que o bot tenha permissão para visualizar o canal, enviar mensagens e incorporar links.`;
-			}
-			else {
-				return `• Posts have been sent to your subscribed channels!\n• If a channel you are subscribed to did not get a test post check to make sure the bot has the **\'View Channel\'**, **\'Send Messages\'**, and **\'Embed Links\'** permissions.`;
-			}			
-		}
 
 	function firstTime() {
 		if (lang === "en") {
@@ -859,11 +1042,6 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 
 //--END TRANSLATIONS--//
 
-		const testEmbed = new EmbedBuilder()
-			.setColor(`Green`) 
-			.setTitle(`${success()}`)
-			.setDescription(`${sentPostDesc()}`)
-
 
 //begin checking for permissions
 					await interaction.deferUpdate();
@@ -880,7 +1058,6 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 		else if (AdminRequired() === "AdminRequiredYes") { //if admin permissions are required
 			if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) {
 				gtaTest();
-				await interaction.followUp({ embeds: [testEmbed], components: [], ephemeral: true }).catch(err => console.log(`testEmbed Error: ${err}`));
 			} 
 			else if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
 				await interaction.followUp({content: `${missingPermissions()}`, ephemeral: true})
@@ -903,15 +1080,12 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 					//console.log(`hasARole: ${hasARole} && required roles:${guildRoleIds.length}`)
 				if ( (guildRoleIds.length === 0) && (interaction.user.id === buttonUserID) ) { //no role required
 					gtaTest();
-					await interaction.followUp({ embeds: [testEmbed], components: [], ephemeral: true }).catch(err => console.log(` Error: ${err.stack}`));
 				}
 				else if ( (hasARole >= 1) && (interaction.user.id === buttonUserID) ) { //if the user has at least one role listed
 					gtaTest();
-					await interaction.followUp({ embeds: [testEmbed], components: [], ephemeral: true }).catch(err => console.log(` Error: ${err.stack}`));
 				}
 				else if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) { //user is an admin
 					gtaTest();
-					await interaction.followUp({ embeds: [testEmbed], components: [], ephemeral: true }).catch(err => console.log(` Error: ${err.stack}`));
 				}		
 				else if (hasARole <= 0) {
 					await interaction.followUp({content: `${missingPermissions()}`, ephemeral: true})
