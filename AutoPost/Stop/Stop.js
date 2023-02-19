@@ -391,7 +391,7 @@ module.exports = {
 
 				setTimeout(() => {
 					interaction.editReply({components: [expiredButton]})
-				}, (60000 * 2))							
+				}, (60000 * 5))							
 
 				}}); //end fs.readFile for LANGData.txt
 		}); //end fs:readFile						
