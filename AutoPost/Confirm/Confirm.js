@@ -322,7 +322,7 @@ module.exports = {
 
 		function testRDOString() {
 			if (lang === "en") {
-					return `Click **\'Test RDO\'** to send a test post to your subscribed GTA Online channel(s).`;
+					return `Click **\'Test RDO\'** to send a test post to your subscribed RDO channel(s).`;
 			}
 			else if (lang === "es") {
 				return `Haga clic en **\'Prueba RDO\'** para enviar una publicación de prueba a sus canal(es) RDO suscritos.`;
@@ -337,7 +337,7 @@ module.exports = {
 				return `Clique em **\'Testar RDO\'** para enviar uma postagem de teste para seus canais RDO inscritos.`;
 			}
 			else {
-			  return `Click **\'Test RDO\'** to send a test post to your subscribed GTA Online channel(s).`;
+			  return `Click **\'Test RDO\'** to send a test post to your subscribed RDO channel(s).`;
 			}			
 		}			
 

@@ -714,7 +714,7 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 			.setDescription(`${sentPostDesc()}`)
 
 					function permission() {
-										if ( !((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.SendMessages)) && !((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.ViewChannel)) && !((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.EmbedLinks)))
+										if ( !( (interaction.guild.members.me).permissionsIn(channelIDArray[c]).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.EmbedLinks])) )
  { // missing all permissions
 	 if (lang === "en") {
 		 return `View Channel, Send Messages, and Embed Links`;
@@ -735,7 +735,7 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 		 return `View Channel, Send Messages, and Embed Links`;
 	 }
  }
-										else if ( !((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.SendMessages)) && !((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.ViewChannel)) )
+										else if ( !( (interaction.guild.members.me).permissionsIn(channelIDArray[c]).has([PermissionsBitField.Flags.SendMessages,  PermissionsBitField.Flags.EmbedLinks])) )
  { 
 	 if (lang === "en") {
 		 return `View Channel and Send Messages`;
@@ -756,7 +756,7 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 		 return `View Channel and Send Messages`;
 	 } 
  }		
-										else if ( !((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.SendMessages)) && !((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.EmbedLinks)))
+										else if ( !( (interaction.guild.members.me).permissionsIn(channelIDArray[c]).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.EmbedLinks])) )
  {
 	 if (lang === "en") {
 		 return `Send Messages and Embed Links`;
@@ -777,7 +777,7 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 		 return `Send Messages and Embed Links`;
 	 }
  }		
-										else if ( !((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.ViewChannel)) && !((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.EmbedLinks)))
+										else if ( !( (interaction.guild.members.me).permissionsIn(channelIDArray[c]).has([PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.EmbedLinks])) )
  { 
 	 if (lang === "en") {
 		 return `View Channel and Embed Links`;
