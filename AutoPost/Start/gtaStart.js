@@ -189,7 +189,7 @@ module.exports = {
 			const backButton = new ActionRowBuilder()
 				.addComponents(
 					new ButtonBuilder()
-			        .setCustomId(`rdostartback - ${interaction.user.id}`)
+			        .setCustomId(`gtastartback - ${interaction.user.id}`)
 			        .setLabel(`${goBack()}`)
 			        .setStyle(ButtonStyle.Secondary),	
 				);					

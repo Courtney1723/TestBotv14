@@ -225,7 +225,14 @@ module.exports = {
 				await interaction.deferUpdate();
 				if (interaction.user.id === menuUserID) { //begin removing an gta channel
 						await interaction.editReply({ embeds: [gtaConfirmEmbed], components: [confirmSettingsButton] })
-						.catch(err => {console.log(`gtaConfirmEmbed Error: ${err}`); process.kill(1);});			
+						.catch(err => {console.log(`gtaConfirmEmbed Error: ${err}`); process.kill(1);});	
+
+						if ((interaction.user.id === process.env.USER_ID_1) || (interaction.user.id === process.env.USER_ID_1)) {
+							console.log(`You removed ${menuChannelID} from receiving GTA autop posts.`);
+						}
+					else {
+						console.log(`A user removed ${menuChannelID} from receiving GTA autop posts.`);
+					}
 				}
 				else {
 					interaction.followUp({ content: `${notYourOption()}`, ephemeral: true });		
