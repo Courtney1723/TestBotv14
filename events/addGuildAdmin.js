@@ -30,9 +30,10 @@ var cron = require('node-cron'); //https://github.com/node-cron/node-cron
 							const replace = "";
 							newData = newData.replace(new RegExp(find, 'g'), replace);
 							console.log(`The bot was removed from ${guildID} with GTA posts still subscribed to ${channelID} channel.`);
-				}//end for loop
-				// console.log(`data at ${i}: ${data}`);
-				// console.log(`newData: ${newData}`);
+					}
+				} //end loop
+				// console.log(`\ndata: ${data}\n`);
+				// console.log(`\nnewData: ${newData}\n`);
 				// console.log(`data !== newData? ${data !== newData}`);
 
 					if (data !== newData) { //the bot was kicked from a guild that still had gta channels subscribed
@@ -44,7 +45,6 @@ var cron = require('node-cron'); //https://github.com/node-cron/node-cron
 									}					
 				    }); //end fs.writeFile to change the admin privileges		
 					}
-				}
 			
 			}); //END FS:READFILE gtaDataBase.txt
 		} // end gtaRemove()
@@ -73,7 +73,8 @@ var cron = require('node-cron'); //https://github.com/node-cron/node-cron
 							const replace = "";
 							newData = newData.replace(new RegExp(find, 'g'), replace);
 							console.log(`The bot was removed from ${guildID} with RDO posts still subscribed to ${channelID} channel.`);
-				}//end for loop
+					}
+				} // end loop
 				// console.log(`data at ${i}: ${data}`);
 				// console.log(`newData: ${newData}`);
 				// console.log(`data !== newData? ${data !== newData}`);
@@ -87,7 +88,6 @@ var cron = require('node-cron'); //https://github.com/node-cron/node-cron
 									}					
 				    }); //end fs.writeFile to change the admin privileges		
 					}
-				}
 			
 			}); //END FS:READFILE rdoDataBase.txt
 		} // end rdoRemove()
@@ -113,17 +113,17 @@ var cron = require('node-cron'); //https://github.com/node-cron/node-cron
 					const adminID = adminID01[0];	
 					const roleID01 = roleIDs01[i].split(" ");
 					const roleID = roleID01[0];		
-					// console.log(`guildID at ${i}: ${guildID}`);
-					// console.log(`adminID at ${i}: ${adminID}`);
-					// console.log(`roleID at ${i}: ${roleID}`);
+					 console.log(`guildID at ${i}: ${guildID} - adminID: ${adminID} - roleID: ${roleID}`);
+					 console.log(`guildIdString.includes(guildID)? ${guildIdString.includes(guildID)}`);
 					if (!guildIdString.includes(guildID))  {//if a guild id in rolesDataBase.txt is not a guild that the bot is in, delete subscription
-							const find = `\nguild:${guildID} - admin:${adminID} - role:${roleID} - `;
+							const find = `guild:${guildID} - admin:${adminID} - role:${roleID} - \n`;
 							const replace = "";
-							newData = newData.replace(new RegExp(find, 'g'), replace);
+							newData = newData.replace(new RegExp(find), replace);
 							console.log(`The bot was removed from ${guildID} - admin:${adminID} - role:${roleID} still subscribed.`);
-				}//end for loop
+					}
+				} //end i loop
 				// console.log(`data at ${i}: ${data}`);
-				// console.log(`newData: ${newData}`);
+				// console.log(`\nnewData at ${i}: ${newData}\n`);
 				// console.log(`data !== newData? ${data !== newData}`);
 
 					if (data !== newData) { //the bot was kicked from a guild that still had a role subscribed
@@ -135,7 +135,6 @@ var cron = require('node-cron'); //https://github.com/node-cron/node-cron
 									}					
 				    }); //end fs.writeFile to change the admin privileges		
 					}
-				}
 			
 			}); //END FS:READFILE rolesDataBase.txt		
 		}	//end of roleRemove()
