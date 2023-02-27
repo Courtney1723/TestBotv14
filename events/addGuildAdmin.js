@@ -113,8 +113,8 @@ var cron = require('node-cron'); //https://github.com/node-cron/node-cron
 					const adminID = adminID01[0];	
 					const roleID01 = roleIDs01[i].split(" ");
 					const roleID = roleID01[0];		
-					 console.log(`guildID at ${i}: ${guildID} - adminID: ${adminID} - roleID: ${roleID}`);
-					 console.log(`guildIdString.includes(guildID)? ${guildIdString.includes(guildID)}`);
+					// console.log(`guildID at ${i}: ${guildID} - adminID: ${adminID} - roleID: ${roleID}`);
+					// console.log(`guildIdString.includes(guildID)? ${guildIdString.includes(guildID)}`);
 					if (!guildIdString.includes(guildID))  {//if a guild id in rolesDataBase.txt is not a guild that the bot is in, delete subscription
 							const find = `guild:${guildID} - admin:${adminID} - role:${roleID} - \n`;
 							const replace = "";
@@ -140,6 +140,51 @@ var cron = require('node-cron'); //https://github.com/node-cron/node-cron
 		}	//end of roleRemove()
 			roleRemove();
 			setInterval(roleRemove, 864e5); //every 24 hours		
+		
+
+		function LANGRemove() {
+			fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
+				 if (err) {console.log(`Error: ${err}`)} //If an error, console.log
+					const GuildIDs = client.guilds.cache.map(guild => guild.id);
+					const langGuildIDs01 = data.split("guild:");
+					const langIDs01 = data.split("lang:");
+					const guildIdString = GuildIDs.toString();
+						//console.log(`guildIdString: ${guildIdString}`);                              
+				
+					let newData = data;
+					for (i = 2; i <= langGuildIDs01.length - 1; i++) {
+						const guildID01 = langGuildIDs01[i].split(" ");
+						const guildID = guildID01[0];
+						const langID01 = langIDs01[i].split(" ");
+						const langID = langID01[0];		
+						// console.log(`guildID at ${i}: ${guildID} - lang: ${langID} - langID01: ${langID01}`);
+						// console.log(`guildIdString.includes(guildID)? ${guildIdString.includes(guildID)}`);
+						// console.log(`\ndata at ${i}: ${data}\nnewData at ${i}: ${newData}\n`);
+						if (!guildIdString.includes(guildID))  {//if a guild id in LANGDataBase.txt is not a guild that the bot is in, delete subscription
+								const find = `guild:${guildID} - lang:${langID} - \n`;
+								const replace = "";
+								newData = newData.replace(new RegExp(find), replace);
+								console.log(`The bot was removed from ${guildID} with lang:${langID} still subscribed.`);
+						}
+					} //end i loop
+					// console.log(`\ndata: ${data}\n`);
+					// console.log(`\nnewData: ${newData}\n`);
+					// console.log(`data !== newData? ${data !== newData}`);
+		
+						if (data !== newData) { //the bot was kicked from a guild that still had a lang subscribed
+						//Replaces the LANGDataBase.txt file with latest guilds info
+						fs.writeFile(`./LANGDataBase.txt`,`${newData}`, err => {
+								if (err) {
+										console.error(err)
+										return
+										}					
+						}); //end fs.writeFile 	
+						}
+				
+				}); //END FS:READFILE LANGDataBase.txt		
+			}	//end of langRemove()
+				LANGRemove();
+				setInterval(LANGRemove, 864e5); //every 24 hours			
 
  }
  }

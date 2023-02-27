@@ -351,7 +351,7 @@ else if (menuRoleID === `undefinedrole`) { //if the Admin role is already requir
 					for (i=0;i<=guildCount-1;i++) { //iterates through every instance of required roles by guild
 						newData = newData.replace(new RegExp(find, 'g'), replace);
 					}
-				console.log(`newData: ${newData}`);
+				// console.log(`newData: ${newData}`);
 		                                        
 		    //Replaces the rolesDataBase.txt file with Admin permission for the guild
 		    fs.writeFile(`./rolesDataBase.txt`,`${newData}`, err => {

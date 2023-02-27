@@ -53,12 +53,12 @@ module.exports = {
 					var amPM01 = mtHourMinute[2].split(" ");
 					var amPM = amPM01[1];
 	
-					//console.log(`${mtDateNum} ${mtHour}:${mtMinute} ${amPM}`);	
+					//console.log(`${mtDateNum} ${mtHour}:${mtMinute} ${amPM} - \n${mtDate}\n`);	
 	
-					if ( (aDay === 4) && (mtHour >= 11) ) { //New GTA Bonuses
+					if ( (aDay === 1) && ( ((mtHour >= 11) && (amPM === "AM")) || ((mtHour <= 23) && (amPM === "PM")) ) ) { //New GTA Bonuses
 						client.user.setPresence({ activities: [{ name: 'New GTA Bonuses', type: ActivityType.Watching }] });
 					}
-					else if ( (aDay === 2) && (mtHour >= 11) && (mtDateNum <= 7) ) { //New RDO Bonuses
+					else if ( (aDay === 2) && ( ((mtHour >= 11) && (amPM === "AM")) || ((mtHour <= 23) && (amPM === "PM")) ) && (mtDateNum <= 7) ) { //New RDO Bonuses
 						client.user.setPresence({ activities: [{ name: 'New RDO Bonuses', type: ActivityType.Watching }] });
 					}
 				}
@@ -67,7 +67,7 @@ module.exports = {
 		newBonusPresence(); //checks for new bonuses on startup
 
 		//New GTA Bonuses
-		cron.schedule('*/10 11 * * 4', () => { //(second),minute,hour,date,month,weekday || every 10 minutes on Thursdays between 11 - 12
+		cron.schedule('*/10 11 * * 1', () => { //(second),minute,hour,date,month,weekday || every 10 minutes on Thursdays between 11 - 12
 			newBonusPresence();
 		}, {
 			scheduled: true,
@@ -75,7 +75,7 @@ module.exports = {
 		});
 
 		//End New GTA Bonuses
-		cron.schedule('59 23 * * 4', () => { //(second),minute,hour,date,month,weekday || ~ midnight every Friday
+		cron.schedule('59 22 * * 4', () => { //(second),minute,hour,date,month,weekday || ~ midnight every Friday
 			client.user.setPresence({ activities: [{ name: 'Bonuses', type: ActivityType.Watching }] });
 		}, {
 			scheduled: true,
@@ -92,7 +92,7 @@ module.exports = {
 		});		
 
 		//End RDO Bonuses
-		cron.schedule('59 23 1-7 * 2', () => { //(second),minute,hour,date,month,weekday || ~ midnight every 1st Wednesday of the month
+		cron.schedule('59 22 1-7 * 2', () => { //(second),minute,hour,date,month,weekday || ~ midnight every 1st Wednesday of the month
 			client.user.setPresence({ activities: [{ name: 'Bonuses', type: ActivityType.Watching }] });
 		}, {
 			scheduled: true,
