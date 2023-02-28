@@ -305,7 +305,7 @@ else if (menuRoleID === `undefinedrole`) { //if the Admin role is already requir
 					everyoneCheck += `${everyoneWarn()}`;
 				
 			}
-			console.log(`roleIDArray length: ${roleIDArray.length}`);
+			// console.log(`roleIDArray length: ${roleIDArray.length}`);
 		
     const configureConfirmAddEmbed = new EmbedBuilder()
         .setColor(`Green`) 
