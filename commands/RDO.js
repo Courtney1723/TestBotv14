@@ -10,7 +10,7 @@ const phantom = require('phantom'); //https://github.com/amir20/phantomjs-node
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('rdo')
-		.setDescription('Latest RDR2 online bonuses and discounts')
+		.setDescription('Latest Red Dead Online Bonuses')
 		.setDMPermission(true),
 	async execute(interaction) {
 		await interaction.deferReply().catch(console.error);
@@ -388,9 +388,7 @@ else if (RDO_Bonus != undefined) {
 											.replace(/\n\n\n/g, "\n")
 											.replace(/\*\*\n\*\*/g, "**\n\n**")
 											.replace(/• undefined/g, "• ")
-											.replace(/\)• /g, ")\n• ") //adds a newline between link lists
-					      .replace(/<a href=\"https:\/\/socialclub.rockstargames.com\/games\/rdr2\/catalogue\/online\/products\/23bc7710\/c\/8bdc1af5" target=\"_blank\" draggable=\"false\">\n\<\/a>•/g, "") //FIXME - delete next month
-					      .replace(/<a href=\"https:\/\/socialclub.rockstargames.com\/games\/rdr2\/catalogue\/online\/products\/23bc7710\/c\/8bdc1af5" target=\"_blank\">\n\<\/a>•/g, ""); //FIXME - delete next month		
+											.replace(/\)• /g, ")\n• ") //adds a newline between link lists	
 
 						function bestBreak() {
 							var rdoSpaces = rdoFinalString.split(`\n\n`); //counts the newlines
@@ -410,20 +408,22 @@ else if (RDO_Bonus != undefined) {
 							return (charCount - finalZ) + (countZ * 2) - 3;
 							// ( (rdoTitleString().length) + (rdoDate[0].length) + (rdoFooterMin().length) + (elipseFunction().length) )
 						}
-						//console.log(`bestBreak: ${bestBreak()}`);
+						console.log(`bestBreak: ${bestBreak()}`);
 
 						function bestEndBreak() {
 							return (6000 - (bestBreak()) - (rdoFooterMax().length) - (rdoImage[0].length) - 3); //- 3 for the ellipse function
 						}
-						//console.log(`bestEndBreak: ${bestEndBreak()}`);			
+						console.log(`bestEndBreak: ${bestEndBreak()}`);			
 
 			//console.log(`rdoFinalString: ${rdoFinalString}`);
+			//console.log(`1: ${rdoFinalString.length}\n`); 
+		
     function rdoPost() {
         return rdoFinalString.slice(0, bestBreak());
     }
-    //console.log(`1: ${rdoFinalString.length}\n`) 
+		
     function rdoPost2() {
-      if (rdoFinalString.length > 4000) {
+      if (rdoFinalString.length > 3950) {
         let post02 = rdoFinalString.substr(bestBreak(), bestEndBreak()); 
         return post02;
       } else {
@@ -431,14 +431,14 @@ else if (RDO_Bonus != undefined) {
       }
     }  
     function elipseFunction() {
-      if (rdoFinalString.length > 4000) {
+      if (rdoFinalString.length > 3950) {
         return "...";
         } else {
         return "";
         }
     }		
     function rdoFooterMax() {
-      if (rdoFinalString.length > 4000) {
+      if (rdoFinalString.length > 3950) {
         if (lang === "en") {
 					return `** [Click here](${url}) for more details**`;
 				}
@@ -462,7 +462,7 @@ else if (RDO_Bonus != undefined) {
       }
     }
     function rdoFooterMin() { 
-      if (rdoFinalString.length <= 4000) {
+      if (rdoFinalString.length <= 3950) {
 				if (lang === "en") {
 					return `\n** [Click here](${url}) for more details**`;
 				}
@@ -524,7 +524,7 @@ else if (RDO_Bonus != undefined) {
 		 // console.log(`rdoEmbed length: ${rdoEmbed.length}`); //no more than 4096 (line 199)
 		 // console.log(`rdoEmbed2 length: ${rdoEmbed2.length}`); //no more than 6000 - rdoEmbed.length (line 204)
 
-		if (rdoFinalString.length <= 4000) {
+		if (rdoFinalString.length <= 3950) {
 			await interaction.editReply({embeds: [rdoImageEmbed, rdoEmbed]}).catch(err => 
 				interaction.editReply({embeds: [errorEmbed], ephemeral: true }).then( 
 				console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`))

@@ -496,7 +496,7 @@ else if (RDO_Bonus != undefined) {
     }
     //console.log(`1: ${rdoFinalString.length}\n`) 
     function rdoPost2() {
-      if (rdoFinalString.length > 4000) {
+      if (rdoFinalString.length > 3950) {
         let post02 = rdoFinalString.substr(bestBreak(), bestEndBreak()); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
         return post02;
       } else {
@@ -504,14 +504,14 @@ else if (RDO_Bonus != undefined) {
       }
     }  
     function elipseFunction() {
-      if (rdoFinalString.length > 4000) {
+      if (rdoFinalString.length > 3950) {
         return "...";
         } else {
         return "";
         }
     }		
     function rdoFooterMax() {
-      if (rdoFinalString.length > 4000) {
+      if (rdoFinalString.length > 3950) {
 				if (lang === "en") {
 					return `\n** [click here](${url}) for more details**`;
 				}
@@ -535,7 +535,7 @@ else if (RDO_Bonus != undefined) {
       }
     }
     function rdoFooterMin() { 
-      if (rdoFinalString.length <= 4000) {
+      if (rdoFinalString.length <= 3950) {
 				if (lang === "en") {
 					return `\n** [click here](${url}) for more details**`;
 				}
