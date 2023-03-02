@@ -16,7 +16,6 @@ module.exports = {
 		await interaction.deferReply().catch(console.error);
 
 
-
 				let rdoURL = process.env.SOCIAL_URL_RDO2;
 
 		//await interaction.editReply(`Console Logged 👍`).catch(console.error);
@@ -45,7 +44,7 @@ module.exports = {
 					//console.log(`lang03.length: ${lang03.length}`);
 
 					let langArray = [];
-					for (i=1; i <= lang03.length - 1; i++) { //first will always be undefined
+					for (i=2; i <= lang03.length - 1; i++) { //first will always be undefined
 						let lang02 = lang03[i].split(" -");
 						//console.log(`lang02 at ${i}: ${lang02}`);
 						

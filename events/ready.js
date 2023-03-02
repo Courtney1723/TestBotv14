@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder, ActivityType } = require('discord.js');
 const phantom = require('phantom'); //https://github.com/amir20/phantomjs-node
 var cron = require('node-cron'); //https://github.com/node-cron/node-cron
+const fetch = require("@replit/node-fetch");
 
 module.exports = {
 	name: 'ready',
@@ -11,7 +12,8 @@ module.exports = {
 
 		async function newBonusPresence() {
 			let gtaURL = process.env.SOCIAL_URL_GTA2;
-	
+				//console.log(`gtaURL: ${gtaURL}`);
+
 			const instance = await phantom.create();
 			const page = await instance.createPage();
 	

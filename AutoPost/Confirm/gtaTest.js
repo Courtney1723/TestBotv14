@@ -22,7 +22,7 @@ module.exports = {
 					//console.log(`lang03.length: ${lang03.length}`);
 
 					let langArray = [];
-					for (i=1; i <= lang03.length - 1; i++) { //first will always be undefined
+					for (i=2; i <= lang03.length - 1; i++) { //first will always be undefined
 						let lang02 = lang03[i].split(" -");
 						//console.log(`lang02 at ${i}: ${lang02}`);
 						
@@ -60,7 +60,7 @@ module.exports = {
 						}
 					}
 
-					//console.log(`lang: ${lang}`);
+					console.log(`lang: ${lang}`);
 
 			
 function gtaTest() {
@@ -501,6 +501,7 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 											.replace(/\n• undefine/g, "")
 											.replace(/• \n\n/g, "")
 
+						//console.log(`gtaFinalString01.length: ${gtaFinalString01.length}`);
 						function bestBreak() {
 							var gtaSpaces = gtaFinalString.split(`\n\n`); //counts the newlines
 							var charCount = 0;//( (gtaTitleString().length) + (gtaDate[0].length) + (gtaFooterMin().length) + (elipseFunction().length) ); 
@@ -508,15 +509,22 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 							
 							var finalZ = 0;
 							var countZ = 0;
-							for (z = 0; charCount <= 3950; z++) {
-								//console.log(`gtaSpaces at ${z}: ${gtaSpaces[z]}`);
-									charCount += gtaSpaces[z].length;
-								//console.log(`charCount at ${z}: ${charCount}`);
-								var finalZ = gtaSpaces[z].length;
-								countZ++;
+							for (z = 0; charCount <= 3790; z++) {
+								if (gtaFinalString.length <= 4100) {
+									charCount = 3950;
+									finalZ = gtaFinalString.length;
+								}								
+								if (gtaSpaces[z] !== undefined) {
+									//console.log(`gtaSpaces at ${z}: ${gtaSpaces[z]}`);
+										charCount += gtaSpaces[z].length;
+										//console.log(`charCount at ${z}: ${charCount}`);
+									var finalZ = gtaSpaces[z].length;
+									countZ++;		
+								}
 							}
-							//console.log(`charCount: ${charCount}`);
-							return (charCount - finalZ) + (countZ * 2) - 3;
+								//console.log(`finalZ: ${finalZ}`);
+							  //console.log(`charCount: ${charCount}`);
+								return (charCount - finalZ) + (countZ * 2) - 3;
 							// ( (gtaTitleString().length) + (gtaDate[0].length) + (gtaFooterMin().length) + (elipseFunction().length) )
 						}
 						//console.log(`bestBreak: ${bestBreak()}`);
@@ -524,7 +532,7 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 						function bestEndBreak() {
 							return (6000 - (bestBreak()) - (gtaFooterMax().length) - (gtaImage[0].length) - 3); //- 3 for the ellipse function
 						}
-						//console.log(`bestEndBreak: ${bestEndBreak()}`);			
+						//console.log(`bestEndBreak: ${bestEndBreak()}`);	
 
 			//console.log(`gtaFinalString: ${gtaFinalString}`);
     function gtaPost() {
