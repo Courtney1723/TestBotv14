@@ -467,6 +467,7 @@ module.exports = {
 							.replace(/• \n\n/g, "")
 
 						//console.log(`gtaFinalString01.length: ${gtaFinalString01.length}`);
+						//console.log(`gtaFinalString.length: ${gtaFinalString.length}`);
 						function bestBreak() {
 							var gtaSpaces = gtaFinalString.split(`\n\n`); //counts the newlines
 							var charCount = 0;//( (gtaTitleString().length) + (gtaDate[0].length) + (gtaFooterMin().length) + (elipseFunction().length) ); 
@@ -474,7 +475,11 @@ module.exports = {
 							
 							var finalZ = 0;
 							var countZ = 0;
-							for (z = 0; charCount <= 3790; z++) {
+							for (z = 0; charCount <= 3950; z++) {
+								if (gtaFinalString.length <= 4100) {
+									charCount = 3950;
+									finalZ = gtaFinalString.length;
+								}
 								if (gtaSpaces[z] !== undefined) {
 									//console.log(`gtaSpaces at ${z}: ${gtaSpaces[z]}`);
 										charCount += gtaSpaces[z].length;

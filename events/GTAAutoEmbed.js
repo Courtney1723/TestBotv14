@@ -101,14 +101,6 @@ module.exports = {
 					//console.log(`guildIDLangArray: ${guildIDLangArray}`);
 					//console.log(`channelIDArray: ${channelIDArray}`);
 
-			function mainLoop() {
-				setTimeout(function() {
-					for (loop = 0; loop <= 4; loop++) {
-						console.log(`loop: ${loop}`);
-					}
-				}, 5e3)
-			}
-			mainLoop();
 			for (c = 0; c <= channelIDArray.length - 2; c++) { //first & last elements will always be undefined	
 					let lang = "";
 				
