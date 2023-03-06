@@ -7,7 +7,7 @@ module.exports = {
 	name: 'ready',
 	async execute(client) {
 
-		//cron.schedule('*/5 * * * *', () => { //(second),minute,hour,date,month,weekday 
+		//cron.schedule('* * * * *', () => { //(second),minute,hour,date,month,weekday 
 		cron.schedule('35 11 * * 4', () => { //(second),minute,hour,date,month,weekday '0 12 * * 4' = 12:00 PM on Thursday
 		  console.log('sending GTA Auto Posts...');
 			
