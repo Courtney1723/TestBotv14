@@ -310,7 +310,7 @@ else if (RDO_Bonus != undefined) {
 		(RDO_Title.includes("Скидки")) || 
 		(RDO_Title.includes("Rabatte")) || 
 		(RDO_Title.includes("Descontos")) ) { 
-			rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n`;
+			rdoFinalString01 += `**${RDO_Title}\n**${RDO_Bonus}\n\n`;
 	}	
 	else if ( 
 		(RDO_Title.includes("2x")) || //German, and Portuguese use numbers 
@@ -378,6 +378,7 @@ else if (RDO_Bonus != undefined) {
 }
 //-----------END for loop----------//		
 	//console.log(`rdoFinalString01: ${rdoFinalString01}`); //rdoFinalString before HTML formatting
+			//console.log(`rdoFinalString01.length: ${rdoFinalString01.length}`);	
 		let rdoFinalString = rdoFinalString01.replace(/<p>/g, "")
 											.replace(/<\/p>/g, "")
 										  .replace(/<\/b>/g, "")
@@ -389,6 +390,7 @@ else if (RDO_Bonus != undefined) {
 											.replace(/• undefined/g, "• ")
 											.replace(/\)• /g, ")\n• ") //adds a newline between link lists	
 
+						//console.log(`rdoFinalString.length: ${rdoFinalString.length}`);	
 						function bestBreak() {
 							var rdoSpaces = rdoFinalString.split(`\n\n`); //counts the newlines
 							var charCount = 0;//( (rdoTitleString().length) + (rdoDate[0].length) + (rdoFooterMin().length) + (elipseFunction().length) ); 
@@ -407,12 +409,12 @@ else if (RDO_Bonus != undefined) {
 							return (charCount - finalZ) + (countZ * 2) - 3;
 							// ( (rdoTitleString().length) + (rdoDate[0].length) + (rdoFooterMin().length) + (elipseFunction().length) )
 						}
-						console.log(`bestBreak: ${bestBreak()}`);
+						//console.log(`bestBreak: ${bestBreak()}`);
 
 						function bestEndBreak() {
 							return (6000 - (bestBreak()) - (rdoFooterMax().length) - (rdoImage[0].length) - 3); //- 3 for the ellipse function
 						}
-						console.log(`bestEndBreak: ${bestEndBreak()}`);			
+						//console.log(`bestEndBreak: ${bestEndBreak()}`);			
 
 			//console.log(`rdoFinalString: ${rdoFinalString}`);
 			//console.log(`1: ${rdoFinalString.length}\n`); 
@@ -429,6 +431,7 @@ else if (RDO_Bonus != undefined) {
         return "";
       }
     }  
+		
     function elipseFunction() {
       if (rdoFinalString.length > 3950) {
         return "...";
@@ -503,7 +506,7 @@ else if (RDO_Bonus != undefined) {
 				return `Bônus no Red Dead Online:`;
 			}
 			else {
-    		return `Red Dead Online Bonuses & Discounts:`;
+    		return `Red Dead Online Bonuses:`;
 			}		
 		}
 		//console.log(`rdoTitleFunction: ${rdoTitleFunction()}`);

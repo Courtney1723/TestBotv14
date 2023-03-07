@@ -8,7 +8,7 @@ module.exports = {
 	async execute(client) {
 
 		//cron.schedule('* * * * *', () => { //every 60 seconds - testbench
-		cron.schedule('00 12 1-7 * 2', () => { //(second),minute,hour,date,month,weekday '0 12 1-7 * 2' = 12:00 PM on 1st Tuesday
+		cron.schedule('45 11 1-7 * 2', () => { //(second),minute,hour,date,month,weekday '0 12 1-7 * 2' = 12:00 PM on 1st Tuesday
 		  console.log('Sending RDO Auto Posts...');
 
 			fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
@@ -388,7 +388,7 @@ else if (RDO_Bonus != undefined) {
 		(RDO_Title.includes("Скидки")) || 
 		(RDO_Title.includes("Rabatte")) || 
 		(RDO_Title.includes("Descontos")) ) { 
-			rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n`;
+			rdoFinalString01 += `**${RDO_Title}\n**${RDO_Bonus}\n\n`;
 	}	
 	else if ( 
 		(RDO_Title.includes("2x")) || //German, and Portuguese use numbers 
@@ -477,6 +477,10 @@ else if (RDO_Bonus != undefined) {
 							var finalZ = 0;
 							var countZ = 0;
 							for (z = 0; charCount <= 3950; z++) {
+								if (rdoFinalString.length <= 4100) {
+									charCount = 3950;
+									finalZ = rdoFinalString.length;
+								}									
 								//console.log(`rdoSpaces at ${z}: ${rdoSpaces[z]}`);
 									charCount += rdoSpaces[z].length;
 								//console.log(`charCount at ${z}: ${charCount}`);
@@ -616,7 +620,7 @@ function rdoTitleFunction() {
 			//console.log(`channelIDArray at c${c}: ${channelIDArray[c]}`);
 			if (channelIDArray[c].startsWith("undefined")) {}
 			else {
-				if (rdoFinalString.length <= 4000) {
+				if (rdoFinalString.length <= 3950) {
 					client.channels.fetch(channelIDArray[c]).then(channel => channel.send(({embeds: [rdoImageEmbed, rdoEmbed]}))).catch(err => console.log(`Min Error: ${err}\nChannel ID: ${channelIDArray[c]}`));
 				} 
 				else {

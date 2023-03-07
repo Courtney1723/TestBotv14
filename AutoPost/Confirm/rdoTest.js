@@ -384,7 +384,7 @@ else if (RDO_Bonus != undefined) {
 		(RDO_Title.includes("Скидки")) || 
 		(RDO_Title.includes("Rabatte")) || 
 		(RDO_Title.includes("Descontos")) ) { 
-			rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n`;
+			rdoFinalString01 += `**${RDO_Title}\n**${RDO_Bonus}\n\n`;
 	}	
 	else if ( 
 		(RDO_Title.includes("2x")) || //German, and Portuguese use numbers 
@@ -420,7 +420,7 @@ else if (RDO_Bonus != undefined) {
 		(RDO_Title.includes("Monatsbelohnungen")) || 
 		(RDO_Title.includes("Recompensas O Mês Inteiro")) ){ 
 			rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
-	}	
+	}			
 	else if (RDO_Title.toLowerCase().includes(":")) {
 		rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
 	}			
@@ -452,6 +452,7 @@ else if (RDO_Bonus != undefined) {
 }
 //-----------END for loop----------//		
 	//console.log(`rdoFinalString01: ${rdoFinalString01}`); //rdoFinalString before HTML formatting
+			//console.log(`rdoFinalString01.length: ${rdoFinalString01.length}`);	
 		let rdoFinalString = rdoFinalString01.replace(/<p>/g, "")
 											.replace(/<\/p>/g, "")
 										  .replace(/<\/b>/g, "")
@@ -461,10 +462,9 @@ else if (RDO_Bonus != undefined) {
 											.replace(/\n\n\n/g, "\n")
 											.replace(/\*\*\n\*\*/g, "**\n\n**")
 											.replace(/• undefined/g, "• ")
-											.replace(/\)• /g, ")\n• ") //adds a newline between link lists
-					      .replace(/<a href=\"https:\/\/socialclub.rockstargames.com\/games\/rdr2\/catalogue\/online\/products\/23bc7710\/c\/8bdc1af5" target=\"_blank\" draggable=\"false\">\n\<\/a>•/g, "") //FIXME - delete next month
-					      .replace(/<a href=\"https:\/\/socialclub.rockstargames.com\/games\/rdr2\/catalogue\/online\/products\/23bc7710\/c\/8bdc1af5" target=\"_blank\">\n\<\/a>•/g, ""); //FIXME - delete next month		
+											.replace(/\)• /g, ")\n• ") //adds a newline between link lists	
 
+						//console.log(`rdoFinalString.length: ${rdoFinalString.length}`);	
 						function bestBreak() {
 							var rdoSpaces = rdoFinalString.split(`\n\n`); //counts the newlines
 							var charCount = 0;//( (rdoTitleString().length) + (rdoDate[0].length) + (rdoFooterMin().length) + (elipseFunction().length) ); 
@@ -488,21 +488,24 @@ else if (RDO_Bonus != undefined) {
 						function bestEndBreak() {
 							return (6000 - (bestBreak()) - (rdoFooterMax().length) - (rdoImage[0].length) - 3); //- 3 for the ellipse function
 						}
-						//console.log(`bestEndBreak: ${bestEndBreak()}`);				
+						//console.log(`bestEndBreak: ${bestEndBreak()}`);			
 
 			//console.log(`rdoFinalString: ${rdoFinalString}`);
+			//console.log(`1: ${rdoFinalString.length}\n`); 
+		
     function rdoPost() {
-        return rdoFinalString.slice(0, bestBreak()); //FIXME: adjust this for the best break - up to 4000
+        return rdoFinalString.slice(0, bestBreak());
     }
-    //console.log(`1: ${rdoFinalString.length}\n`) 
+		
     function rdoPost2() {
       if (rdoFinalString.length > 3950) {
-        let post02 = rdoFinalString.substr(bestBreak(), bestEndBreak()); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
+        let post02 = rdoFinalString.substr(bestBreak(), bestEndBreak()); 
         return post02;
       } else {
         return "";
       }
     }  
+		  
     function elipseFunction() {
       if (rdoFinalString.length > 3950) {
         return "...";
@@ -837,7 +840,7 @@ function rdoTitleFunction() {
 
 				if ( ((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.SendMessages)) && ((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.ViewChannel)) && ((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.EmbedLinks)))
  {	//If the bot has all permissions
-	 			if (rdoFinalString.length <= 4000) {
+	 			if (rdoFinalString.length <= 3950) {
 				interaction.guild.channels.fetch(channelIDArray[c]).then(channel => channel.send(({embeds: [rdoImageEmbed, rdoEmbed]}))).catch(err => console.log(`RDO Test Min Error: ${err.stack}`));
 			} else {
 				interaction.guild.channels.fetch(channelIDArray[c]).then(channel => channel.send({embeds: [rdoImageEmbed, rdoEmbed, rdoEmbed2]})).catch(err => console.log(`RDO Test Max Error: ${err.stack}`));
