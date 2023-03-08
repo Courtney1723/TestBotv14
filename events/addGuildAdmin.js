@@ -1,8 +1,4 @@
 const { Client, GatewayIntentBits, Collection, Partials, PermissionsBitField, SlashCommandBuilder, EmbedBuilder, ActivityType } = require('discord.js');
-const client = new Client({
-	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions],
-	partials: [Partials.Message, Partials.Channel, Partials.Reaction],
-});
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
 var cron = require('node-cron'); //https://github.com/node-cron/node-cron
 

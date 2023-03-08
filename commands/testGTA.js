@@ -10,7 +10,7 @@ module.exports = {
 	async execute(interaction) {
 		await interaction.deferReply().catch(console.error);
 
-		let gtaURL = process.env.SOCIAL_URL_GTA3;
+		let gtaURL = "https://www.rockstargames.com/newswire?tag_id=13";
 
 		//await interaction.editReply(`Console Logged 👍 ${gtaURL}`).catch(console.error);
 
