@@ -161,6 +161,8 @@ module.exports = {
 							.replace(/<ul style="line-height:1.5;">/g, "")
 							.replace(/\n<p>/g, "<p>") //Removes spaces after a bonus
 							.replace(/<p>Only/g, "<p><b>Only")
+							.replace(/<\/span>/, "")
+							.replace(/<span style=\"font-weight: 700;\">/g, "") //FIXME- remove next week
 
 						//--BEGIN FOREIGN LANGUAGE FORMATTING-----//
 							//--RUSSIAN--//
@@ -496,7 +498,12 @@ module.exports = {
 						//console.log(`bestBreak: ${bestBreak()}`);
 
 						function bestEndBreak() {
-							return (6000 - (bestBreak()) - (gtaFooterMax().length) - (gtaImage[0].length) - 3); //- 3 for the ellipse function
+							if (lang === "ru") { //FIXME - remove next week - cut in the middle of a URL
+								return (6000 - (bestBreak()) - (gtaFooterMax().length) - (gtaImage[0].length) - 3);
+							}
+							else {
+							return (5990 - (bestBreak()) - (gtaFooterMax().length) - (gtaImage[0].length) - 3); //- 3 for the ellipse function
+							}
 						}
 						//console.log(`bestEndBreak: ${bestEndBreak()}`);
 

@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const phantom = require('phantom'); //https://github.com/amir20/phantomjs-node
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
+const fetch = require("@replit/node-fetch");
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -12,23 +13,29 @@ module.exports = {
 
 		let gtaURL = "https://www.rockstargames.com/newswire?tag_id=13";
 
-		//await interaction.editReply(`Console Logged 👍 ${gtaURL}`).catch(console.error);
+		await interaction.editReply(`Console Logged 👍`).catch(console.error);
 
-		const instance = await phantom.create();
-		const page = await instance.createPage();
+		fetch(gtaURL).then(function(response) {
+		  return response.text();
+		}).then(function(html) {
+		  //console.log(html);
+		});
 
-		await page.property('viewportSize', { width: 1024, height: 600 });
-		const status = await page.open(gtaURL);
-		console.log(`Page opened with status [${status}].`);
-		if (status === `success`) { //checks if Rockstar Social Club website is down
-			const content = await page.property('content'); // Gets the latest gta updates
-			console.log(content); 
+	async function gtaPage() {
+	  const instance = await phantom.create();
+	  const page = await instance.createPage();
+	  await page.on('onResourceRequested', function (requestData) {
+	    console.info('Requesting', requestData.url);
+	  });
 
-			interaction.editReply(`Console logged! 👍`);
-
-
-					}
-
+			const status = await page.open(gtaURL);
+			const content = await page.property('content');
+			console.log(content);
+		  await instance.exit();			
+		
+	}
+	gtaPage();
+		
 	},
 };
 

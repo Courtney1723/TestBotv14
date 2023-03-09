@@ -8,7 +8,7 @@ module.exports = {
 	async execute(client) {
 
 		//cron.schedule('* * * * *', () => { //(second),minute,hour,date,month,weekday 
-		cron.schedule('35 11 * * 4', () => { //(second),minute,hour,date,month,weekday '0 12 * * 4' = 12:00 PM on Thursday
+		cron.schedule('45 11 * * 4', () => { //(second),minute,hour,date,month,weekday '0 12 * * 4' = 12:00 PM on Thursday
 		  console.log('sending GTA Auto Posts...');
 			
 			fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
@@ -213,6 +213,8 @@ let gtaURL = process.env.SOCIAL_URL_GTA2;
 			.replace(/<ul style="line-height:1.5;">/g, "")
 			.replace(/\n<p>/g, "<p>") //Removes spaces after a bonus
 			.replace(/<p>Only/g, "<p><b>Only")
+			.replace(/<\/span>/, "")
+			.replace(/<span style=\"font-weight: 700;\">/g, "") //FIXME- remove next week			
 
 			//--BEGIN FOREIGN LANGUAGE FORMATTING-----//
 				.replace(/=\"\"/g, "")
@@ -542,7 +544,12 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 						//console.log(`bestBreak: ${bestBreak()}`);
 
 						function bestEndBreak() {
-							return (6000 - (bestBreak()) - (gtaFooterMax().length) - (gtaImage[0].length) - 3); //- 3 for the ellipse function
+							if (lang === "ru") { //FIXME - remove next week - cut in the middle of a URL
+								return (6000 - (bestBreak()) - (gtaFooterMax().length) - (gtaImage[0].length) - 3);
+							}
+							else {
+							return (5990 - (bestBreak()) - (gtaFooterMax().length) - (gtaImage[0].length) - 3); //- 3 for the ellipse function
+							}
 						}
 						//console.log(`bestEndBreak: ${bestEndBreak()}`);	
 
