@@ -45,6 +45,9 @@ module.exports = {
 			let urlLink01 = urlLink02[1].split("\"");
 
 			function urlLink() {
+				//return `/events/e9Lot6x3/gta-online-bonuses/1`; //test for finalstring <= 4000 
+				//return `events/B3RJmhuX/gta-online-bonuses/1`; //test for finalstring >= 4000 && <= 6000
+				//return `events/SeMgTsre/gta-online-bonuses/1`; //test for finalString >= 6000				
 				if (urlLink01[1].includes(`\?`)) {
 					let urlLinkFix = urlLink01[1].split(`\?`);
 					let urlLink = urlLinkFix[0];
@@ -162,7 +165,7 @@ module.exports = {
 							.replace(/\n<p>/g, "<p>") //Removes spaces after a bonus
 							.replace(/<p>Only/g, "<p><b>Only")
 							.replace(/<\/span>/, "")
-							.replace(/<span style=\"font-weight: 700;\">/g, "") //FIXME- remove next week
+							.replace(/<span style=\"font-weight: 700;\">/g, "") //FIXME- remove next week										
 
 						//--BEGIN FOREIGN LANGUAGE FORMATTING-----//
 							//--RUSSIAN--//
@@ -404,12 +407,6 @@ module.exports = {
 								else if (GTA_Title.toLowerCase().includes("simeon's showroom")) {
 									gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
 								}
-								else if (GTA_Title.toLowerCase().includes("festive surprises")) {
-									gtaFinalString01 += `**${GTA_Title}***\n`;
-								}
-								else if (GTA_Title.toLowerCase().includes("new year")) {
-									gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
-								}
 								else if (GTA_Title.toLowerCase().includes("2.5x")) {
 									gtaFinalString01 += `**${GTA_Title}** \n`;
 								}
@@ -472,8 +469,8 @@ module.exports = {
 						//console.log(`gtaFinalString.length: ${gtaFinalString.length}`);
 						function bestBreak() {
 							var gtaSpaces = gtaFinalString.split(`\n\n`); //counts the newlines
-							var charCount = 0;//( (gtaTitleString().length) + (gtaDate[0].length) + (gtaFooterMin().length) + (elipseFunction().length) ); 
-							//console.log(`( T${(gtaTitleString().length)} + D${(gtaDate[0].length)} + F${(gtaFooterMin().length)} + E${(elipseFunction().length)} )`);
+							var charCount = 0;//( (gtaTitleString().length) + (gtaDate[0].length) + (gtaFooterMin().length) + (ellipsisFunction().length) ); 
+							//console.log(`( T${(gtaTitleString().length)} + D${(gtaDate[0].length)} + F${(gtaFooterMin().length)} + E${(ellipsisFunction().length)} )`);
 							
 							var finalZ = 0;
 							var countZ = 0;
@@ -493,19 +490,17 @@ module.exports = {
 								//console.log(`finalZ: ${finalZ}`);
 							  //console.log(`charCount: ${charCount}`);
 								return (charCount - finalZ) + (countZ * 2) - 3;
-							// ( (gtaTitleString().length) + (gtaDate[0].length) + (gtaFooterMin().length) + (elipseFunction().length) )
+							// ( (gtaTitleString().length) + (gtaDate[0].length) + (gtaFooterMin().length) + (ellipsisFunction().length) )
 						}
 						//console.log(`bestBreak: ${bestBreak()}`);
 
+						var constChars = (gtaFooterMax().length) + (gtaImage[0].length) + (gtaTitleString().length);
+						var gtaNewlines = gtaFinalString.substr(bestBreak(), (6000 - bestBreak() - constChars)).split("\n");
+						var tempString = gtaNewlines[gtaNewlines.length - 1];
 						function bestEndBreak() {
-							if (lang === "ru") { //FIXME - remove next week - cut in the middle of a URL
-								return (6000 - (bestBreak()) - (gtaFooterMax().length) - (gtaImage[0].length) - 3);
-							}
-							else {
-							return (5990 - (bestBreak()) - (gtaFooterMax().length) - (gtaImage[0].length) - 3); //- 3 for the ellipse function
-							}
+							return (6000 - bestBreak() - constChars - tempString.length);
 						}
-						//console.log(`bestEndBreak: ${bestEndBreak()}`);
+						//console.log(`bestEndBreak:${bestEndBreak()}`);
 
 						//console.log(`gtaFinalString: ${gtaFinalString}`);
 						function gtaPost() {
@@ -520,13 +515,20 @@ module.exports = {
 								return "";
 							}
 						}
-						function elipseFunction() {
+						function ellipsisFunction() {
 							if (gtaFinalString.length > 4000) {
 								return "...";
 							} else {
 								return "";
 							}
 						}
+						function ellipsisFunction2() {
+							if (gtaFinalString.length >= (6000 - constChars)) {
+								return "...";
+							} else {
+								return "";
+							}
+						}						
 						function gtaFooterMax() {
 							if (gtaFinalString.length > 4000) {
 								if (lang === "en") {
@@ -601,10 +603,10 @@ module.exports = {
 						let gtaEmbed = new EmbedBuilder()
 							.setColor('0x00CD06') //Green
 							.setTitle(`${gtaTitleString()}`)
-							.setDescription(`${gtaDate[0]}\n\n${gtaPost()} \n${gtaFooterMin()} ${elipseFunction()}`)
+							.setDescription(`${gtaDate[0]}\n\n${gtaPost()} \n${gtaFooterMin()} ${ellipsisFunction()}`)
 						let gtaEmbed2 = new EmbedBuilder()
 							.setColor('0x00CD06') //Green
-							.setDescription(`${elipseFunction()} \n${gtaPost2()} ${gtaFooterMax()}`)
+							.setDescription(`${ellipsisFunction()} \n${gtaPost2()} ${ellipsisFunction2()}${gtaFooterMax()}`)
 						let gtaImageEmbed = new EmbedBuilder()
 							.setColor('0x00CD06') //Green
 							.setImage(`${gtaImage[0]}`);

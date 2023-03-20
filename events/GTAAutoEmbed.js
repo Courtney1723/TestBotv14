@@ -518,8 +518,8 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 						//console.log(`gtaFinalString01.length: ${gtaFinalString01.length}`);
 						function bestBreak() {						
 							var gtaSpaces = gtaFinalString.split(`\n\n`); //counts the newlines
-							var charCount = 0;//( (gtaTitleString().length) + (gtaDate[0].length) + (gtaFooterMin().length) + (elipseFunction().length) ); 
-							//console.log(`( T${(gtaTitleString().length)} + D${(gtaDate[0].length)} + F${(gtaFooterMin().length)} + E${(elipseFunction().length)} )`);
+							var charCount = 0;//( (gtaTitleString().length) + (gtaDate[0].length) + (gtaFooterMin().length) + (ellipsisFunction().length) ); 
+							//console.log(`( T${(gtaTitleString().length)} + D${(gtaDate[0].length)} + F${(gtaFooterMin().length)} + E${(ellipsisFunction().length)} )`);
 							
 							var finalZ = 0;
 							var countZ = 0;
@@ -539,19 +539,17 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 								//console.log(`finalZ: ${finalZ}`);
 							  //console.log(`charCount: ${charCount}`);
 								return (charCount - finalZ) + (countZ * 2) - 3;
-							// ( (gtaTitleString().length) + (gtaDate[0].length) + (gtaFooterMin().length) + (elipseFunction().length) )
+							// ( (gtaTitleString().length) + (gtaDate[0].length) + (gtaFooterMin().length) + (ellipsisFunction().length) )
 						}
 						//console.log(`bestBreak: ${bestBreak()}`);
 
+						var constChars = (gtaFooterMax().length) + (gtaImage[0].length) + (gtaTitleString().length);
+						var gtaNewlines = gtaFinalString.substr(bestBreak(), (6000 - bestBreak() - constChars)).split("\n");
+						var tempString = gtaNewlines[gtaNewlines.length - 1];
 						function bestEndBreak() {
-							if (lang === "ru") { //FIXME - remove next week - cut in the middle of a URL
-								return (6000 - (bestBreak()) - (gtaFooterMax().length) - (gtaImage[0].length) - 3);
-							}
-							else {
-							return (5990 - (bestBreak()) - (gtaFooterMax().length) - (gtaImage[0].length) - 3); //- 3 for the ellipse function
-							}
+							return (6000 - bestBreak() - constChars - tempString.length);
 						}
-						//console.log(`bestEndBreak: ${bestEndBreak()}`);	
+						//console.log(`bestEndBreak:${bestEndBreak()}`);
 
 			//console.log(`gtaFinalString: ${gtaFinalString}`);
     function gtaPost() {
@@ -566,13 +564,20 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
         return "";
       }
     }  
-    function elipseFunction() {
+    function ellipsisFunction() {
       if (gtaFinalString.length > 4000) {
         return "...";
         } else {
         return "";
         }
-    }		
+    }	
+    function ellipsisFunction2() {
+      if (gtaFinalString.length >= (6000 - constChars)) {
+        return "...";
+        } else {
+        return "";
+        }
+    }			
     function gtaFooterMax() {
       if (gtaFinalString.length > 4000) {
         if (lang === "en") {
@@ -648,10 +653,10 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 		let gtaEmbed = new EmbedBuilder()
 			.setColor('0x00CD06') //Green
 			.setTitle(`${gtaTitleString()}`)
-			.setDescription(`${gtaDate[0]}\n\n${gtaPost()} \n${gtaFooterMin()} ${elipseFunction()}`)
+			.setDescription(`${gtaDate[0]}\n\n${gtaPost()} \n${gtaFooterMin()} ${ellipsisFunction()}`)
 		let gtaEmbed2 = new EmbedBuilder()
 			.setColor('0x00CD06') //Green
-			.setDescription(`${elipseFunction()} \n${gtaPost2()} ${gtaFooterMax()}`)	
+			.setDescription(`${ellipsisFunction()} \n${gtaPost2()} ${ellipsisFunction2()}${gtaFooterMax()}`)	
 		let gtaImageEmbed = new EmbedBuilder()
 			.setColor('0x00CD06') //Green
 			.setImage(`${gtaImage[0]}`);
