@@ -571,7 +571,7 @@ module.exports = {
 									return `** [Clique aqui](${url}) para mais detalhes**`;
 								}
 								else {
-									return `** [Click here](${url}) clique aqui para mais detalhes**`;
+									return `** [Click here](${url}) for more details**`;
 								}
 							} else {
 								return "";
@@ -601,14 +601,14 @@ module.exports = {
 						//console.log(`gtaTitleString: ${gtaTitleString()}`);
 
 						let gtaEmbed = new EmbedBuilder()
-							.setColor('0x00CD06') //Green
+							.setColor(0x00CD06) //Green
 							.setTitle(`${gtaTitleString()}`)
 							.setDescription(`${gtaDate[0]}\n\n${gtaPost()} \n${gtaFooterMin()} ${ellipsisFunction()}`)
 						let gtaEmbed2 = new EmbedBuilder()
-							.setColor('0x00CD06') //Green
+							.setColor(0x00CD06) //Green
 							.setDescription(`${ellipsisFunction()} \n${gtaPost2()} ${ellipsisFunction2()}${gtaFooterMax()}`)
 						let gtaImageEmbed = new EmbedBuilder()
-							.setColor('0x00CD06') //Green
+							.setColor(0x00CD06) //Green
 							.setImage(`${gtaImage[0]}`);
 
 						// console.log(`gtaEmbed length: ${gtaEmbed.length}`); //no more than 4096 (line 199)
@@ -647,7 +647,7 @@ module.exports = {
 						//console.log(`${estHour}:${estMinute} ${amPM}`);
 
 						let gtaExpiredEmbed = new EmbedBuilder()
-							.setColor('0x00CD06') //Green
+							.setColor(0x00CD06) //Green
 							.setDescription(`These bonuses & discounts may be expired. \nRockstar typically releases the latest weekly bonuses & discounts every \nThursday after 1:00 PM EST.`)
 							.setFooter({ text: `It is ${estHour}:${estMinute} ${amPM} EST now.`, iconURL: process.env.logo_link })
 
@@ -662,7 +662,7 @@ module.exports = {
 					}
 					else {
 						let RStarDownEmbed = new EmbedBuilder()
-							.setColor('0xFF0000') //RED
+							.setColor(0xFF0000) //RED
 							.setDescription(`The Rockstar Social Club website is down. \nPlease try again later. \nSorry for the inconvenience.`)
 						interaction.editReply({ embeds: [RStarDownEmbed], ephemeral: true });
 						console.log(`The Rockstar Social Club website is down.`);
@@ -672,7 +672,7 @@ module.exports = {
 		}
 		else {
 			let RStarDownEmbed = new EmbedBuilder()
-				.setColor('0xFF0000') //RED
+				.setColor(0xFF0000) //RED
 				.setDescription(`The Rockstar Social Club website is down. \nPlease try again later. \nSorry for the inconvenience.`)
 			interaction.editReply({ embeds: [RStarDownEmbed], ephemeral: true });
 			console.log(`The Rockstar Social Club website is down.`);

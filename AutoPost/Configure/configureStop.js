@@ -206,7 +206,7 @@ module.exports = {
     if (err) {console.log(`Error: ${err}`)} //If an error, console.log
 					
 				const configureStopEmbed = new EmbedBuilder()
-				.setColor(`0x00FFFF`) //Teal
+				.setColor(0x00FFFF) //Teal
 				.setTitle(`${removeARole()}`)
 				.setDescription(`${dropdownMenu()}`)	
 				.setFooter({text: `${adminFooter()}`, iconURL: process.env.logo_link })

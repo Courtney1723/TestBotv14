@@ -187,7 +187,7 @@ module.exports = {
 					else if (menuChannelID.includes(`undefinedchannel`)) { //interaction.values === `undefinedchannel` does not work?
 
 						const rdoDuplicateEmbed = new EmbedBuilder()
-								.setColor(`Orange`) 
+								.setColor(0xFFAE00) //Orange 
 								.setTitle(`Please Try Again`)
 								.setDescription(`You selected an invalid response "No Channel Selected".\nPlease Try again. || (◕ᴥ◕ʋ) ||`)	
 						
@@ -203,7 +203,7 @@ module.exports = {
 					else { //add new channel to RDODataBase.txt
 
 						const rdoConfirmEmbed = new EmbedBuilder()
-								.setColor(`Green`) 
+								.setColor(0x00FF00) //Green
 								.setTitle(`${success()}`)
 								.setDescription(`${rdoAddDesc()}`)	
 
@@ -231,7 +231,12 @@ module.exports = {
 								console.log(`You added a channel for RDO auto posts.`);
 							}
 							else {
-								console.log(`A user added a channel for RDO auto posts.`);
+								if ((interaction.user.id === process.env.USER_ID_1) || (interaction.user.id === process.env.USER_ID_2)) {
+									console.log(`You added a channel for RDO auto posts.`);
+								}
+								else {
+									console.log(`A user added a channel for RDO auto posts.`);
+								}
 							}
 						}); // end fs:appendFile to add a channel for rdo autop posts	
 							

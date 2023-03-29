@@ -98,7 +98,7 @@ fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
 		}
 
       let helpEmbed = new EmbedBuilder()
-      .setColor('0x00FFFF') //Teal
+      .setColor(0x00FFFF) //Teal
       .setTitle(`${helpTitle()}`)
       .setDescription(`${helpDesc()}`);
 

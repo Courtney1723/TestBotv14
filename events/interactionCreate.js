@@ -1,11 +1,11 @@
-const { Client, GatewayIntentBits, Collection, Partials } = require('discord.js');
+const { Client, GatewayIntentBits, Collection, Partials, ChannelType } = require('discord.js');
 
 module.exports = {
 	name: 'interactionCreate',
 	async execute(interaction) {
 		//console.log(`interaction.channel.type: ${interaction.channel.type}`);
 		if (interaction.isCommand()) {
-			if (interaction.channel.type === 0) { 
+			if (interaction.channel.type === ChannelType.GuildText) { 
 				if ((interaction.user.id === process.env.USER_ID_1) || (interaction.user.id === process.env.USER_ID_2)) {
 					console.log(`You triggered ${interaction.commandName} in a guild`);
 				} 
@@ -13,7 +13,7 @@ module.exports = {
 					console.log(`A user triggered ${interaction.commandName} in a guild`);
 				}
 			}
-			else if (interaction.channel.type === 1) {
+			else if (interaction.channel.type === ChannelType.DM) {
 				if ((interaction.user.id === process.env.USER_ID_1) || (interaction.user.id === process.env.USER_ID_2)) {
 					console.log(`You triggered ${interaction.commandName} in a DM`);
 				} 
@@ -21,7 +21,7 @@ module.exports = {
 					console.log(`A user triggered ${interaction.commandName} in a DM`);
 				}
 			}
-			else if (interaction.channel.type === 5) {
+			else if (interaction.channel.type === ChannelType.GuildAnnouncement) {
 				if ((interaction.user.id === process.env.USER_ID_1) || (interaction.user.id === process.env.USER_ID_2)) {
 					console.log(`You triggered ${interaction.commandName} in an announcement channel`);
 				} 

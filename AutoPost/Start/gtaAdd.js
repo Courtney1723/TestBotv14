@@ -208,7 +208,7 @@ module.exports = {
 					else if (menuChannelID.includes(`undefinedchannel`)) { //interaction.values === `undefinedchannel` does not work?
 
 						const gtaDuplicateEmbed = new EmbedBuilder()
-								.setColor(`Orange`) 
+								.setColor(0xFFAE00) //orange 
 								.setTitle(`Please Try Again`)
 								.setDescription(`You selected an invalid response "No Channel Selected".\nPlease Try again. || (◕ᴥ◕ʋ) ||`)	
 						
@@ -224,7 +224,7 @@ module.exports = {
 					else { //add new channel to GTADataBase.txt
 
 						const gtaConfirmEmbed = new EmbedBuilder()
-								.setColor(`Green`) 
+								.setColor(0x00FF00) //Green 
 								.setTitle(`${success()}`)
 								.setDescription(`${gtaAddDesc()}`)	
 

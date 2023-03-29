@@ -266,7 +266,7 @@ Click **\'Confirm\'** to view and test current settings.`;
 //--END TRANSLATIONS--//						
 
 		const initialEmbed = new EmbedBuilder()
-			.setColor(`0x00FFCC`) //Seafoam green
+			.setColor(0x00FFCC) //Seafoam green
 			.setTitle(`${autoPostTitle()}`)
 			.setDescription(`${autoPostDesc()}`)
 			.setFooter({text: `${footerText()}`, iconURL: process.env.logo_link })

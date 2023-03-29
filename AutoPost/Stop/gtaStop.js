@@ -176,7 +176,7 @@ module.exports = {
 //-----END TRANSLATIONS-----//		
 
 		const gtaStopEmbed = new EmbedBuilder()
-			.setColor(`Red`) 
+			.setColor(0xFF0000) //Red 
 			.setTitle(`${gtaStopTitle()}`)
 			.setDescription(`${gtaStopDesc()}`)
 			

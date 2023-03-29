@@ -176,7 +176,7 @@ module.exports = {
 //-----END TRANSLATIONS-----//					
 
 			const rdoStartEmbed = new EmbedBuilder()
-			.setColor(`Green`) 
+			.setColor(0x00FF00) //Green 
 			.setTitle(`${rdoStartTitle()}`)
 			.setDescription(`${rdoStartDesc()}`)	
 			.setFooter({ text: `${rdoStartFooter()}`, iconURL: process.env.logo_link });					
@@ -186,7 +186,7 @@ module.exports = {
 
 			let rdoChannelCount = 0;
 				interaction.guild.channels.cache.forEach(channel => {
-					if ( ((channel.type === 0) || (channel.type === 5)) && (!data.includes(channel.id)) && (channel.permissionsFor(process.env.CLIENT_ID).has(PermissionsBitField.Flags.SendMessages)) ) { 
+					if ( ((channel.type === ChannelType.GuildText) || (channel.type === ChannelType.GuildAnnouncement)) && (!data.includes(channel.id)) && (channel.permissionsFor(process.env.CLIENT_ID).has(PermissionsBitField.Flags.SendMessages)) ) { 
 						rdoChannelCount += 1;
 					}
 				})

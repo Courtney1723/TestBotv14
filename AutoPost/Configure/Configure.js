@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, PermissionsBitField, Collection, Partials, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } = require('discord.js');
+const { Client, GatewayIntentBits, PermissionsBitField, Collection, Partials, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, ChannelType } = require('discord.js');
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
 
 module.exports = {
@@ -45,7 +45,7 @@ module.exports = {
 
 			let channelIDArray = [];
 			interaction.guild.channels.cache.forEach(channel => {
-			    if (channel.type === 0) {
+			    if ((channel.type === ChannelType.GuildText) || (channel.type === ChannelType.GuildAnnouncement)) {
 			        channelIDArray.push(`${channel.id}`);
 			    }
 			});
@@ -321,7 +321,7 @@ module.exports = {
 	//-----END TRANSLATIONS-----//
 
 	const configureEmbed = new EmbedBuilder()
-	.setColor(`0x00FFFF`) //Teal
+	.setColor(0x00FFFF) //Teal
 	.setTitle(`${configureTitle()}`)
 	.setDescription(`${configureDesc()}`)
 

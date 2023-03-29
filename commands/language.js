@@ -337,7 +337,7 @@ module.exports = {
 			}					
 			
 			const initialEmbed = new EmbedBuilder()
-				.setColor(`F98800`) //Orange
+				.setColor(0xF98800) //Orange
 				.setTitle(`${langSettingsTitle()}`)
 				.setDescription(`${currentLanguage()}\n${languagesDesc()}`)
 				.setFooter({text: `${footerText()}`, iconURL: process.env.logo_link })		

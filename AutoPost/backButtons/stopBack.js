@@ -277,7 +277,7 @@ module.exports = {
 //-----END TRANSLATIONS-----//
 
 		const startEmbed = new EmbedBuilder()
-			.setColor(`Green`) 
+			.setColor(0x00FF00) //green
 			.setTitle(`${stopTitle()}`)
 			.setDescription(`${stopDesc()}`)	
 			

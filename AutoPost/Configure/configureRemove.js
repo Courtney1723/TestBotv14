@@ -270,7 +270,7 @@ if (interaction.user.id != menuUserID) {
 else if (menuRoleID === `undefinedrole`) { //if the Admin role is already required - error
 
     const configureDuplicateEmbed = new EmbedBuilder()
-    .setColor(`Orange`) 
+    .setColor(0xFFAE00) //orange
     .setTitle(`${tryAgain()}`)
     .setDescription(`${tryAgainDesc()}`)	
     
@@ -303,7 +303,7 @@ else if (menuRoleID === `undefinedrole`) { //if the Admin role is already requir
 			// console.log(`roleIDArray length: ${roleIDArray.length}`);
 		
     const configureConfirmAddEmbed = new EmbedBuilder()
-        .setColor(`Green`) 
+        .setColor(0x00FF00) //green
         .setTitle(`${success()}`)
         .setDescription(`${adminNotRequired()}\n${everyoneCheck}`)	
 
@@ -366,7 +366,7 @@ else if (menuRoleID === `undefinedrole`) { //if the Admin role is already requir
 					}
 		
 					const configureAddEmbed = new EmbedBuilder()
-						.setColor(`Green`) 
+						.setColor(0x00FF00) //green 
 						.setTitle(`${success()}`)
 						.setDescription(`${removeRoleDesc()}\n${everyoneCheck}`)	
 

@@ -174,7 +174,7 @@ module.exports = {
 //-----END TRANSLATIONS-----//				
 			
 			const rdoStopEmbed = new EmbedBuilder()
-				.setColor(`Red`) 
+				.setColor(0xFF0000) //Red 
 				.setTitle(`${rdoStopTitle()}`)
 				.setDescription(`${rdoStopDesc()}`)		
 
