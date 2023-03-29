@@ -64,7 +64,7 @@ module.exports = {
 			//console.log(`lang: ${lang}`);				
 			
 			const portugueseStartEmbed = new EmbedBuilder()
-			.setColor(`Green`) 
+			.setColor(0x0FFF00) 
 			.setTitle(`Êxito`)
 			.setDescription(`O idioma deste servidor foi alterado para português.`)
 			.setFooter({ text: 'O idioma padrão é o inglês. Algumas informações podem estar faltando ou mal traduzidas.', iconURL: process.env.logo_link });

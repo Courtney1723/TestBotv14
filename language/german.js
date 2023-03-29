@@ -64,7 +64,7 @@ module.exports = {
 			//console.log(`lang: ${lang}`);				
 			
 			const germanStartEmbed = new EmbedBuilder()
-			.setColor(`Green`) 
+			.setColor(0x0FFF00) 
 			.setTitle(`Erfolg`)
 			.setDescription(`Die Sprache für diesen Server wurde auf Deutsch geändert.`)
 			.setFooter({ text: 'Die Standardsprache ist Englisch. Einige Informationen fehlen möglicherweise oder sind schlecht übersetzt.', iconURL: process.env.logo_link });

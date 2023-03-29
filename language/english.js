@@ -64,7 +64,7 @@ module.exports = {
 			//console.log(`lang: ${lang}`);				
 			
 			const englishStartEmbed = new EmbedBuilder()
-			.setColor(`Green`) 
+			.setColor(0x0FFF00) 
 			.setTitle(`Success!`)
 			.setDescription(`The language for this server has been changed to English.`)	
 	

@@ -64,7 +64,7 @@ module.exports = {
 			//console.log(`lang: ${lang}`);				
 			
 			const russianStartEmbed = new EmbedBuilder()
-			.setColor(`Green`) 
+			.setColor(0x0FFF00) 
 			.setTitle(`Успех`)
 			.setDescription(`Язык этого сервера был изменен на русский.`)	
 			.setFooter({ text: 'Языком по умолчанию является английский. Некоторая информация может отсутствовать или плохо переведена.', iconURL: process.env.logo_link });

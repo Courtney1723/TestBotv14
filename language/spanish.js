@@ -64,7 +64,7 @@ module.exports = {
 			//console.log(`lang: ${lang}`);				
 			
 			const spanishStartEmbed = new EmbedBuilder()
-			.setColor(`Green`) 
+			.setColor(0x0FFF00) 
 			.setTitle(`Éxito`)
 			.setDescription(`El idioma de este servidor se ha cambiado al español.`)
 			.setFooter({ text: 'El idioma predeterminado es el inglés. Es posible que falte alguna información o que esté mal traducida.', iconURL: process.env.logo_link });
