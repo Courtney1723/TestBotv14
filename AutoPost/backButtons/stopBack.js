@@ -6,20 +6,20 @@ module.exports = {
 	async execute(interaction, user) {
 
 		if (!interaction.isButton()) {return};
-		if ( (interaction.customId.startsWith(`rdostartback -`)) || (interaction.customId.startsWith(`gtastartback -`)) ) {
+		if ( (interaction.customId.startsWith(`rdostopback -`)) || (interaction.customId.startsWith(`gtastopback -`)) ) {
 
 			let rdo_gta = "";
-			if (interaction.customId.startsWith(`rdostartback -`)) {
+			if (interaction.customId.startsWith(`rdostopback -`)) {
 				rdo_gta += 'rdo';
 			} else {
 				rdo_gta += 'gta';
 			} 
 
-		let buttonUserID01 = (interaction.customId).split(`${rdo_gta}startback - `);
+		let buttonUserID01 = (interaction.customId).split(`${rdo_gta}stopback - `);
 		let buttonUserID = buttonUserID01[1];
-			//console.log(`startBack buttonUserID: ${buttonUserID}`);
-			//console.log(`startBack interaction.user.id === buttonUserID? ${interaction.user.id === buttonUserID}`);
-			//console.log(`startBack interaction.user.id: ${interaction.user.id} && buttonUserID: ${buttonUserID}`);
+			console.log(`stopback buttonUserID: ${buttonUserID}`);
+			//console.log(`stopback interaction.user.id === buttonUserID? ${interaction.user.id === buttonUserID}`);
+			//console.log(`stopback interaction.user.id: ${interaction.user.id} && buttonUserID: ${buttonUserID}`);
 
 		let guildRoleIds = [];
 		fs.readFile('./rolesDataBase.txt', 'utf8', async function (err, data) {
@@ -276,23 +276,23 @@ module.exports = {
 
 //-----END TRANSLATIONS-----//
 
-		const startEmbed = new EmbedBuilder()
-			.setColor(0x00FF00) //green
+		const stopEmbed = new EmbedBuilder()
+			.setColor(0xFF0000) //red
 			.setTitle(`${stopTitle()}`)
 			.setDescription(`${stopDesc()}`)	
 			
-		const startButtons = new ActionRowBuilder()
+		const stopButtons = new ActionRowBuilder()
 			.addComponents(
 			    new ButtonBuilder()
-			        .setCustomId(`gtastart - ${interaction.user.id}`)
+			        .setCustomId(`gtastop - ${interaction.user.id}`)
 			        .setLabel('GTA')
 			        .setStyle(ButtonStyle.Success),
 			    new ButtonBuilder()
-			        .setCustomId(`rdostart - ${interaction.user.id}`)
+			        .setCustomId(`rdostop - ${interaction.user.id}`)
 			        .setLabel('RDO')
 			        .setStyle(ButtonStyle.Danger),		
 					new ButtonBuilder()
-			        .setCustomId(`startback - ${interaction.user.id}`)
+			        .setCustomId(`stopback - ${interaction.user.id}`)
 			        .setLabel(`${goBack()}`)
 			        .setStyle(ButtonStyle.Secondary),	
 			);				
@@ -308,7 +308,7 @@ module.exports = {
 		}
 		else if (AdminRequired() === "AdminRequiredYes") { //if admin permissions are required
 			if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) {
-					await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`startEmbed Error: ${err}`));	
+					await interaction.editReply({ embeds: [stopEmbed], components: [stopButtons] }).catch(err => console.log(`stopEmbed Error: ${err}`));	
 			} 
 			else if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
 					await interaction.followUp({content: `${missingPermissions()}`, ephemeral: true});
@@ -331,15 +331,15 @@ module.exports = {
 				} //end loop to check for hasARole
 					//console.log(`hasARole: ${hasARole} && required roles:${guildRoleIds.length}`)
 				if ( (guildRoleIds.length === 0) && (interaction.user.id === buttonUserID) ) { //no role required
-					await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`startButtons Error: ${err.stack}`));
+					await interaction.editReply({ embeds: [stopEmbed], components: [stopButtons] }).catch(err => console.log(`stopButtons Error: ${err.stack}`));
 				}
 					
 				else if ( (hasARole >= 1) && (interaction.user.id === buttonUserID) ) { //if the user has at least one role listed
-						await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`startButtons Error: ${err.stack}`));
+						await interaction.editReply({ embeds: [stopEmbed], components: [stopButtons] }).catch(err => console.log(`stopButtons Error: ${err.stack}`));
 				}
 					
 				else if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) { //If the user is an administrator
-						await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => {console.log(`startButtons Error: ${err.stack}`); process.kill(1);});
+						await interaction.editReply({ embeds: [stopEmbed], components: [stopButtons] }).catch(err => {console.log(`stopButtons Error: ${err.stack}`); process.kill(1);});
 				}		
 				else if (hasARole <= 0) { //if the user does not have a listed role and is not an administrator
 					await interaction.followUp({content: `${missingPermissions()}`, ephemeral: true});
@@ -388,6 +388,6 @@ module.exports = {
 				}});// end fs:readFile for LANGData.txt
 		}); //end fs:readFile			
 	
-	} //end if start
+	} //end if stop
 	},
 }

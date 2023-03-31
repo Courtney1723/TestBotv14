@@ -596,14 +596,14 @@ function rdoTitleFunction() {
 		
 
 		let rdoEmbed = new EmbedBuilder()
-			.setColor('0xC10000') //Red
+			.setColor(0xC10000) //Red
 			.setTitle(`${rdoTitleFunction()}`)
 			.setDescription(`${rdoDate[0]}\n\n${rdoPost()} \n${rdoFooterMin()} ${elipseFunction()}`)
 		let rdoEmbed2 = new EmbedBuilder()
-			.setColor('0xC10000') //Red
+			.setColor(0xC10000) //Red
 			.setDescription(`${elipseFunction()} \n${rdoPost2()} ${rdoFooterMax()}`)	
 		let rdoImageEmbed = new EmbedBuilder()
-			.setColor('0xC10000') //Red
+			.setColor(0xC10000) //Red
 			.setImage(`${rdoImage[0]}`);
 
 		 // console.log(`rdoEmbed length: ${rdoEmbed.length}`); //no more than 4096 (line 199)
@@ -631,7 +631,7 @@ function rdoTitleFunction() {
 	}
 	else {
 		let RStarDownEmbed = new EmbedBuilder()
-			.setColor('0xFF0000') //RED
+			.setColor(0xFF0000) //RED
 			.setDescription(`The Rockstar Social Club website is down. \nPlease try again later. \nSorry for the inconvenience.`)
 		client.channels.fetch(process.env.logChannel).then(channel => channel.send({embeds: [RStarDownEmbed], ephemeral: true}));
 		console.log(`The Rockstar Social Club website is down.`);	
@@ -639,7 +639,7 @@ function rdoTitleFunction() {
 	}
 	else {
 		let RStarDownEmbed = new EmbedBuilder()
-			.setColor('0xFF0000') //RED
+			.setColor(0xFF0000) //RED
 			.setDescription(`The Rockstar Social Club website is down. \nPlease try again later. \nSorry for the inconvenience.`)
 		client.channels.fetch(process.env.logChannel).then(channel => channel.send({embeds: [RStarDownEmbed], ephemeral: true}));
 		console.log(`The Rockstar Social Club website is down.`);	

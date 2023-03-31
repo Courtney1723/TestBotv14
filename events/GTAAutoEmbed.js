@@ -651,14 +651,14 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 		
 
 		let gtaEmbed = new EmbedBuilder()
-			.setColor('0x00CD06') //Green
+			.setColor(0x00CD06) //Green
 			.setTitle(`${gtaTitleString()}`)
 			.setDescription(`${gtaDate[0]}\n\n${gtaPost()} \n${gtaFooterMin()} ${ellipsisFunction()}`)
 		let gtaEmbed2 = new EmbedBuilder()
-			.setColor('0x00CD06') //Green
+			.setColor(0x00CD06) //Green
 			.setDescription(`${ellipsisFunction()} \n${gtaPost2()} ${ellipsisFunction2()}${gtaFooterMax()}`)	
 		let gtaImageEmbed = new EmbedBuilder()
-			.setColor('0x00CD06') //Green
+			.setColor(0x00CD06) //Green
 			.setImage(`${gtaImage[0]}`);
 
 		 // console.log(`gtaEmbed length: ${gtaEmbed.length}`); //no more than 4096 (line 199)
@@ -684,7 +684,7 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 		} 
 	else {
 			let RStarDownEmbed = new EmbedBuilder()
-				.setColor('0xFF0000') //RED
+				.setColor(0xFF0000) //RED
 				.setDescription(`The Rockstar Social Club website is down. \nPlease try again later.`)
 			client.channels.fetch(process.env.logChannel2).then(channel => channel.send({embeds: [RStarDownEmbed], ephemeral: true}));
 			console.log(`The Rockstar Social Club website is down.`);	
@@ -692,7 +692,7 @@ for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be 
 	} 
 	else {
 			let RStarDownEmbed = new EmbedBuilder()
-				.setColor('0xFF0000') //RED
+				.setColor(0xFF0000) //RED
 				.setDescription(`The Rockstar Social Club website is down. \nPlease try again later.`)
 			client.channels.fetch(process.env.logChannel2).then(channel => channel.send({embeds: [RStarDownEmbed], ephemeral: true}));
 			console.log(`The Rockstar Social Club website is down.`);	
