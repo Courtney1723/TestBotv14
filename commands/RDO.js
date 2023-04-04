@@ -99,7 +99,15 @@ module.exports = {
 					return urlLink;
 				}					
 			}
-			//console.log(`urlLink: ${urlLink()}`);					
+			//console.log(`urlLink: ${urlLink()}`);		
+
+						function isPast() {
+							let isPast003 = content.split("isPast\":");
+							let isPast002 = isPast003[1].split(",\"");
+
+							return isPast002[0];
+						}
+						//console.log(`isPast: ${isPast()}`);					
 
 			let langBase = `/?lang=`;
 			let langURL = `${langBase}${lang}`;
@@ -151,6 +159,13 @@ module.exports = {
 			.replace(/&nbsp;/g, " ") //Non breaking space
 			.replace(/\n\n/g, "\n")
 			.replace(/<ul style="line-height:1.5;">/g, "\n")
+
+			//spanish
+			.replace(/<\/strong>/g, "")
+			.replace(/<strong>/g, "")
+
+			//German
+			.replace(/" draggable="false/g, "")		
 			//.replace(/\n<p>/g, "<p>") //Removes spaces after a bonus
 			//console.log(`rdoString: ${rdoString}`);
 
@@ -256,7 +271,7 @@ for (i = 0; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 					//console.log(`Titles2: ${Titles2[0]}\n`); // First word of the title
 				let titlesLength = Object.keys(Titles2).length; //counts the number of words in the title array
 					//console.log(`Titles2 size at ${i}: ${titlesLength}\n`);
-				let rdoTitleString = ""; //initial empty title, will be populated in the j loop
+				var rdoTitleString = ""; //initial empty title, will be populated in the j loop
 				
 			for (j = 0; j <= titlesLength; ++j) {
 				while (j <= (titlesLength)) { 
@@ -303,7 +318,7 @@ for (i = 0; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 			rdoFinalString01 += `• ${rdoParas[c].charAt(0).toUpperCase()}${rdoParas[c].substring(1)}\n`;
 		}
 	}
-else if (RDO_Bonus != undefined) {
+else if (RDO_Bonus !== undefined) {
 	if ( 
 		(RDO_Title.toLowerCase().includes("discounts")) || 
 		(RDO_Title.toLowerCase().includes("descuentos")) || 
@@ -375,6 +390,16 @@ else if (RDO_Bonus != undefined) {
 	}
 	
 	}
+	else if (RDO_Title !== undefined) { //FIXME NEXT MONTH
+		if ( 
+			(RDO_Title.toLowerCase().includes("discounts")) || 
+			(RDO_Title.toLowerCase().includes("descuentos")) || 
+			(RDO_Title.includes("Скидки")) || 
+			(RDO_Title.includes("Rabatte")) || 
+			(RDO_Title.includes("Descontos")) ) { 
+				rdoFinalString01 += `**${RDO_Title}**\n`;
+		}		
+	}
 }
 //-----------END for loop----------//		
 	//console.log(`rdoFinalString01: ${rdoFinalString01}`); //rdoFinalString before HTML formatting
@@ -390,31 +415,42 @@ else if (RDO_Bonus != undefined) {
 											.replace(/• undefined/g, "• ")
 											.replace(/\)• /g, ")\n• ") //adds a newline between link lists	
 
-						//console.log(`rdoFinalString.length: ${rdoFinalString.length}`);	
+						//console.log(`rdoFinalString01.length: ${rdoFinalString01.length}`);
+						//console.log(`rdoFinalString.length: ${rdoFinalString.length}`);
 						function bestBreak() {
 							var rdoSpaces = rdoFinalString.split(`\n\n`); //counts the newlines
-							var charCount = 0;//( (rdoTitleString().length) + (rdoDate[0].length) + (rdoFooterMin().length) + (elipseFunction().length) ); 
-							//console.log(`( T${(rdoTitleString().length)} + D${(rdoDate[0].length)} + F${(rdoFooterMin().length)} + E${(elipseFunction().length)} )`);
+							var charCount = 0;//( (rdoTitleString().length) + (rdoDate[0].length) + (rdoFooterMin().length) + (ellipsisFunction().length) ); 
+							//console.log(`( T${(rdoTitleString().length)} + D${(rdoDate[0].length)} + F${(rdoFooterMin().length)} + E${(ellipsisFunction().length)} )`);
 							
 							var finalZ = 0;
 							var countZ = 0;
 							for (z = 0; charCount <= 3950; z++) {
-								//console.log(`rdoSpaces at ${z}: ${rdoSpaces[z]}`);
-									charCount += rdoSpaces[z].length;
-								//console.log(`charCount at ${z}: ${charCount}`);
-								var finalZ = rdoSpaces[z].length;
-								countZ++;
+								if (rdoFinalString.length <= 4100) {
+									charCount = 3950;
+									finalZ = rdoFinalString.length;
+								}
+								if (rdoSpaces[z] !== undefined) {
+									//console.log(`rdoSpaces at ${z}: ${rdoSpaces[z]}`);
+										charCount += rdoSpaces[z].length;
+										//console.log(`charCount at ${z}: ${charCount}`);
+									var finalZ = rdoSpaces[z].length;
+									countZ++;		
+								}
 							}
-							//console.log(`charCount: ${charCount}`);
-							return (charCount - finalZ) + (countZ * 2) - 3;
-							// ( (rdoTitleString().length) + (rdoDate[0].length) + (rdoFooterMin().length) + (elipseFunction().length) )
+								//console.log(`finalZ: ${finalZ}`);
+							  //console.log(`charCount: ${charCount}`);
+								return (charCount - finalZ) + (countZ * 2) - 3;
+							// ( (rdoTitleString().length) + (rdoDate[0].length) + (rdoFooterMin().length) + (ellipsisFunction().length) )
 						}
 						//console.log(`bestBreak: ${bestBreak()}`);
 
+						var constChars = (rdoFooterMax().length) + (rdoImage[0].length) + rdoTitleFunction().length;
+						var rdoNewlines = rdoFinalString.substr(bestBreak(), (6000 - bestBreak() - constChars)).split("\n");
+						var tempString = rdoNewlines[rdoNewlines.length - 1];
 						function bestEndBreak() {
-							return (6000 - (bestBreak()) - (rdoFooterMax().length) - (rdoImage[0].length) - 3); //- 3 for the ellipse function
+							return (6000 - bestBreak() - constChars - tempString.length);
 						}
-						//console.log(`bestEndBreak: ${bestEndBreak()}`);			
+						//console.log(`bestEndBreak:${bestEndBreak()}`);		
 
 			//console.log(`rdoFinalString: ${rdoFinalString}`);
 			//console.log(`1: ${rdoFinalString.length}\n`); 
@@ -550,10 +586,10 @@ else if (RDO_Bonus != undefined) {
 		    .setColor(0xC10000) //Red
 		    .setDescription(`These bonuses & discounts may be expired. \nRockstar typically releases the latest bonuses & discounts the first \nTuesday of every month after 1:00 PM EST.`)
 
-    //if ( (aDay === 3) ) { //Test for today 0 = Sunday, 1 = Monday ... 6 = Saturday
-		if ( (aDay === 2) && (aHour < 17) && (aDigit <= 7) ) { //If it's Tuesday(2) before 1:00PM EST (17) and the first week of the month
-			await interaction.followUp({embeds: [rdoExpiredEmbed], ephemeral:true}).catch(err => console.log(`rdoExpiredEmbed Error: ${err.stack}`));
-		}			
+						//console.log(`isPast: ${isPast()}`);
+						if (isPast() === "true") {
+							await interaction.followUp({ embeds: [rdoExpiredEmbed], ephemeral: true }).catch(err => console.log(`rdoExpiredEmbed Error: ${err.stack}`));							
+						}		
 
 			//interaction.editReply(`Console logged! 👍`);
 	} else {

@@ -192,6 +192,13 @@ module.exports = {
 			.replace(/&nbsp;/g, " ") //Non breaking space
 			.replace(/\n\n/g, "\n")			
 			.replace(/<ul style="line-height:1.5;">/g, "\n")
+
+			//spanish
+			.replace(/<\/strong>/g, "")
+			.replace(/<strong>/g, "")
+
+			//German
+			.replace(/" draggable="false/g, "")			
 			//.replace(/\n<p>/g, "<p>") //Removes spaces after a bonus
 			//console.log(`rdoString: ${rdoString}`);
 
@@ -445,6 +452,16 @@ else if (RDO_Bonus != undefined) {
 	}
 	
 	}
+	else if (RDO_Title !== undefined) { //FIXME NEXT MONTH
+		if ( 
+			(RDO_Title.toLowerCase().includes("discounts")) || 
+			(RDO_Title.toLowerCase().includes("descuentos")) || 
+			(RDO_Title.includes("Скидки")) || 
+			(RDO_Title.includes("Rabatte")) || 
+			(RDO_Title.includes("Descontos")) ) { 
+				rdoFinalString01 += `**${RDO_Title}**\n`;
+		}		
+	}	
 }
 //-----------END for loop----------//		
 	//console.log(`rdoFinalString01: ${rdoFinalString01}`); //rdoFinalString before HTML formatting
@@ -460,31 +477,34 @@ else if (RDO_Bonus != undefined) {
 											.replace(/• undefined/g, "• ")
 											.replace(/\)• /g, ")\n• ") //adds a newline between link lists	
 
-						//console.log(`rdoFinalString.length: ${rdoFinalString.length}`);	
+						//console.log(`rdoFinalString01.length: ${rdoFinalString01.length}`);
+						//console.log(`rdoFinalString.length: ${rdoFinalString.length}`);
 						function bestBreak() {
 							var rdoSpaces = rdoFinalString.split(`\n\n`); //counts the newlines
-							var charCount = 0;//( (rdoTitleString().length) + (rdoDate[0].length) + (rdoFooterMin().length) + (elipseFunction().length) ); 
-							//console.log(`( T${(rdoTitleString().length)} + D${(rdoDate[0].length)} + F${(rdoFooterMin().length)} + E${(elipseFunction().length)} )`);
+							var charCount = 0;//( (rdoTitleString().length) + (rdoDate[0].length) + (rdoFooterMin().length) + (ellipsisFunction().length) ); 
+							//console.log(`( T${(rdoTitleString().length)} + D${(rdoDate[0].length)} + F${(rdoFooterMin().length)} + E${(ellipsisFunction().length)} )`);
 							
 							var finalZ = 0;
 							var countZ = 0;
 							for (z = 0; charCount <= 3950; z++) {
-								//console.log(`rdoSpaces at ${z}: ${rdoSpaces[z]}`);
-									charCount += rdoSpaces[z].length;
-								//console.log(`charCount at ${z}: ${charCount}`);
-								var finalZ = rdoSpaces[z].length;
-								countZ++;
+								if (rdoFinalString.length <= 4100) {
+									charCount = 3950;
+									finalZ = rdoFinalString.length;
+								}
+								if (rdoSpaces[z] !== undefined) {
+									//console.log(`rdoSpaces at ${z}: ${rdoSpaces[z]}`);
+										charCount += rdoSpaces[z].length;
+										//console.log(`charCount at ${z}: ${charCount}`);
+									var finalZ = rdoSpaces[z].length;
+									countZ++;		
+								}
 							}
-							//console.log(`charCount: ${charCount}`);
-							return (charCount - finalZ) + (countZ * 2) - 3;
-							// ( (rdoTitleString().length) + (rdoDate[0].length) + (rdoFooterMin().length) + (elipseFunction().length) )
+								//console.log(`finalZ: ${finalZ}`);
+							  //console.log(`charCount: ${charCount}`);
+								return (charCount - finalZ) + (countZ * 2) - 3;
+							// ( (rdoTitleString().length) + (rdoDate[0].length) + (rdoFooterMin().length) + (ellipsisFunction().length) )
 						}
-						//console.log(`bestBreak: ${bestBreak()}`);
-
-						function bestEndBreak() {
-							return (6000 - (bestBreak()) - (rdoFooterMax().length) - (rdoImage[0].length) - 3); //- 3 for the ellipse function
-						}
-						//console.log(`bestEndBreak: ${bestEndBreak()}`);			
+						//console.log(`bestBreak: ${bestBreak()}`);		
 
 			//console.log(`rdoFinalString: ${rdoFinalString}`);
 			//console.log(`1: ${rdoFinalString.length}\n`); 

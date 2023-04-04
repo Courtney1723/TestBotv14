@@ -292,7 +292,7 @@ const configureButtons = new ActionRowBuilder()
 
 
                 //begin checking for permissions
-                await interaction.deferUpdate();
+                await interaction.deferUpdate().catch(err => console.log(`configureEmbed Error: ${err}`));
                 //console.log(`AdminRequired(): ${AdminRequired()}`)
 			
 								if (interaction.user.id != buttonUserID) {
@@ -375,7 +375,7 @@ const configureButtons = new ActionRowBuilder()
 				);		
 
 				setTimeout(() => {
-					interaction.editReply({components: [expiredButton]})
+					interaction.editReply({components: [expiredButton]}).catch(err => {console.log(`configurebackEmbed expiredButton Error: ${err.stack}`)});
 				}, (60000 * 5))						
 
 				}}); //end fs.readFile for LANGDataBase.txt

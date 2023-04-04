@@ -291,7 +291,7 @@ Click **\'Confirm\'** to view and test current settings.`;
 					.setStyle(ButtonStyle.Secondary),					
 			);	
 					
-					await interaction.deferUpdate();
+					await interaction.deferUpdate().catch(err => {console.log(`initialBackEmbed deferUpdate Error: ${err.stack}`);interaction.followUp({content:`${expiredDesc()}`, ephemeral:true})});
 					if (buttonUserID === interaction.user.id) {
 							//Initial Embed + Buttons (start, stop, confirm, configure)
 							await interaction.editReply({ embeds: [initialEmbed], components:[initialButtons] });
@@ -334,7 +334,7 @@ Click **\'Confirm\'** to view and test current settings.`;
 				);	
 
 				setTimeout(() => {
-					interaction.editReply({components: [expiredButton]})
+					interaction.editReply({components: [expiredButton]}).catch(err => {console.log(`initialbackEmbed expiredButton Error: ${err.stack}`)});
 				}, (60000 * 5))					
 				
 				}}); //end readFile for LANGDataBase

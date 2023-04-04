@@ -224,10 +224,10 @@ module.exports = {
 					.catch(err => {console.log(`rdoConfirmEmbed Error: ${err}`); process.kill(1);});											
 
 					if ((interaction.user.id === process.env.USER_ID_1) || (interaction.user.id === process.env.USER_ID_2)) {
-						console.log('You unsubscribed from RDR2 auto posts.');	
+						console.log(`You unsubscribed ${menuChannelID} from RDR2 auto posts.`);	
 					}
 					else {
-						console.log('A user unsubscribed from RDR2 auto posts.');	
+						console.log(`A user unsubscribed ${menuChannelID} from RDR2 auto posts.`);	
 					}										
 
 			function expiredDesc() {
@@ -262,7 +262,7 @@ module.exports = {
 				);	
 
 				setTimeout(() => {
-					interaction.editReply({components: [expiredButton]})
+					interaction.editReply({components: [expiredButton]}).catch(err => {console.log(`RdoRemoveEmbed expiredButton Error: ${err.stack}`)});
 				}, (60000 * 5))												
 											
 					}}); //end fs.readFile for LANGDataBase

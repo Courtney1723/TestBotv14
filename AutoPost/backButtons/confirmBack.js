@@ -495,7 +495,7 @@ ${testRDOString()}`)
 					}				
 			}
 
-				await interaction.deferUpdate();
+				await interaction.deferUpdate().catch(err => {console.log(`confirmEmbed deferUpdate Error: ${err.stack}`)});
 				if (AdminRequired() === undefined) {
 					await interaction.followUp({ content: `${firstCommandString()}`, ephemeral: true });
 				}	
@@ -543,7 +543,7 @@ ${testRDOString()}`)
 				);	
 
 				setTimeout(() => {
-					interaction.editReply({components: [expiredButton]})
+					interaction.editReply({components: [expiredButton]}).catch(err => {console.log(`confirmbackEmbed expiredButton Error: ${err.stack}`)});
 				}, (60000 * 5))						
 
 	}}); //end fs.readFile LANGDataBase
