@@ -4,10 +4,12 @@ global.client = new Client({
 	partials: [Partials.Message, Partials.Channel, Partials.Reaction],
 });
 const { exec } = require('node:child_process');
-const keepAlive = require('./server');
+const keepAlive = require('./server2');
 var cron = require('node-cron'); //https://github.com/node-cron/node-cron
 const { get } = require("https");
 const fetch = require("@replit/node-fetch");
+const mongoose = require('mongoose');
+const { MongoClient } = require("mongodb");
 
 // node deploy-commands.js 
 //^^ type in shell to register a command
@@ -294,3 +296,28 @@ for (const file of backButtonFiles) {
 
 keepAlive();
 client.login(process.env.DISCORD_TOKEN).catch(err => console.log(`Login Error: ${err.stack}`));
+
+
+const username = encodeURIComponent("Courtney1723");
+const password = encodeURIComponent(process.env.mongoPassword);
+
+let uri =	`mongodb+srv://${username}:${password}@cluster0.xtqfsxu.mongodb.net/?retryWrites=true&w=majority`;
+const mongoClient = new MongoClient(uri);
+
+async function run() {
+	  try {
+	    await mongoClient.connect();
+				
+	    const database = mongoClient.db("Courtney1723");
+	    const ratings = database.collection("Courtney1723");
+	
+	    const cursor = ratings.find();
+	
+	    await cursor.forEach(doc => console.dir(doc));
+	  } finally {
+	    await mongoClient.close();
+	  }
+	}
+	run().catch(console.dir);
+
+require('./dashboard/server');
