@@ -178,7 +178,10 @@ module.exports = {
 							.replace(/<strong>/g, "")
 
 							//--Spanish--//
-							.replace(/<mq:rxt><\/mq:rxt>/g, "")					
+							.replace(/<mq:rxt><\/mq:rxt>/g, "")			
+
+							//German
+							.replace(/\" draggable=\"false/g, "")
 
 						//-----END FOREIGN LANGUAGE FORMATTING-----//
 						
@@ -475,6 +478,9 @@ module.exports = {
 							var finalZ = 0;
 							var countZ = 0;
 							for (z = 0; charCount <= 3950; z++) {
+								if (lang === "pt") {
+									return gtaFinalString.length - gtaFooterMin().length; //FIXME - remove next week
+								}
 								if (gtaFinalString.length <= 4100) {
 									charCount = 3950;
 									finalZ = gtaFinalString.length;

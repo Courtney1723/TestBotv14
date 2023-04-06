@@ -5,10 +5,10 @@ const sessions = require('../modules/sessions');
 const router = express.Router();
 
 router.get('/invite', (req, res) =>
-  res.redirect(`${process.env.invite_link}`));
+  res.redirect(`${process.env.invite-link}`));
 
-router.get('/login', (req, res) =>
-  res.redirect(`https://discord.com/api/oauth2/authorize?client_id=${process.env.CLIENT_ID}&redirect_uri=${process.env.redirectURL}&response_type=code&scope=identify`));
+router.get('/login', async (req, res) =>{
+	  res.redirect(`https://discord.com/api/oauth2/authorize?client_id=${process.env.CLIENT_ID}&redirect_uri=${process.env.redirectURL}/auth&response_type=code&scope=identify`)});
 
 router.get('/auth-guild', async (req, res) => {
   try {
