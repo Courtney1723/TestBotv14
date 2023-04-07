@@ -386,7 +386,7 @@ module.exports = {
 								let gtaParas = GTA_Bonus.split("<p>");
 								//console.log(`gtaParas at ${i}: ${gtaParas}`);
 								//console.log(`gtaParas length at ${i}: ${gtaParas.length}`);	
-								if (GTA_Title.toLowerCase().includes("only on playstation")) { //fail safe for if the NextGenIndex does not work properly
+								if (GTA_Title.toLowerCase().includes("playstation 5")) { //fail safe for if the NextGenIndex does not work properly
 									//gtaFinalString01 += `**Only on PlayStation 5 or Xbox Series X|S:**\n`;
 								}
 								else if (GTA_Bonus.toLowerCase().includes("premium test ride")) { //fail safe for if the NextGenIndex does not work properly
@@ -417,7 +417,7 @@ module.exports = {
 									gtaFinalString01 += `**${GTA_Title}** \n`;
 								}
 								else if (GTA_Title.toLowerCase().includes("gta+")) {
-									gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n${gtaParas[2]})\n`;
+									gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n${gtaParas[2]}\n`;
 								}
 								else if ((GTA_Title.toLowerCase().includes("discount")) || (GTA_Title.toLowerCase().includes("descuento")) || (GTA_Title.includes("Скидки")) || (GTA_Title.toLowerCase().includes("rabatte")) || (GTA_Title.toLowerCase().includes("desconto"))) {
 									gtaFinalString01 += `**${GTA_Title}**\n• ${GTA_Bonus}:\n`;
