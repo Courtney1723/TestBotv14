@@ -1,19 +1,125 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
-const phantom = require('phantom'); //https://github.com/amir20/phantomjs-node
+var cron = require('node-cron'); //https://github.com/node-cron/node-cron
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
-let errorEmbed = new EmbedBuilder()
-	.setColor('#FF0000') //Red
-	.setTitle(`Uh Oh!`)
-	.setDescription(`There was an error while executing this command!\nThe error has been sent to the developer and will be fixed as soon as possible.\nPlease try again in a few minutes.\n\nIf the problem persists you can try [re-inviting the bot](<${process.env.invite_link}>) or \nYou can report it in the [Rockstar Weekly Support Server](<${process.env.support_link}>)`);
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const phantom = require('phantom'); //https://github.com/amir20/phantomjs-node
+
+//FIXME - this works but takes waaaaaaaaay too long - how to optimize?
 
 module.exports = {
-	data: new SlashCommandBuilder()
-		.setName('testgta')
-		.setDescription('Latest GTA Online Bonuses')
-		.setDMPermission(true),
-	async execute(interaction) {
-		await interaction.deferReply().catch(console.error);
+	name: 'ready',
+	async execute(client) {
+
+		//cron.schedule('* * * * *', () => { //(second),minute,hour,date,month,weekday 
+		cron.schedule('17 21 30 2 6', () => { //(second),minute,hour,date,month,weekday '0 12 * * 4' = 12:00 PM on Thursday
+		  console.log('sending Test GTA Auto Posts...');
+			
+			fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
+			  if (err) {console.log(`Error: ${err}`)} 
+				else {
+					let lang03 = data.split("lang:");
+					//console.log(`lang03.length: ${lang03.length}`);
+
+					let langArray = [];
+					for (i=2; i <= lang03.length - 1; i++) { //first language will always be undefined
+						let lang02 = lang03[i].split(" -");
+						//console.log(`lang02 at ${i}: ${lang02}`);
+						
+						let lang01 = lang02[0];
+						//console.log(`lang01 at ${i}: ${lang01}`);
+
+						langArray.push(lang01);
+					}
+					//console.log(`langArray: ${langArray}`);
+
+					let guildID03 = data.split("guild:");
+					//console.log(`guildID03.length: ${guildID03.length}`);
+					let guildIDLangArray = [];
+					for (i=2; i <= guildID03.length - 1; i++) { //first two will always be undefined
+						let guildID02 = guildID03[i].split(" -");
+						//console.log(`lang02 at ${i}: ${lang02}`);
+						
+						let guildID01 = guildID02[0];
+						//console.log(`lang01 at ${i}: ${lang01}`);
+
+						guildIDLangArray.push(guildID01);
+					}
+
+					//console.log(`guildIDLangArray: ${guildIDLangArray}`);	
+
+					
+//----------Begin Formatting GuildIds, ChannelIds, and rdo_gtaIDs-----------//	
+			fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
+			  if (err) {console.log(`Error: ${err}`)} 
+				else {
+			  	//console.log(`data: ${data}`);
+					let guildIDs01 = data.split("guild:");
+						//console.log(`guildIDs01[1]: ${guildIDs01[1]}\n`);
+						//console.log(`guildIDs01[2]: ${guildIDs01[2]}\n`);
+
+					let channelIDs01 = data.split("channel:");
+						//console.log(`channelIDs01[1]: ${channelIDs01[1]}\n`);		
+						//console.log(`channelIDs01[2]: ${channelIDs01[2]}\n`);	
+
+					let rdo_gtaIDs01 = data.split("rdo_gta:");
+						//console.log(`rdo_gtaIDs01[1]: ${rdo_gtaIDs01[1]}\n`);		
+						//console.log(`rdo_gtaIDs01[2]: ${rdo_gtaIDs01[2]}\n`);	
+
+					let guildIDs = [];
+					let channelIDs = [];
+					let rdo_gtaIDs = [];
+					for (i = 1; i <= rdo_gtaIDs01.length - 1; i++) { //iterated through the subbbed channels 
+						let guildIDs02 = guildIDs01[i].split("-");
+						let guildIDs03 = guildIDs02[0];
+							//console.log(`guildIDs at ${i}: ${guildIDs03}`);
+
+							guildIDs += `${guildIDs03} - `;
+
+						let channelIDs02 = channelIDs01[i].split("-");
+						let channelIDs03 = channelIDs02[0];
+							//console.log(`channelIDs at ${i}: ${channelIDs03}`);
+
+							channelIDs += `${channelIDs03} - `;		
+
+						let rdo_gtaIDs02 = rdo_gtaIDs01[i].split("-");
+						let rdo_gtaIDs03 = rdo_gtaIDs02[0];
+							//console.log(`rdo_gtaIDs at ${i}: ${rdo_gtaIDs03}\n`);
+
+							rdo_gtaIDs += `${rdo_gtaIDs03} - `;
+
+						//client.channels.fetch(channelIDs03).then(channel => channel.send('<content>')) //example DO NOT UNCOMMENT				
+
+					}
+
+					//console.log(`guildIDs: ${guildIDs}`);
+					console.log(`channelIDs: ${channelIDs}`); //do not comment out 
+					//console.log(`rdo_gtaIDs: ${rdo_gtaIDs}`);
+
+			let guildIDsArray = guildIDs.split('  - ');
+			guildIDsArray.shift(); //removes the undefined element
+			let channelIDArray = channelIDs.split('  - ');
+			channelIDArray.shift(); //removes the undefined element
+			let guildLangs = guildIDLangArray.join(` - `);
+					//console.log(`guildIDsArray: ${guildIDsArray}`);
+					//console.log(`guildIDLangArray: ${guildIDLangArray}`);
+					//console.log(`channelIDArray: ${channelIDArray}`);
+
+			var c = 0;
+			//for (c = 0; c <= channelIDArray.length - 2; c++) { //first & last elements will always be undefined	
+			while (c <= channelIDArray.length - 2) {
+					let lang = "";
+				
+				for (langCheck=0;langCheck <= langArray.length - 1; langCheck++) { //iterates through all the languages					
+					if (guildIDsArray[c] === guildIDLangArray[langCheck]) { //if the subscribed channel is in a guild that has a language chosen
+						lang = langArray[langCheck];
+					}
+				}
+				console.log(`lang: ${lang} - channelID: ${channelIDArray[c]}`);
+					
+//----------END Formatting GuildIds, ChannelIds, rdo_gtaIDs, and language-----------//	
+
+					
+
+//Begin GTA Formatting		
 
 		let gtaURL = process.env.SOCIAL_URL_GTA2;
 
@@ -59,65 +165,6 @@ module.exports = {
 				}
 			}
 			//console.log(`urlLink: ${urlLink()}`);
-
-						function isPast() {
-							let isPast003 = content.split("isPast\":");
-							let isPast002 = isPast003[1].split(",\"");
-
-							return isPast002[0];
-						}
-						//console.log(`isPast: ${isPast()}`);
-
-
-			fs.readFile('./LANGDataBase.txt', 'utf8', async function(err, data) {
-				if (err) { console.log(`Error: ${err}`) }
-				else {
-					let lang03 = data.split("lang:");
-					//console.log(`lang03.length: ${lang03.length}`);
-
-					let langArray = [];
-					for (i = 2; i <= lang03.length - 1; i++) { //first will always be undefined
-						let lang02 = lang03[i].split(" -");
-						//console.log(`lang02 at ${i}: ${lang02}`);
-
-						let lang01 = lang02[0];
-						//console.log(`lang01 at ${i}: ${lang01}`);
-
-						langArray.push(lang01);
-					}
-
-					//console.log(`langArray: ${langArray}`);
-
-					let guildID03 = data.split("guild:");
-					//console.log(`guildID03.length: ${guildID03.length}`);
-					let guildIDArray = [];
-					for (i = 2; i <= guildID03.length - 1; i++) { //first two will always be undefined
-						let guildID02 = guildID03[i].split(" -");
-						//console.log(`lang02 at ${i}: ${lang02}`);
-
-						let guildID01 = guildID02[0];
-						//console.log(`lang01 at ${i}: ${lang01}`);
-
-						guildIDArray.push(guildID01);
-					}
-
-					//console.log(`guildIDArray: ${guildIDArray}`);	
-
-					let lang = "";
-					for (i = 0; i <= guildIDArray.length - 1; i++) {
-						//console.log(`guildIDArray at ${i}: ${guildIDArray[i]}`);
-						//console.log(`langArray at ${i}: ${langArray[i]}`);
-						//console.log(`interaction.guildID at ${i}: ${interaction.guild.id}`);
-
-						if ((interaction.channel.type === 0) || (interaction.channel.type === 5)) {
-							if (interaction.guild.id === guildIDArray[i]) {
-								lang += `${langArray[i]}`;
-							}
-						}
-					}
-
-					//console.log(`lang: ${lang}`);
-
 
 					let langBase = `/?lang=`;
 					let langURL = `${langBase}${lang}`;
@@ -650,110 +697,81 @@ module.exports = {
 						// console.log(`gtaEmbed length: ${gtaEmbed.length}`); //no more than 4096 (line 199)
 						// console.log(`gtaEmbed2 length: ${gtaEmbed2.length}`); //no more than 6000 - gtaEmbed.length (line 204)
 
-						if (gtaFinalString.length < (4000 - constChars)) {
-							await interaction.editReply({ embeds: [gtaImageEmbed, gtaEmbed] }).catch(err =>
-								interaction.editReply({ embeds: [errorEmbed], ephemeral: true }).then(
-									console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`))
-							);
-						} 
-						else if ((gtaFinalString.length >= (4000 - constChars)) && (gtaFinalString.length < (6000 - constChars2))) {
-							await interaction.editReply({ embeds: [gtaImageEmbed, gtaEmbed] }).catch(err =>
-								interaction.editReply({ embeds: [errorEmbed], ephemeral: true }).then(
-									console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`))
-							);
-							await interaction.channel.send({ embeds: [gtaEmbed2] }).catch(err =>
-								interaction.editReply({ embeds: [errorEmbed], ephemeral: true }).then(
-									console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`))
-							);							
-						}
-						else if ((gtaFinalString.length >= (6000 - constChars2)) && (gtaFinalString.length < (11000 - constChars3))) {
-							await interaction.editReply({ embeds: [gtaImageEmbed, gtaEmbed] }).catch(err =>
-								interaction.editReply({ embeds: [errorEmbed], ephemeral: true }).then(
-									console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`))
-							);
-							await interaction.channel.send({ embeds: [gtaEmbed2] }).catch(err =>
-								interaction.editReply({ embeds: [errorEmbed], ephemeral: true }).then(
-									console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`))
-							);	
-							await interaction.channel.send({ embeds: [gtaEmbed3] }).catch(err =>
-								interaction.editReply({ embeds: [errorEmbed], ephemeral: true }).then(
-									console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`))
-							);							
-						}	
-						else if (gtaFinalString.length >= (11000 - constChars3)) {
-							await interaction.editReply({ embeds: [gtaImageEmbed, gtaEmbed] }).catch(err => 
-								interaction.editReply({ embeds: [errorEmbed], ephemeral: true }).then(
-									console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`))
-							);
-							await interaction.channel.send({ embeds: [gtaEmbed2] }).catch(err =>
-								interaction.editReply({ embeds: [errorEmbed], ephemeral: true }).then(
-									console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`))
-							);	
-							await interaction.channel.send({ embeds: [gtaEmbed3] }).catch(err =>
-								interaction.editReply({ embeds: [errorEmbed], ephemeral: true }).then(
-									console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`))
-							);		
-							await interaction.channel.send({ embeds: [gtaEmbed4] }).catch(err =>
-								interaction.editReply({ embeds: [errorEmbed], ephemeral: true }).then(
-									console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`))
-							);								
-						}					
 
-						const aDate = new Date();
-						const aDay = aDate.getDay(); //Day of the Week
-						//console.log(`aDay: ${aDay}`);
-						const aHour = aDate.getHours(); //Time of Day UTC (+6 MST; +4 EST)
-						//console.log(`aHour: ${aHour}`);		
+//-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
+//-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//		
+//-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
 
-						var estDate = aDate.toLocaleString("en-US", {
-							timeZone: "America/New_York"
-						});
-						var estTime = estDate.split(", ");
-						var estHourMinute = estTime[1].split(":");
-
-						var estHour = estHourMinute[0];
-						var estMinute = estHourMinute[1];
-
-						var amPM01 = estHourMinute[2].split(" ");
-						var amPM = amPM01[1];
-
-						//console.log(`${estHour}:${estMinute} ${amPM}`);
-
-						let gtaExpiredEmbed = new EmbedBuilder()
-							.setColor('#00CD06') //Green
-							.setDescription(`These bonuses & discounts may be expired. \nRockstar typically releases the latest weekly bonuses & discounts every \nThursday after 1:00 PM EST.`)
-							.setFooter({ text: `It is ${estHour}:${estMinute} ${amPM} EST now.`, iconURL: process.env.logo_link })
-
-						//console.log(`isPast: ${isPast()}`);
-						if (isPast() === "true") {
-							await interaction.followUp({ embeds: [gtaExpiredEmbed], ephemeral: true }).catch(err => console.log(`gtaExpiredEmbed Error: ${err.stack}`));							
-						}
-
-						//interaction.editReply(`Console logged! 👍`);
-
-
-					}
-					else {
-						let RStarDownEmbed = new EmbedBuilder()
-							.setColor('#FF0000') //RED
-							.setDescription(`The Rockstar Social Club website is down. \nPlease try again later. \nSorry for the inconvenience.`)
-						interaction.editReply({ embeds: [RStarDownEmbed], ephemeral: true });
-						console.log(`The Rockstar Social Club website is down.`);
-					}
+		//console.log(`channelIDArray[c] at c${c}: ${channelIDArray[c]}`);
+		//console.log(`gtaFinalString.length: ${gtaFinalString.length}`)
+		if (channelIDArray[c].includes("undefined")) {return;}
+			else {
+				if (gtaFinalString.length <= (4000 - constChars)) {
+					client.channels.fetch(channelIDArray[c]).then(channel => {
+						channel.send({ embeds: [gtaImageEmbed, gtaEmbed] });
+					}).catch(err =>
+							console.log(`There was an error: gtaAutoEmbed! channel:${channelIDArray[c]}\nError: ${err.stack}`)
+					);					
+				}				
+				else if ((gtaFinalString.length > (4000 - constChars)) && (gtaFinalString.length < (6000 - constChars2))) {
+					client.channels.fetch(channelIDArray[c]).then(channel => {
+						channel.send({ embeds: [gtaImageEmbed, gtaEmbed] });
+						channel.send({ embeds: [gtaEmbed2] })
+					}).catch(err =>
+							console.log(`There was an error: gtaAutoEmbed2! channel:${channelIDArray[c]}\nError: ${err.stack}`)
+					);				
+				} 
+				else if ((gtaFinalString.length >= (6000 - constChars2)) &&  (gtaFinalString.length < (11000 - constChars3))) {
+					client.channels.fetch(channelIDArray[c]).then(channel => {
+						channel.send({ embeds: [gtaImageEmbed, gtaEmbed] });
+						channel.send({ embeds: [gtaEmbed2] });
+						channel.send({ embeds: [gtaEmbed3] });
+					}).catch(err =>
+							console.log(`There was an error: gtaAutoEmbed3! channel:${channelIDArray[c]}\nError: ${err.stack}`)
+					);					
 				}
-			}); //end fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {}
-		}
+				else if (gtaFinalString.length >= (11000 - constChars3)) {
+					client.channels.fetch(channelIDArray[c]).then(channel => {
+						channel.send({ embeds: [gtaImageEmbed, gtaEmbed] });
+						channel.send({ embeds: [gtaEmbed2] });
+						channel.send({ embeds: [gtaEmbed3] });
+						channel.send({ embeds: [gtaEmbed4] });					
+					}).catch(err =>
+							console.log(`There was an error: gtaAutoEmbed4! channel:${channelIDArray[c]}\nError: ${err.stack}`)
+					);						
+				}		
+			} //end if not undefined channel
+		
+					}// end if gtaStatus === success
+					else {
+							let RStarDownEmbed = new EmbedBuilder()
+								.setColor(0xFF0000) //RED
+								.setDescription(`The Rockstar Social Club website is down. \nPlease try again later.`)
+							client.channels.fetch(process.env.logChannel2).then(channel => channel.send({embeds: [RStarDownEmbed], ephemeral: true}));
+							console.log(`The Rockstar Social Club website is down.`);	
+					}								
+				
+		}//end if status === success
 		else {
-			let RStarDownEmbed = new EmbedBuilder()
-				.setColor('#FF0000') //RED
-				.setDescription(`The Rockstar Social Club website is down. \nPlease try again later. \nSorry for the inconvenience.`)
-			interaction.editReply({ embeds: [RStarDownEmbed], ephemeral: true });
-			console.log(`The Rockstar Social Club website is down.`);
+				let RStarDownEmbed = new EmbedBuilder()
+					.setColor(0xFF0000) //RED
+					.setDescription(`The Rockstar Social Club website is down. \nPlease try again later.`)
+				client.channels.fetch(process.env.logChannel2).then(channel => channel.send({embeds: [RStarDownEmbed], ephemeral: true}));
+				console.log(`The Rockstar Social Club website is down.`);	
 		}
-
-
-
-
+					
+					c++;
+		    }  //end c loop                
+				
+				}
+			}); //end fs.readFile for GTADataBase.txt
+				}
+			}); //end fs.readFile for LANGDataBase.txt
+		}, {
+   scheduled: true,
+   timezone: "America/Denver"
+ }); //end cron.schedule
+	
 	},
-};
 
+}

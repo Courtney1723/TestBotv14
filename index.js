@@ -298,26 +298,26 @@ keepAlive();
 client.login(process.env.DISCORD_TOKEN).catch(err => console.log(`Login Error: ${err.stack}`));
 
 
-const username = encodeURIComponent("Courtney1723");
-const password = encodeURIComponent(process.env.mongoPassword);
+// const username = encodeURIComponent("Courtney1723");
+// const password = encodeURIComponent(process.env.mongoPassword);
 
-let uri =	`mongodb+srv://${username}:${password}@cluster0.xtqfsxu.mongodb.net/?retryWrites=true&w=majority`;
-const mongoClient = new MongoClient(uri);
+// let uri =	`mongodb+srv://${username}:${password}@cluster0.xtqfsxu.mongodb.net/?retryWrites=true&w=majority`;
+// const mongoClient = new MongoClient(uri);
 
-async function run() {
-	  try {
-	    await mongoClient.connect();
+// async function run() {
+// 	  try {
+// 	    await mongoClient.connect();
 				
-	    const database = mongoClient.db("Courtney1723");
-	    const ratings = database.collection("Courtney1723");
+// 	    const database = mongoClient.db("Courtney1723");
+// 	    const ratings = database.collection("Courtney1723");
 	
-	    const cursor = ratings.find();
+// 	    const cursor = ratings.find();
 	
-	    await cursor.forEach(doc => console.dir(doc));
-	  } finally {
-	    await mongoClient.close();
-	  }
-	}
-	run().catch(console.dir);
+// 	    await cursor.forEach(doc => console.dir(doc));
+// 	  } finally {
+// 	    await mongoClient.close();
+// 	  }
+// 	}
+// 	run().catch(console.dir);
 
-require('./dashboard/server');
+// require('./dashboard/server');

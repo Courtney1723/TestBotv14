@@ -451,6 +451,10 @@ ${testRDOString()}`)
 			        .setCustomId(`confirmback - ${interaction.user.id}`)
 			        .setLabel(`${backButtonString()}`)
 			        .setStyle(ButtonStyle.Secondary),				
+					new ButtonBuilder()
+						.setCustomId(`2gtaTest - ${interaction.user.id}`)
+						.setLabel(`${testGTAButtonString()}`)
+						.setStyle(ButtonStyle.Primary),	
 			);			
 
 			function firstCommandString() {

@@ -1,20 +1,116 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+const { Client, GatewayIntentBits, PermissionsBitField, Collection, Partials, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } = require('discord.js');
 const phantom = require('phantom'); //https://github.com/amir20/phantomjs-node
+		let errorText = `There was an error while executing this command!\nThe error has been sent to the developer and it will be fixed as soon as possible. \nIf the error persists you can try re-inviting the Rockstar Weekly bot by [clicking here](<${process.env.invite_link}>). \nReport the error by joining the Rockstar Weekly bot support server: [click here](<${process.env.support_link}>).`;
+
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
-let errorEmbed = new EmbedBuilder()
-	.setColor('#FF0000') //Red
-	.setTitle(`Uh Oh!`)
-	.setDescription(`There was an error while executing this command!\nThe error has been sent to the developer and will be fixed as soon as possible.\nPlease try again in a few minutes.\n\nIf the problem persists you can try [re-inviting the bot](<${process.env.invite_link}>) or \nYou can report it in the [Rockstar Weekly Support Server](<${process.env.support_link}>)`);
 
 module.exports = {
-	data: new SlashCommandBuilder()
-		.setName('testgta')
-		.setDescription('Latest GTA Online Bonuses')
-		.setDMPermission(true),
+	name: 'interactionCreate',
 	async execute(interaction) {
-		await interaction.deferReply().catch(console.error);
 
+		if (!interaction.isButton()) {return};
+		if (interaction.customId.startsWith(`2gtaTest -`)) {
+
+			fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
+			  if (err) {console.log(`Error: ${err}`)} 
+				else {
+					let lang03 = data.split("lang:");
+					//console.log(`lang03.length: ${lang03.length}`);
+
+					let langArray = [];
+					for (i=2; i <= lang03.length - 1; i++) { //first will always be undefined
+						let lang02 = lang03[i].split(" -");
+						//console.log(`lang02 at ${i}: ${lang02}`);
+						
+						let lang01 = lang02[0];
+						//console.log(`lang01 at ${i}: ${lang01}`);
+
+						langArray.push(lang01);
+					}
+
+					//console.log(`langArray: ${langArray}`);
+
+					let guildID03 = data.split("guild:");
+					//console.log(`guildID03.length: ${guildID03.length}`);
+					let guildIDArray = [];
+					for (i=2; i <= guildID03.length - 1; i++) { //first two will always be undefined
+						let guildID02 = guildID03[i].split(" -");
+						//console.log(`lang02 at ${i}: ${lang02}`);
+						
+						let guildID01 = guildID02[0];
+						//console.log(`lang01 at ${i}: ${lang01}`);
+
+						guildIDArray.push(guildID01);
+					}
+
+					//console.log(`guildIDArray: ${guildIDArray}`);	
+
+					let lang = "";
+					for (i=0; i <= guildIDArray.length - 1; i++) {
+						//console.log(`guildIDArray at ${i}: ${guildIDArray[i]}`);
+						//console.log(`langArray at ${i}: ${langArray[i]}`);
+						//console.log(`interaction.guildID at ${i}: ${interaction.guild.id}`);
+
+						if (interaction.guild.id === guildIDArray[i]) {
+							lang += `${langArray[i]}`;
+						}
+					}
+
+					//console.log(`lang: ${lang}`);
+		
+function gtaTest() {
+	
+//-------------------Begin GTA TEST POST---------------------//	
+			fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
+			  if (err) {console.log(`Error: ${err}`)} 
+				else {
+			  	//console.log(`data: ${data}`);
+					let guildIDs01 = data.split(`guild:${interaction.guild.id} - `);
+						//console.log(`guildIDs01[1]: ${guildIDs01[1]}\n`);
+						//console.log(`guildIDs01[2]: ${guildIDs01[2]}\n`);
+
+					let channelIDs01 = data.split(`guild:${interaction.guild.id} - channel:`);
+						//console.log(`channelIDs01[1]: ${channelIDs01[1]}\n`);		
+						//console.log(`channelIDs01[2]: ${channelIDs01[2]}\n`);	
+
+					let rdo_gtaIDs01 = data.split("rdo_gta:");
+						//console.log(`rdo_gtaIDs01[1]: ${rdo_gtaIDs01[1]}\n`);		
+						//console.log(`rdo_gtaIDs01[2]: ${rdo_gtaIDs01[2]}\n`);	
+
+					let guildIDs = [];
+					let channelIDs = [];
+					let rdo_gtaIDs = [];
+					for (i = 1; i <= guildIDs01.length - 1; i++) {
+						let guildIDs02 = guildIDs01[i].split("-");
+						let guildIDs03 = guildIDs02[0];
+							//console.log(`guildIDs at ${i}: ${guildIDs03}`);
+
+							guildIDs += `${guildIDs03} - `;
+
+						let channelIDs02 = channelIDs01[i].split("-");
+						let channelIDs03 = channelIDs02[0];
+							//console.log(`channelIDs at ${i}: ${channelIDs03}`);
+							channelIDs += `${channelIDs03} - `;		
+
+						let rdo_gtaIDs02 = rdo_gtaIDs01[i].split("-");
+						let rdo_gtaIDs03 = rdo_gtaIDs02[0];
+							//console.log(`rdo_gtaIDs at ${i}: ${rdo_gtaIDs03}\n`);
+
+							rdo_gtaIDs += `${rdo_gtaIDs03} - `;
+
+
+						//client.channels.fetch(channelIDs03).then(channel => channel.send('<content>')) //example DO NOT UNCOMMENT
+
+					}
+
+					//console.log(`guildIDs: ${guildIDs}`);
+					//console.log(`channelIDs: ${channelIDs}`); //do not comment out - no idea why
+					//console.log(`rdo_gtaIDs: ${rdo_gtaIDs}`);
+//----------END Formatting GuildIds, ChannelIds, and rdo_gtaIDs-----------//	
+
+					
+
+//Begin GTA Formatting		
 		let gtaURL = process.env.SOCIAL_URL_GTA2;
 
 		//await interaction.editReply(`Console Logged 👍`).catch(console.error);
@@ -650,110 +746,487 @@ module.exports = {
 						// console.log(`gtaEmbed length: ${gtaEmbed.length}`); //no more than 4096 (line 199)
 						// console.log(`gtaEmbed2 length: ${gtaEmbed2.length}`); //no more than 6000 - gtaEmbed.length (line 204)
 
-						if (gtaFinalString.length < (4000 - constChars)) {
-							await interaction.editReply({ embeds: [gtaImageEmbed, gtaEmbed] }).catch(err =>
-								interaction.editReply({ embeds: [errorEmbed], ephemeral: true }).then(
-									console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`))
-							);
-						} 
-						else if ((gtaFinalString.length >= (4000 - constChars)) && (gtaFinalString.length < (6000 - constChars2))) {
-							await interaction.editReply({ embeds: [gtaImageEmbed, gtaEmbed] }).catch(err =>
-								interaction.editReply({ embeds: [errorEmbed], ephemeral: true }).then(
-									console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`))
-							);
-							await interaction.channel.send({ embeds: [gtaEmbed2] }).catch(err =>
-								interaction.editReply({ embeds: [errorEmbed], ephemeral: true }).then(
-									console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`))
-							);							
-						}
-						else if ((gtaFinalString.length >= (6000 - constChars2)) && (gtaFinalString.length < (11000 - constChars3))) {
-							await interaction.editReply({ embeds: [gtaImageEmbed, gtaEmbed] }).catch(err =>
-								interaction.editReply({ embeds: [errorEmbed], ephemeral: true }).then(
-									console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`))
-							);
-							await interaction.channel.send({ embeds: [gtaEmbed2] }).catch(err =>
-								interaction.editReply({ embeds: [errorEmbed], ephemeral: true }).then(
-									console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`))
-							);	
-							await interaction.channel.send({ embeds: [gtaEmbed3] }).catch(err =>
-								interaction.editReply({ embeds: [errorEmbed], ephemeral: true }).then(
-									console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`))
-							);							
-						}	
-						else if (gtaFinalString.length >= (11000 - constChars3)) {
-							await interaction.editReply({ embeds: [gtaImageEmbed, gtaEmbed] }).catch(err => 
-								interaction.editReply({ embeds: [errorEmbed], ephemeral: true }).then(
-									console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`))
-							);
-							await interaction.channel.send({ embeds: [gtaEmbed2] }).catch(err =>
-								interaction.editReply({ embeds: [errorEmbed], ephemeral: true }).then(
-									console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`))
-							);	
-							await interaction.channel.send({ embeds: [gtaEmbed3] }).catch(err =>
-								interaction.editReply({ embeds: [errorEmbed], ephemeral: true }).then(
-									console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`))
-							);		
-							await interaction.channel.send({ embeds: [gtaEmbed4] }).catch(err =>
-								interaction.editReply({ embeds: [errorEmbed], ephemeral: true }).then(
-									console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`))
-							);								
-						}					
-
-						const aDate = new Date();
-						const aDay = aDate.getDay(); //Day of the Week
-						//console.log(`aDay: ${aDay}`);
-						const aHour = aDate.getHours(); //Time of Day UTC (+6 MST; +4 EST)
-						//console.log(`aHour: ${aHour}`);		
-
-						var estDate = aDate.toLocaleString("en-US", {
-							timeZone: "America/New_York"
-						});
-						var estTime = estDate.split(", ");
-						var estHourMinute = estTime[1].split(":");
-
-						var estHour = estHourMinute[0];
-						var estMinute = estHourMinute[1];
-
-						var amPM01 = estHourMinute[2].split(" ");
-						var amPM = amPM01[1];
-
-						//console.log(`${estHour}:${estMinute} ${amPM}`);
-
-						let gtaExpiredEmbed = new EmbedBuilder()
-							.setColor('#00CD06') //Green
-							.setDescription(`These bonuses & discounts may be expired. \nRockstar typically releases the latest weekly bonuses & discounts every \nThursday after 1:00 PM EST.`)
-							.setFooter({ text: `It is ${estHour}:${estMinute} ${amPM} EST now.`, iconURL: process.env.logo_link })
-
-						//console.log(`isPast: ${isPast()}`);
-						if (isPast() === "true") {
-							await interaction.followUp({ embeds: [gtaExpiredEmbed], ephemeral: true }).catch(err => console.log(`gtaExpiredEmbed Error: ${err.stack}`));							
-						}
-
-						//interaction.editReply(`Console logged! 👍`);
 
 
-					}
-					else {
-						let RStarDownEmbed = new EmbedBuilder()
-							.setColor('#FF0000') //RED
-							.setDescription(`The Rockstar Social Club website is down. \nPlease try again later. \nSorry for the inconvenience.`)
-						interaction.editReply({ embeds: [RStarDownEmbed], ephemeral: true });
-						console.log(`The Rockstar Social Club website is down.`);
-					}
+//-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
+//-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//		
+//-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
+
+		
+		let channelIDArray = channelIDs.split('  - ');
+			//console.log(`channelIDArray length: ${channelIDArray.length}`);
+			//console.log(`channelIDArray: ${channelIDArray}`);
+		for (c = 0; c <= channelIDArray.length - 2; c++) { //last element will always be blank
+				//console.log(`channelIDArray at ${c}: ${channelIDArray[c]}`);
+			if (channelIDArray[c].startsWith("undefined")) {return}
+			else if (!channelIDArray[c].startsWith("undefined")) {			
+
+			function success() {
+				if (lang === "en") {
+						return `Success`;
 				}
-			}); //end fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {}
+				else if (lang === "es") {
+					return `Éxito`;
+				}
+				else if (lang === "ru") {
+					return `Успех`;
+				}
+				else if (lang === "de") {
+					return `Erfolg`;
+				}
+				else if (lang === "pt") {
+					return `Êxito`;
+				}
+				else {
+					return `Success`;
+				}				
+			}	
+
+		function sentPostDesc() {
+			if (lang === "en") {
+				return `• Posts have been sent to <#${channelIDArray[c]}>!`;
+			}
+			else if (lang === "es") {
+				return `• El mensaje ha sido enviado a <#${channelIDArray[c]}>.`;
+			}
+			else if (lang === "ru") {
+				return `• Cообщение было отправлено на <#${channelIDArray[c]}>.`;
+			}
+			else if (lang === "de") {
+				return `• Eine Nachricht wurde an <#${channelIDArray[c]}> gesendet.`;
+			}
+			else if (lang === "pt") {
+				return `• Uma mensagem foi enviada para <#${channelIDArray[c]}>.`;
+			}
+			else {
+				return `• Posts have been sent to <#${channelIDArray[c]}>!`;
+			}			
+		}		
+
+		function missingPermissionsDesc() {
+			if (lang === "en") {
+				return `The bot is missing the ${permission()} permission in <#${channelIDArray[c]}>.`;
+			}
+			else if (lang === "es") {
+				return `Al bot le falta el permiso ${permission()} en <#${channelIDArray[c]}>.`;
+			}
+			else if (lang === "ru") {
+				return `У бота нет разрешения на ${permission()} в <#${channelIDArray[c]}>.`;
+			}				
+			else if (lang === "de") {
+				return `Dem Bot fehlt die ${permission()} in <#${channelIDArray[c]}>.`;
+			}		
+			else if (lang === "pt") {
+				return `O bot está sem a permissão ${permission()} em <#${channelIDArray[c]}>.`;
+			}				
+			else {
+				return `The bot is missing the ${permission()} permission in <#${channelIDArray[c]}>.`;
+			}
+		}
+
+		const testEmbed = new EmbedBuilder()
+			.setColor(0x00CD06) 
+			.setTitle(`${success()}`)
+			.setDescription(`${sentPostDesc()}`)
+
+					function permission() {
+										if ( !( (interaction.guild.members.me).permissionsIn(channelIDArray[c]).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.EmbedLinks])) )
+ { // missing all permissions
+	 if (lang === "en") {
+		 return `View Channel, Send Messages, and Embed Links`;
+	 }
+	 if (lang === "es") {
+		 return `Ver canal y Enviar mensajes y Insertar enlaces`;
+	 }
+	 if (lang === "ru") {
+		 return `Посмотреть каналa и Отправить сообщения и Вставить ссылки`
+	 }	
+	 if (lang === "de") {
+		 return `Kanal anzeigen-Berechtigung und Nachrichten senden-Berechtigung und Links einbetten-Berechtigung`;
+	 }	
+	 if (lang === "pt") {
+		 return `Ver canal e Enviar mensagens e Inserir links`;
+	 }		 
+	 else {
+		 return `View Channel, Send Messages, and Embed Links`;
+	 }
+ }
+										else if ( !( (interaction.guild.members.me).permissionsIn(channelIDArray[c]).has([PermissionsBitField.Flags.SendMessages,  PermissionsBitField.Flags.EmbedLinks])) )
+ { 
+	 if (lang === "en") {
+		 return `View Channel and Send Messages`;
+	 }
+	 if (lang === "es") {
+		 return `Ver canal y Enviar mensajes`;
+	 }
+	 if (lang === "ru") {
+		 return `Посмотреть каналa и Отправить сообщения`
+	 }	
+	 if (lang === "de") {
+		 return `Kanal anzeigen-Berechtigung und Nachrichten senden-Berechtigung`;
+	 }	
+	 if (lang === "pt") {
+		 return `Ver canal e Enviar mensagens`;
+	 }		 
+	 else {
+		 return `View Channel and Send Messages`;
+	 } 
+ }		
+										else if ( !( (interaction.guild.members.me).permissionsIn(channelIDArray[c]).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.EmbedLinks])) )
+ {
+	 if (lang === "en") {
+		 return `Send Messages and Embed Links`;
+	 }
+	 if (lang === "es") {
+		 return `Enviar mensajes y Insertar enlaces`;
+	 }
+	 if (lang === "ru") {
+		 return `Отправить сообщения и Вставить ссылки`
+	 }	
+	 if (lang === "de") {
+		 return `Nachrichten senden-Berechtigung und Links einbetten-Berechtigung`;
+	 }	
+	 if (lang === "pt") {
+		 return `Enviar mensagens e Inserir links`;
+	 }		 
+	 else {
+		 return `Send Messages and Embed Links`;
+	 }
+ }		
+										else if ( !( (interaction.guild.members.me).permissionsIn(channelIDArray[c]).has([PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.EmbedLinks])) )
+ { 
+	 if (lang === "en") {
+		 return `View Channel and Embed Links`;
+	 }
+	 if (lang === "es") {
+		 return `Ver canal y Insertar enlaces`;
+	 }
+	 if (lang === "ru") {
+		 return `Посмотреть каналa и Вставить ссылки`
+	 }	
+	 if (lang === "de") {
+		 return `Kanal anzeigen-Berechtigung und Links einbetten-Berechtigung`;
+	 }	
+	 if (lang === "pt") {
+		 return `Ver canal e Inserir links`;
+	 }		 
+	 else {
+		 return `View Channel and Embed Links`;
+	 }
+ }							
+						else if (!((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.SendMessages))) {
+	 if (lang === "en") {
+		 return `Send Messages`;
+	 }
+	 if (lang === "es") {
+		 return `Enviar mensajes`;
+	 }
+	 if (lang === "ru") {
+		 return `Отправить сообщения`
+	 }	
+	 if (lang === "de") {
+		 return `Nachrichten senden-Berechtigung`;
+	 }	
+	 if (lang === "pt") {
+		 return `Enviar mensagens`;
+	 }		 
+	 else {
+		 return `Send Messages`;
+	 }
+						}
+						else if (!((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.ViewChannel))) {
+	 if (lang === "en") {
+		 return `View Channel`;
+	 }
+	 if (lang === "es") {
+		 return `Ver canal`;
+	 }
+	 if (lang === "ru") {
+		 return `Посмотреть каналa`;
+	 }	
+	 if (lang === "de") {
+		 return `Kanal anzeigen-Berechtigung`; 
+	 }	
+	 if (lang === "pt") {
+		 return `Ver canal`;
+	 }		 
+	 else {
+		 return `View Channel`;
+	 }
+						}						
+						else if (!((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.EmbedLinks))) {
+	 if (lang === "en") {
+		 return `Embed Links`;
+	 }
+	 if (lang === "es") {
+		 return `Insertar enlaces`;
+	 }
+	 if (lang === "ru") {
+		 return `Вставить ссылки`
+	 }	
+	 if (lang === "de") {
+		 return `Links einbetten-Berechtigung`;
+	 }	
+	 if (lang === "pt") {
+		 return `Inserir links`;
+	 }		 
+	 else {
+		 return `Embed Links`;
+	 }
+						}								
+					}						
+
+			let missingPermissionsEmbed = new EmbedBuilder()
+				.setColor(0xFF0000) //RED
+				.setDescription(`${missingPermissionsDesc()}`)
+
+			if ( ((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.SendMessages)) && ((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.ViewChannel)) && ((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.EmbedLinks)))
+ 			{	//If the bot has all permissions
+				interaction.guild.channels.fetch(channelIDArray[c]).then(channel => channel.send(({embeds: [gtaImageEmbed, gtaEmbed]}))).catch(err => console.log(`GTA Test Min Error: ${err.stack}`));
+			if ((gtaFinalString.length >= (4000 - constChars)) && (gtaFinalString.length < (6000 - constChars2))) {
+				interaction.guild.channels.fetch(channelIDArray[c]).then(channel => channel.send({ embeds: [gtaEmbed2] })).catch(err =>
+					interaction.editReply({ embeds: [errorEmbed], ephemeral: true }).then(
+						console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`))
+				);			
+			}
+			if ((gtaFinalString.length >= (6000 - constChars2)) && (gtaFinalString.length < (11000 - constChars3))) {
+				interaction.guild.channels.fetch(channelIDArray[c]).then(channel => channel.send({ embeds: [gtaEmbed3] })).catch(err =>
+					interaction.editReply({ embeds: [errorEmbed], ephemeral: true }).then(
+						console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`))
+				);
+			}	
+	 		if (gtaFinalString.length >= (11000 - constChars3)) {
+				interaction.guild.channels.fetch(channelIDArray[c]).then(channel => channel.send({ embeds: [gtaEmbed4] })).catch(err =>
+					interaction.editReply({ embeds: [errorEmbed], ephemeral: true }).then(
+						console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`))
+				);
+			}
+	 			await interaction.followUp({ embeds: [testEmbed], components: [], ephemeral: true }).catch(err => console.log(` Error: ${err.stack}`));
+				}
+				else {	
+					interaction.followUp({embeds: [missingPermissionsEmbed], components: [], ephemeral: true});
+				}						
+				
+			} //end if not undefined channel
+		} //end c loop
+		} //end if (gtaStatus === `success`)						
+	else {
+			let RStarDownEmbed = new EmbedBuilder()
+				.setColor(0xFF0000) //RED
+				.setDescription(`The Rockstar Social Club website is down. \nPlease try again later.`)
+			client.channels.fetch(process.env.logChannel2).then(channel => channel.send({embeds: [RStarDownEmbed], ephemeral: true}));
+			console.log(`The Rockstar Social Club website is down.`);	
+	}	
+	}})}
+	else {
+		let RStarDownEmbed = new EmbedBuilder()
+			.setColor(0xFF0000) //RED
+			.setDescription(`The Rockstar Social Club website is down. \nPlease try again later. \nSorry for the inconvenience.`)
+		interaction.editReply({embeds: [RStarDownEmbed], ephemeral: true});
+		console.log(`The Rockstar Social Club website is down.`);	
+	}		
+				}
+			});
+
+
+}
+	
+//----------------------------------END GTA TEST POST----------------------------------//	
+	
+		let buttonUserID01 = (interaction.customId).split("2gtaTest - ");
+		let buttonUserID = buttonUserID01[1];
+			//console.log(`start buttonUserID: ${buttonUserID}`);
+			//console.log(`start interaction.user.id === buttonUserID? ${interaction.user.id === buttonUserID}`);
+			//console.log(`start interaction.user.id: ${interaction.user.id} && buttonUserID: ${buttonUserID}`);
+
+		let guildRoleIds = [];
+		fs.readFile('./rolesDataBase.txt', 'utf8', async function (err, data) {
+		    if (err) {console.log(`Error: ${err}`)} //If an error, console.log
+		
+					interaction.guild.roles.cache.forEach(role => {
+							if (data.includes(role.id)) {
+								guildRoleIds.push(role.id);
+							}
+					});
+			guildRoleIds.splice(guildRoleIds.length - 1); //.splice(guildRoleIds.length - 1) removes the @everyone role
+				//console.log(`guildRoleIds: ${guildRoleIds}`);
+
+
+		let gtaChannelIds = [];
+		fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
+		    if (err) {console.log(`Error: ${err}`)} //If an error, console.log
+		
+					interaction.guild.channels.cache.forEach(channel => {
+							if (data.includes(channel.id)) {
+								gtaChannelIds.push(channel.id);
+							}
+					});
+			});
+			//console.log(`gtaChannelIds: ${gtaChannelIds}`);					
+
+			function AdminRequired() {
+				let AdminRequiredBoolean = data.split(`guild:${interaction.guild.id} - admin:`);
+				if (AdminRequiredBoolean[1] === undefined) {
+					 	fs.appendFile(`./rolesDataBase.txt`,`guild:${interaction.guild.id} - admin:yes - role:undefined - \n`, err => {
+ 							if (err) {
+ 								console.error(err)
+ 								return
+ 							}					
+ 						}); //end fs.appendFile	
+				}
+				else if (AdminRequiredBoolean[1].startsWith(`yes`)) {
+					return "AdminRequiredYes";
+				}
+				else {
+					return "AdminRequiredNo";
+				}
+			}		
+				//console.log(`AdminRequired(): ${AdminRequired()}`)		
+
+//--BEGIN TRANSLATIONS--//
+
+	function firstTime() {
+		if (lang === "en") {
+			return `It looks like this is your first time using this command. Please try the test button again.`;
+		}
+		else if (lang === "es") {
+			return `Parece que es la primera vez que usas este comando. Vuelva a intentar el botón de prueba.`;
+		}
+		else if (lang === "ru") {
+			return `Похоже, вы впервые используете эту команду. Повторите попытку нажатия кнопки теста.`;
+		}
+		else if (lang === "de") {
+			return `Es sieht so aus, als ob Sie diesen Befehl zum ersten Mal verwenden. Bitte versuchen Sie es erneut mit dem Test-Button.`;
+		}
+		else if (lang === "pt") {
+			return `Parece que esta é a primeira vez que você usa esse comando. Tente o botão de teste novamente.`;
 		}
 		else {
-			let RStarDownEmbed = new EmbedBuilder()
-				.setColor('#FF0000') //RED
-				.setDescription(`The Rockstar Social Club website is down. \nPlease try again later. \nSorry for the inconvenience.`)
-			interaction.editReply({ embeds: [RStarDownEmbed], ephemeral: true });
-			console.log(`The Rockstar Social Club website is down.`);
+			return `It looks like this is your first time using this command. Please try the test button again.`;
+		}		
+	}			
+
+				function notYourButtonString() {
+					if (lang === "en") {
+						return `These buttons are not for you.`;
+					}
+					else if (lang === "es") {
+						return `Estos botones no son para ti.`;
+					}
+					else if (lang === "ru") {
+						return `Эти кнопки не для вас.`;
+					}
+					else if (lang === "de") {
+						return `Diese Schaltflächen sind nicht für Sie.`;
+					}
+					else if (lang === "pt") {
+						return `Esses botões não são para você.`;
+					}
+					else {
+						return `These buttons are not for you.`;
+					}				
+			}			
+
+			function missingPermissions()	{
+				if (lang === "en") {
+					return `You do not have the required permissions to do that.`;
+				}
+				else if (lang === "es") {
+				  return `No tienes permiso para hacer eso.`;
+				}
+				else if (lang === "ru") {
+				  return `У вас нет разрешения на это.`;
+				}
+				else if (lang === "de") {
+				  return `Sie haben keine Erlaubnis dazu.`;
+				}
+				else if (lang === "pt") {
+				  return `Você não tem permissão para fazer isso.`;
+				}
+				else {
+				  return `You do not have the required permissions to do that.`;
+				}				
+			}	
+
+			function noSubscriptions() {
+				if (lang === "en") {
+					return `You do not have any channels subscribed to GTA Online auto posts.`;
+				}
+			 	else if (lang === "es") {
+					return `No tienes ningún canal suscrito a las publicaciones automáticas de GTA Online.`;
+				}
+				else if (lang === "ru") {
+					return `У вас нет каналов, подписанных на автопосты GTA Online.`;
+				}
+				else if (lang === "de") {
+					return `Du hast keine Kanäle, die automatische Beiträge von GTA Online abonniert haben.`;
+				}
+				else if (lang === "pt") {
+					return `Você não tem nenhum canal inscrito nas postagens automáticas do GTA Online.`;
+				}
+				else {
+					return `You do not have any channels subscribed to GTA Online auto posts.`;
+				}
+			}
+
+//--END TRANSLATIONS--//
+
+
+//begin checking for permissions
+					await interaction.deferUpdate();
+		//console.log(`AdminRequired(): ${AdminRequired()}`)
+				if (interaction.user.id != buttonUserID) {
+					await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });
+				}	
+		else if (gtaChannelIds.length <= 0) {
+			await interaction.followUp({ content: `${noSubscriptions()}`, ephemeral: true });
+		}			
+		else if (AdminRequired() === undefined) { //uncessary because confirm already checked? 
+			await interaction.followUp({ content: `${firstTime()}`, ephemeral: true });
 		}
+		else if (AdminRequired() === "AdminRequiredYes") { //if admin permissions are required
+			if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) {
+				gtaTest();
+			} 
+			else if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
+				await interaction.followUp({content: `${missingPermissions()}`, ephemeral: true})
+			}
+			else if (!interaction.user.id === buttonUserID)  {
+				await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });
+			}
+		}
+		else if (AdminRequired() === "AdminRequiredNo") { //if admin permissions are NOT required
 
-
-
-
+				//console.log(`guildRoleIds.length: ${guildRoleIds.length}`)
+				let hasARole = 0;
+				for (a=0;a<=guildRoleIds.length - 1;a++) { //iterates through each role - 0 is @everyone
+					//console.log(`guildRoleIds at ${a}: ${guildRoleIds[a]}`);
+					//console.log(`hasARole at ${a}? ${interaction.member.roles.cache.has(guildRoleIds[a])}`);
+					if (interaction.member.roles.cache.has(guildRoleIds[a])) {
+						hasARole += 1;
+					}
+				} //end loop to check for hasARole
+					//console.log(`hasARole: ${hasARole} && required roles:${guildRoleIds.length}`)
+				if ( (guildRoleIds.length === 0) && (interaction.user.id === buttonUserID) ) { //no role required
+					gtaTest();
+				}
+				else if ( (hasARole >= 1) && (interaction.user.id === buttonUserID) ) { //if the user has at least one role listed
+					gtaTest();
+				}
+				else if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) { //user is an admin
+					gtaTest();
+				}		
+				else if (hasARole <= 0) {
+					await interaction.followUp({content: `${missingPermissions()}`, ephemeral: true})
+				}											
+		}
+		else {
+			await interaction.followUp({ content: `There was an error executing this button.`, ephemeral: true });
+		} //end checking for permissions	
+		});
+					
+		}
+			}); //end fs.readFile for LANGDataBase.txt
+		}
 	},
-};
-
+}

@@ -237,7 +237,7 @@ module.exports = {
 						);							
 						
 						await interaction.deferUpdate();
-						if (interaction.user.id === menuUserID) {					
+						if (interaction.user.id === menuUserID) {	
 
 						//Appends the GTADataBase.txt file with guildID, Channel ID, and choice of gta of gta
 					fs.appendFile(`./GTADataBase.txt`,`guild:${interaction.guild.id} - channel:${menuChannelID} - rdo_gta:gtaStartMenu - \n`, async err => {
