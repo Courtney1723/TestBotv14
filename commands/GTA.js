@@ -47,7 +47,7 @@ module.exports = {
 			function urlLink() {
 				//return `/events/e9Lot6x3/gta-online-bonuses/1`; //test for finalstring <= 4000 
 				//return `events/B3RJmhuX/gta-online-bonuses/1`; //test for finalstring >= 4000 && <= 6000
-				//return `events/SeMgTsre/gta-online-bonuses/1`; //test for finalString >= 6000				
+				//return `events/tgHCnzSZ/gta-online-bonuses/1`; //test for finalString >= 6000				
 				if (urlLink01[1].includes(`\?`)) {
 					let urlLinkFix = urlLink01[1].split(`\?`);
 					let urlLink = urlLinkFix[0];
@@ -142,10 +142,11 @@ module.exports = {
 						let gtaImage = gtaImage01[1].split("\" data-rh=");
 						//console.log(`gtaImage: ${gtaImage[0]}`);
 
-						let gtaDate01 = gtaHeader.split("class=\"date\">"); //gets the event date
+						let gtaDate02 = gtaHeader.split("class=\"date\">"); //gets the event date
 						//console.log(`${gtaDate01[1]}`);
-						let gtaDate = gtaDate01[1].split("<"); //cuts off the end of the date
-						//console.log(`Date: ${gtaDate[0]}\n`);	
+						let gtaDate01 = gtaDate02[1].split("<"); //cuts off the end of the date
+						let gtaDate = gtaDate01[0].replace(/&nbsp;/g, " ");
+						//console.log(`Date: ${gtaDate}\n`);	
 
 						let gtaString002 = gtaString01[1]; //Splits the header from the body
 						//console.log(`gtaString: ${gtaString002}`)
@@ -176,12 +177,14 @@ module.exports = {
 							.replace(/<\/>/g, "")
 							.replace(/<\/strong>/g, "")
 							.replace(/<strong>/g, "")
+							.replace(/<br>/g, "")
 
 							//--Spanish--//
 							.replace(/<mq:rxt><\/mq:rxt>/g, "")			
 
 							//German
 							.replace(/\" draggable=\"false/g, "")
+							.replace(/<p><\/p>/, "") //removes an empty paragraph in the introParas
 
 						//-----END FOREIGN LANGUAGE FORMATTING-----//
 						
@@ -266,16 +269,44 @@ module.exports = {
 
 						//--------------------END checking for words that are bold at the beginning of a paragraph-------------------//
 
-						let GTABonuses01 = gtaBoldFormatted().split("<p><b>");
+
+			//--------------------BEGIN checking for titles that include the bonus-------------------//
+
+						function notATitle() { //</b></p> //<p><b>
+							let gtaTitles001 = gtaBoldFormatted().split("<p><b>");
+
+							let notATitle01 = `_ _</b></p>${gtaTitles001[0]}<p><b>`; //creates an empty title at the beginning so the intro paragraph is a bonus
+
+							for (i = 1; i <= gtaTitles001.length - 1; i++) {		
+								let gta_titles01 = gtaTitles001[i].split("</b></p>");
+								let gta_titles = `${gta_titles01[0]}</b></p>`;
+								let gta_bonuses = `${gta_titles01[1]}<p><b>`;
+								if (gta_titles.includes("\n")) {
+									let gta_titles_01 = gta_titles.split("<");
+									let gta_bonuses_01 = gta_titles.split("\n");
+									
+									gta_titles = `${gta_titles_01[0]}</b></p>`;
+									gta_bonuses = `${gta_bonuses_01[1]}<p><b>`;
+									
+								}
+									notATitle01 += `${gta_titles}`;								
+									notATitle01 += `${gta_bonuses}`;
+									//console.log(`i:${i} - gta_titles:${gta_titles}\ngta_bonuses:${gta_bonuses}\ni:${i}`);						
+							}
+							return notATitle01;
+						}
+						//console.log(`notATitle:${notATitle()}`);
+
+						//--------------------END checking for titles that include the bonus-------------------//
+						
+						let GTABonuses01 = notATitle().split("<p><b>");
 						//console.log(`GTABonuses01: ${GTABonuses01}`)
 						let gtaFinalString01 = "";	//gtaFinalString before HTML formatting
-						let nextGenIndex1 = "";
-						let nextGenIndex2 = "";
 
 						//-----BEGIN for loop-----//		
 
 						//console.log(`GTABonuses01 length: ${GTABonuses01.length}`);
-						for (i = 0; i <= GTABonuses01.length - 2; i++) { //final element will always be blank
+						for (i = 0; i <= GTABonuses01.length - 3; i++) { //final element will always be blank
 							//console.log(`GTABonuses01 at ${i}: ${GTABonuses01}`);
 							let GTABonuses = GTABonuses01[i].split("</b></p>");
 							//console.log(`GTATitles at ${i}: ${GTABonuses[0]}\nGTABonuses at ${i}: ${GTABonuses[1]}`);
@@ -322,267 +353,122 @@ module.exports = {
 								return `${gtaTitleString}`;
 							}
 							let GTA_Title = titleCapitalization(GTABonuses);
-							//console.log(`GTA_Title at ${i}: ${GTA_Title}`);		
+							// console.log(`GTA_Title at ${i}: ${GTA_Title} `);		
+							// console.log(`GTA_Bonus at ${i}: ${GTA_Bonus}`);	
 							//--------------------END capitalization Function-----------------//		
 
-							//-----BEGIN get the index of "Only on PlayStation..." title-----//
 
-							function onlyOnIndex1() { //returns the index of the title: Only on Playstation...
-								if (GTA_Bonus != null) {
-									if ((GTA_Title.toLowerCase().includes("only on playstation")) || (GTA_Bonus.toLowerCase().includes("only on playstation"))) {
-										return i + 1;
-									}
-								} else {
-									return -1;
-								}
-							}
-							//console.log(`onlyOnIndex1() at ${i}: ${onlyOnIndex1()}`);
-
-							function onlyOnIndex2() { //returns the index of the title: Only on Playstation...
-								if (GTA_Bonus != null) {
-									if ((GTA_Title.toLowerCase().includes("only on playstation")) || (GTA_Bonus.toLowerCase().includes("only on playstation"))) {
-										return i + 2;
-									}
-								} else {
-									return -2;
-								}
-							}
-							//console.log(`onlyOnIndex2() at ${i}: ${onlyOnIndex2()}`);		
-
-							if (onlyOnIndex1() > 0) {
-								nextGenIndex1 += onlyOnIndex1(); //populates nextGenIndex1 with the index of the title after "Only on PS5..."
-							}
-							//console.log(`nextGenIndex1 at ${i}: ${nextGenIndex1}`);
-
-							if (onlyOnIndex2() > 0) {
-								nextGenIndex2 += onlyOnIndex2(); //populates nextGenIndex1 with the index of the second title after "Only on PS5..."
-							}
-							//console.log(`nextGenIndex2 at ${i}: ${nextGenIndex2}`);								
-							//-----END get the index of "Only on PlayStation..." title-----//			
-
-
-							//-----BEGIN populating gtaFinalString01 -----//
-							if ((i.toString() === nextGenIndex1) || (i.toString() === nextGenIndex2)) {
-								if (!GTA_Bonus === undefined) {
-									let gtaParas = GTA_Bonus.split("<p>");
-									//gtaFinalString01 += `**Only on PlayStation 5 and Xbox Series X|S:**\n`;
-									if (!GTA_Title.toLowerCase().includes("motorsport showroom")) {
-										gtaFinalString01 += `• ${GTA_Title}\n`;
-									}
-									else {
-										gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
-									}
-								}
-							}
-							else if (i === 0) { //if the bonus is an intro paragraph.
-								let introParas = GTA_Title.split("<p>")
-								//gtaFinalString01 += `• ${introParas[1]}\n`; //usual intro paragraph
-								gtaFinalString01 += `• ${introParas[1].charAt(0).toUpperCase()}${introParas[1].substr(1)}\n`; //not sure why the first word is lowercase?
-								if (introParas[2] != undefined) {
-									gtaFinalString01 += `• ${introParas[2].charAt(0).toUpperCase()}${introParas[2].substr(1)}\n`; //not sure why the first word is lowercase?
-								}
-							}
-							else if (GTA_Bonus != null) { //if the bonus is not an intro paraghraph
+		//----------BEGIN populating gtaFinalString01 ----------//
+							if ((GTA_Bonus != null) && (!GTA_Title.includes("undefined")) && (!GTA_Bonus.includes("undefined"))) { 
 								let gtaParas = GTA_Bonus.split("<p>");
-								//console.log(`gtaParas at ${i}: ${gtaParas}`);
-								//console.log(`gtaParas length at ${i}: ${gtaParas.length}`);	
-								if (GTA_Title.toLowerCase().includes("playstation 5")) { //fail safe for if the NextGenIndex does not work properly
-									//gtaFinalString01 += `**Only on PlayStation 5 or Xbox Series X|S:**\n`;
+								if (
+									(GTA_Title.toLowerCase() === "gta+ ") ||
+									(GTA_Title.toLowerCase() === "discounts ") || 
+									(GTA_Title.toLowerCase() === "descuentos ") || 
+									(GTA_Title  === "cкидки ") || 
+									(GTA_Title  === "Скидки ") || 
+									(GTA_Title.toLowerCase() === "rabatte ") || 
+									(GTA_Title.toLowerCase() === "descontos ")
+									) {
+									//console.log(`1 - discount`);
+									gtaFinalString01 += `**${GTA_Title}**\n`;
+									var k = 0;
+									while (gtaParas[k] !== undefined) {
+										if (gtaParas[k].includes("•")) {
+											//console.log(`1 - discount includes •`);
+											gtaFinalString01 += `${gtaParas[k]}`;
+										}
+										else {
+											//console.log(`1 - discount does not include •`);
+											gtaFinalString01 += `• ${gtaParas[k]}`;
+										}
+										k++;
+									}
+									gtaFinalString01 += "\n";
 								}
-								else if (GTA_Bonus.toLowerCase().includes("premium test ride")) { //fail safe for if the NextGenIndex does not work properly
-									gtaFinalString01 += `• ${gtaParas[1]}\n`;
-								}
-								else if (GTA_Title.toLowerCase().includes("hsw time trial")) { //fail safe for if the NextGenIndex does not work properly
+								else if ( 
+									(GTA_Title.toLowerCase().includes("hsw")) ||  
+									(GTA_Title.toLowerCase().includes("premium test ride")) || 
+									(GTA_Title.toLowerCase().includes("vehículo de prueba premium")) ||
+									(GTA_Title.includes("Премиум-класса")) ||
+									(GTA_Title.includes("Тестовый транспорт")) ||
+									(GTA_Title.toLowerCase().includes("premium-testfahrzeug")) || 
+									(GTA_Title.toLowerCase().includes("veículo de teste premium")) 
+								) { 
+									//console.log(`2 - only on playstation`);
 									gtaFinalString01 += `• ${GTA_Title}\n`;
-								}
-								else if (GTA_Bonus.toLowerCase().includes("luxury autos")) {
-									gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
-								}
-								else if (GTA_Title.toLowerCase().includes("new community series")) {
-									gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
-								}
-								else if (GTA_Title.toLowerCase().includes("series updates")) {
-									gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n• ${gtaParas[2]}\n`;
-								}
-								else if (GTA_Title.toLowerCase().includes("motorsport showroom")) {
-									gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
-								}
-								else if (GTA_Title.toLowerCase().includes("simeon's showroom")) {
-									gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
-								}
-								else if (GTA_Title.toLowerCase().includes("2.5x")) {
-									gtaFinalString01 += `**${GTA_Title}** \n`;
-								}
-								else if (GTA_Title.toLowerCase().includes("3x")) {
-									gtaFinalString01 += `**${GTA_Title}** \n`;
-								}
-								else if (GTA_Title.toLowerCase().includes("gta+")) {
-									gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n${gtaParas[2]}\n`;
-								}
-								else if ((GTA_Title.toLowerCase().includes("discount")) || (GTA_Title.toLowerCase().includes("descuento")) || (GTA_Title.includes("Скидки")) || (GTA_Title.toLowerCase().includes("rabatte")) || (GTA_Title.toLowerCase().includes("desconto"))) {
-									gtaFinalString01 += `**${GTA_Title}**\n• ${GTA_Bonus}:\n`;
-								}
-								else if (GTA_Bonus.includes("• ")) { //if the bonus includes lists
-									if (gtaParas[0] != null) {
-										if ((gtaParas[1] != null) && (gtaParas[1] != `undefined`)) {
-											let gtaListBonus = gtaParas[1].split("\n\n•");
-											if (gtaParas[2] != null) { //if the bonus has a paragraph after the list
-												gtaFinalString01 += `**${GTA_Title}**\n${gtaParas[1]}\n• ${gtaParas[2]}\n`;
-											}
-											else { //if the bonus does not have a paragraph after the list
-												gtaFinalString01 += `**${GTA_Title}**\n• ${gtaListBonus[2]}\n`;
-											}
+									if (GTA_Title.toLowerCase().includes("hsw")) {
+										gtaFinalString01 += "\n"
+									}
+								}									
+								else if ( //Adds only the title if the paragraph is unecessary
+									(GTA_Title.toLowerCase().includes("1.5x")) || 
+									(GTA_Title.toLowerCase().includes("1,5x")) || 
+									(GTA_Title.toLowerCase().includes("2x")) || 
+									(GTA_Title.toLowerCase().includes("2.5x")) || 
+									(GTA_Title.toLowerCase().includes("2,5x")) || 
+									(GTA_Title.toLowerCase().includes("3x")) ||
+									(GTA_Title.toLowerCase().includes("4x")) ||
+									(GTA_Title.toLowerCase().includes("40%")) ||
+									(GTA_Title.toLowerCase().includes("40 %")) || 
+									(GTA_Title.toLowerCase().includes("50%")) ||
+									(GTA_Title.toLowerCase().includes("50 %")) || 									
+									(GTA_Title.toLowerCase().includes("double")) ||
+									(GTA_Title.toLowerCase().includes("doble")) || 
+									(GTA_Title.toLowerCase().includes("preisfahrzeug")) || 
+									(GTA_Title.toLowerCase().includes("veículo-prêmio")) ||
+									(GTA_Title.toLowerCase().includes("diamond casino")) ||
+									(GTA_Title.toLowerCase().includes("cassino diamond")) ||
+									(GTA_Title.includes("Премиальный Транспорт")) 
+								 ) {
+									//console.log(`3 - only title`);
+									gtaFinalString01 += `**${GTA_Title}**\n\n`;
+								}	
+								else { // only post the first paragraph
+									//console.log(`4 - else`);
+									if ((gtaParas[1] !== undefined) && (gtaParas[1] !== "")) {
+										//console.log(`4 - title + bonus - bonus length:${gtaParas[1].length}`);
+										if (gtaParas[1].length <= 500) {
+											gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n\n`;
+										}
+										else {
+											gtaFinalString01 += `**${GTA_Title}**\n\n`;
 										}
 									}
-									else {
+									else if ((GTA_Title !== undefined) && (GTA_Title !== "")) {
+										//console.log(`4 - title only`);
 										gtaFinalString01 += `**${GTA_Title}**\n\n`;
 									}
 								}
-								else if (i === GTABonuses01.length - 2) { //if the bonus is the last bonus
-									gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n• ${gtaParas[2]}\n• ${gtaParas[3]}`;
-								}
-								else if (gtaParas.length > 2) { // if the bonus has two or more paragraphs include only 1st and 2nd
-									gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n`;
-								}
-								else { //if the bonus only has 1 paragraph only post the title
-									gtaFinalString01 += `\n**${GTA_Title}**\n\n`;
-								}
 							}
-							else { //if the bonus only has 1 paragraph only post the title
-								gtaFinalString01 += `\n**${GTA_Title}**\n\n`;
+							else if ((GTA_Title != null) && (!GTA_Title.includes("undefined")) && (GTA_Title != "")) { //if the bonus is in the title
+								//console.log(`5 - bonusintitle`);
+								var bonusInTitle = GTA_Title.split("<");
+								var bonusInTitleBonus = bonusInTitle[1].split(">");
+									gtaFinalString01 += `**${bonusInTitle[0]}**\n`;
+									gtaFinalString01 += `• ${bonusInTitleBonus[1]}\n\n`;
 							}
 
-						}
+						}//end looping through bonuses - i loop
 
 						//-----------END for loop----------//			
 						//console.log(`gtaFinalString01: ${gtaFinalString01}`); //gtaFinalString before HTML formatting
-						let gtaFinalString = gtaFinalString01.replace(/<p>/g, "")
-							.replace(/<\/p>/g, "")
+						let gtaFinalString = gtaFinalString01
+							.replace(/<p>/g, "")
+							.replace(/<\/p>/g, "\n")
 							.replace(/<\/b>/g, "")
 							.replace(/<b>/g, "")
-							.replace(/\n\n• /g, "\n• ") //removes spaces before a list item
-							.replace(/.\n\*\*/g, "\n\n**")
+							.replace(/\n\n• /g, "\n• ") //removes spaces before a list
+							.replace(/\n \n• /g, "\n• ") //removes spaces before a list
+							.replace(/• \n/g, "• ") //removes spaces after a list
+							.replace(/•  \n/g, "• ") //removes spaces after a list
+							.replace(/• •/g, "•") //removes double bullet points
+							.replace(/.\n\*\*/g, ".\n\n**") //fixes missing space before new title 
+							.replace(/        /, "")//removes the trailing spaces 
 							.replace(/\n\n\n/g, "\n\n")
-							.replace(/\n\n\n/g, "\n\n")
-							.replace(/• undefined/g, "• ")
-							.replace(/\n• undefine/g, "")
-							.replace(/• \n\n/g, "")
-
-						//console.log(`gtaFinalString01.length: ${gtaFinalString01.length}`);
+						//console.log(`gtaFinalString: ${gtaFinalString}`); //gtaFinalString after HTML formatting
 						//console.log(`gtaFinalString.length: ${gtaFinalString.length}`);
-						function bestBreak() {
-							var gtaSpaces = gtaFinalString.split(`\n\n`); //counts the newlines
-							var charCount = 0;//( (gtaTitleString().length) + (gtaDate[0].length) + (gtaFooterMin().length) + (ellipsisFunction().length) ); 
-							//console.log(`( T${(gtaTitleString().length)} + D${(gtaDate[0].length)} + F${(gtaFooterMin().length)} + E${(ellipsisFunction().length)} )`);
-							
-							var finalZ = 0;
-							var countZ = 0;
-							for (z = 0; charCount <= 3950; z++) {
-								if (lang === "pt") {
-									return gtaFinalString.length - gtaFooterMin().length; //FIXME - remove next week
-								}
-								if (gtaFinalString.length <= 4100) {
-									charCount = 3950;
-									finalZ = gtaFinalString.length;
-								}
-								if (gtaSpaces[z] !== undefined) {
-									//console.log(`gtaSpaces at ${z}: ${gtaSpaces[z]}`);
-										charCount += gtaSpaces[z].length;
-										//console.log(`charCount at ${z}: ${charCount}`);
-									var finalZ = gtaSpaces[z].length;
-									countZ++;		
-								}
-							}
-								//console.log(`finalZ: ${finalZ}`);
-							  //console.log(`charCount: ${charCount}`);
-								return (charCount - finalZ) + (countZ * 2) - 3;
-							// ( (gtaTitleString().length) + (gtaDate[0].length) + (gtaFooterMin().length) + (ellipsisFunction().length) )
-						}
-						//console.log(`bestBreak: ${bestBreak()}`);
-
-						var constChars = (gtaFooterMax().length) + (gtaImage[0].length) + (gtaTitleString().length);
-						var gtaNewlines = gtaFinalString.substr(bestBreak(), (6000 - bestBreak() - constChars)).split("\n");
-						var tempString = gtaNewlines[gtaNewlines.length - 1];
-						function bestEndBreak() {
-							return (6000 - bestBreak() - constChars - tempString.length);
-						}
-						//console.log(`bestEndBreak:${bestEndBreak()}`);
-
-						//console.log(`gtaFinalString: ${gtaFinalString}`);
-						function gtaPost() {
-							return gtaFinalString.slice(0, (bestBreak())); //FIXME: adjust this for the best break - up to 4000
-						}
-						//console.log(`gtaFinalString length: ${gtaFinalString.length}\n`) 
-						function gtaPost2() {
-							if (gtaFinalString.length > 4000) {
-								let post02 = gtaFinalString.substr((bestBreak()), (bestEndBreak())); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
-								return post02;
-							} else {
-								return "";
-							}
-						}
-						function ellipsisFunction() {
-							if (gtaFinalString.length > 4000) {
-								return "...";
-							} else {
-								return "";
-							}
-						}
-						function ellipsisFunction2() {
-							if (gtaFinalString.length >= (6000 - constChars)) {
-								return "...";
-							} else {
-								return "";
-							}
-						}						
-						function gtaFooterMax() {
-							if (gtaFinalString.length > 4000) {
-								if (lang === "en") {
-									return `\n** [Click here](${url}) for more details**`;
-								}
-								else if (lang === "es") {
-									return `\n** [Haga clic aquí](${url}) para más detalles**`;
-								}
-								else if (lang === "ru") {
-									return `\n** [Hажмите здесь](${url}) для получения более подробной информации**`;
-								}
-								else if (lang === "de") {
-									return `\n** [Klicken Sie hier](${url}) für weitere Details**`;
-								}
-								else if (lang === "pt") {
-									return `\n** [Clique aqui](${url}) para mais detalhes**`;
-								}
-								else {
-									return `\n** [Click here](${url}) for more details**`;
-								}
-							} else {
-								return "";
-							}
-						}
-						function gtaFooterMin() {
-							if (gtaFinalString.length <= 4000) {
-								if (lang === "en") {
-									return `** [Click here](${url}) for more details**`;
-								}
-								else if (lang === "es") {
-									return `** [Haga clic aquí](${url}) para más detalles**`;
-								}
-								else if (lang === "ru") {
-									return `** [нажмите здесь](${url}) для получения более подробной информации**`;
-								}
-								else if (lang === "de") {
-									return `** [Klicken Sie hier](${url}) für weitere Details**`;
-								}
-								else if (lang === "pt") {
-									return `** [Clique aqui](${url}) para mais detalhes**`;
-								}
-								else {
-									return `** [Click here](${url}) for more details**`;
-								}
-							} else {
-								return "";
-							}
-						}
+						
 
 						function gtaTitleString() {
 							if (lang === "en") {
@@ -604,12 +490,111 @@ module.exports = {
 								return "GTA Online Bonuses:";
 							}
 						}
-						//console.log(`gtaTitleString: ${gtaTitleString()}`);
+
+						var constChars = (gtaDate.length + 2) + (gtaTitleString().length);
+						function ellipsisFunction() {
+							if (gtaFinalString.length >= (4000 - constChars)) {
+								return "...";
+							} else {
+								return "";
+							}
+						}
+						function ellipsisFunction2() {
+							if (gtaFinalString.length >= (6000 - constChars - gtaImage[0].length)) {
+								return "...\n";
+							} else {
+								return "";
+							}
+						}			
+						function gtaFooterMin() {
+							if (gtaFinalString.length < (4000 - constChars)) {
+								if (lang === "en") {
+									return `** [Click here](${url}) for more details**`;
+								}
+								else if (lang === "es") {
+									return `** [Haga clic aquí](${url}) para más detalles**`;
+								}
+								else if (lang === "ru") {
+									return `** [нажмите здесь](${url}) для получения более подробной информации**`;
+								}
+								else if (lang === "de") {
+									return `** [Klicken Sie hier](${url}) für weitere Details**`;
+								}
+								else if (lang === "pt") {
+									return `** [Clique aqui](${url}) para mais detalhes**`;
+								}
+								else {
+									return `** [Click here](${url}) for more details**`;
+								}
+							} else {
+								return "";
+							}
+						}	
+						function gtaFooterMax() {
+							if (gtaFinalString.length >= (4000 - constChars)) {
+								if (lang === "en") {
+									return `** [Click here](${url}) for more details**`;
+								}
+								else if (lang === "es") {
+									return `** [Haga clic aquí](${url}) para más detalles**`;
+								}
+								else if (lang === "ru") {
+									return `** [Hажмите здесь](${url}) для получения более подробной информации**`;
+								}
+								else if (lang === "de") {
+									return `** [Klicken Sie hier](${url}) für weitere Details**`;
+								}
+								else if (lang === "pt") {
+									return `** [Clique aqui](${url}) para mais detalhes**`;
+								}
+								else {
+									return `** [Click here](${url}) for more details**`;
+								}
+							} else {
+								return "";
+							}
+						}			
+
+						constChars += (gtaFooterMin().length) + (ellipsisFunction().length);
+						var gtaNewlines = gtaFinalString.substr(0, (4000 - constChars)).split("\n\n");
+						var tempString = gtaNewlines[gtaNewlines.length - 1];
+						function bestBreak() {
+								if (gtaFinalString.length <= (4000 - constChars)) {
+									return (gtaFinalString.length);
+								}
+								return (4000 - constChars - tempString.length);
+						}
+						//console.log(`bestBreak: ${bestBreak()}`);
+
+						var constChars1 = (gtaFooterMax().length) + (ellipsisFunction().length) + (ellipsisFunction2().length) + gtaImage[0].length;
+						var gtaNewlines1 = gtaFinalString.substr(bestBreak(), (6000 - constChars - constChars1 - bestBreak())).split("\n");
+						var tempString1 = gtaNewlines1[gtaNewlines1.length - 1];								
+						function bestEndBreak() {
+							if (gtaFinalString.length <= (6000 - constChars - constChars1)) {
+								return gtaFinalString.length;
+							}
+							return (6000 - bestBreak() - constChars - constChars1 - tempString1.length); //removes the last bonus if over 6000 chars
+						}
+						//console.log(`bestEndBreak:${bestEndBreak()}`);
+
+						function gtaPost() {
+							return gtaFinalString.slice(0, (bestBreak()));
+						}
+						//console.log(`gtaPost().length:${gtaPost().length || 0}`);
+						function gtaPost2() {
+							if (gtaPost().length < gtaFinalString.length) {
+								let post02 = gtaFinalString.substr((bestBreak()), (bestEndBreak())); 
+								return post02;
+							} else {
+								return "";
+							}
+						}
+						//console.log(`gtaPost2().length:${gtaPost2().length || 0}`);
 
 						let gtaEmbed = new EmbedBuilder()
 							.setColor(0x00CD06) //Green
 							.setTitle(`${gtaTitleString()}`)
-							.setDescription(`${gtaDate[0]}\n\n${gtaPost()} \n${gtaFooterMin()} ${ellipsisFunction()}`)
+							.setDescription(`${gtaDate}\n${gtaPost()}${gtaFooterMin()}${ellipsisFunction()}`)
 						let gtaEmbed2 = new EmbedBuilder()
 							.setColor(0x00CD06) //Green
 							.setDescription(`${ellipsisFunction()} \n${gtaPost2()} ${ellipsisFunction2()}${gtaFooterMax()}`)
@@ -617,10 +602,10 @@ module.exports = {
 							.setColor(0x00CD06) //Green
 							.setImage(`${gtaImage[0]}`);
 
-						// console.log(`gtaEmbed length: ${gtaEmbed.length}`); //no more than 4096 (line 199)
+						// console.log(`gtaEmbed length: ${gtaEmbed.length}`); //no more than 4000 (line 199)
 						// console.log(`gtaEmbed2 length: ${gtaEmbed2.length}`); //no more than 6000 - gtaEmbed.length (line 204)
 
-						if (gtaFinalString.length <= 4000) {
+						if (gtaPost2() === "") {
 							await interaction.editReply({ embeds: [gtaImageEmbed, gtaEmbed] }).catch(err =>
 								interaction.editReply({ embeds: [errorEmbed], ephemeral: true }).then(
 									console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`))
