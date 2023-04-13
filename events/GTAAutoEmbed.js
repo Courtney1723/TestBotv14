@@ -8,7 +8,7 @@ module.exports = {
 	async execute(client) {
 
 		//cron.schedule('* * * * *', () => { //(second),minute,hour,date,month,weekday 
-		cron.schedule('45 11 * * 4', () => { //(second),minute,hour,date,month,weekday '0 12 * * 4' = 12:00 PM on Thursday
+		cron.schedule('47 11 * * 4', () => { //(second),minute,hour,date,month,weekday '0 12 * * 4' = 12:00 PM on Thursday
 		  console.log('sending GTA Auto Posts...');
 			
 			fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
@@ -158,7 +158,7 @@ let gtaURL = process.env.SOCIAL_URL_GTA2;
 			//console.log(`urlLink: ${urlLink01[1]}`);
 
 			function urlLink() {
-				return `/events/e9Lot6x3/gta-online-bonuses/1`; //test for finalstring <= 4000 
+				//return `/events/e9Lot6x3/gta-online-bonuses/1`; //test for finalstring <= 4000 
 				//return `events/B3RJmhuX/gta-online-bonuses/1`; //test for finalstring >= 4000 && <= 6000
 				//return `events/tgHCnzSZ/gta-online-bonuses/1`; //test for finalString >= 6000						
 				if (urlLink01[1].includes(`\?`)) {

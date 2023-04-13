@@ -44,7 +44,7 @@ module.exports = {
 			let urlLink02 = content.split("linkToUrl\":");
 			let urlLink01 = urlLink02[1].split("\"");
 
-			function urlLink() {
+			function urlLink() { 
 				//return `/events/e9Lot6x3/gta-online-bonuses/1`; //test for finalstring <= 4000 
 				//return `events/B3RJmhuX/gta-online-bonuses/1`; //test for finalstring >= 4000 && <= 6000
 				//return `events/tgHCnzSZ/gta-online-bonuses/1`; //test for finalString >= 6000				
