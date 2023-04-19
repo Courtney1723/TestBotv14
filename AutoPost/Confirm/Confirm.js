@@ -12,37 +12,7 @@ module.exports = {
 		let buttonUserID01 = (interaction.customId).split("confirm - ");
 		let buttonUserID = buttonUserID01[1];
 			//console.log(`buttonUserID: ${buttonUserID}`);
-			//console.log(`interaction.user.id === buttonUserID? ${interaction.user.id === buttonUserID}`)
-
-		let guildRoleIds = [];
-		fs.readFile('./rolesDataBase.txt', 'utf8', async function (err, data) {
-		    if (err) {console.log(`Error: ${err}`)} //If an error, console.log			
-		
-					interaction.guild.roles.cache.forEach(role => {
-							if (data.includes(role.id)) {
-								guildRoleIds.push(role.id);
-							}
-					});
-			guildRoleIds.shift(1); //removes the @everyone role
-				//console.log(`guildRoleIds: ${guildRoleIds}`);
-
-			function AdminRequired() {
-				let AdminRequiredBoolean = data.split(`guild:${interaction.guild.id} - admin:`);
-				if (AdminRequiredBoolean[1] === undefined) { //if the autopost command has never been triggered - sets default settings
-					 	fs.appendFile(`./rolesDataBase.txt`,`guild:${interaction.guild.id} - admin:yes - role:undefined - \n`, err => {
- 							if (err) {
- 								console.error(err)
- 								return
- 							}					
- 						}); //end fs.appendFile	
-				}
-				else if (AdminRequiredBoolean[1].includes(`yes`)) {
-					return "AdminRequiredYes";
-				}
-				else {
-					return "AdminRequiredNo";
-				}
-			}	
+			//console.log(`interaction.user.id === buttonUserID? ${interaction.user.id === buttonUserID}`)		
 
 			fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
 			  if (err) {console.log(`Error: ${err}`)} 
@@ -88,7 +58,6 @@ module.exports = {
 							lang += `${langArray[i]}`;
 						}
 					}
-
 					//console.log(`lang: ${lang}`);				
 
 			let channelIDArray = [];
@@ -169,130 +138,47 @@ module.exports = {
 				}
 			}
 
-			
-			let ConfigureConfirmString = "";
-			fs.readFile('./rolesDataBase.txt', 'utf8', async function (err, data) {
-			    if (err) {console.log(`Error: ${err}`)} //If an error, console.log
-			    else {
-            //console.log(`data: ${data}`);
-						let roleIDArray = [];
-						interaction.guild.roles.cache.forEach(role => {
-							if ((data.includes(`${role.id}`)) && (role.name != "@everyone") ) {
-						    roleIDArray.push(`${role.id}`);
-							}
-						});
-							//console.log(`roleIDArray[]: ${roleIDArray}`);
-						
-						if (data.includes(`guild:${interaction.guild.id} - admin:yes`)) { //FIXME - add language support
-							if (lang === "en") {
-								ConfigureConfirmString += `• Administrators\n`		
-							}
-							else if (lang === "es") {
-								ConfigureConfirmString += `• Administradores\n`
-							}
-							else if (lang === "ru") {
-								ConfigureConfirmString += `• Администраторы\n`
-							}
-							else if (lang === "de") {
-								ConfigureConfirmString += `• Administratoren\n`
-							}
-							else if (lang === "pt") {
-								ConfigureConfirmString += `• Administradores\n`
-							}
-							else {
-								ConfigureConfirmString += `• Administrators\n`
-							}							
-								//console.log(`roleIDArray.length: ${roleIDArray.length}`)
-							if (roleIDArray.length >= 1) {
-								if (lang === "en") {
-									ConfigureConfirmString += `• Anyone without the Administrator privilege will be unable to configure auto posts\n **even if they have a role listed below**\n`;		
-								}
-								else if (lang === "es") {
-									ConfigureConfirmString += `• Cualquier persona sin el administrador de privilegios no podrá configurar publicaciones automáticas, \n**incluso si tiene un rol que se enumera a continuación**\n`;
-								}
-								else if (lang === "ru") {
-									ConfigureConfirmString += `• Любой пользователь без прав администратора не сможет настроить автоматические публикации, \n**даже если у них есть роль, указанная ниже**\n`;
-								}
-								else if (lang === "de") {
-									ConfigureConfirmString += `• Personen ohne Administratorrechte können keine automatischen Beiträge konfigurieren, \n**selbst wenn sie über eine der unten aufgeführten Rollen verfügen**\n`;
-								}
-								else if (lang === "pt") {
-									ConfigureConfirmString += `• Qualquer pessoa sem o administrador de privilégios não poderá configurar postagens automáticas, \n**mesmo que tenha uma função listada abaixo**\n`;
-								}
-								else {
-								    ConfigureConfirmString += `• Anyone without the Administrator privilege will be unable to configure auto posts\n **even if they have a role listed below**\n`;
-								}								 
-							}						
-						}
-            for (i = 0; i <= roleIDArray.length - 1; i++) {
-							ConfigureConfirmString += `• <@&${roleIDArray[i]}>\n`;
-							//console.log(`channelIDArray at ${i}: ${channelIDArray[i]}`);
-							//console.log(`ConfigureConfirmString at ${i}: ${ConfigureConfirmString}`);	
-            }
-        }
-    //console.log(`ConfigureConfirmString: ${ConfigureConfirmString}`);	
-    if (!ConfigureConfirmString.includes('• ')) {
-			if (lang === "en") {
-				ConfigureConfirmString += `• <@&${interaction.guild.id}> can configure auto posts.\n`;
-			}
-			else if (lang === "es") {
-			  ConfigureConfirmString += `• <@&${interaction.guild.id}> el mundo puede configurar publicaciones automáticas.\n`;
-			}
-			else if (lang === "ru") {
-			  ConfigureConfirmString += `• <@&${interaction.guild.id}> может настроить автоматические сообщения.\n`;
-			}
-			else if (lang === "de") {
-			  ConfigureConfirmString += `• <@&${interaction.guild.id}> kann automatische Beiträge konfigurieren.\n`;
-			}
-			else if (lang === "pt") {
-			  ConfigureConfirmString += `• <@&${interaction.guild.id}> podem configurar postagens automáticas.\n`;
-			}
-			else {
-			  ConfigureConfirmString += `• <@&${interaction.guild.id}> can configure auto posts.\n`;
-			}
-    }	
-
 		function confirmTitleString() {
 			if (lang === "en") {
-				return `Your Current Auto Post Channels:`;
+				return `    Auto Post Channels`;
 			}
 			else if (lang === "es") {
-				return `Tus canales de publicación automática actuales:`;
+				return `Canales de publicación automática`;
 			}
 			else if (lang === "ru") {
-				return `Текущие настройки автоматической публикации:`;
+				return `Текущие настройки автоматической публикации`;
 			}
 			else if (lang === "de") {
-				return `Ihre aktuellen Auto-Post-Kanäle:`;
+				return `Automatische Veröffentlichungskanäle`;
 			}
 			else if (lang === "pt") {
-				return `Seus canais de publicação automática atuais:`;
+				return `Canais de publicação automática`;
 			}
 			else {
-			  return `Your Current Auto Post Channels:`;
+			  return `    Auto Post Channels`;
 			}			
 		}
 
-		function rolesAllowedTitleString() {
+		function testTitleString() {
 			if (lang === "en") {
-					return `Roles Allowed to Configure Auto Posts:`;	
+				return `Test Auto Posts`;
 			}
 			else if (lang === "es") {
-				return `Roles permitidos para configurar publicaciones automáticas`;	
+				return `Probar publicaciones automáticas`;
 			}
 			else if (lang === "ru") {
-				return `Роли, которым разрешено настраивать автоматические публикации:`;	
+				return `Протестируйте автоматические публикации`;
 			}
 			else if (lang === "de") {
-				return `Rollen, die automatische Beiträge konfigurieren dürfen:`;	
+				return `Testen Sie automatische Veröffentlichungen`;
 			}
 			else if (lang === "pt") {
-				return `Papéis que têm permissão para configurar publicações automáticas:`;	
+				return `Testar publicações automáticas`;
 			}
 			else {
-				return `Roles Allowed to Configure Auto Posts`;	
-			}			
-		}
+			  return `Test Auto Posts`;
+		}						
+			}
 
 		function testGTAString() {
 			if (lang === "en") {
@@ -338,22 +224,22 @@ module.exports = {
 
 		function footerString() {
 			if (lang === "en") {
-					return `You must be an administrator or have a role listed above to test auto posts.`;
+					return `Only administrators can test auto posts.`;
 			}
 			else if (lang === "es") {
-				return `Debe ser administrador o tener un rol mencionado anteriormente para probar publicaciones automáticas.`;
+				return `Debe ser administrador para probar las publicaciones automáticas.`;
 			}
 			else if (lang === "ru") {
-				return `Для тестирования автоматических публикаций необходимо быть администратором или иметь роль, указанную выше.`;
+				return `Вы должны быть администратором, чтобы тестировать автоматические публикации.`;
 			}
 			else if (lang === "de") {
-				return `Sie müssen Administrator sein oder über eine der oben aufgeführten Rollen verfügen, um automatische Beiträge testen zu können.`;
+				return `Sie müssen Administrator sein, um automatische Veröffentlichungen testen zu können.`;
 			}
 			else if (lang === "pt") {
-				return `Você deve ser um administrador ou ter uma função listada acima para testar postagens automáticas.`;
+				return `Você deve ser um administrador para testar as publicações automáticas.`;
 			}
 			else {
-				return `You must be an administrator or have a role listed above to test auto posts.`;
+				return `You must be an administrator to test auto posts.`;
 			}
 		}
 
@@ -419,6 +305,27 @@ module.exports = {
 				return `Go Back`;
 			}			
 		}
+
+		function notYourButtonString() {
+			if (lang === "en") {
+				return `These buttons are not for you.`;
+			}
+			else if (lang === "es") {
+				return `Estos botones no son para ti.`;
+			}
+			else if (lang === "ru") {
+				return `Эти кнопки не для вас.`;
+			}
+			else if (lang === "de") {
+				return `Diese Schaltflächen sind nicht für Sie.`;
+			}
+			else if (lang === "pt") {
+				return `Esses botões não são para você.`;
+			}
+			else {
+				return `These buttons are not for you.`;
+			}				
+		}			
 			
 			
 
@@ -426,14 +333,13 @@ module.exports = {
 			.setColor(0x00B9FF) 
 			.setTitle(`${confirmTitleString()}`)
 			.setDescription(`
-**GTA Online:**
+**__GTA Online__**
 ${GTAConfirmString}
-**Red Dead Online:**
+**__Red Dead Online__**
 ${RDOConfirmString}
-**${rolesAllowedTitleString()}**
-${ConfigureConfirmString}
-${testGTAString()}
-${testRDOString()}`)	
+**__${testTitleString()}__**
+• ${testGTAString()}
+• ${testRDOString()}`)	
 			.setFooter({ text: `${footerString()}`, iconURL: process.env.logo_link });
 
 
@@ -453,53 +359,8 @@ ${testRDOString()}`)
 			        .setStyle(ButtonStyle.Secondary),
 			);			
 
-			function firstCommandString() {
-					if (lang === "en") {
-						return `It looks like this is your first time using this command. Please try the Confirm button again.`;
-					}
-					else if (lang === "es") {
-						return `Parece que esta es la primera vez que usa este comando. Vuelva a intentarlo con el botón de confirmación.`; 
-					}
-					else if (lang === "ru") {
-						return `Вы впервые используете эту команду. Попробуйте нажать кнопку подтверждения еще раз.`;
-					}
-					else if (lang === "de") {
-						return `Dies ist das erste Mal, dass Sie diesen Befehl verwenden. Versuchen Sie erneut, die Bestätigungstaste zu drücken.`;
-					}
-					else if (lang === "pt") {
-						return `Esta é a primeira vez que você usa este comando. Tente pressionar o botão de confirmação novamente.`;
-					}
-					else {
-						return `It looks like this is your first time using this command. Please try the Confirm button again.`;
-					}				
-			}
-
-			function notYourButtonString() {
-					if (lang === "en") {
-						return `These buttons are not for you.`;
-					}
-					else if (lang === "es") {
-						return `Estos botones no son para ti.`;
-					}
-					else if (lang === "ru") {
-						return `Эти кнопки не для вас.`;
-					}
-					else if (lang === "de") {
-						return `Diese Schaltflächen sind nicht für Sie.`;
-					}
-					else if (lang === "pt") {
-						return `Esses botões não são para você.`;
-					}
-					else {
-						return `These buttons are not for you.`;
-					}				
-			}
-
 				await interaction.deferUpdate();
-				if (AdminRequired() === undefined) {
-					await interaction.followUp({ content: `${firstCommandString()}`, ephemeral: true });
-				}	
-				else if (interaction.user.id === buttonUserID) {
+				if (interaction.user.id === buttonUserID) {
 					await interaction.editReply({ embeds: [confirmEmbed], components: [confirmButtons] }).catch(err => {console.log(`confirmEmbed Error: ${err}`); process.kill(1);});						
 				} 	
 				else {
@@ -507,7 +368,7 @@ ${testRDOString()}`)
 				}
 
 	
-	}); //end fs.readFile GTADataBase
+	
 	}); //end fs.readFile RDODataBase
 	}) //end fs.readFile rolesDataBase	
 
@@ -543,18 +404,11 @@ ${testRDOString()}`)
 				);	
 
 		setTimeout(() => {
-			interaction.editReply({components: [expiredButton]}).catch(err => {console.log(`confirmEmbed expiredButton Error: ${err.stack}`)});
+			interaction.editReply({components: [expiredButton]});
 		}, (60000 * 5))					
 
 	}}); //end fs.readFile LANGDataBase
 	
-		}); //end fs:readFile for guildID and Admin check					
-		
 		} //end if start
 	},
 };
-
-
-
-
-	
