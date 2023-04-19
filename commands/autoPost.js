@@ -83,59 +83,53 @@ module.exports = {
 			if (lang === "en") {
 				return `Click **\'Start\'** to add an auto post channel.
 Click **\'Stop\'** to remove an auto post channel.
-Click **\'Configure\'** to add or remove a role that can configure auto post settings.
 Click **\'Confirm\'** to view and test current settings.`;
 			}
 			else if (lang === "es") {
 				return `Haga clic en **\'Empezar\'** para agregar un canal.
 Haga clic en **\'Detener\'** para quitar un canal.
-Haga clic en **\'Configurar\'** para agregar o quitar un rol.
 Haga clic en **\'Confirmar\'** para ver y probar la configuración.`;
 			}
 			else if (lang === "ru") {
 				return `Нажмите **\'Старт\'**, чтобы добавить канал.
 Нажмите **\'Стоп\'**, чтобы исключить канал из автоматической публикации.
-Нажмите **\'Роль\'**, чтобы добавить \\\ удалить роль, изменяющая настройки публикации.
 Нажмите **\'Подтвердить\'**, для просмотра и подтверждения настроек.`;
 			}
 			else if (lang === "de") {
 				return `Klicken Sie auf **\'Anfangen\'** so fügen Sie einen Kanal hinzu.
 Klicken Sie auf **\'Aufhören\'** so entfernen Sie einen Kanal.
-Klicken Sie auf **\'Konfigurieren\'** so fügen Sie eine Rolle hinzu oder entfernen sie.
 Klicken Sie auf **\'Bestätigen\'** um die aktuellen Einstellungen anzuzeigen und zu testen.`;
 			}
 			else if (lang === "pt") {
 				return `Clique em **\'Começar\'** para adicionar um canal.
 Clique em **\'Parar\'** para remover um canal.
-Clique em **\'Configurar\'** para adicionar ou remover uma função.
 Clique em **\'Confirmar\'** para exibir e testar as configurações atuais.`;
 			}
 			else {
 				return `Click **\'Start\'** to add an auto post channel.
 Click **\'Stop\'** to remove an auto post channel.
-Click **\'Configure\'** to add or remove a role that can configure auto post settings.
 Click **\'Confirm\'** to view and test current settings.`;
 			}			
 		}
 
 		function footerText() {
 			if (lang === "en") {
-				return `Only Administrators can start, stop, or configure auto posts by default.`;
+				return `Only Administrators can start or stop auto posts.`;
 			}
 			else if (lang === "es") {
-				return `Solo los administradores pueden iniciar, detener o configurar publicaciones automáticas de forma predeterminada.`;
+				return `Solo los administradores pueden iniciar o detener publicaciones automáticas.`;
 			}
 			else if (lang === "ru") {
-				return `По умолчанию только администраторы могут запускать, останавливать или настраивать автоматические публикации.`;
+				return `Только администраторы могут запускать или останавливать автоматические публикации.`;
 			}
 			else if (lang === "de") {
-				return `Nur Administratoren können automatische Beiträge standardmäßig starten, stoppen oder konfigurieren.`;
+				return `Nur Administratoren können automatische Beiträge starten oder stoppen.`;
 			}
 			else if (lang === "pt") {
-				return `Apenas os administradores podem iniciar, parar ou configurar publicações automáticas por predefinição.`;
+				return `Somente Administradores podem iniciar ou interromper postagens automáticas.`;
 			}
 			else {
-				return `Only Administrators can start, stop, or configure auto posts by default.`;
+				return `Only Administrators can start or stop auto posts.`;
 			}			
 		}
 
@@ -181,27 +175,6 @@ Click **\'Confirm\'** to view and test current settings.`;
 			}
 		}
 
-		function configure() {
-			if (lang === "en") {
-				return `Configure`;
-			}
-			else if (lang === "es") {
-				return `Configurar`;
-			}
-			else if (lang === "ru") {
-				return `Роль`;
-			}
-			else if (lang === "de") {
-				return `Konfigurieren`;
-			}
-			else if (lang === "pt") {
-				return `Configurar`;
-			}
-			else {
-				return `Configure`;
-			}			
-		}	
-
 		function confirm() {
 			if (lang === "en") {
 				return `Confirm`;
@@ -240,19 +213,15 @@ Click **\'Confirm\'** to view and test current settings.`;
 				new ButtonBuilder()
 					.setCustomId(`stop - ${interaction.user.id}`)
 					.setLabel(`${stop()}`)
-					.setStyle(ButtonStyle.Danger),			
-				new ButtonBuilder()
-					.setCustomId(`configure - ${interaction.user.id}`)
-					.setLabel(`${configure()}`)
-					.setStyle(ButtonStyle.Primary),						
+					.setStyle(ButtonStyle.Danger),				
 				new ButtonBuilder()
 					.setCustomId(`confirm - ${interaction.user.id}`)
 					.setLabel(`${confirm()}`)
 					.setStyle(ButtonStyle.Secondary),					
 			);									
 
-						//Initial Embed + Buttons (start, stop, confirm, configure)
-						interaction.reply({ embeds: [initialEmbed], components:[initialButtons] });
+			//Initial Embed + Buttons (start, stop, confirm, configure)
+			interaction.reply({ embeds: [initialEmbed], components:[initialButtons] });
 
 			function expiredDesc() {
 				if (lang === "en") {
@@ -286,7 +255,7 @@ Click **\'Confirm\'** to view and test current settings.`;
 				);		
 
 				setTimeout(() => {
-					interaction.editReply({components: [expiredButton]}).catch(err => {console.log(`autopost command expiredButton Error: ${err.stack}`)});
+					interaction.editReply({components: [expiredButton]});
 				}, (60000 * 5))
 				
 				}}); //end fs.readFile LANGDataBase.txt
