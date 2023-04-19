@@ -318,6 +318,48 @@ module.exports = {
 		}
 	}
 
+		function configureExpiringTitleString() {
+			if (lang === "en") {
+				return `The configure button will no longer be available on May 1st`;
+			}
+			else if (lang === "es") {
+				return `El botón Configurar ya no estará disponible el 1 de mayo`;
+			}
+			else if (lang === "ru") {
+				return `Кнопка Роль больше не будет доступна 1 мая`;
+			}
+			else if (lang === "de") {
+				return `Die Schaltfläche Konfigurieren ist ab dem 1. Mai nicht mehr verfügbar`;
+			}
+			else if (lang === "pt") {
+				return `O botão Configurar não estará mais disponível a partir de 1º de maio`;
+			}
+			else {
+				return `The configure button will no longer be available on May 1st.`;
+			}				
+		}
+
+ 	function configureExpiringDesc() {
+			if (lang === "en") {
+				return `Only Administrators will be able to stop and start auto posts.`;
+			}
+			else if (lang === "es") {
+				return `Solo los Administradores podrán detener e iniciar publicaciones automáticas.`;
+			}
+			else if (lang === "ru") {
+				return `Только администраторы могут останавливать и запускать автоматические публикации.`;
+			}
+			else if (lang === "de") {
+				return `Nur Administratoren können automatische Veröffentlichungen stoppen und starten.`;
+			}
+			else if (lang === "pt") {
+				return `Somente Administradores poderão interromper e iniciar publicações automáticas.`;
+			}
+			else {
+				return `Only Administrators will be able to stop and start auto posts.`;
+			}		
+	}				
+
 	//-----END TRANSLATIONS-----//
 
 	const configureEmbed = new EmbedBuilder()
@@ -341,6 +383,10 @@ module.exports = {
 					.setStyle(ButtonStyle.Secondary),	
 		);				
 
+		const configureExpiringEmbed = new EmbedBuilder()
+			.setColor(0x00B9FF) 
+			.setTitle(`${configureExpiringTitleString()}`)
+			.setDescription(`${configureExpiringDesc()}`)
 
                 //begin checking for permissions
                 await interaction.deferUpdate();
@@ -355,10 +401,12 @@ module.exports = {
       else if (AdminRequired() === "AdminRequiredYes") { //if admin permissions are required
         if ((interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) {
 				await interaction.editReply({ embeds: [configureEmbed], components: [configureButtons] }).catch(err => console.log(`configureEmbed Error: ${err}`));
+				await interaction.followUp({ embeds: [configureExpiringEmbed], ephemeral: true })
      		} 
 											
       else if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
 					await interaction.editReply({ embeds: [configureEmbed], components: [configureButtons] }).catch(err => {console.log(`configureEmbed Error: ${err}`); process.kill(1);});
+				await interaction.followUp({ embeds: [configureExpiringEmbed], ephemeral: true })
 			}
 			else if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
 				await interaction.followUp({content: `${missingPermissions()}`, ephemeral: true});
@@ -382,12 +430,15 @@ module.exports = {
 				
 					if (guildRoleIds.length === 0) { //no role required - @everyone allowed
 							await interaction.editReply({ embeds: [configureEmbed], components: [configureButtons] }).catch(err => {console.log(`configureEmbed Error: ${err}`); process.kill(1)});
+							await interaction.followUp({ embeds: [configureExpiringEmbed], ephemeral: true })
 						}
 					else if (hasARole >= 1) { //if the user has at least one role listed
 							await interaction.editReply({ embeds: [configureEmbed], components: [configureButtons] }).catch(err => {console.log(`configureEmbed Error: ${err}`); process.kill(1)});
+							await interaction.followUp({ embeds: [configureExpiringEmbed], ephemeral: true })
 						}	
 					else if ((interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID)) {
 						await interaction.editReply({ embeds: [configureEmbed], components: [configureButtons] }).catch(err => {console.log(`configureEmbed Error: ${err}`); process.kill(1)});
+						await interaction.followUp({ embeds: [configureExpiringEmbed], ephemeral: true })
 					}
 					else if (hasARole <= 0) {
 						await interaction.followUp({content: `${missingPermissions()}`, ephemeral: true});					
@@ -433,7 +484,7 @@ module.exports = {
 				);		
 
 				setTimeout(() => {
-					interaction.editReply({components: [expiredButton]}).catch(err => {console.log(`configureEmbed expiredButton Error: ${err.stack}`)});
+					interaction.editReply({components: [expiredButton]});
 				}, (60000 * 5))					
 
 				}}); //end fs.readFile for LANGDataBase.txt
