@@ -44,6 +44,9 @@ module.exports = {
 					var mtDate = aDate.toLocaleString("en-US", {
 						timeZone: "America/Denver"
 					});
+					var mtDay = aDay.toLocaleString("en-US", {
+						timeZone: "America/Denver"
+					});
 					var mtTime = mtDate.split(", ");
 					var mtDateNum02 = mtDate.split("/");
 					var mtDateNum01 = mtDateNum02[1].split("/");
@@ -55,12 +58,12 @@ module.exports = {
 					var amPM01 = mtHourMinute[2].split(" ");
 					var amPM = amPM01[1];
 	
-					//console.log(`${mtDateNum} ${mtHour}:${mtMinute} ${amPM} - \n${mtDate}\n`);	
+					//console.log(`${mtDateNum} ${mtHour}:${mtMinute} ${amPM} - \n${mtDate}\n${mtDay}\n`);	
 	
-					if ( (aDay === 4) && ( ((mtHour >= 11) && (amPM === "AM")) || ((aHour >= 6) && (amPM === "PM")) ) ) { //New GTA Bonuses
+					if ( (mtDay === 4) && ( ((mtHour >= 11) && (amPM === "AM")) || ((mtHour <= 11) && (amPM === "PM")) ) ) { //New GTA Bonuses between 11AM and 11PM on Thursdays
 						client.user.setPresence({ activities: [{ name: 'New GTA Bonuses', type: ActivityType.Watching }] });
 					}
-					else if ( (aDay === 2) && ( ((mtHour >= 11) && (amPM === "AM")) || ((aHour >= 6) && (amPM === "PM")) ) && (mtDateNum <= 7) ) { //New RDO Bonuses
+					else if ( (mtDay === 2) && ( ((mtHour >= 11) && (amPM === "AM")) || ((mtHour <= 11) && (amPM === "PM")) ) && (mtDateNum <= 7) ) { //New RDO Bonuses between 11AM and 11PM on 1st Tuesday of the month
 						client.user.setPresence({ activities: [{ name: 'New RDO Bonuses', type: ActivityType.Watching }] });
 					}
 				}
