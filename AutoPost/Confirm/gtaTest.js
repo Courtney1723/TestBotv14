@@ -162,11 +162,11 @@ module.exports = {
 						.setStyle(ButtonStyle.Success)
 						.setDisabled(true),	
 				new ButtonBuilder()
-						.setCustomId(`rdoTest - ${interaction.user.id}`)
+						.setCustomId(`rdoTest - ${buttonUserID}`)
 						.setLabel(`${testRDOButtonString()}`)
 						.setStyle(ButtonStyle.Danger),			
 				new ButtonBuilder()
-						.setCustomId(`confirmback - ${interaction.user.id}`)
+						.setCustomId(`confirmback - ${buttonUserID}`)
 						.setLabel(`${backButtonString()}`)
 						.setStyle(ButtonStyle.Secondary),
 		);						
@@ -914,7 +914,7 @@ function permission() {
 
 
 //Begin ephemeral testEmbed
-			let gtaChannelIds = [];
+			var gtaChannelIds = [];
 			let successCount = 0;
 			interaction.guild.channels.cache.forEach(channel => {
 				if (data.includes(channel.id)) {
@@ -984,26 +984,9 @@ function permission() {
 			const testEmbed = new EmbedBuilder()
 				.setColor(`${testColor()}`) 
 				.setTitle(`${success()}`)
-				.setDescription(`${sentPostDescString}`);	
-
-		const confirmButtons = new ActionRowBuilder()
-			.addComponents(
-			    new ButtonBuilder()
-			        .setCustomId(`gtaTest - ${interaction.user.id}`)
-			        .setLabel(`${testGTAButtonString()}`)
-			        .setStyle(ButtonStyle.Success),	
-			    new ButtonBuilder()
-			        .setCustomId(`rdoTest - ${interaction.user.id}`)
-			        .setLabel(`${testRDOButtonString()}`)
-			        .setStyle(ButtonStyle.Danger),			
-			    new ButtonBuilder()
-			        .setCustomId(`confirmback - ${interaction.user.id}`)
-			        .setLabel(`${backButtonString()}`)
-			        .setStyle(ButtonStyle.Secondary),
-			);				
+				.setDescription(`${sentPostDescString}`);					
 
 				await interaction.followUp({ embeds: [testEmbed], components: [], ephemeral: true }).catch(err => console.log(`testEmbed Error: ${err.stack}`));
-				await interaction.editReply({ components: [confirmButtons], ephemeral: true }).catch(err => console.log(`thinkingButtons Error: ${err.stack}`));
 
 
 	
@@ -1075,23 +1058,73 @@ function permission() {
 				}
 			}		
 
-//--END TRANSLATIONS--//				
+//--END TRANSLATIONS--//		
+
+					
 
 //begin checking for permissions
+
+		var gtaChannelIds = [];
+		interaction.guild.channels.cache.forEach(channel => {
+			if (data.includes(channel.id)) {
+				gtaChannelIds.push(channel.id);
+			}
+		});
+		//console.log(`gtaChannelIds: ${gtaChannelIds}`);	
+
+		const confirmButtons = new ActionRowBuilder()
+			.addComponents(
+			    new ButtonBuilder()
+			        .setCustomId(`gtaTest - ${buttonUserID}`)
+			        .setLabel(`${testGTAButtonString()}`)
+			        .setStyle(ButtonStyle.Success),	
+			    new ButtonBuilder()
+			        .setCustomId(`rdoTest - ${buttonUserID}`)
+			        .setLabel(`${testRDOButtonString()}`)
+			        .setStyle(ButtonStyle.Danger),			
+			    new ButtonBuilder()
+			        .setCustomId(`confirmback - ${buttonUserID}`)
+			        .setLabel(`${backButtonString()}`)
+			        .setStyle(ButtonStyle.Secondary),
+			);		
+
+		const confirmButtonsMissingPermission = new ActionRowBuilder()
+			.addComponents(
+			    new ButtonBuilder()
+			        .setCustomId(`gtaTest - ${buttonUserID}`)
+			        .setLabel(`${testGTAButtonString()}`)
+			        .setStyle(ButtonStyle.Success)
+							.setDisabled(true),	
+			    new ButtonBuilder()
+			        .setCustomId(`rdoTest - ${buttonUserID}`)
+			        .setLabel(`${testRDOButtonString()}`)
+			        .setStyle(ButtonStyle.Danger)
+							.setDisabled(true),	
+			    new ButtonBuilder()
+			        .setCustomId(`confirmback - ${buttonUserID}`)
+			        .setLabel(`${backButtonString()}`)
+			        .setStyle(ButtonStyle.Secondary),
+			);					
+					
 		if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) {
 			await gtaTest();
+			await interaction.editReply({ components: [confirmButtons], ephemeral: true }).catch(err => console.log(`thinkingButtons Error: ${err.stack}`));			
 		} 					
 		else if (interaction.user.id !== buttonUserID) {
 			await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });
+			await interaction.editReply({ components: [confirmButtons], ephemeral: true }).catch(err => console.log(`thinkingButtons Error: ${err.stack}`));			
 		}	
 		else if (gtaChannelIds.length <= 0) {
 			await interaction.followUp({ content: `${noSubscriptions()}`, ephemeral: true });
+			await interaction.editReply({ components: [confirmButtonsMissingPermission], ephemeral: true }).catch(err => console.log(`thinkingButtons Error: ${err.stack}`));			
 		}			
 		else if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
 			await interaction.followUp({content: `${missingPermissions()}`, ephemeral: true})
+			await interaction.editReply({ components: [confirmButtonsMissingPermission], ephemeral: true }).catch(err => console.log(`thinkingButtons Error: ${err.stack}`));			
 		}
 		else {
 			await interaction.followUp({ content: `There was an error executing this button.`, ephemeral: true });
+			await interaction.editReply({ components: [confirmButtonsMissingPermission], ephemeral: true }).catch(err => console.log(`thinkingButtons Error: ${err.stack}`));			
 		} //end checking for permissions	
 
 		}}); //end fs.readFile for GTADataBase.txt
