@@ -227,7 +227,7 @@ module.exports = {
 								 console.error(err);
 								 return
 									 }		
-							if ((interaction.user.ID === process.env.USER_ID_1) || (interaction.user.ID === process.env.USER_ID_1)) {
+							if ((interaction.user.ID === process.env.USER_ID_1) || (interaction.user.ID === process.env.USER_ID_2)) {
 								console.log(`You added a channel for RDO auto posts.`);
 							}
 							else {
@@ -235,7 +235,7 @@ module.exports = {
 									console.log(`You added ${menuChannelID} channel for RDO auto posts.`);
 								}
 								else {
-									console.log(`A user added ${menuChannelID} for RDO auto posts.`);
+									console.log(`A user added ${menuChannelID} for RDO auto posts in ${interaction.guild.id}.`);
 								}
 							}
 						}); // end fs:appendFile to add a channel for rdo autop posts	

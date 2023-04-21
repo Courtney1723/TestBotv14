@@ -46,7 +46,7 @@ module.exports = {
 					});
 					var mtDay = aDay.toLocaleString("en-US", {
 						timeZone: "America/Denver"
-					});
+					});					
 					var mtTime = mtDate.split(", ");
 					var mtDateNum02 = mtDate.split("/");
 					var mtDateNum01 = mtDateNum02[1].split("/");
@@ -58,12 +58,12 @@ module.exports = {
 					var amPM01 = mtHourMinute[2].split(" ");
 					var amPM = amPM01[1];
 	
-					//console.log(`${mtDateNum} ${mtHour}:${mtMinute} ${amPM} - \n${mtDate}\n${mtDay}\n`);	
+					//console.log(`${mtDateNum} ${mtHour}:${mtMinute} ${amPM} - \n${mtDate}\n${mtDay}-`);	
 	
-					if ( (mtDay === 4) && ( ((mtHour >= 11) && (amPM === "AM")) || ((mtHour <= 11) && (amPM === "PM")) ) ) { //New GTA Bonuses between 11AM and 11PM on Thursdays
-						client.user.setPresence({ activities: [{ name: 'New GTA Bonuses', type: ActivityType.Watching }] });
+					if ( (mtDay === "4") && ( ((mtHour >= 11) && (amPM === "AM")) || ((mtHour <= 11) && (amPM === "PM")) ) ) { //New GTA Bonuses
+						client.user.setPresence({ activities: [{ name: 'NEW GTA Bonuses', type: ActivityType.Watching }] });
 					}
-					else if ( (mtDay === 2) && ( ((mtHour >= 11) && (amPM === "AM")) || ((mtHour <= 11) && (amPM === "PM")) ) && (mtDateNum <= 7) ) { //New RDO Bonuses between 11AM and 11PM on 1st Tuesday of the month
+					else if ( (mtDay === "4") && ( ((mtHour >= 11) && (amPM === "AM")) || ((mtHour <= 11) && (amPM === "PM")) ) && (mtDateNum <= 7) ) { //New RDO Bonuses
 						client.user.setPresence({ activities: [{ name: 'New RDO Bonuses', type: ActivityType.Watching }] });
 					}
 				}
@@ -104,17 +104,9 @@ module.exports = {
 			timezone: "America/Denver"
 		});			
 
-		//Counts the guilds - uncomment for main bot
+		//Counts the guilds
 		const GuildIDs = client.guilds.cache.map(guild => guild.id);
-		// const GuildNames = client.guilds.cache.map(guild => guild.name);
-		// Guilds = "";
-		// for (i = 0; i <= GuildIDs.length; ++i) {
-		// 	if (GuildIDs[i] != null) {
-		// 		Guilds += `${i + 1}: ${GuildNames[i]} - ID: ${GuildIDs[i]} \n`
-		// 	}
-		// }
-		// //console.log(Guilds);
-		  console.log(`${GuildIDs.length} guilds`);
+		console.log(`${GuildIDs.length} guilds`);
 
 
 	},
