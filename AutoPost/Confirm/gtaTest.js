@@ -11,6 +11,14 @@ module.exports = {
 		if (!interaction.isButton()) {return};
 		if (interaction.customId.startsWith(`gtaTest -`)) {
 
+		let buttonUserID01 = (interaction.customId).split("gtaTest - ");
+		let buttonUserID = buttonUserID01[1];
+			//console.log(`start buttonUserID: ${buttonUserID}`);
+			//console.log(`start interaction.user.id === buttonUserID? ${interaction.user.id === buttonUserID}`);
+			//console.log(`start interaction.user.id: ${interaction.user.id} && buttonUserID: ${buttonUserID}`);	
+
+		await interaction.deferUpdate();		
+
 			fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
 			  if (err) {console.log(`Error: ${err}`)} 
 				else {
@@ -58,14 +66,117 @@ module.exports = {
 
 					//console.log(`lang: ${lang}`);
 
-			
-function gtaTest() {
+		function thinking() {
+			if (lang === "en") {
+				return `Thinking...`;
+			}
+			else if (lang === "es") {
+				return `Pensamiento...`;
+			}
+			else if (lang === "ru") {
+				return `мышление...`;
+			}
+			else if (lang === "de") {
+				return `Denken...`;
+			}
+			else if (lang === "pt") {
+				return `Pensamento...`;
+			}
+			else {
+				return `Thinking...`;
+			}						
+		}
 
-	
-//-------------------Begin GTA TEST POST---------------------//	
+		function testGTAButtonString() {
+			if (lang === "en") {
+				return `Test GTA`;
+			}
+			else if (lang === "es") {
+				return `Prueba GTA`;
+			}
+			else if (lang === "ru") {
+				return `Тест GTA`;
+			}
+			else if (lang === "de") {
+				return `GTA testen`;
+			}
+			else if (lang === "pt") {
+				return `Testar GTA`;
+			}
+			else {
+				return `Test GTA`;
+			}			
+		}					
+
+		function testRDOButtonString() {
+			if (lang === "en") {
+				return `Test RDO`;
+			}
+			else if (lang === "es") {
+				return `Prueba RDO`;
+			}
+			else if (lang === "ru") {
+				return `Тест RDO`;
+			}
+			else if (lang === "de") {
+				return `RDO testen`;
+			}
+			else if (lang === "pt") {
+				return `Testar RDO`;
+			}
+			else {
+				return `Test RDO`;
+			}			
+		}	
+
+		function backButtonString() {
+			if (lang === "en") {
+				return `Go Back`;
+			}
+			else if (lang === "es") {
+				return `Volver`;
+			}
+			else if (lang === "ru") {
+				return `Вернуться`;
+			}
+			else if (lang === "de") {
+				return `Zurück`;
+			}
+			else if (lang === "pt") {
+				return `Voltar`;
+			}
+			else {
+				return `Go Back`;
+			}			
+		}					
+
+// const thinkingEmbed = new EmbedBuilder()
+// 	.setColor(0x00CD06) //Green
+// 	.setDescription(`${thinkingDesc()}`);		
+
+	const thinkingButtons = new ActionRowBuilder()
+		.addComponents(
+				new ButtonBuilder()
+						.setCustomId(`thinking - ${interaction.user.id}`)
+						.setLabel(`${thinking()}`)
+						.setStyle(ButtonStyle.Success)
+						.setDisabled(true),	
+				new ButtonBuilder()
+						.setCustomId(`rdoTest - ${interaction.user.id}`)
+						.setLabel(`${testRDOButtonString()}`)
+						.setStyle(ButtonStyle.Danger),			
+				new ButtonBuilder()
+						.setCustomId(`confirmback - ${interaction.user.id}`)
+						.setLabel(`${backButtonString()}`)
+						.setStyle(ButtonStyle.Secondary),
+		);						
+					
+interaction.editReply({ components: [thinkingButtons], ephemeral: true }).catch(err => console.log(`thinkingButtons Error: ${err.stack}`));						
+
 			fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
 			  if (err) {console.log(`Error: ${err}`)} 
 				else {
+	
 			  	//console.log(`data: ${data}`);
 					let guildIDs01 = data.split(`guild:${interaction.guild.id} - `);
 						//console.log(`guildIDs01[1]: ${guildIDs01[1]}\n`);
@@ -110,7 +221,12 @@ function gtaTest() {
 					//console.log(`rdo_gtaIDs: ${rdo_gtaIDs}`);
 //----------END Formatting GuildIds, ChannelIds, and rdo_gtaIDs-----------//	
 
-					
+
+
+			var sentPostDescString = "_ _";
+			async function gtaTest() {
+	
+//-------------------Begin GTA TEST POST---------------------//						
 
 //Begin GTA Formatting		
 		let gtaURL = process.env.SOCIAL_URL_GTA2;
@@ -206,6 +322,7 @@ function gtaTest() {
 							.replace(/\n<p>/g, "<p>") //Removes spaces after a bonus
 							.replace(/<p>Only/g, "<p><b>Only")
 							.replace(/<\/span>/, "")
+							.replace(/<span style=\"font-weight: 700;\">/g, "") //FIXME- remove next week										
 
 						//--BEGIN FOREIGN LANGUAGE FORMATTING-----//
 							//--RUSSIAN--//
@@ -651,247 +768,130 @@ function gtaTest() {
 //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
 
 		
-		let channelIDArray = channelIDs.split('  - ');
+		var channelIDArray = channelIDs.split('  - ');
 			//console.log(`channelIDArray length: ${channelIDArray.length}`);
 			//console.log(`channelIDArray: ${channelIDArray}`);
 		for (c = 0; c <= channelIDArray.length - 2; c++) { //last element will always be blank
 				//console.log(`channelIDArray at ${c}: ${channelIDArray[c]}`);
-			if (channelIDArray[c].startsWith("undefined")) {return}
-			else if (!channelIDArray[c].startsWith("undefined")) {			
+			if (channelIDArray[c].startsWith("undefined")) {return}		
 
-			function success() {
-				if (lang === "en") {
-						return `Success`;
-				}
-				else if (lang === "es") {
-					return `Éxito`;
-				}
-				else if (lang === "ru") {
-					return `Успех`;
-				}
-				else if (lang === "de") {
-					return `Erfolg`;
-				}
-				else if (lang === "pt") {
-					return `Êxito`;
-				}
-				else {
-					return `Success`;
-				}				
-			}	
+function permission() {
+	if ( !(interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.ViewChannel) ) { // missing all permissions - can't send messages or embed links without view permission
+		 if (lang === "en") {
+			 return `View Channel, Send Messages, and Embed Links`;
+		 }
+		 if (lang === "es") {
+			 return `Ver canal y Enviar mensajes y Insertar enlaces`;
+		 }
+		 if (lang === "ru") {
+			 return `Посмотреть каналa и Отправить сообщения и Вставить ссылки`
+		 }	
+		 if (lang === "de") {
+			 return `Kanal anzeigen-Berechtigung und Nachrichten senden-Berechtigung und Links einbetten-Berechtigung`;
+		 }	
+		 if (lang === "pt") {
+			 return `Ver canal e Enviar mensagens e Inserir links`;
+		 }		 
+		 else {
+			 return `View Channel, Send Messages, and Embed Links`;
+		 }
+	}	
+	else if (!((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.EmbedLinks))) {
+		 if (lang === "en") {
+			 return `Embed Links`;
+		 }
+		 if (lang === "es") {
+			 return `Insertar enlaces`;
+		 }
+		 if (lang === "ru") {
+			 return `Вставить ссылки`
+		 }	
+		 if (lang === "de") {
+			 return `Links einbetten-Berechtigung`;
+		 }	
+		 if (lang === "pt") {
+			 return `Inserir links`;
+		 }		 
+		 else {
+			 return `Embed Links`;
+		 }
+	}			
+	else if ( !(interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.SendMessages) ) { //missing send messages also prevents embedding links
+		 if (lang === "en") {
+			 return `Send Messages and Embed Links`;
+		 }
+		 if (lang === "es") {
+			 return `Enviar mensajes y Insertar enlaces`;
+		 }
+		 if (lang === "ru") {
+			 return `Отправить сообщения и Вставить ссылки`
+		 }	
+		 if (lang === "de") {
+			 return `Nachrichten senden-Berechtigung und Links einbetten-Berechtigung`;
+		 }	
+		 if (lang === "pt") {
+			 return `Enviar mensagens e Inserir links`;
+		 }		 
+		 else {
+			 return `Send Messages and Embed Links`;
+		 }
+	 }	
+						
+}	//end permission() function	
 
 		function sentPostDesc() {
-			if (lang === "en") {
-				return `• Posts have been sent to <#${channelIDArray[c]}>!`;
+			if (permission() === undefined) {
+				if (lang === "en") {
+					return `• Posts have been sent to <#${channelIDArray[c]}>!\n`;
+				}
+				else if (lang === "es") {
+					return `• El mensaje ha sido enviado a <#${channelIDArray[c]}>.\n`;
+				}
+				else if (lang === "ru") {
+					return `• Cообщение было отправлено на <#${channelIDArray[c]}>.\n`;
+				}
+				else if (lang === "de") {
+					return `• Eine Nachricht wurde an <#${channelIDArray[c]}> gesendet.\n`;
+				}
+				else if (lang === "pt") {
+					return `• Uma mensagem foi enviada para <#${channelIDArray[c]}>.\n`;
+				}
+				else {
+					return `• Posts have been sent to <#${channelIDArray[c]}>!\n`;
+				}	
+			} else {
+				if (lang === "en") {
+					return `• The bot is missing the ${permission()} permission in <#${channelIDArray[c]}>.\n`;
+				}
+				else if (lang === "es") {
+					return `• Al bot le falta el permiso ${permission()} en <#${channelIDArray[c]}>.\n`;
+				}
+				else if (lang === "ru") {
+					return `• У бота нет разрешения на ${permission()} в <#${channelIDArray[c]}>.\n`;
+				}				
+				else if (lang === "de") {
+					return `• Dem Bot fehlt die ${permission()} in <#${channelIDArray[c]}>.\n`;
+				}		
+				else if (lang === "pt") {
+					return `• O bot está sem a permissão ${permission()} em <#${channelIDArray[c]}>.\n`;
+				}				
+				else {
+					return `• The bot is missing the ${permission()} permission in <#${channelIDArray[c]}>.\n`;
+				}
 			}
-			else if (lang === "es") {
-				return `• El mensaje ha sido enviado a <#${channelIDArray[c]}>.`;
-			}
-			else if (lang === "ru") {
-				return `• Cообщение было отправлено на <#${channelIDArray[c]}>.`;
-			}
-			else if (lang === "de") {
-				return `• Eine Nachricht wurde an <#${channelIDArray[c]}> gesendet.`;
-			}
-			else if (lang === "pt") {
-				return `• Uma mensagem foi enviada para <#${channelIDArray[c]}>.`;
-			}
-			else {
-				return `• Posts have been sent to <#${channelIDArray[c]}>!`;
-			}			
 		}		
+		//console.log(`sentPostDesc() at c${c}: ${sentPostDesc()}`);
+		sentPostDescString += `${sentPostDesc()}`;
 
-		function missingPermissionsDesc() {
-			if (lang === "en") {
-				return `The bot is missing the ${permission()} permission in <#${channelIDArray[c]}>.`;
-			}
-			else if (lang === "es") {
-				return `Al bot le falta el permiso ${permission()} en <#${channelIDArray[c]}>.`;
-			}
-			else if (lang === "ru") {
-				return `У бота нет разрешения на ${permission()} в <#${channelIDArray[c]}>.`;
-			}				
-			else if (lang === "de") {
-				return `Dem Bot fehlt die ${permission()} in <#${channelIDArray[c]}>.`;
-			}		
-			else if (lang === "pt") {
-				return `O bot está sem a permissão ${permission()} em <#${channelIDArray[c]}>.`;
-			}				
-			else {
-				return `The bot is missing the ${permission()} permission in <#${channelIDArray[c]}>.`;
-			}
-		}
-
-		const testEmbed = new EmbedBuilder()
-			.setColor(0x00CD06) 
-			.setTitle(`${success()}`)
-			.setDescription(`${sentPostDesc()}`)
-
-					function permission() {
-										if ( !( (interaction.guild.members.me).permissionsIn(channelIDArray[c]).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.EmbedLinks])) )
- { // missing all permissions
-	 if (lang === "en") {
-		 return `View Channel, Send Messages, and Embed Links`;
-	 }
-	 if (lang === "es") {
-		 return `Ver canal y Enviar mensajes y Insertar enlaces`;
-	 }
-	 if (lang === "ru") {
-		 return `Посмотреть каналa и Отправить сообщения и Вставить ссылки`
-	 }	
-	 if (lang === "de") {
-		 return `Kanal anzeigen-Berechtigung und Nachrichten senden-Berechtigung und Links einbetten-Berechtigung`;
-	 }	
-	 if (lang === "pt") {
-		 return `Ver canal e Enviar mensagens e Inserir links`;
-	 }		 
-	 else {
-		 return `View Channel, Send Messages, and Embed Links`;
-	 }
- }
-										else if ( !( (interaction.guild.members.me).permissionsIn(channelIDArray[c]).has([PermissionsBitField.Flags.SendMessages,  PermissionsBitField.Flags.EmbedLinks])) )
- { 
-	 if (lang === "en") {
-		 return `View Channel and Send Messages`;
-	 }
-	 if (lang === "es") {
-		 return `Ver canal y Enviar mensajes`;
-	 }
-	 if (lang === "ru") {
-		 return `Посмотреть каналa и Отправить сообщения`
-	 }	
-	 if (lang === "de") {
-		 return `Kanal anzeigen-Berechtigung und Nachrichten senden-Berechtigung`;
-	 }	
-	 if (lang === "pt") {
-		 return `Ver canal e Enviar mensagens`;
-	 }		 
-	 else {
-		 return `View Channel and Send Messages`;
-	 } 
- }		
-										else if ( !( (interaction.guild.members.me).permissionsIn(channelIDArray[c]).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.EmbedLinks])) )
- {
-	 if (lang === "en") {
-		 return `Send Messages and Embed Links`;
-	 }
-	 if (lang === "es") {
-		 return `Enviar mensajes y Insertar enlaces`;
-	 }
-	 if (lang === "ru") {
-		 return `Отправить сообщения и Вставить ссылки`
-	 }	
-	 if (lang === "de") {
-		 return `Nachrichten senden-Berechtigung und Links einbetten-Berechtigung`;
-	 }	
-	 if (lang === "pt") {
-		 return `Enviar mensagens e Inserir links`;
-	 }		 
-	 else {
-		 return `Send Messages and Embed Links`;
-	 }
- }		
-										else if ( !( (interaction.guild.members.me).permissionsIn(channelIDArray[c]).has([PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.EmbedLinks])) )
- { 
-	 if (lang === "en") {
-		 return `View Channel and Embed Links`;
-	 }
-	 if (lang === "es") {
-		 return `Ver canal y Insertar enlaces`;
-	 }
-	 if (lang === "ru") {
-		 return `Посмотреть каналa и Вставить ссылки`
-	 }	
-	 if (lang === "de") {
-		 return `Kanal anzeigen-Berechtigung und Links einbetten-Berechtigung`;
-	 }	
-	 if (lang === "pt") {
-		 return `Ver canal e Inserir links`;
-	 }		 
-	 else {
-		 return `View Channel and Embed Links`;
-	 }
- }							
-						else if (!((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.SendMessages))) {
-	 if (lang === "en") {
-		 return `Send Messages`;
-	 }
-	 if (lang === "es") {
-		 return `Enviar mensajes`;
-	 }
-	 if (lang === "ru") {
-		 return `Отправить сообщения`
-	 }	
-	 if (lang === "de") {
-		 return `Nachrichten senden-Berechtigung`;
-	 }	
-	 if (lang === "pt") {
-		 return `Enviar mensagens`;
-	 }		 
-	 else {
-		 return `Send Messages`;
-	 }
-						}
-						else if (!((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.ViewChannel))) {
-	 if (lang === "en") {
-		 return `View Channel`;
-	 }
-	 if (lang === "es") {
-		 return `Ver canal`;
-	 }
-	 if (lang === "ru") {
-		 return `Посмотреть каналa`;
-	 }	
-	 if (lang === "de") {
-		 return `Kanal anzeigen-Berechtigung`; 
-	 }	
-	 if (lang === "pt") {
-		 return `Ver canal`;
-	 }		 
-	 else {
-		 return `View Channel`;
-	 }
-						}						
-						else if (!((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.EmbedLinks))) {
-	 if (lang === "en") {
-		 return `Embed Links`;
-	 }
-	 if (lang === "es") {
-		 return `Insertar enlaces`;
-	 }
-	 if (lang === "ru") {
-		 return `Вставить ссылки`
-	 }	
-	 if (lang === "de") {
-		 return `Links einbetten-Berechtigung`;
-	 }	
-	 if (lang === "pt") {
-		 return `Inserir links`;
-	 }		 
-	 else {
-		 return `Embed Links`;
-	 }
-						}								
-					}						
-
-			let missingPermissionsEmbed = new EmbedBuilder()
-				.setColor(0xFF0000) //RED
-				.setDescription(`${missingPermissionsDesc()}`)
-
-				if ( ((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.SendMessages)) && ((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.ViewChannel)) && ((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.EmbedLinks)))
- {	//If the bot has all permissions
+			if ( (interaction.guild.members.me).permissionsIn(channelIDArray[c]).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.EmbedLinks]) ) {	//If the bot has all permissions
 	 			if (gtaFinalString.length < (4000 - constChars)) {
 				interaction.guild.channels.fetch(channelIDArray[c]).then(channel => channel.send(({embeds: [gtaImageEmbed, gtaEmbed]}))).catch(err => console.log(`GTA Test Min Error: ${err.stack}`));
-			} else {
-				interaction.guild.channels.fetch(channelIDArray[c]).then(channel => channel.send({embeds: [gtaImageEmbed, gtaEmbed, gtaEmbed2]})).catch(err => console.log(`GTA Test Max Error: ${err.stack}`));
-			}	
-	 				await interaction.followUp({ embeds: [testEmbed], components: [], ephemeral: true }).catch(err => console.log(` Error: ${err.stack}`));
-				}
-				else {	
-					interaction.followUp({embeds: [missingPermissionsEmbed], components: [], ephemeral: true});
-				}						
+				} else {
+					interaction.guild.channels.fetch(channelIDArray[c]).then(channel => channel.send({embeds: [gtaImageEmbed, gtaEmbed, gtaEmbed2]})).catch(err => console.log(`GTA Test Max Error: ${err.stack}`));
+				}	
+			}						
 				
-			} //end if not undefined channel
+			
 		} //end c loop
 
 	} 
@@ -906,110 +906,131 @@ function gtaTest() {
 	else {
 			let RStarDownEmbed = new EmbedBuilder()
 				.setColor(0xFF0000) //RED
-				.setDescription(`The Rockstar Social Club website is down. \nPlease try again later. \nSorry for the inconvenience.`)
-			interaction.editReply({embeds: [RStarDownEmbed], ephemeral: true});
+				.setDescription(`The Rockstar Social Club website is down. \nPlease try again later.`)
+			interaction.followUp({embeds: [RStarDownEmbed], ephemeral: true});
 			console.log(`The Rockstar Social Club website is down.`);	
 	}		
+
+
+
+//Begin ephemeral testEmbed
+			let gtaChannelIds = [];
+			let successCount = 0;
+			interaction.guild.channels.cache.forEach(channel => {
+				if (data.includes(channel.id)) {
+					gtaChannelIds.push(channel.id);
+					if ( (interaction.guild.members.me).permissionsIn(channel.id).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.EmbedLinks]) ) {
+						successCount++;
+					}
 				}
 			});
+			//console.log(`gtaChannelIds: ${gtaChannelIds}`);		
+		
+			function success() {
+				if (successCount === gtaChannelIds.length) {
+					if (lang === "en") {
+							return `Success`;
+					}
+					else if (lang === "es") {
+						return `Éxito`;
+					}
+					else if (lang === "ru") {
+						return `Успех`;
+					}
+					else if (lang === "de") {
+						return `Erfolg`;
+					}
+					else if (lang === "pt") {
+						return `Êxito`;
+					}
+					else {
+						return `Success`;
+					}		
+				} 
+				else {
+					if (lang === "en") {
+						return `Missing Permisions`;
+					}
+					else if (lang === "es") {
+						return `Permisos Faltantes`;
+					}
+					else if (lang === "ru") {
+						return `Отсутствующие Pазрешения`;
+					}
+					else if (lang === "de") {
+						return `Fehlende Berechtigungen`;
+					}
+					else if (lang === "pt") {
+						return `Permissões Ausentes`;
+					}
+					else {
+						return `Missing Permisions`;
+					}						
+				}
+			}		
+
+			function testColor() {
+				if (successCount === gtaChannelIds.length) {
+					return "#00CD06"; //Green
+				}
+				else if (successCount >= 1) {
+					return "#FFAE00"; //Orange
+				}
+				else if (successCount <= 0) {
+					return "#FF0000"; //Red
+				}
+			}	
+
+			const testEmbed = new EmbedBuilder()
+				.setColor(`${testColor()}`) 
+				.setTitle(`${success()}`)
+				.setDescription(`${sentPostDescString}`);	
+
+		const confirmButtons = new ActionRowBuilder()
+			.addComponents(
+			    new ButtonBuilder()
+			        .setCustomId(`gtaTest - ${interaction.user.id}`)
+			        .setLabel(`${testGTAButtonString()}`)
+			        .setStyle(ButtonStyle.Success),	
+			    new ButtonBuilder()
+			        .setCustomId(`rdoTest - ${interaction.user.id}`)
+			        .setLabel(`${testRDOButtonString()}`)
+			        .setStyle(ButtonStyle.Danger),			
+			    new ButtonBuilder()
+			        .setCustomId(`confirmback - ${interaction.user.id}`)
+			        .setLabel(`${backButtonString()}`)
+			        .setStyle(ButtonStyle.Secondary),
+			);				
+
+				await interaction.followUp({ embeds: [testEmbed], components: [], ephemeral: true }).catch(err => console.log(`testEmbed Error: ${err.stack}`));
+				await interaction.editReply({ components: [confirmButtons], ephemeral: true }).catch(err => console.log(`thinkingButtons Error: ${err.stack}`));
 
 
 	
 //----------------------------------END GTA TEST POST----------------------------------//
-		}		
+		}	//end gtaTest()
 
-		let buttonUserID01 = (interaction.customId).split("gtaTest - ");
-		let buttonUserID = buttonUserID01[1];
-			//console.log(`start buttonUserID: ${buttonUserID}`);
-			//console.log(`start interaction.user.id === buttonUserID? ${interaction.user.id === buttonUserID}`);
-			//console.log(`start interaction.user.id: ${interaction.user.id} && buttonUserID: ${buttonUserID}`);
+//--BEGIN TRANSLATIONS--//		
 
-		let guildRoleIds = [];
-		fs.readFile('./rolesDataBase.txt', 'utf8', async function (err, data) {
-		    if (err) {console.log(`Error: ${err}`)} //If an error, console.log
-		
-					interaction.guild.roles.cache.forEach(role => {
-							if (data.includes(role.id)) {
-								guildRoleIds.push(role.id);
-							}
-					});
-			guildRoleIds.splice(guildRoleIds.length - 1); //.splice(guildRoleIds.length - 1) removes the @everyone role
-				//console.log(`guildRoleIds: ${guildRoleIds}`);
-
-
-		let gtaChannelIds = [];
-		fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
-		    if (err) {console.log(`Error: ${err}`)} //If an error, console.log
-		
-					interaction.guild.channels.cache.forEach(channel => {
-							if (data.includes(channel.id)) {
-								gtaChannelIds.push(channel.id);
-							}
-					});
-			});
-			//console.log(`gtaChannelIds: ${gtaChannelIds}`);					
-
-			function AdminRequired() {
-				let AdminRequiredBoolean = data.split(`guild:${interaction.guild.id} - admin:`);
-				if (AdminRequiredBoolean[1] === undefined) {
-					 	fs.appendFile(`./rolesDataBase.txt`,`guild:${interaction.guild.id} - admin:yes - role:undefined - \n`, err => {
- 							if (err) {
- 								console.error(err)
- 								return
- 							}					
- 						}); //end fs.appendFile	
+			function notYourButtonString() {
+				if (lang === "en") {
+					return `These buttons are not for you.`;
 				}
-				else if (AdminRequiredBoolean[1].startsWith(`yes`)) {
-					return "AdminRequiredYes";
+				else if (lang === "es") {
+					return `Estos botones no son para ti.`;
+				}
+				else if (lang === "ru") {
+					return `Эти кнопки не для вас.`;
+				}
+				else if (lang === "de") {
+					return `Diese Schaltflächen sind nicht für Sie.`;
+				}
+				else if (lang === "pt") {
+					return `Esses botões não são para você.`;
 				}
 				else {
-					return "AdminRequiredNo";
-				}
-			}		
-				//console.log(`AdminRequired(): ${AdminRequired()}`)		
-
-//--BEGIN TRANSLATIONS--//
-
-	function firstTime() {
-		if (lang === "en") {
-			return `It looks like this is your first time using this command. Please try the test button again.`;
-		}
-		else if (lang === "es") {
-			return `Parece que es la primera vez que usas este comando. Vuelva a intentar el botón de prueba.`;
-		}
-		else if (lang === "ru") {
-			return `Похоже, вы впервые используете эту команду. Повторите попытку нажатия кнопки теста.`;
-		}
-		else if (lang === "de") {
-			return `Es sieht so aus, als ob Sie diesen Befehl zum ersten Mal verwenden. Bitte versuchen Sie es erneut mit dem Test-Button.`;
-		}
-		else if (lang === "pt") {
-			return `Parece que esta é a primeira vez que você usa esse comando. Tente o botão de teste novamente.`;
-		}
-		else {
-			return `It looks like this is your first time using this command. Please try the test button again.`;
-		}		
-	}			
-
-				function notYourButtonString() {
-					if (lang === "en") {
-						return `These buttons are not for you.`;
-					}
-					else if (lang === "es") {
-						return `Estos botones no son para ti.`;
-					}
-					else if (lang === "ru") {
-						return `Эти кнопки не для вас.`;
-					}
-					else if (lang === "de") {
-						return `Diese Schaltflächen sind nicht für Sie.`;
-					}
-					else if (lang === "pt") {
-						return `Esses botões não são para você.`;
-					}
-					else {
-						return `These buttons are not for you.`;
-					}				
+					return `These buttons are not for you.`;
+				}				
 			}			
 
 			function missingPermissions()	{
@@ -1052,65 +1073,66 @@ function gtaTest() {
 				else {
 					return `You do not have any channels subscribed to GTA Online auto posts.`;
 				}
-			}
+			}		
 
-//--END TRANSLATIONS--//
-
+//--END TRANSLATIONS--//				
 
 //begin checking for permissions
-					await interaction.deferUpdate();
-		//console.log(`AdminRequired(): ${AdminRequired()}`)
-				if (interaction.user.id != buttonUserID) {
-					await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });
-				}	
+		if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) {
+			await gtaTest();
+		} 					
+		else if (interaction.user.id !== buttonUserID) {
+			await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });
+		}	
 		else if (gtaChannelIds.length <= 0) {
 			await interaction.followUp({ content: `${noSubscriptions()}`, ephemeral: true });
 		}			
-		else if (AdminRequired() === undefined) { //uncessary because confirm already checked? 
-			await interaction.followUp({ content: `${firstTime()}`, ephemeral: true });
-		}
-		else if (AdminRequired() === "AdminRequiredYes") { //if admin permissions are required
-			if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) {
-				gtaTest();
-			} 
-			else if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
-				await interaction.followUp({content: `${missingPermissions()}`, ephemeral: true})
-			}
-			else if (!interaction.user.id === buttonUserID)  {
-				await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });
-			}
-		}
-		else if (AdminRequired() === "AdminRequiredNo") { //if admin permissions are NOT required
-
-				//console.log(`guildRoleIds.length: ${guildRoleIds.length}`)
-				let hasARole = 0;
-				for (a=0;a<=guildRoleIds.length - 1;a++) { //iterates through each role - 0 is @everyone
-					//console.log(`guildRoleIds at ${a}: ${guildRoleIds[a]}`);
-					//console.log(`hasARole at ${a}? ${interaction.member.roles.cache.has(guildRoleIds[a])}`);
-					if (interaction.member.roles.cache.has(guildRoleIds[a])) {
-						hasARole += 1;
-					}
-				} //end loop to check for hasARole
-					//console.log(`hasARole: ${hasARole} && required roles:${guildRoleIds.length}`)
-				if ( (guildRoleIds.length === 0) && (interaction.user.id === buttonUserID) ) { //no role required
-					gtaTest();
-				}
-				else if ( (hasARole >= 1) && (interaction.user.id === buttonUserID) ) { //if the user has at least one role listed
-					gtaTest();
-				}
-				else if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) { //user is an admin
-					gtaTest();
-				}		
-				else if (hasARole <= 0) {
-					await interaction.followUp({content: `${missingPermissions()}`, ephemeral: true})
-				}											
+		else if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
+			await interaction.followUp({content: `${missingPermissions()}`, ephemeral: true})
 		}
 		else {
 			await interaction.followUp({ content: `There was an error executing this button.`, ephemeral: true });
 		} //end checking for permissions	
-		});
-					}}); //end fs.readFile for LANGDataBase.txt
-		}
+
+		}}); //end fs.readFile for GTADataBase.txt
+
+			function expiredDesc() {
+				if (lang === "en") {
+					return `This interaction expired`;
+				}
+				if (lang === "es") {
+					return `Esta interacción expiró.`;
+				}
+				if (lang === "ru") {
+					return `Срок действия этого взаимодействия истек.`;
+				}
+				if (lang === "de") {
+					return `Diese Interaktion ist abgelaufen`;
+				}
+				if (lang === "pt") {
+					return `Esta interação expirou.`;
+				}
+				else {
+					return `This interaction expired`;
+				}						
+			}
+
+			const expiredButton = new ActionRowBuilder()
+				.addComponents(
+					new ButtonBuilder()
+						.setCustomId(`expired`)
+						.setLabel(`${expiredDesc()}`)
+						.setStyle(ButtonStyle.Secondary)
+						.setEmoji(':RSWeekly:1025248227248848940')
+						.setDisabled(true),			
+				);	
+
+		setTimeout(() => {
+			interaction.editReply({components: [expiredButton]});
+		}, (60000 * 5))	
+					
+		}}); //end fs.readFile for LANGDataBase.txt
+	}
 },
 
 }
