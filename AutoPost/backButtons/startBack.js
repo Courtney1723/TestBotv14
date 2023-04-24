@@ -21,37 +21,6 @@ module.exports = {
 			//console.log(`startBack interaction.user.id === buttonUserID? ${interaction.user.id === buttonUserID}`);
 			//console.log(`startBack interaction.user.id: ${interaction.user.id} && buttonUserID: ${buttonUserID}`);
 
-		let guildRoleIds = [];
-		fs.readFile('./rolesDataBase.txt', 'utf8', async function (err, data) {
-		    if (err) {console.log(`Error: ${err}`)} //If an error, console.log
-		
-					interaction.guild.roles.cache.forEach(role => {
-							if (data.includes(role.id)) {
-								guildRoleIds.push(role.id);
-							}
-					});
-			guildRoleIds.splice(guildRoleIds.length - 1); //.splice(guildRoleIds.length - 1) removes the @everyone role
-				//console.log(`guildRoleIds: ${guildRoleIds}`);
-
-			function AdminRequired() {
-				let AdminRequiredBoolean = data.split(`guild:${interaction.guild.id} - admin:`);
-				if (AdminRequiredBoolean[1] === undefined) {
-					 	fs.appendFile(`./rolesDataBase.txt`,`guild:${interaction.guild.id} - admin:yes - role:undefined - \n`, err => {
- 							if (err) {
- 								console.error(err)
- 								return
- 							}					
- 						}); //end fs.appendFile	
-				}
-				else if (AdminRequiredBoolean[1].startsWith(`yes`)) {
-					return "AdminRequiredYes";
-				}
-				else {
-					return "AdminRequiredNo";
-				}
-			}		
-				//console.log(`AdminRequired(): ${AdminRequired()}`)
-
 //--BEGIN TRANSLATIONS--//
 			fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
 			  if (err) {console.log(`Error: ${err}`)} 
@@ -175,110 +144,89 @@ Click **\'RDO\'** to set up Red Dead Online Auto Posts for **the first Tuesday o
 			}					
 		}				
 
-				function notYourButtonString() {
-					if (lang === "en") {
-						return `These buttons are not for you.`;
-					}
-					else if (lang === "es") {
-						return `Estos botones no son para ti.`;
-					}
-					else if (lang === "ru") {
-						return `Эти кнопки не для вас.`;
-					}
-					else if (lang === "de") {
-						return `Diese Schaltflächen sind nicht für Sie.`;
-					}
-					else if (lang === "pt") {
-						return `Esses botões não são para você.`;
-					}
-					else {
-						return `These buttons are not for you.`;
-					}				
-			}	
-
-			function firstCommandString() {
-					if (lang === "en") {
-						return `It looks like this is your first time using this command. Please try the start button again.`;
-					}
-					else if (lang === "es") {
-						return `Esta es la primera vez que ha utilizado este comando. Intenta presionar el botón de Empezar.`;
-					}
-					else if (lang === "ru") {
-						return `Вы впервые используете эту команду. Повторите попытку нажатия кнопки «Пуск».`;
-					}
-					else if (lang === "de") {
-						return `Dies ist das erste Mal, dass Sie diesen Befehl verwenden. Wiederholen Sie die Startschaltfläche.`;
-					}
-					else if (lang === "pt") {
-						return `Esta é a primeira vez que você usa este comando. Tente o botão Começar novamente.`;
-					}
-					else {
-						return `It looks like this is your first time using this command. Please try the start button again.`;
-					}				
+		function notYourButtonString() {
+			if (lang === "en") {
+				return `These buttons are not for you.`;
 			}
+			else if (lang === "es") {
+				return `Estos botones no son para ti.`;
+			}
+			else if (lang === "ru") {
+				return `Эти кнопки не для вас.`;
+			}
+			else if (lang === "de") {
+				return `Diese Schaltflächen sind nicht für Sie.`;
+			}
+			else if (lang === "pt") {
+				return `Esses botões não são para você.`;
+			}
+			else {
+				return `These buttons are not for you.`;
+			}				
+		}	
 
-			function missingPermissions()	{
+		function missingPermissions()	{
+			if (lang === "en") {
+				return `You do not have the required permissions to do that.`;
+			}
+			else if (lang === "es") {
+				return `No tienes permiso para hacer eso.`;
+			}
+			else if (lang === "ru") {
+				return `У вас нет разрешения на это.`;
+			}
+			else if (lang === "de") {
+				return `Sie haben keine Erlaubnis dazu.`;
+			}
+			else if (lang === "pt") {
+				return `Você não tem permissão para fazer isso.`;
+			}
+			else {
+				return `You do not have the required permissions to do that.`;
+			}				
+		}			
+
+		function notYourButtonString() {
 				if (lang === "en") {
-					return `You do not have the required permissions to do that.`;
+					return `These buttons are not for you.`;
 				}
 				else if (lang === "es") {
-				  return `No tienes permiso para hacer eso.`;
+					return `Estos botones no son para ti.`;
 				}
 				else if (lang === "ru") {
-				  return `У вас нет разрешения на это.`;
+					return `Эти кнопки не для вас.`;
 				}
 				else if (lang === "de") {
-				  return `Sie haben keine Erlaubnis dazu.`;
+					return `Diese Schaltflächen sind nicht für Sie.`;
 				}
 				else if (lang === "pt") {
-				  return `Você não tem permissão para fazer isso.`;
+					return `Esses botões não são para você.`;
 				}
 				else {
-				  return `You do not have the required permissions to do that.`;
+					return `These buttons are not for you.`;
 				}				
-			}			
-
-			function notYourButtonString() {
-					if (lang === "en") {
-						return `These buttons are not for you.`;
-					}
-					else if (lang === "es") {
-						return `Estos botones no son para ti.`;
-					}
-					else if (lang === "ru") {
-						return `Эти кнопки не для вас.`;
-					}
-					else if (lang === "de") {
-						return `Diese Schaltflächen sind nicht für Sie.`;
-					}
-					else if (lang === "pt") {
-						return `Esses botões não são para você.`;
-					}
-					else {
-						return `These buttons are not for you.`;
-					}				
 			}		
 
-		function errorString() {
-			if (lang === "en") {
-				return `There was an error executing this button.`;
-			}
-			if (lang === "es") {
-				return `Se ha producido un error.`;
-			}
-			if (lang === "ru") {
-				return `Произошла ошибка.`;
-			}
-			if (lang === "de") {
-				return `Es ist ein Fehler aufgetreten.`;
-			}
-			if (lang === "pt") {
-				return `Ocorreu um erro.`;
+			function errorString() {
+				if (lang === "en") {
+					return `There was an error executing this button.`;
+				}
+				if (lang === "es") {
+					return `Se ha producido un error.`;
+				}
+				if (lang === "ru") {
+					return `Произошла ошибка.`;
+				}
+				if (lang === "de") {
+					return `Es ist ein Fehler aufgetreten.`;
+				}
+				if (lang === "pt") {
+					return `Ocorreu um erro.`;
+				}			
+				else {
+					return `There was an error executing this button.`;
+				}			
 			}			
-			else {
-				return `There was an error executing this button.`;
-			}			
-		}			
 
 //--END TRANSLATIONS--//
 
@@ -305,53 +253,15 @@ Click **\'RDO\'** to set up Red Dead Online Auto Posts for **the first Tuesday o
 
 //begin checking for permissions
 		await interaction.deferUpdate();
-		//console.log(`AdminRequired(): ${AdminRequired()}`)
-		if (interaction.user.id != buttonUserID) {
+		if (!interaction.user.id === buttonUserID) {
 			await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });
 		}	
-		else if (AdminRequired() === undefined) {
-				await interaction.followUp({ content: `${firstCommandString()}`, ephemeral: true });
+		else if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) {
+				await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`startEmbed Error: ${err}`));	
+		} 
+		else if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
+				await interaction.followUp({content: `${missingPermissions()}`, ephemeral: true});
 		}
-		else if (AdminRequired() === "AdminRequiredYes") { //if admin permissions are required
-			if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) {
-					await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`startEmbed Error: ${err}`));	
-			} 
-			else if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
-					await interaction.followUp({content: `${missingPermissions()}`, ephemeral: true});
-			}
-				
-			else if (!interaction.user.id === buttonUserID)  {
-					await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });	
-			}
-		}
-			
-		else if (AdminRequired() === "AdminRequiredNo") { //if admin permissions are NOT required
-
-				//console.log(`guildRoleIds.length: ${guildRoleIds.length}`)
-				let hasARole = 0;
-				for (a=0;a<=guildRoleIds.length - 1;a++) { //iterates through each role
-					//console.log(`guildRoleIds at ${i}: ${guildRoleIds[i]}`);
-					if (interaction.member.roles.cache.has(guildRoleIds[a])) {
-						hasARole += 1;
-					}
-				} //end loop to check for hasARole
-					//console.log(`hasARole: ${hasARole} && required roles:${guildRoleIds.length}`)
-				if ( (guildRoleIds.length === 0) && (interaction.user.id === buttonUserID) ) { //no role required
-					await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`startButtons Error: ${err.stack}`));
-				}
-					
-				else if ( (hasARole >= 1) && (interaction.user.id === buttonUserID) ) { //if the user has at least one role listed
-						await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => console.log(`startButtons Error: ${err.stack}`));
-				}
-					
-				else if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) { //If the user is an administrator
-						await interaction.editReply({ embeds: [startEmbed], components: [startButtons] }).catch(err => {console.log(`startButtons Error: ${err.stack}`); process.kill(1);});
-				}		
-				else if (hasARole <= 0) { //if the user does not have a listed role and is not an administrator
-					await interaction.followUp({content: `${missingPermissions()}`, ephemeral: true});
-				}											
-		}
-			
 		else {
 			await interaction.followUp({ content: `${errorString()}`, ephemeral: true });
 		} //end checking for permissions	
@@ -392,7 +302,7 @@ Click **\'RDO\'** to set up Red Dead Online Auto Posts for **the first Tuesday o
 				}, (60000 * 5))						
 
 				}});// end fs:readFile for LANGData.txt
-		}); //end fs:readFile			
+				
 	
 	} //end if start
 	},
