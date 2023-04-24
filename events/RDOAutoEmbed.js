@@ -400,12 +400,16 @@ else if (RDO_Bonus != undefined) {
 	else if ( 
 		(RDO_Title.includes("2x")) || //German, and Portuguese use numbers 
 		(RDO_Title.includes("3x")) || 
+		(RDO_Title.includes("4x")) ||
 		(RDO_Title.toLowerCase().includes("double rewards")) || //English uses both.. of course 
 		(RDO_Title.toLowerCase().includes("triple rewards")) || 
-		(RDO_Title.includes("Doble De RDO"))  || //Spanish and Russian use words
-		(RDO_Title.includes("Triple De RDO")) || 
-		(RDO_Title.includes("Вдвое больше RDO")) || 
-		(RDO_Title.includes("Втрое больше RDO")) ) {
+		(RDO_Title.toLowerCase().includes("doble de"))  || //Spanish and Russian use words
+		(RDO_Title.toLowerCase().includes("triple de")) || 
+		(RDO_Title.toLowerCase().includes("cuádruple de")) ||
+		(RDO_Title.includes("Вдвое Больше")) || 
+		(RDO_Title.includes("Втрое Больше")) || 
+		(RDO_Title.includes("Удвоенные Награды")) ||
+		(RDO_Title.includes("Четыре Раза"))  ) { 
 			rdoFinalString01 += `**${RDO_Title}**\n\n`;
 	}
 	else if ( 
@@ -484,147 +488,135 @@ else if (RDO_Bonus != undefined) {
 											.replace(/• undefined/g, "• ")
 											.replace(/\)• /g, ")\n• ") //adds a newline between link lists
 
-						//console.log(`rdoFinalString01.length: ${rdoFinalString01.length}`);
-						//console.log(`rdoFinalString.length: ${rdoFinalString.length}`);
-						function bestBreak() {
-							var rdoSpaces = rdoFinalString.split(`\n\n`); //counts the newlines
-							var charCount = 0;//( (rdoTitleString().length) + (rdoDate[0].length) + (rdoFooterMin().length) + (ellipsisFunction().length) ); 
-							//console.log(`( T${(rdoTitleString().length)} + D${(rdoDate[0].length)} + F${(rdoFooterMin().length)} + E${(ellipsisFunction().length)} )`);
-							
-							var finalZ = 0;
-							var countZ = 0;
-							for (z = 0; charCount <= 3950; z++) {
-								if (rdoFinalString.length <= 4100) {
-									charCount = 3950;
-									finalZ = rdoFinalString.length;
-								}
-								if (rdoSpaces[z] !== undefined) {
-									//console.log(`rdoSpaces at ${z}: ${rdoSpaces[z]}`);
-										charCount += rdoSpaces[z].length;
-										//console.log(`charCount at ${z}: ${charCount}`);
-									var finalZ = rdoSpaces[z].length;
-									countZ++;		
-								}
+						function rdoTitleString() {
+							if (lang === "en") {
+								return "Red Dead Online Bonuses:";
 							}
-								//console.log(`finalZ: ${finalZ}`);
-							  //console.log(`charCount: ${charCount}`);
-								return (charCount - finalZ) + (countZ * 2) - 3;
-							// ( (rdoTitleString().length) + (rdoDate[0].length) + (rdoFooterMin().length) + (ellipsisFunction().length) )
+							else if (lang === "es") {
+								return "Bonificaciones de Red Dead Online:";
+							}
+							else if (lang === "ru") {
+								return "Бонусы Red Dead Online:";
+							}
+							else if (lang === "de") {
+								return "Boni in Red Dead Online:";
+							}
+							else if (lang === "pt") {
+								return "Bônus no Red Dead Online:";
+							}
+							else {
+								return "Red Dead Online Bonuses:";
+							}
+						}
+
+						var constChars = (rdoDate.length + 2) + (rdoTitleString().length);
+						function ellipsisFunction() {
+							if (rdoFinalString.length >= (4000 - constChars)) {
+								return "...";
+							} else {
+								return "";
+							}
+						}
+						function ellipsisFunction2() {
+							if (rdoFinalString.length >= (6000 - constChars - rdoImage[0].length)) {
+								return "...\n";
+							} else {
+								return "";
+							}
+						}			
+						function rdoFooterMin() {
+							if (rdoFinalString.length < (4000 - constChars)) {
+								if (lang === "en") {
+									return `** [Click here](${url}) for more details**`;
+								}
+								else if (lang === "es") {
+									return `** [Haga clic aquí](${url}) para más detalles**`;
+								}
+								else if (lang === "ru") {
+									return `** [нажмите здесь](${url}) для получения более подробной информации**`;
+								}
+								else if (lang === "de") {
+									return `** [Klicken Sie hier](${url}) für weitere Details**`;
+								}
+								else if (lang === "pt") {
+									return `** [Clique aqui](${url}) para mais detalhes**`;
+								}
+								else {
+									return `** [Click here](${url}) for more details**`;
+								}
+							} else {
+								return "";
+							}
+						}	
+						function rdoFooterMax() {
+							if (rdoFinalString.length >= (4000 - constChars)) {
+								if (lang === "en") {
+									return `** [Click here](${url}) for more details**`;
+								}
+								else if (lang === "es") {
+									return `** [Haga clic aquí](${url}) para más detalles**`;
+								}
+								else if (lang === "ru") {
+									return `** [Hажмите здесь](${url}) для получения более подробной информации**`;
+								}
+								else if (lang === "de") {
+									return `** [Klicken Sie hier](${url}) für weitere Details**`;
+								}
+								else if (lang === "pt") {
+									return `** [Clique aqui](${url}) para mais detalhes**`;
+								}
+								else {
+									return `** [Click here](${url}) for more details**`;
+								}
+							} else {
+								return "";
+							}
+						}			
+
+						constChars += (rdoFooterMin().length) + (ellipsisFunction().length);
+						var rdoNewlines = rdoFinalString.substr(0, (4000 - constChars)).split("\n\n");
+						var tempString = rdoNewlines[rdoNewlines.length - 1];
+						function bestBreak() {
+								if (rdoFinalString.length <= (4000 - constChars)) {
+									return (rdoFinalString.length);
+								}
+								return (4000 - constChars - tempString.length);
 						}
 						//console.log(`bestBreak: ${bestBreak()}`);
 
-						var constChars = (rdoFooterMax().length) + (rdoImage[0].length) + rdoTitleFunction().length;
-						var rdoNewlines = rdoFinalString.substr(bestBreak(), (6000 - bestBreak() - constChars)).split("\n");
-						var tempString = rdoNewlines[rdoNewlines.length - 1];
+						var constChars1 = (rdoFooterMax().length) + (ellipsisFunction().length) + (ellipsisFunction2().length) + rdoImage[0].length;
+						var rdoNewlines1 = rdoFinalString.substr(bestBreak(), (6000 - constChars - constChars1 - bestBreak())).split("\n");
+						var tempString1 = rdoNewlines1[rdoNewlines1.length - 1];								
 						function bestEndBreak() {
-							return (6000 - bestBreak() - constChars - tempString.length);
+							if (rdoFinalString.length <= (6000 - constChars - constChars1)) {
+								return rdoFinalString.length;
+							}
+							return (6000 - bestBreak() - constChars - constChars1 - tempString1.length); //removes the last bonus if over 6000 chars
 						}
-						//console.log(`bestEndBreak:${bestEndBreak()}`);	
-			
-			//console.log(`rdoFinalString: ${rdoFinalString}`);
-    function rdoPost() {
-        return rdoFinalString.slice(0, bestBreak()); //FIXME: adjust this for the best break - up to 4000
-    }
-    //console.log(`1: ${rdoFinalString.length}\n`) 
-    function rdoPost2() {
-      if (rdoFinalString.length > 3950) {
-        let post02 = rdoFinalString.substr(bestBreak(), bestEndBreak()); //FIXME: adjust this for the best break - up to 4000 (a, b) a+b !> 5890
-        return post02;
-      } else {
-        return "";
-      }
-    }  
-    function elipseFunction() {
-      if (rdoFinalString.length > 3950) {
-        return "...";
-        } else {
-        return "";
-        }
-    }		
-    function rdoFooterMax() {
-      if (rdoFinalString.length > 3950) {
-				if (lang === "en") {
-					return `\n** [click here](${url}) for more details**`;
-				}
-				else if (lang === "es" ) {
-					return `\n** [haga clic aquí](${url}) para más detalles**`;
-				}
-				else if (lang === "ru" ) {
-					return `\n** [нажмите здесь](${url}) для получения более подробной информации**`;
-				}				
-				else if (lang === "de" ) {
-					return `\n** [Klicken Sie hier](${url}) für weitere Details**`;
-				}		
-				else if (lang === "pt" ) {
-					return `\n** [clique aqui](${url}) para mais detalhes**`;
-				}								
-				else {
-					return `\n** [click here](${url}) for more details**`;
-				}
-      } else {
-        return "";
-      }
-    }
-    function rdoFooterMin() { 
-      if (rdoFinalString.length <= 3950) {
-				if (lang === "en") {
-					return `\n** [click here](${url}) for more details**`;
-				}
-				else if (lang === "es" ) {
-					return `\n** [haga clic aquí](${url}) para más detalles**`;
-				}
-				else if (lang === "ru" ) {
-					return `\n** [нажмите здесь](${url}) для получения более подробной информации**`;
-				}				
-				else if (lang === "de" ) {
-					return `\n** [Klicken Sie hier](${url}) für weitere Details**`;
-				}		
-				else if (lang === "pt" ) {
-					return `\n** [clique aqui](${url}) para mais detalhes**`;
-				}								
-				else {
-					return `\n** [click here](${url}) for more details**`;
-				}
-      } else {
-        return "";
-      }
-    } 	
+						//console.log(`bestEndBreak:${bestEndBreak()}`);
 
-//--BEGIN TRANSLATIONS--//
-
-function rdoTitleFunction() {
-					
-			if (lang === "en") {
-				return `Red Dead Online Bonuses:`;
-			}
-			else if (lang === "es") {
-				return `Bonificaciones de Red Dead Online:`;
-			}
-			else if (lang === "ru") {
-				return `Бонусы Red Dead Online:`;
-			}
-			else if (lang === "de") {
-				return `Boni in Red Dead Online:`;
-			}
-			else if (lang === "pt") {
-				return `Bônus no Red Dead Online:`;
-			}
-			else {
-    		return `Red Dead Online Bonuses:`;
-			}		
-		}
-		//console.log(`rdoTitleFunction: ${rdoTitleFunction()}`);
-
-//--END TRANSLATIONS--//			
+						function rdoPost() {
+							return rdoFinalString.slice(0, (bestBreak()));
+						}
+						//console.log(`rdoPost().length:${rdoPost().length || 0}`);
+						function rdoPost2() {
+							if (rdoPost().length < rdoFinalString.length) {
+								let post02 = rdoFinalString.substr((bestBreak()), (bestEndBreak())); 
+								return post02;
+							} else {
+								return "";
+							}
+						}
+						//console.log(`rdoPost2().length:${rdoPost2().length || 0}`);		
 		
 
 		let rdoEmbed = new EmbedBuilder()
 			.setColor(0xC10000) //Red
-			.setTitle(`${rdoTitleFunction()}`)
-			.setDescription(`${rdoDate[0]}\n\n${rdoPost()} \n${rdoFooterMin()} ${elipseFunction()}`)
+			.setTitle(`${rdoTitleString()}`)
+			.setDescription(`${rdoDate[0]}\n\n${rdoPost()} \n${rdoFooterMin()} ${ellipsisFunction()}`)
 		let rdoEmbed2 = new EmbedBuilder()
 			.setColor(0xC10000) //Red
-			.setDescription(`${elipseFunction()} \n${rdoPost2()} ${rdoFooterMax()}`)	
+			.setDescription(`${ellipsisFunction()} \n${rdoPost2()} ${rdoFooterMax()}`)	
 		let rdoImageEmbed = new EmbedBuilder()
 			.setColor(0xC10000) //Red
 			.setImage(`${rdoImage[0]}`);
@@ -643,7 +635,7 @@ function rdoTitleFunction() {
 			//console.log(`channelIDArray at c${c}: ${channelIDArray[c]}`);
 			if (channelIDArray[c].startsWith("undefined")) {}
 			else {
-				if (rdoFinalString.length <= 3950) {
+				if (rdoPost2() === "") {
 					client.channels.fetch(channelIDArray[c]).then(channel => channel.send(({embeds: [rdoImageEmbed, rdoEmbed]}))).catch(err => console.log(`Min Error: ${err}\nChannel ID: ${channelIDArray[c]}`));
 				} 
 				else {

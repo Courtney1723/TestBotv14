@@ -195,12 +195,10 @@ module.exports = {
 
 		let rdoLinkFormatted = rdoString;
 		for (m = 0; m <= rdoLinks002.length - 1; m++) { // keep - 2; the last element will always be blank
-		if (m != 9) { //FIXME - remove next month
 				rdoLinkFormatted = rdoLinkFormatted.replace(/<a.*?a>/, `[${rdoLinkTitles002[m]}](${rdoLinks002[m]})`); //replaces each link with proper discord formatted link
 				//console.log(`rdoLinkFormatted at ${m}: ${rdoLinkFormatted}`);
 				//console.log(`rdoLinkTitles002 at ${m}: ${rdoLinkTitles002[m]}`);
 				//console.log(`rdoLinks002 at ${m}: ${rdoLinks002[m]}`);
-			}
 		}
 		//console.log(`rdoLinkFormatted: ${rdoLinkFormatted}`);
 //--------------------END formatting for links--------------------//
@@ -307,100 +305,104 @@ for (i = 0; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 //--------------------END capitalization Function-----------------//		
 		
 	let RDO_Bonus = RDOBonuses[1];
-		//console.log(`RDO_Title at ${i}: ${RDO_Title}`);
-		//console.log(`RDO_Bonus at ${i}: ${RDO_Bonus}`);
+		console.log(`RDO_Title at ${i}: ${RDO_Title}`);
+		console.log(`RDO_Bonus at ${i}: ${RDO_Bonus}`);
 	
 //-----BEGIN populating rdoFinalString01 -----//
-	if (i === 0) {
-		let rdoParas = RDO_Title.split("<p>");
-		for (c = 1; c <= rdoParas.length - 1; c++) {
-			
-			rdoFinalString01 += `• ${rdoParas[c].charAt(0).toUpperCase()}${rdoParas[c].substring(1)}\n`;
+		if (i === 0) {
+			let rdoParas = RDO_Title.split("<p>");
+			for (c = 1; c <= rdoParas.length - 1; c++) {
+				
+				rdoFinalString01 += `• ${rdoParas[c].charAt(0).toUpperCase()}${rdoParas[c].substring(1)}\n`;
+			}
 		}
-	}
-else if (RDO_Bonus !== undefined) {
-	if ( 
-		(RDO_Title.toLowerCase().includes("discounts")) || 
-		(RDO_Title.toLowerCase().includes("descuentos")) || 
-		(RDO_Title.includes("Скидки")) || 
-		(RDO_Title.includes("Rabatte")) || 
-		(RDO_Title.includes("Descontos")) ) { 
-			rdoFinalString01 += `**${RDO_Title}\n**${RDO_Bonus}\n\n`;
-	}	
-	else if ( 
-		(RDO_Title.includes("2x")) || //German, and Portuguese use numbers 
-		(RDO_Title.includes("3x")) || 
-		(RDO_Title.toLowerCase().includes("double rewards")) || //English uses both.. of course 
-		(RDO_Title.toLowerCase().includes("triple rewards")) || 
-		(RDO_Title.includes("Doble De RDO"))  || //Spanish and Russian use words
-		(RDO_Title.includes("Triple De RDO")) || 
-		(RDO_Title.includes("Вдвое больше RDO")) || 
-		(RDO_Title.includes("Втрое больше RDO")) ) {
-			rdoFinalString01 += `**${RDO_Title}**\n\n`;
-	}
-	else if ( 
-		(RDO_Title.toLowerCase().includes("featured series")) || 
-		(RDO_Title.includes("Calendario De Series Destacadas")) ||
-		(RDO_Title.includes("Расписание избранных серий")) ||
-		(RDO_Title.includes("Übersicht Über Die Präsentierten Serien")) ||
-		(RDO_Title.includes("Calendário De Série Em Destaque")) ) { 
-			rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
-	}		
-	else if ( 
-		(RDO_Title.toLowerCase().includes("weekly bonuses")) || 
-		(RDO_Title.includes("Bonificaciones Semanales")) ||  
-		(RDO_Title.includes("Еженедельные бонусы")) || 
-		(RDO_Title.includes("Wöchentliche Boni")) || 
-		(RDO_Title.includes("Bônus Semanais")) ) { 
-			rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
-	}	
-	else if ( 
-		(RDO_Title.toLowerCase().includes("monthlong rewards")) || 
-		(RDO_Title.includes("Recompensas Durante Todo El Mes")) || 
-		(RDO_Title.includes("Награды месяца")) || 
-		(RDO_Title.includes("Monatsbelohnungen")) || 
-		(RDO_Title.includes("Recompensas O Mês Inteiro")) ){ 
-			rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
-	}			
-	else if (RDO_Title.toLowerCase().includes(":")) {
-		rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
-	}			
-	else if (RDO_Bonus.includes("• ")) { // If the bonus includes a list
-
-			let rdoParas = RDO_Bonus.split("<p>");
-			//console.log(`rdoParas at ${i}: ${rdoParas}`);
-			//console.log(`rdoParas length at ${i}: ${rdoParas.length}`);
-			let rdoParaBonuses = "";
+		if (RDO_Bonus !== undefined) {
+			if ( 
+				(RDO_Title.toLowerCase().includes("discounts")) || 
+				(RDO_Title.toLowerCase().includes("descuentos")) || 
+				(RDO_Title.includes("Скидки")) || 
+				(RDO_Title.includes("Rabatte")) || 
+				(RDO_Title.includes("Descontos")) ) { 
+					rdoFinalString01 += `**${RDO_Title}\n**${RDO_Bonus}\n\n`;
+			}	
+			else if ( 
+				(RDO_Title.includes("2x")) || //German, and Portuguese use numbers 
+				(RDO_Title.includes("3x")) || 
+				(RDO_Title.includes("4x")) ||
+				(RDO_Title.toLowerCase().includes("double rewards")) || //English uses both.. of course 
+				(RDO_Title.toLowerCase().includes("triple rewards")) || 
+				(RDO_Title.toLowerCase().includes("doble de"))  || //Spanish and Russian use words
+				(RDO_Title.toLowerCase().includes("triple de")) || 
+				(RDO_Title.toLowerCase().includes("cuádruple de")) ||
+				(RDO_Title.includes("Вдвое Больше")) || 
+				(RDO_Title.includes("Втрое Больше")) || 
+				(RDO_Title.includes("Удвоенные Награды")) ||
+				(RDO_Title.includes("Четыре Раза"))  ) { 
+					rdoFinalString01 += `**${RDO_Title}**\n\n`;
+			}
+			else if ( 
+				(RDO_Title.toLowerCase().includes("featured series")) || 
+				(RDO_Title.includes("Calendario De Series Destacadas")) ||
+				(RDO_Title.includes("Расписание избранных серий")) ||
+				(RDO_Title.includes("Übersicht Über Die Präsentierten Serien")) ||
+				(RDO_Title.includes("Calendário De Série Em Destaque")) ) { 
+					rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
+			}		
+			else if ( 
+				(RDO_Title.toLowerCase().includes("weekly bonuses")) || 
+				(RDO_Title.includes("Bonificaciones Semanales")) ||  
+				(RDO_Title.includes("Еженедельные бонусы")) || 
+				(RDO_Title.includes("Wöchentliche Boni")) || 
+				(RDO_Title.includes("Bônus Semanais")) ) { 
+					rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
+			}	
+			else if ( 
+				(RDO_Title.toLowerCase().includes("monthlong rewards")) || 
+				(RDO_Title.includes("Recompensas Durante Todo El Mes")) || 
+				(RDO_Title.includes("Награды месяца")) || 
+				(RDO_Title.includes("Monatsbelohnungen")) || 
+				(RDO_Title.includes("Recompensas O Mês Inteiro")) ){ 
+					rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
+			}			
+			else if (RDO_Title.toLowerCase().includes(":")) {
+				rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
+			}			
+			else if (RDO_Bonus.includes("• ")) { // If the bonus includes a list
 		
-		for (c = 1; c <= rdoParas.length - 1; c++) {
-			rdoParaBonuses += `• ${rdoParas[c]}\n`;
-		}			
-		
-		rdoFinalString01 += `**${RDO_Title}**\n${rdoParaBonuses}\n`;
-	}			
-	else {
-			let rdoParas = RDO_Bonus.split("<p>");
-			//console.log(`rdoParas at ${i}: ${rdoParas}`);
-			//console.log(`rdoParas length at ${i}: ${rdoParas.length}`);
-			let rdoParaBonuses = "";		
-		for (c = 1; c <= rdoParas.length - 1; c++) {
-			rdoParaBonuses += `• ${rdoParas[c]}\n`;
-		}			
-		rdoFinalString01 += `**${RDO_Title}**\n${rdoParaBonuses}\n`;
-	}
-	
-	}
-	else if (RDO_Title !== undefined) { //FIXME NEXT MONTH
-		if ( 
-			(RDO_Title.toLowerCase().includes("discounts")) || 
-			(RDO_Title.toLowerCase().includes("descuentos")) || 
-			(RDO_Title.includes("Скидки")) || 
-			(RDO_Title.includes("Rabatte")) || 
-			(RDO_Title.includes("Descontos")) ) { 
-				rdoFinalString01 += `**${RDO_Title}**\n`;
-		}		
-	}
-}
+					let rdoParas = RDO_Bonus.split("<p>");
+					//console.log(`rdoParas at ${i}: ${rdoParas}`);
+					//console.log(`rdoParas length at ${i}: ${rdoParas.length}`);
+					let rdoParaBonuses = "";
+				
+				for (c = 1; c <= rdoParas.length - 1; c++) {
+					rdoParaBonuses += `• ${rdoParas[c]}\n`;
+				}			
+				
+				rdoFinalString01 += `**${RDO_Title}**\n${rdoParaBonuses}\n`;
+			}			
+			else {
+					let rdoParas = RDO_Bonus.split("<p>");
+					//console.log(`rdoParas at ${i}: ${rdoParas}`);
+					//console.log(`rdoParas length at ${i}: ${rdoParas.length}`);
+					let rdoParaBonuses = "";		
+				for (c = 1; c <= rdoParas.length - 1; c++) {
+					rdoParaBonuses += `• ${rdoParas[c]}\n\n`;
+				}			
+				rdoFinalString01 += `**${RDO_Title}**\n${rdoParaBonuses}\n`;
+			}
+			
+			}
+			else if (RDO_Title !== undefined) { //FIXME NEXT MONTH
+				if ( 
+					(RDO_Title.toLowerCase().includes("discounts")) || 
+					(RDO_Title.toLowerCase().includes("descuentos")) || 
+					(RDO_Title.includes("Скидки")) || 
+					(RDO_Title.includes("Rabatte")) || 
+					(RDO_Title.includes("Descontos")) ) { 
+						rdoFinalString01 += `**${RDO_Title}**\n`;
+				}		
+			}
+		}
 //-----------END for loop----------//		
 	//console.log(`rdoFinalString01: ${rdoFinalString01}`); //rdoFinalString before HTML formatting
 			//console.log(`rdoFinalString01.length: ${rdoFinalString01.length}`);	
@@ -417,144 +419,135 @@ else if (RDO_Bonus !== undefined) {
 
 						//console.log(`rdoFinalString01.length: ${rdoFinalString01.length}`);
 						//console.log(`rdoFinalString.length: ${rdoFinalString.length}`);
-						function bestBreak() {
-							var rdoSpaces = rdoFinalString.split(`\n\n`); //counts the newlines
-							var charCount = 0;//( (rdoTitleString().length) + (rdoDate[0].length) + (rdoFooterMin().length) + (ellipsisFunction().length) ); 
-							//console.log(`( T${(rdoTitleString().length)} + D${(rdoDate[0].length)} + F${(rdoFooterMin().length)} + E${(ellipsisFunction().length)} )`);
-							
-							var finalZ = 0;
-							var countZ = 0;
-							for (z = 0; charCount <= 3950; z++) {
-								if (rdoFinalString.length <= 4100) {
-									charCount = 3950;
-									finalZ = rdoFinalString.length;
-								}
-								if (rdoSpaces[z] !== undefined) {
-									//console.log(`rdoSpaces at ${z}: ${rdoSpaces[z]}`);
-										charCount += rdoSpaces[z].length;
-										//console.log(`charCount at ${z}: ${charCount}`);
-									var finalZ = rdoSpaces[z].length;
-									countZ++;		
-								}
+
+						function rdoTitleString() {
+							if (lang === "en") {
+								return "Red Dead Online Bonuses:";
 							}
-								//console.log(`finalZ: ${finalZ}`);
-							  //console.log(`charCount: ${charCount}`);
-								return (charCount - finalZ) + (countZ * 2) - 3;
-							// ( (rdoTitleString().length) + (rdoDate[0].length) + (rdoFooterMin().length) + (ellipsisFunction().length) )
+							else if (lang === "es") {
+								return "Bonificaciones de Red Dead Online:";
+							}
+							else if (lang === "ru") {
+								return "Бонусы Red Dead Online:";
+							}
+							else if (lang === "de") {
+								return "Boni in Red Dead Online:";
+							}
+							else if (lang === "pt") {
+								return "Bônus no Red Dead Online:";
+							}
+							else {
+								return "Red Dead Online Bonuses:";
+							}
+						}
+
+						var constChars = (rdoDate.length + 2) + (rdoTitleString().length);
+						function ellipsisFunction() {
+							if (rdoFinalString.length >= (4000 - constChars)) {
+								return "...";
+							} else {
+								return "";
+							}
+						}
+						function ellipsisFunction2() {
+							if (rdoFinalString.length >= (6000 - constChars - rdoImage[0].length)) {
+								return "...\n";
+							} else {
+								return "";
+							}
+						}			
+						function rdoFooterMin() {
+							if (rdoFinalString.length < (4000 - constChars)) {
+								if (lang === "en") {
+									return `** [Click here](${url}) for more details**`;
+								}
+								else if (lang === "es") {
+									return `** [Haga clic aquí](${url}) para más detalles**`;
+								}
+								else if (lang === "ru") {
+									return `** [нажмите здесь](${url}) для получения более подробной информации**`;
+								}
+								else if (lang === "de") {
+									return `** [Klicken Sie hier](${url}) für weitere Details**`;
+								}
+								else if (lang === "pt") {
+									return `** [Clique aqui](${url}) para mais detalhes**`;
+								}
+								else {
+									return `** [Click here](${url}) for more details**`;
+								}
+							} else {
+								return "";
+							}
+						}	
+						function rdoFooterMax() {
+							if (rdoFinalString.length >= (4000 - constChars)) {
+								if (lang === "en") {
+									return `** [Click here](${url}) for more details**`;
+								}
+								else if (lang === "es") {
+									return `** [Haga clic aquí](${url}) para más detalles**`;
+								}
+								else if (lang === "ru") {
+									return `** [Hажмите здесь](${url}) для получения более подробной информации**`;
+								}
+								else if (lang === "de") {
+									return `** [Klicken Sie hier](${url}) für weitere Details**`;
+								}
+								else if (lang === "pt") {
+									return `** [Clique aqui](${url}) para mais detalhes**`;
+								}
+								else {
+									return `** [Click here](${url}) for more details**`;
+								}
+							} else {
+								return "";
+							}
+						}			
+
+						constChars += (rdoFooterMin().length) + (ellipsisFunction().length);
+						var rdoNewlines = rdoFinalString.substr(0, (4000 - constChars)).split("\n\n");
+						var tempString = rdoNewlines[rdoNewlines.length - 1];
+						function bestBreak() {
+								if (rdoFinalString.length <= (4000 - constChars)) {
+									return (rdoFinalString.length);
+								}
+								return (4000 - constChars - tempString.length);
 						}
 						//console.log(`bestBreak: ${bestBreak()}`);
 
-						var constChars = (rdoFooterMax().length) + (rdoImage[0].length) + rdoTitleFunction().length;
-						var rdoNewlines = rdoFinalString.substr(bestBreak(), (6000 - bestBreak() - constChars)).split("\n");
-						var tempString = rdoNewlines[rdoNewlines.length - 1];
+						var constChars1 = (rdoFooterMax().length) + (ellipsisFunction().length) + (ellipsisFunction2().length) + rdoImage[0].length;
+						var rdoNewlines1 = rdoFinalString.substr(bestBreak(), (6000 - constChars - constChars1 - bestBreak())).split("\n");
+						var tempString1 = rdoNewlines1[rdoNewlines1.length - 1];								
 						function bestEndBreak() {
-							return (6000 - bestBreak() - constChars - tempString.length);
+							if (rdoFinalString.length <= (6000 - constChars - constChars1)) {
+								return rdoFinalString.length;
+							}
+							return (6000 - bestBreak() - constChars - constChars1 - tempString1.length); //removes the last bonus if over 6000 chars
 						}
-						//console.log(`bestEndBreak:${bestEndBreak()}`);		
+						//console.log(`bestEndBreak:${bestEndBreak()}`);
 
-			//console.log(`rdoFinalString: ${rdoFinalString}`);
-			//console.log(`1: ${rdoFinalString.length}\n`); 
-		
-    function rdoPost() {
-        return rdoFinalString.slice(0, bestBreak());
-    }
-		
-    function rdoPost2() {
-      if (rdoFinalString.length > 3950) {
-        let post02 = rdoFinalString.substr(bestBreak(), bestEndBreak()); 
-        return post02;
-      } else {
-        return "";
-      }
-    }  
-		
-    function elipseFunction() {
-      if (rdoFinalString.length > 3950) {
-        return "...";
-        } else {
-        return "";
-        }
-    }		
-    function rdoFooterMax() {
-      if (rdoFinalString.length > 3950) {
-        if (lang === "en") {
-					return `** [Click here](${url}) for more details**`;
-				}
-				else if (lang === "es" ) {
-					return `** [Haga clic aquí](${url}) para más detalles**`;
-				}
-				else if (lang === "ru" ) {
-					return `** [нажмите здесь](${url}) для получения более подробной информации**`;
-				}				
-				else if (lang === "de" ) {
-					return `** [Klicken Sie hier](${url}) für weitere Details**`;
-				}		
-				else if (lang === "pt" ) {
-					return `** [clique aqui](${url}) para mais detalhes**`;
-				}								
-				else {
-					return `** [Click here](${url}) for more details**`;
-				}
-      } else {
-        return "";
-      }
-    }
-    function rdoFooterMin() { 
-      if (rdoFinalString.length <= 3950) {
-				if (lang === "en") {
-					return `\n** [Click here](${url}) for more details**`;
-				}
-				else if (lang === "es" ) {
-					return `\n** [Haga clic aquí](${url}) para más detalles**`;
-				}
-				else if (lang === "ru" ) {
-					return `\n** [нажмите здесь](${url}) для получения более подробной информации**`;
-				}				
-				else if (lang === "de" ) {
-					return `\n** [Klicken Sie hier](${url}) für weitere Details**`;
-				}		
-				else if (lang === "pt" ) {
-					return `\n** [Clique aqui](${url}) para mais detalhes**`;
-				}								
-				else {
-					return `\n** [Click here](${url}) for more details**`;
-				}
-      } else {
-        return "";
-      }
-    } 		
-
-		function rdoTitleFunction() {
-					
-			if (lang === "en") {
-				return `Red Dead Online Bonuses:`;
-			}
-			else if (lang === "es") {
-				return `Bonificaciones de Red Dead Online:`;
-			}
-			else if (lang === "ru") {
-				return `Бонусы Red Dead Online:`;
-			}
-			else if (lang === "de") {
-				return `Boni in Red Dead Online:`;
-			}
-			else if (lang === "pt") {
-				return `Bônus no Red Dead Online:`;
-			}
-			else {
-    		return `Red Dead Online Bonuses:`;
-			}		
-		}
-		//console.log(`rdoTitleFunction: ${rdoTitleFunction()}`);
-		
+						function rdoPost() {
+							return rdoFinalString.slice(0, (bestBreak()));
+						}
+						//console.log(`rdoPost().length:${rdoPost().length || 0}`);
+						function rdoPost2() {
+							if (rdoPost().length < rdoFinalString.length) {
+								let post02 = rdoFinalString.substr((bestBreak()), (bestEndBreak())); 
+								return post02;
+							} else {
+								return "";
+							}
+						}
+						//console.log(`rdoPost2().length:${rdoPost2().length || 0}`);
 
 		let rdoEmbed = new EmbedBuilder()
 			.setColor(0xC10000) //Red
-			.setTitle(`${rdoTitleFunction()}`) //Red Dead Redemption II Online Bonuses & Discounts:
-			.setDescription(`${rdoDate[0]}\n\n${rdoPost()} \n${rdoFooterMin()} ${elipseFunction()}`)
+			.setTitle(`${rdoTitleString()}`) //Red Dead Redemption II Online Bonuses & Discounts:
+			.setDescription(`${rdoDate[0]}\n\n${rdoPost()} \n${rdoFooterMin()} ${ellipsisFunction()}`)
 		let rdoEmbed2 = new EmbedBuilder()
 			.setColor(0xC10000) //Red
-			.setDescription(`${elipseFunction()} \n${rdoPost2()} ${rdoFooterMax()}`)	
+			.setDescription(`${ellipsisFunction()} \n${rdoPost2()} ${rdoFooterMax()}`)	
 		let rdoImageEmbed = new EmbedBuilder()
 			.setColor(0xC10000) //Red
 			.setImage(`${rdoImage[0]}`);	
@@ -562,7 +555,7 @@ else if (RDO_Bonus !== undefined) {
 		 // console.log(`rdoEmbed length: ${rdoEmbed.length}`); //no more than 4096 (line 199)
 		 // console.log(`rdoEmbed2 length: ${rdoEmbed2.length}`); //no more than 6000 - rdoEmbed.length (line 204)
 
-		if (rdoFinalString.length <= 3950) {
+		if (rdoPost2() === "") {
 			await interaction.editReply({embeds: [rdoImageEmbed, rdoEmbed]}).catch(err => 
 				interaction.editReply({embeds: [errorEmbed], ephemeral: true }).then( 
 				console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`))
@@ -584,7 +577,7 @@ else if (RDO_Bonus !== undefined) {
 		
 		 let rdoExpiredEmbed = new EmbedBuilder()
 		    .setColor(0xC10000) //Red
-		    .setDescription(`These bonuses & discounts may be expired. \nRockstar typically releases the latest bonuses & discounts the first \nTuesday of every month after 1:00 PM EST.`)
+		    .setDescription(`These bonuses may be expired. \nRockstar typically releases the latest bonuses the first \nTuesday of every month after 1:00 PM EST.`)
 
 						//console.log(`isPast: ${isPast()}`);
 						if (isPast() === "true") {

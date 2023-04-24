@@ -467,99 +467,103 @@ let RDO_Title = titleCapitalization(RDOBonuses);
 		//console.log(`nextGenIndex2 at ${i}: ${nextGenIndex2}`);								
 //-----END get the index of "Only on PlayStation..." title-----//			
 
-let RDO_Bonus = RDOBonuses[1];
-//console.log(`RDO_Bonus at ${i}: ${RDO_Bonus}`);
-//-----BEGIN populating rdoFinalString01 -----//
-if (i === 0) {
-let rdoParas = RDO_Title.split("<p>");
-for (c = 1; c <= rdoParas.length - 1; c++) {
-	
-	rdoFinalString01 += `• ${rdoParas[c].charAt(0).toUpperCase()}${rdoParas[c].substring(1)}\n`;
-}
-}
-else if (RDO_Bonus != undefined) {
-if ( 
-(RDO_Title.toLowerCase().includes("discounts")) || 
-(RDO_Title.toLowerCase().includes("descuentos")) || 
-(RDO_Title.includes("Скидки")) || 
-(RDO_Title.includes("Rabatte")) || 
-(RDO_Title.includes("Descontos")) ) { 
-	rdoFinalString01 += `**${RDO_Title}\n**${RDO_Bonus}\n\n`;
-}	
-else if ( 
-(RDO_Title.includes("2x")) || //German, and Portuguese use numbers 
-(RDO_Title.includes("3x")) || 
-(RDO_Title.toLowerCase().includes("double rewards")) || //English uses both.. of course 
-(RDO_Title.toLowerCase().includes("triple rewards")) || 
-(RDO_Title.includes("Doble De RDO"))  || //Spanish and Russian use words
-(RDO_Title.includes("Triple De RDO")) || 
-(RDO_Title.includes("Вдвое больше RDO")) || 
-(RDO_Title.includes("Втрое больше RDO")) ) {
-	rdoFinalString01 += `**${RDO_Title}**\n\n`;
-}
-else if ( 
-(RDO_Title.toLowerCase().includes("featured series")) || 
-(RDO_Title.includes("Calendario De Series Destacadas")) ||
-(RDO_Title.includes("Расписание избранных серий")) ||
-(RDO_Title.includes("Übersicht Über Die Präsentierten Serien")) ||
-(RDO_Title.includes("Calendário De Série Em Destaque")) ) { 
-	rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
-}		
-else if ( 
-(RDO_Title.toLowerCase().includes("weekly bonuses")) || 
-(RDO_Title.includes("Bonificaciones Semanales")) ||  
-(RDO_Title.includes("Еженедельные бонусы")) || 
-(RDO_Title.includes("Wöchentliche Boni")) || 
-(RDO_Title.includes("Bônus Semanais")) ) { 
-	rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
-}	
-else if ( 
-(RDO_Title.toLowerCase().includes("monthlong rewards")) || 
-(RDO_Title.includes("Recompensas Durante Todo El Mes")) || 
-(RDO_Title.includes("Награды месяца")) || 
-(RDO_Title.includes("Monatsbelohnungen")) || 
-(RDO_Title.includes("Recompensas O Mês Inteiro")) ){ 
-	rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
-}			
-else if (RDO_Title.toLowerCase().includes(":")) {
-rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
-}			
-else if (RDO_Bonus.includes("• ")) { // If the bonus includes a list
-
-	let rdoParas = RDO_Bonus.split("<p>");
-	//console.log(`rdoParas at ${i}: ${rdoParas}`);
-	//console.log(`rdoParas length at ${i}: ${rdoParas.length}`);
-	let rdoParaBonuses = "";
-
-for (c = 1; c <= rdoParas.length - 1; c++) {
-	rdoParaBonuses += `• ${rdoParas[c]}\n`;
-}			
-
-rdoFinalString01 += `**${RDO_Title}**\n${rdoParaBonuses}\n`;
-}			
-else {
-	let rdoParas = RDO_Bonus.split("<p>");
-	//console.log(`rdoParas at ${i}: ${rdoParas}`);
-	//console.log(`rdoParas length at ${i}: ${rdoParas.length}`);
-	let rdoParaBonuses = "";		
-for (c = 1; c <= rdoParas.length - 1; c++) {
-	rdoParaBonuses += `• ${rdoParas[c]}\n`;
-}			
-rdoFinalString01 += `**${RDO_Title}**\n${rdoParaBonuses}\n`;
-}
-
-}
-else if (RDO_Title !== undefined) { //FIXME NEXT MONTH
-if ( 
-	(RDO_Title.toLowerCase().includes("discounts")) || 
-	(RDO_Title.toLowerCase().includes("descuentos")) || 
-	(RDO_Title.includes("Скидки")) || 
-	(RDO_Title.includes("Rabatte")) || 
-	(RDO_Title.includes("Descontos")) ) { 
-		rdoFinalString01 += `**${RDO_Title}**\n`;
-}		
-}	
-}
+		let RDO_Bonus = RDOBonuses[1];
+		//console.log(`RDO_Bonus at ${i}: ${RDO_Bonus}`);
+		//-----BEGIN populating rdoFinalString01 -----//
+		if (i === 0) {
+		let rdoParas = RDO_Title.split("<p>");
+		for (c = 1; c <= rdoParas.length - 1; c++) {
+			
+			rdoFinalString01 += `• ${rdoParas[c].charAt(0).toUpperCase()}${rdoParas[c].substring(1)}\n`;
+		}
+		}
+		else if (RDO_Bonus != undefined) {
+		if ( 
+		(RDO_Title.toLowerCase().includes("discounts")) || 
+		(RDO_Title.toLowerCase().includes("descuentos")) || 
+		(RDO_Title.includes("Скидки")) || 
+		(RDO_Title.includes("Rabatte")) || 
+		(RDO_Title.includes("Descontos")) ) { 
+			rdoFinalString01 += `**${RDO_Title}\n**${RDO_Bonus}\n\n`;
+		}	
+		else if ( 
+			(RDO_Title.includes("2x")) || //German, and Portuguese use numbers 
+			(RDO_Title.includes("3x")) || 
+			(RDO_Title.includes("4x")) ||
+			(RDO_Title.toLowerCase().includes("double rewards")) || //English uses both.. of course 
+			(RDO_Title.toLowerCase().includes("triple rewards")) || 
+			(RDO_Title.toLowerCase().includes("doble de"))  || //Spanish and Russian use words
+			(RDO_Title.toLowerCase().includes("triple de")) || 
+			(RDO_Title.toLowerCase().includes("cuádruple de")) ||
+			(RDO_Title.includes("Вдвое Больше")) || 
+			(RDO_Title.includes("Втрое Больше")) || 
+			(RDO_Title.includes("Удвоенные Награды")) ||
+			(RDO_Title.includes("Четыре Раза"))  ) { 
+			rdoFinalString01 += `**${RDO_Title}**\n\n`;
+		}
+		else if ( 
+			(RDO_Title.toLowerCase().includes("featured series")) || 
+			(RDO_Title.includes("Calendario De Series Destacadas")) ||
+			(RDO_Title.includes("Расписание избранных серий")) ||
+			(RDO_Title.includes("Übersicht Über Die Präsentierten Serien")) ||
+			(RDO_Title.includes("Calendário De Série Em Destaque")) ) { 
+				rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
+		}		
+		else if ( 
+			(RDO_Title.toLowerCase().includes("weekly bonuses")) || 
+			(RDO_Title.includes("Bonificaciones Semanales")) ||  
+			(RDO_Title.includes("Еженедельные бонусы")) || 
+			(RDO_Title.includes("Wöchentliche Boni")) || 
+			(RDO_Title.includes("Bônus Semanais")) ) { 
+				rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
+		}	
+		else if ( 
+			(RDO_Title.toLowerCase().includes("monthlong rewards")) || 
+			(RDO_Title.includes("Recompensas Durante Todo El Mes")) || 
+			(RDO_Title.includes("Награды месяца")) || 
+			(RDO_Title.includes("Monatsbelohnungen")) || 
+			(RDO_Title.includes("Recompensas O Mês Inteiro")) ){ 
+				rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
+		}			
+		else if (RDO_Title.toLowerCase().includes(":")) {
+			rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
+		}			
+		else if (RDO_Bonus.includes("• ")) { // If the bonus includes a list
+		
+			let rdoParas = RDO_Bonus.split("<p>");
+			//console.log(`rdoParas at ${i}: ${rdoParas}`);
+			//console.log(`rdoParas length at ${i}: ${rdoParas.length}`);
+			let rdoParaBonuses = "";
+		
+		for (c = 1; c <= rdoParas.length - 1; c++) {
+			rdoParaBonuses += `• ${rdoParas[c]}\n`;
+		}			
+		
+		rdoFinalString01 += `**${RDO_Title}**\n${rdoParaBonuses}\n`;
+		}			
+		else {
+			let rdoParas = RDO_Bonus.split("<p>");
+			//console.log(`rdoParas at ${i}: ${rdoParas}`);
+			//console.log(`rdoParas length at ${i}: ${rdoParas.length}`);
+			let rdoParaBonuses = "";		
+		for (c = 1; c <= rdoParas.length - 1; c++) {
+			rdoParaBonuses += `• ${rdoParas[c]}\n`;
+		}			
+		rdoFinalString01 += `**${RDO_Title}**\n${rdoParaBonuses}\n`;
+		}
+		
+		}
+			else if (RDO_Title !== undefined) { //FIXME NEXT MONTH
+					if ( 
+						(RDO_Title.toLowerCase().includes("discounts")) || 
+						(RDO_Title.toLowerCase().includes("descuentos")) || 
+						(RDO_Title.includes("Скидки")) || 
+						(RDO_Title.includes("Rabatte")) || 
+						(RDO_Title.includes("Descontos")) ) { 
+							rdoFinalString01 += `**${RDO_Title}**\n`;
+					}		
+			}	
+		}
 //-----------END for loop----------//		
 //console.log(`rdoFinalString01: ${rdoFinalString01}`); //rdoFinalString before HTML formatting
 	//console.log(`rdoFinalString01.length: ${rdoFinalString01.length}`);	
