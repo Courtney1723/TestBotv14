@@ -6,23 +6,20 @@ module.exports = {
 	async execute(interaction) {
 
 		if (!interaction.isButton()) {return};
-		if ( (interaction.customId.startsWith(`startback -`)) || (interaction.customId.startsWith(`stopback -`)) || (interaction.customId.startsWith(`configureback -`)) || (interaction.customId.startsWith(`confirmback -`)) ) {
+		if ( (interaction.customId.startsWith(`startback -`)) || (interaction.customId.startsWith(`stopback -`)) || (interaction.customId.startsWith(`confirmback -`)) ) {
 
-		let start_stop_configure = "";
+		let start_stop_confirm = "";
 			if (interaction.customId.startsWith(`startback -`)) {
-				start_stop_configure += 'start';
+				start_stop_confirm += 'start';
 			} 
 			else if (interaction.customId.startsWith(`stopback -`)) {
-				start_stop_configure += 'stop';
+				start_stop_confirm += 'stop';
 			}	
 			else if (interaction.customId.startsWith(`confirmback -`)) {
-				start_stop_configure += 'confirm';
-			}
-			else if (interaction.customId.startsWith(`configureback -`)) {
-				start_stop_configure += 'configure';
-			}				
+				start_stop_confirm += 'confirm';
+			}			
 
-		let buttonUserID01 = (interaction.customId).split(`${start_stop_configure}back - `);
+		let buttonUserID01 = (interaction.customId).split(`${start_stop_confirm}back - `);
 		let buttonUserID = buttonUserID01[1];
 			//console.log(`startBack buttonUserID: ${buttonUserID}`);
 			//console.log(`startBack interaction.user.id === buttonUserID? ${interaction.user.id === buttonUserID}`);
@@ -85,13 +82,13 @@ module.exports = {
 				return `Configuración de publicación automática`;
 			}
 			else if (lang === "ru") {
-				return `Автоматические настройки публикации`;
+				return `Настройка и подтверждение изменений автопубликации.`;
 			}
 			else if (lang === "de") {
 				return `Einstellungen für die automatische Veröffentlichung`;
 			}
 			else if (lang === "pt") {
-				return `Configurações de publicação automática`;
+				return `Configurações de Publicação Automática`;
 			}
 			else {
 				return `Auto Post Settings`;
@@ -102,59 +99,53 @@ module.exports = {
 			if (lang === "en") {
 				return `Click **\'Start\'** to add an auto post channel.
 Click **\'Stop\'** to remove an auto post channel.
-Click **\'Configure\'** to add or remove a role that can configure auto post settings.
 Click **\'Confirm\'** to view and test current settings.`;
 			}
 			else if (lang === "es") {
 				return `Haga clic en **\'Empezar\'** para agregar un canal.
 Haga clic en **\'Detener\'** para quitar un canal.
-Haga clic en **\'Configurar\'** para agregar o quitar un rol.
 Haga clic en **\'Confirmar\'** para ver y probar la configuración.`;
 			}
 			else if (lang === "ru") {
 				return `Нажмите **\'Старт\'**, чтобы добавить канал.
 Нажмите **\'Стоп\'**, чтобы исключить канал из автоматической публикации.
-Нажмите **\'Роль\'**, чтобы добавить \\\ удалить роль, изменяющая настройки публикации.
 Нажмите **\'Подтвердить\'**, для просмотра и подтверждения настроек.`;
 			}
 			else if (lang === "de") {
 				return `Klicken Sie auf **\'Anfangen\'** so fügen Sie einen Kanal hinzu.
 Klicken Sie auf **\'Aufhören\'** so entfernen Sie einen Kanal.
-Klicken Sie auf **\'Konfigurieren\'** so fügen Sie eine Rolle hinzu oder entfernen sie.
 Klicken Sie auf **\'Bestätigen\'** um die aktuellen Einstellungen anzuzeigen und zu testen.`;
 			}
 			else if (lang === "pt") {
 				return `Clique em **\'Começar\'** para adicionar um canal.
 Clique em **\'Parar\'** para remover um canal.
-Clique em **\'Configurar\'** para adicionar ou remover uma função.
 Clique em **\'Confirmar\'** para exibir e testar as configurações atuais.`;
 			}
 			else {
 				return `Click **\'Start\'** to add an auto post channel.
 Click **\'Stop\'** to remove an auto post channel.
-Click **\'Configure\'** to add or remove a role that can configure auto post settings.
 Click **\'Confirm\'** to view and test current settings.`;
 			}			
 		}
 
 		function footerText() {
 			if (lang === "en") {
-				return `Only Administrators can start, stop, or configure auto posts by default.`;
+				return `Only Administrators can start or stop auto posts.`;
 			}
 			else if (lang === "es") {
-				return `Solo los administradores pueden iniciar, detener o configurar publicaciones automáticas de forma predeterminada.`;
+				return `Solo los administradores pueden iniciar o detener publicaciones automáticas.`;
 			}
 			else if (lang === "ru") {
-				return `По умолчанию только администраторы могут запускать, останавливать или настраивать автоматические публикации.`;
+				return `Только администраторы могут запускать или останавливать автоматические публикации.`;
 			}
 			else if (lang === "de") {
-				return `Nur Administratoren können automatische Beiträge standardmäßig starten, stoppen oder konfigurieren.`;
+				return `Nur Administratoren können automatische Beiträge starten oder stoppen.`;
 			}
 			else if (lang === "pt") {
-				return `Apenas os administradores podem iniciar, parar ou configurar publicações automáticas por predefinição.`;
+				return `Somente Administradores podem iniciar ou interromper postagens automáticas.`;
 			}
 			else {
-				return `Only Administrators can start, stop, or configure auto posts by default.`;
+				return `Only Administrators can start or stop auto posts.`;
 			}			
 		}
 
@@ -200,27 +191,6 @@ Click **\'Confirm\'** to view and test current settings.`;
 			}
 		}
 
-		function configure() {
-			if (lang === "en") {
-				return `Configure`;
-			}
-			else if (lang === "es") {
-				return `Configurar`;
-			}
-			else if (lang === "ru") {
-				return `Роли`;
-			}
-			else if (lang === "de") {
-				return `Konfigurieren`;
-			}
-			else if (lang === "pt") {
-				return `Configurar`;
-			}
-			else {
-				return `Configure`;
-			}			
-		}	
-
 		function confirm() {
 			if (lang === "en") {
 				return `Confirm`;
@@ -242,26 +212,26 @@ Click **\'Confirm\'** to view and test current settings.`;
 			}			
 		}	
 
-				function notYourButtonString() {
-					if (lang === "en") {
-						return `These buttons are not for you.`;
-					}
-					else if (lang === "es") {
-						return `Estos botones no son para ti.`;
-					}
-					else if (lang === "ru") {
-						return `Эти кнопки не для вас.`;
-					}
-					else if (lang === "de") {
-						return `Diese Schaltflächen sind nicht für Sie.`;
-					}
-					else if (lang === "pt") {
-						return `Esses botões não são para você.`;
-					}
-					else {
-						return `These buttons are not for you.`;
-					}				
-			}												
+		function notYourButtonString() {
+			if (lang === "en") {
+				return `These buttons are not for you.`;
+			}
+			else if (lang === "es") {
+				return `Estos botones no son para ti.`;
+			}
+			else if (lang === "ru") {
+				return `Эти кнопки не для вас.`;
+			}
+			else if (lang === "de") {
+				return `Diese Schaltflächen sind nicht für Sie.`;
+			}
+			else if (lang === "pt") {
+				return `Esses botões não são para você.`;
+			}
+			else {
+				return `These buttons are not for you.`;
+			}				
+		}												
 
 //--END TRANSLATIONS--//						
 
@@ -280,11 +250,7 @@ Click **\'Confirm\'** to view and test current settings.`;
 				new ButtonBuilder()
 					.setCustomId(`stop - ${interaction.user.id}`)
 					.setLabel(`${stop()}`)
-					.setStyle(ButtonStyle.Danger),			
-				new ButtonBuilder()
-					.setCustomId(`configure - ${interaction.user.id}`)
-					.setLabel(`${configure()}`)
-					.setStyle(ButtonStyle.Primary),						
+					.setStyle(ButtonStyle.Danger),								
 				new ButtonBuilder()
 					.setCustomId(`confirm - ${interaction.user.id}`)
 					.setLabel(`${confirm()}`)
@@ -293,7 +259,7 @@ Click **\'Confirm\'** to view and test current settings.`;
 					
 					await interaction.deferUpdate().catch(err => {console.log(`initialBackEmbed deferUpdate Error: ${err.stack}`);interaction.followUp({content:`${expiredDesc()}`, ephemeral:true})});
 					if (buttonUserID === interaction.user.id) {
-							//Initial Embed + Buttons (start, stop, confirm, configure)
+							//Initial Embed + Buttons (start, stop, confirm)
 							await interaction.editReply({ embeds: [initialEmbed], components:[initialButtons] });
 					}
 					else {
@@ -339,7 +305,7 @@ Click **\'Confirm\'** to view and test current settings.`;
 				
 				}}); //end readFile for LANGDataBase
 			
-		} //end if interaction starts with startback - stopback - configureback
+		} //end if interaction starts with startback - stopback - confirmback
 
 	},
 }
