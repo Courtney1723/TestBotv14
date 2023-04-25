@@ -140,7 +140,7 @@ module.exports = {
 
 		function confirmTitleString() {
 			if (lang === "en") {
-				return `    Auto Post Channels`;
+				return `Auto Post Channels`;
 			}
 			else if (lang === "es") {
 				return `Canales de publicación automática`;
@@ -155,7 +155,7 @@ module.exports = {
 				return `Canais de publicação automática`;
 			}
 			else {
-			  return `    Auto Post Channels`;
+			  return `Auto Post Channels`;
 			}			
 		}
 
@@ -370,7 +370,7 @@ ${RDOConfirmString}
 	
 	
 	}); //end fs.readFile RDODataBase
-	}) //end fs.readFile rolesDataBase	
+	}); //end fs.readFile GTADataBase	
 
 			function expiredDesc() {
 				if (lang === "en") {
