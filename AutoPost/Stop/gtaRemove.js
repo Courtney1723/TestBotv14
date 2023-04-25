@@ -19,28 +19,7 @@ module.exports = {
 		let menuChannelID = menuChannelID01[1];
 				//console.log(`gtaStopMenu menuChannelID: ${menuChannelID}`)
 
-		let guildRoleIds = [];
-		fs.readFile('./rolesDataBase.txt', 'utf8', async function (err, data) {
-		    if (err) {console.log(`Error: ${err}`)} //If an error, console.log
-		
-					interaction.guild.roles.cache.forEach(role => {
-							if ((data.includes(role.id)) && (role.name != "@everyone")) {
-								guildRoleIds.push(role.id);
-							}
-					});
-				//console.log(`guildRoleIds: ${guildRoleIds}`);
-
-			function AdminRequired() {
-				let AdminRequiredBoolean = data.split(`guild:${interaction.guild.id} - admin:`);
-				if (AdminRequiredBoolean[1].includes(`yes`)) {
-					return "AdminRequiredYes";
-				}
-				else {
-					return "AdminRequiredNo";
-				}
-			}		
-
-			if (menuChannelID.includes(`undefinedchannel`)) { //interaction.values === `undefinedchannel` does not work?
+			if (menuChannelID.includes(`undefinedchannel`)) { //user selected an invalid response
 
 				const gtaDuplicateEmbed = new EmbedBuilder()
 						.setColor(0xFFAE00) //Orange 
@@ -118,89 +97,89 @@ module.exports = {
 						
 											//console.log(`lang: ${lang}`);	
 
-	function success() {
-		if (lang === "en") {
-			return `Success`;
-		}
-		else if (lang === "es") {
-			return `Éxito`;
-		}
-		else if (lang === "ru") {
-			return `Успех`;
-		}
-		else if (lang === "de") {
-			return `Erfolg`;
-		}
-		else if (lang === "pt") {
-			return `Éxito`;
-		}
-		else {
-			return `Success`;
-		}		
-	}	
-	
-	function gtaRemoveDesc() {
-		if (lang === "en") {
-			return `You will now no longer get GTA auto posts in the <#${menuChannelID}> channel.`;
-		}
-		else if (lang === "es") {
-			return `Ahora ya no obtendrá publicaciones automáticas de GTA en el canal <#${menuChannelID}>.`;
-		}
-		else if (lang === "ru") {
-			return `Теперь вы больше не будете получать автоматические сообщения GTA в канале <#${menuChannelID}>.`;
-		}
-		else if (lang === "de") {
-			return `Sie erhalten jetzt keine automatischen GTA-Beiträge mehr im <#${menuChannelID}>-Kanal.`;
-		}
-		else if (lang === "pt") {
-			return `Agora você não receberá mais postagens automáticas do GTA no canal <#${menuChannelID}>.`;
-		}
-		else {
-			return `You will now no longer get GTA auto posts in the <#${menuChannelID}> channel.`;
-		}		
-	}
-
-	function notYourOption() {
-		if (lang === "en") {
-			return `These options aren't for you.`;
-		}
-		else if (lang === "es") {
-			return `Estas opciones no son para ti.`;
-		}
-		else if (lang === "ru") {
-			return `Эти варианты не для вас.`;
-		}
-		else if (lang === "de") {
-			return `Diese Optionen sind nichts für Sie.`;
-		}
-		else if (lang === "pt") {
-			return `Essas opções não são para você.`;
-		}
-		else {
-			return `These options aren't for you.`;
-		}		
-	}		
-
-	function confirmSettingsString() {
-		if (lang === "en") {
-				return `Confirm Settings`;
-		}
-		else if (lang === "es") {
-			return `Confirmar la configuración`;
-		}
-		else if (lang === "ru") {
-			return `Подтвердить настройки`;
-		}
-		else if (lang === "de") {
-			return `Einstellungen bestätigen`;
-		}
-		else if (lang === "pt") {
-			return `Confirmar configurações`;
-		}
-		else {
-			return `Confirm Settings`;
-		}					
-	}												
+				function success() {
+					if (lang === "en") {
+						return `Success`;
+					}
+					else if (lang === "es") {
+						return `Éxito`;
+					}
+					else if (lang === "ru") {
+						return `Успех`;
+					}
+					else if (lang === "de") {
+						return `Erfolg`;
+					}
+					else if (lang === "pt") {
+						return `Éxito`;
+					}
+					else {
+						return `Success`;
+					}		
+				}	
+				
+				function gtaRemoveDesc() {
+					if (lang === "en") {
+						return `You will now no longer get GTA auto posts in the <#${menuChannelID}> channel.`;
+					}
+					else if (lang === "es") {
+						return `Ahora ya no obtendrá publicaciones automáticas de GTA en el canal <#${menuChannelID}>.`;
+					}
+					else if (lang === "ru") {
+						return `Теперь вы больше не будете получать автоматические сообщения GTA в канале <#${menuChannelID}>.`;
+					}
+					else if (lang === "de") {
+						return `Sie erhalten jetzt keine automatischen GTA-Beiträge mehr im <#${menuChannelID}>-Kanal.`;
+					}
+					else if (lang === "pt") {
+						return `Agora você não receberá mais postagens automáticas do GTA no canal <#${menuChannelID}>.`;
+					}
+					else {
+						return `You will now no longer get GTA auto posts in the <#${menuChannelID}> channel.`;
+					}		
+				}
+			
+				function notYourOption() {
+					if (lang === "en") {
+						return `These options aren't for you.`;
+					}
+					else if (lang === "es") {
+						return `Estas opciones no son para ti.`;
+					}
+					else if (lang === "ru") {
+						return `Эти варианты не для вас.`;
+					}
+					else if (lang === "de") {
+						return `Diese Optionen sind nichts für Sie.`;
+					}
+					else if (lang === "pt") {
+						return `Essas opções não são para você.`;
+					}
+					else {
+						return `These options aren't for you.`;
+					}		
+				}		
+			
+				function confirmSettingsString() {
+					if (lang === "en") {
+							return `Confirm Settings`;
+					}
+					else if (lang === "es") {
+						return `Confirmar la configuración`;
+					}
+					else if (lang === "ru") {
+						return `Подтвердить настройки`;
+					}
+					else if (lang === "de") {
+						return `Einstellungen bestätigen`;
+					}
+					else if (lang === "pt") {
+						return `Confirmar configurações`;
+					}
+					else {
+						return `Confirm Settings`;
+					}					
+				}												
 											
 //-----END TRANSLATIONS-----//											
 
@@ -265,7 +244,7 @@ module.exports = {
 				);			
 
 				setTimeout(() => {
-					interaction.editReply({components: [expiredButton]}).catch(err => {console.log(`GtaRemoveEmbed expiredButton Error: ${err.stack}`)});
+					interaction.editReply({components: [expiredButton]});
 				}, (60000 * 5))											
 
 				}}); //end fs.readFile for LANGDataBase.txt
@@ -275,7 +254,7 @@ module.exports = {
 			
 		}// end if interaction.customId === 'gtaStopMenu'
 		
-	}); //end fsreadfile for roles.database
+	
 
 	} //end if interaction ID is gta StopMenu
 	

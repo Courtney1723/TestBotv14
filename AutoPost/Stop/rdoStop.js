@@ -212,31 +212,26 @@ module.exports = {
 
 
 		let rdoChannelIds = [];
-		fs.readFile('./RDODataBase.txt', 'utf8', async function (err, data) {
-		    if (err) {console.log(`Error: ${err}`)} //If an error, console.log
-		
-					interaction.guild.channels.cache.forEach(channel => {
-							if (data.includes(channel.id)) {
-								rdoChannelIds.push(channel.id);
-							}
-					});
-			//console.log(`rdoChannelIds: ${rdoChannelIds}`);					
-				
+		interaction.guild.channels.cache.forEach(channel => {
+			if (data.includes(channel.id)) {
+				rdoChannelIds.push(channel.id);
+			}
+		});
+		//console.log(`rdoChannelIds: ${rdoChannelIds}`);						
 
 		if (interaction.user.id === buttonUserID) { 
 			if (rdoChannelIds.length <= 0) {
-					interaction.followUp({ content: `${noSubscriptions()}`, ephemeral: true });				
+				interaction.followUp({ content: `${noSubscriptions()}`, ephemeral: true });				
 			} 
 			else {
-				  await interaction.editReply({ embeds: [rdoStopEmbed], components: [rdoStopMenu, backButton] })
+				await interaction.editReply({ embeds: [rdoStopEmbed], components: [rdoStopMenu, backButton] })
         .catch(err => {console.log(`rdoStopEmbed+Menu Error: ${err.stack}`); process.kill(1);});
-				}				
-			}
-    		else {
-				await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });	
-    		}
+			}				
+		}
+    else {
+			await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });	
+  	}
 
-				}); // end checking for if no channels are subscribed
 
 			function expiredDesc() {
 				if (lang === "en") {
@@ -267,13 +262,13 @@ module.exports = {
 						.setStyle(ButtonStyle.Secondary)
 						.setEmoji(':RSWeekly:1025248227248848940')
 						.setDisabled(true),			
-				);					
+			);					
 
-				setTimeout(() => {
-					interaction.editReply({components: [expiredButton]}).catch(err => {console.log(`RdoStopEmbed expiredButton Error: ${err.stack}`)});
+			setTimeout(() => {
+					interaction.editReply({components: [expiredButton]});
 				}, (60000 * 5))	
 
-			}); //end fs.readFile for rolesDataBase.txt
+			}); //end fs.readFile for RDODataBase.txt
 
 				
 		} // end if rdostop button
