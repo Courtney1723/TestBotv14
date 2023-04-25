@@ -268,7 +268,6 @@ Click **\'RDO\'** to set up Red Dead Online Auto Posts for **the first Tuesday o
 
 //begin checking for permissions
 		await interaction.deferUpdate();
-		//console.log(`AdminRequired(): ${AdminRequired()}`)
 		if (!interaction.user.id === buttonUserID) {
 			await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });
 		}	
@@ -314,7 +313,7 @@ Click **\'RDO\'** to set up Red Dead Online Auto Posts for **the first Tuesday o
 				);						
 
 				setTimeout(() => {
-					interaction.editReply({components: [expiredButton]}).catch(err => {console.log(`startEmbed expiredButton Error: ${err.stack}`)});
+					interaction.editReply({components: [expiredButton]});
 				}, (60000 * 5))						
 
 				}});// end fs:readFile for LANGData.txt

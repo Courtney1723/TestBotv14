@@ -5,9 +5,6 @@ module.exports = {
 	name: 'interactionCreate',
 	async execute(interaction) {
 
-		fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
-    if (err) {console.log(`Error: ${err}`)} //If an error, console.log
-
 			if (!interaction.isButton()) {return};
 			if (interaction.customId.includes(`gtastart - `)) {
 						await interaction.deferUpdate();	
@@ -68,89 +65,89 @@ module.exports = {
 
 					//console.log(`lang: ${lang}`);	
 
-	function startTitle() {
-		if (lang === "en") {
-			return 	`Start auto posting GTA Online bonuses`;
-		}
-		if (lang === "es") {
-			return `Comience a publicar automáticamente los bonos de GTA Online`;
-		}
-		if (lang === "ru") {
-			return `Начать автоматическую публикацию GTA Online Онлайн бонусы`;
-		}
-		if (lang === "de") {
-			return `Starten Sie die automatische Veröffentlichung für GTA Online-Boni`;
-		}
-		if (lang === "pt") {
-			return `Comece a postar automaticamente bônus GTA Online`;
-		}
-		else {
-			return `Start auto posting GTA Online bonuses`;
-		}		
-	}			
+				function startTitle() {
+					if (lang === "en") {
+						return 	`Start auto posting GTA Online bonuses`;
+					}
+					if (lang === "es") {
+						return `Comience a publicar automáticamente los bonos de GTA Online`;
+					}
+					if (lang === "ru") {
+						return `Начать автоматическую публикацию GTA Online Онлайн бонусы`;
+					}
+					if (lang === "de") {
+						return `Starten Sie die automatische Veröffentlichung für GTA Online-Boni`;
+					}
+					if (lang === "pt") {
+						return `Comece a postar automaticamente bônus GTA Online`;
+					}
+					else {
+						return `Start auto posting GTA Online bonuses`;
+					}		
+				}			
+			
+				function startDesc() {
+					if (lang === "en") {
+						return `Click **the dropdown menu** to confirm the channel you want to send GTA Online auto posts to \n**every Thursday at 2:00 PM EST**.`;
+					}
+					if (lang === "es") {
+						return `Hage clic en **el menú desplegable** para confirmar el canal al que desea enviar publicaciones automáticas de GTA Online \n** todos los jueves a las 14:00 EST**.`;
+					}
+					if (lang === "ru") {
+						return `Щелчок **раскрывающееся меню** для подтверждения канала, вы хотите отправлять автопосты GTA Online на \n**каждый четверг в 14:00 EST**.`;
+					}
+					if (lang === "de") {
+						return `Klicken **Das Dropdown-Menü** um den Kanal zu bestätigen, an den Sie GTA Online automatische Beiträge senden möchten \n**jeden Donnerstag um 14:00 EST**.`;
+					}
+					if (lang === "pt") {
+						return `Clique **o menu suspenso** para confirmar o canal que você deseja enviar GTA Online auto posts para \n**todas as quintas-feiras às 14:00 EST**.`;
+					}
+					else {
+						return `Click **the dropdown menu** to confirm the channel you want to send GTA Online auto posts to \n**every Thursday at 2:00 PM EST**.`;
+					}		
+				}
+			
+				function startFooter() {
+					if (lang === "en") {
+						return `Auto posts can only be sent to text channels the bot has permission to \'Send Messages\' in.`;
+					}
+					if (lang === "es") {
+						return `Las publicaciones automáticas solo se pueden enviar a canales de texto en los que el bot tiene permiso para \'Enviar mensajes\'.`;
+					}
+					if (lang === "ru") {
+						return `Автоматические сообщения могут быть отправлены только на текстовые каналы, на которые бот имеет разрешение \'Отправить сообщения\'.`;
+					}
+					if (lang === "de") {
+						return `Automatische Posts können nur an Textkanäle gesendet werden, in denen der Bot die Berechtigung zum \'Senden von Nachrichten\' hat.`;
+					}
+					if (lang === "pt") {
+						return `Autoposts só podem ser enviados para canais de texto que o bot tenha permissão de \'Enviar mensagens\'.`;
+					}
+					else {
+						return `Auto posts can only be sent to text channels the bot has permission to \'Send Messages\' in.`;
+					}		
+				}
 
-	function startDesc() {
-		if (lang === "en") {
-			return `Click **the dropdown menu** to confirm the channel you want to send GTA Online auto posts to \n**every Thursday at 2:00 PM EST**.`;
-		}
-		if (lang === "es") {
-			return `Hage clic en **el menú desplegable** para confirmar el canal al que desea enviar publicaciones automáticas de GTA Online \n** todos los jueves a las 14:00 EST**.`;
-		}
-		if (lang === "ru") {
-			return `Щелчок **раскрывающееся меню** для подтверждения канала, вы хотите отправлять автопосты GTA Online на \n**каждый четверг в 14:00 EST**.`;
-		}
-		if (lang === "de") {
-			return `Klicken **Das Dropdown-Menü** um den Kanal zu bestätigen, an den Sie GTA Online automatische Beiträge senden möchten \n**jeden Donnerstag um 14:00 EST**.`;
-		}
-		if (lang === "pt") {
-			return `Clique **o menu suspenso** para confirmar o canal que você deseja enviar GTA Online auto posts para \n**todas as quintas-feiras às 14:00 EST**.`;
-		}
-		else {
-			return `Click **the dropdown menu** to confirm the channel you want to send GTA Online auto posts to \n**every Thursday at 2:00 PM EST**.`;
-		}		
-	}
-
-	function startFooter() {
-		if (lang === "en") {
-			return `Auto posts can only be sent to text channels the bot has permission to \'Send Messages\' in.`;
-		}
-		if (lang === "es") {
-			return `Las publicaciones automáticas solo se pueden enviar a canales de texto en los que el bot tiene permiso para \'Enviar mensajes\'.`;
-		}
-		if (lang === "ru") {
-			return `Автоматические сообщения могут быть отправлены только на текстовые каналы, на которые бот имеет разрешение \'Отправить сообщения\'.`;
-		}
-		if (lang === "de") {
-			return `Automatische Posts können nur an Textkanäle gesendet werden, in denen der Bot die Berechtigung zum \'Senden von Nachrichten\' hat.`;
-		}
-		if (lang === "pt") {
-			return `Autoposts só podem ser enviados para canais de texto que o bot tenha permissão de \'Enviar mensagens\'.`;
-		}
-		else {
-			return `Auto posts can only be sent to text channels the bot has permission to \'Send Messages\' in.`;
-		}		
-	}
-
-		function goBack() {
-			if (lang === "en") {
-					return `Go Back`;
-			}
-			else if (lang === "es") {
-				return `Volver`;
-			}
-			else if (lang === "ru") {
-				return `Вернуться`;
-			}
-			else if (lang === "de") {
-				return `Zurück`;
-			}
-			else if (lang === "pt") {
-				return `Voltar`;
-			}
-			else {
-				return `Go Back`;
-			}					
-		}		
+				function goBack() {
+					if (lang === "en") {
+							return `Go Back`;
+					}
+					else if (lang === "es") {
+						return `Volver`;
+					}
+					else if (lang === "ru") {
+						return `Вернуться`;
+					}
+					else if (lang === "de") {
+						return `Zurück`;
+					}
+					else if (lang === "pt") {
+						return `Voltar`;
+					}
+					else {
+						return `Go Back`;
+					}					
+				}		
 
 				function notYourButtonString() {
 					if (lang === "en") {
@@ -171,23 +168,23 @@ module.exports = {
 					else {
 						return `These buttons are not for you.`;
 					}				
-			}						
+				}						
 
 //-----END TRANSLATIONS-----//				
 
-			const gtaStartEmbed = new EmbedBuilder()
-				.setColor(0x00FF00) //Green
-				.setTitle(`${startTitle()}`)
-				.setDescription(`${startDesc()}`)	
-				.setFooter({ text: `${startFooter()}`, iconURL: process.env.logo_link });			
+		const gtaStartEmbed = new EmbedBuilder()
+			.setColor(0x00FF00) //Green
+			.setTitle(`${startTitle()}`)
+			.setDescription(`${startDesc()}`)	
+			.setFooter({ text: `${startFooter()}`, iconURL: process.env.logo_link });			
 
-			const backButton = new ActionRowBuilder()
-				.addComponents(
-					new ButtonBuilder()
-			        .setCustomId(`gtastartback - ${interaction.user.id}`)
-			        .setLabel(`${goBack()}`)
-			        .setStyle(ButtonStyle.Secondary),	
-				);					
+		const backButton = new ActionRowBuilder()
+			.addComponents(
+				new ButtonBuilder()
+						.setCustomId(`gtastartback - ${interaction.user.id}`)
+						.setLabel(`${goBack()}`)
+						.setStyle(ButtonStyle.Secondary),	
+			);					
 
 		fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
     if (err) {console.log(`Error: ${err}`)} //If an error, console.log					
@@ -313,15 +310,15 @@ module.exports = {
 				);				
 
 				setTimeout(() => {
-					interaction.editReply({components: [expiredButton]}).catch(err => {console.log(`GtaStartEmbed expiredButton Error: ${err.stack}`)});
+					interaction.editReply({components: [expiredButton]});
 				}, (60000 * 5))		
 
-					}); //end fs.readFile for GTADataBase.txt
-					}}); //end fs.readfile LANGDataBase
+			}); //end fs.readFile for GTADataBase.txt
+		}}); //end fs.readfile LANGDataBase
 		
 		} // end if gtastart button
 		
-		}); //end fs:readFile
+		
 
 		
 	},

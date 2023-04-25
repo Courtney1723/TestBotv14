@@ -22,29 +22,7 @@ module.exports = {
 
 		let menuChannelID01 = (interaction.values).toString().split(`c:`);
 		let menuChannelID = menuChannelID01[1];
-				//console.log(`rdoStartMenu menuChannelID: ${menuChannelID}`)
-
-		let guildRoleIds = [];
-		fs.readFile('./rolesDataBase.txt', 'utf8', async function (err, data) {
-		    if (err) {console.log(`Error: ${err}`)} //If an error, console.log
-		
-					interaction.guild.roles.cache.forEach(role => {
-							if (data.includes(role.id)) {
-								guildRoleIds.push(role.id);
-							}
-					});
-			guildRoleIds.shift(1); //removes the @everyone role
-				//console.log(`guildRoleIds: ${guildRoleIds}`);
-
-			function AdminRequired() {
-				let AdminRequiredBoolean = data.split(`guild:${interaction.guild.id} - admin:`);
-				if (AdminRequiredBoolean[1].includes(`yes`)) {
-					return "AdminRequiredYes";
-				}
-				else {
-					return "AdminRequiredNo";
-				}
-			}		
+				//console.log(`rdoStartMenu menuChannelID: ${menuChannelID}`)		
 
 //-----BEGIN TRANSLATIONS-----//			
 
@@ -278,11 +256,11 @@ module.exports = {
 				);	
 
 				setTimeout(() => {
-					interaction.editReply({components: [expiredButton]}).catch(err => {console.log(`RdoAddEmbed expiredButton Error: ${err.stack}`)});
+					interaction.editReply({components: [expiredButton]});
 				}, (60000 * 5))					
 
 				}}); //end fs.readFileLANGDataBase
-		});//end fs:readFileRolesDataBase	
+		
 			
 		}// end if interaction.customId === 'rdoStartMenu'
 		
