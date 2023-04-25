@@ -120,7 +120,7 @@ module.exports = {
 				}
 			//console.log(`RDOConfirmString: ${RDOConfirmString}`);	
 			var subscriptionCheckRDO = false;
-			if (!GTAConfirmString.includes('• ')) {
+			if (!RDOConfirmString.includes('• ')) {
 				var subscriptionCheckRDO = true;
 				if (lang === "en") {
 					RDOConfirmString += `• There are no channels in this server subscribed to RDO auto posts.\n`;
@@ -162,6 +162,58 @@ module.exports = {
 			  return `Auto Post Channels`;
 			}			
 		}
+
+		function everyThursday() {
+			if (subscriptionCheckGTA === false) {
+				if (lang === "en") {
+					return `\nEvery Thursday at 2:00 PM EST`;
+				}
+				else if (lang === "es") {
+					return `\nTodos los jueves a las 14:00 EST`;
+				}
+				else if (lang === "ru") {
+					return `\nКаждый четверг в 14:00 EST`;
+				}
+				else if (lang === "de") {
+					return `\nJeden Donnerstag um 14:00 Uhr EST`;
+				}
+				else if (lang === "pt") {
+					return `\nTodas as quintas-feiras às 14:00 EST`;
+				}
+				else {
+				  return `\nEvery Thursday at 2:00 PM EST`;
+				}	
+			}
+			else {
+				return "";
+			}
+		} 
+
+		function firstTuesday() {
+			if (subscriptionCheckRDO === false) {
+				if (lang === "en") {
+					return `\nThe first Tuesday of every month at 2:00 PM EST`;
+				}
+				else if (lang === "es") {
+					return `\nEl primer martes de cada mes a las 14:00 EST`;
+				}
+				else if (lang === "ru") {
+					return `\nB первый вторник каждого месяца в 14:00 EST`;
+				}
+				else if (lang === "de") {
+					return `\nJeden ersten Dienstag im Monat um 14:00 Uhr EST`;
+				}
+				else if (lang === "pt") {
+					return `\nA primeira terça-feira de cada mês às 14:00 EST`;
+				}
+				else {
+				  return `\nThe first Tuesday of every month at 2:00 PM EST`;
+				}		
+			}
+			else {
+				return "";
+			}
+		}				
 
 		function testTitleString() {
 			if (lang === "en") {
@@ -337,9 +389,9 @@ module.exports = {
 			.setColor(0x00B9FF) 
 			.setTitle(`${confirmTitleString()}`)
 			.setDescription(`
-**__GTA Online__**
+**__GTA Online__**${everyThursday()}
 ${GTAConfirmString}
-**__Red Dead Online__**
+**__Red Dead Online__**${firstTuesday()}
 ${RDOConfirmString}
 **__${testTitleString()}__**
 • ${testGTAString()}
@@ -367,7 +419,7 @@ ${RDOConfirmString}
 
 				await interaction.deferUpdate();
 				if (interaction.user.id === buttonUserID) {
-					await interaction.editReply({ embeds: [confirmEmbed], components: [confirmButtons] }).catch(err => {console.log(`confirmEmbed Error: ${err}`); process.kill(1);});						
+					await interaction.followUp({ embeds: [confirmEmbed], components: [confirmButtons] }).catch(err => {console.log(`confirmEmbed Error: ${err}`); process.kill(1);});						
 				} 	
 				else {
 					await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });
