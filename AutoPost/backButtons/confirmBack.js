@@ -82,7 +82,9 @@ module.exports = {
 					}
 				}
 			//console.log(`GTAConfirmString: ${GTAConfirmString}`);	
+			var subscriptionCheckGTA = false;
 			if (!GTAConfirmString.includes('• ')) {
+				var subscriptionCheckGTA = true;
 				if (lang === "en") {
 					GTAConfirmString += `• There are no channels in this server subscribed to GTA Online auto posts.\n`;
 				}
@@ -117,7 +119,9 @@ module.exports = {
 					}
 				}
 			//console.log(`RDOConfirmString: ${RDOConfirmString}`);	
-			if (!RDOConfirmString.includes('• ')) {
+			var subscriptionCheckRDO = false;
+			if (!GTAConfirmString.includes('• ')) {
+				var subscriptionCheckRDO = true;
 				if (lang === "en") {
 					RDOConfirmString += `• There are no channels in this server subscribed to RDO auto posts.\n`;
 				}
@@ -343,20 +347,22 @@ ${RDOConfirmString}
 			.setFooter({ text: `${footerString()}`, iconURL: process.env.logo_link });
 
 
-				const confirmButtons = new ActionRowBuilder()
-					.addComponents(
-					    new ButtonBuilder()
-					        .setCustomId(`gtaTest - ${interaction.user.id}`)
-					        .setLabel(`${testGTAButtonString()}`)
-					        .setStyle(ButtonStyle.Success),	
-					    new ButtonBuilder()
-					        .setCustomId(`rdoTest - ${interaction.user.id}`)
-					        .setLabel(`${testRDOButtonString()}`)
-					        .setStyle(ButtonStyle.Danger),			
-					    new ButtonBuilder()
-					        .setCustomId(`confirmback - ${interaction.user.id}`)
-					        .setLabel(`${backButtonString()}`)
-					        .setStyle(ButtonStyle.Secondary),
+			const confirmButtons = new ActionRowBuilder()
+				.addComponents(
+						new ButtonBuilder()
+								.setCustomId(`gtaTest - ${interaction.user.id}`)
+								.setLabel(`${testGTAButtonString()}`)
+								.setStyle(ButtonStyle.Success)
+								.setDisabled(subscriptionCheckGTA),	
+						new ButtonBuilder()
+								.setCustomId(`rdoTest - ${interaction.user.id}`)
+								.setLabel(`${testRDOButtonString()}`)
+								.setStyle(ButtonStyle.Danger)
+								.setDisabled(subscriptionCheckRDO),
+						new ButtonBuilder()
+								.setCustomId(`confirmback - ${interaction.user.id}`)
+								.setLabel(`${backButtonString()}`)
+								.setStyle(ButtonStyle.Secondary),
 				);			
 
 				await interaction.deferUpdate();
