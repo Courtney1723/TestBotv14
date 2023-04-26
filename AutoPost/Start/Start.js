@@ -91,24 +91,24 @@ module.exports = {
 Click **\'RDO\'** to set up Red Dead Online Auto Posts for **the first Tuesday of every month at 2:00 PM EST**.`;
 			}
 			if (lang === "es") {
-				return `Haga clic en **\'GTA\'** para comenzar a publicar publicaciones automáticas en línea de GTA Online para **todos los jueves a las 14:00 EST**.
+				return `Haga clic en **\'GTA\'** para comenzar a publicar publicaciones automáticas en línea de GTA Online para **todos los jueves a las 14:00 hora del este**.
 
-Haga clic en **\'RDO\'** para comenzar a publicar publicaciones automáticas de Red Dead Online para **el primer martes de cada mes a las 14:00 EST**.`;
+Haga clic en **\'RDO\'** para comenzar a publicar publicaciones automáticas de Red Dead Online para **el primer martes de cada mes a las 14:00 hora del este**.`;
 			}
 			if (lang === "ru") {
-				return `Щелчок **\'GTA\'** для запуска GTA Online Auto Posts для **каждый четверг в 14:00 EST**.
+				return `Щелчок **\'GTA\'** для запуска GTA Online Auto Posts для **каждый четверг в 14:00 по восточному времени**.
 
-Щелчок **\'RDO\'** чтобы начать автоматическую публикацию Red Dead Online для **первого вторника каждого месяца в 14:00 EST**.`;
+Щелчок **\'RDO\'** чтобы начать автоматическую публикацию Red Dead Online для **первого вторника каждого месяца в 14:00 по восточному времени**.`;
 			}
 			if (lang === "de") {
-				return `Klicken Sie auf **\'GTA\'**, GTA Online Auto-Beiträge für jeden Donnerstag um **14:00 EST** zu starten.
+				return `Klicken Sie auf **\'GTA\'**, GTA Online Auto-Beiträge für jeden Donnerstag um **14:00 Uhr Ostküsten-Standardzeit (Nordamerika)** zu starten.
 
-Klicken Sie auf **\'RDO\'**, Red Dead Online Auto-Beiträge für **den ersten Dienstag um jedes Monats 14:00 EST** zu starten.`;
+Klicken Sie auf **\'RDO\'**, Red Dead Online Auto-Beiträge für **den ersten Dienstag um jedes Monats 14:00 Uhr Ostküsten-Standardzeit (Nordamerika)** zu starten.`;
 			}		
 			if (lang === "pt") {
-				return `Clique **\'GTA\'** para iniciar GTA Online auto posts para **todas as quintas-feiras às 14:00 EST**.
+				return `Clique **\'GTA\'** para iniciar GTA Online auto posts para **todas as quintas-feiras às 14:00 Hora do Leste**.
 
-Clique **\'RDO\'** para iniciar Red Dead Online auto posts para **a primeira terça-feira de cada mês às 14:00 EST**.`;
+Clique **\'RDO\'** para iniciar Red Dead Online auto posts para **a primeira terça-feira de cada mês às 14:00 Hora do Leste**.`;
 			}
 			else {
 				return `Click **\'GTA\'** to set up GTA Online Auto Posts for **every Thursday at 2:00 PM EST**.

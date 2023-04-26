@@ -72,16 +72,16 @@ module.exports = {
 				return `Click **the dropdown menu** to confirm the channel you want to send Red Dead Online Auto Posts to \n**the first Tuesday of every month at 2:00 PM EST**.`;
 			}
 			if (lang === "es") {
-				return `Haga clic en **El menú desplegable** para confirmar el canal al que desea enviar publicaciones automáticas de RDO \n**el primer martes de cada mes a las 14:00 EST**.`;
+				return `Haga clic en **El menú desplegable** para confirmar el canal al que desea enviar publicaciones automáticas de RDO \n**el primer martes de cada mes a las 14:00 hora del este**.`;
 			}
 			if (lang === "ru") {
-				return `Щелчок **раскрывающееся меню** для подтверждения канала вы хотите отправлять автоматические сообщения RDO на \n**в первый вторник каждого месяца в 14:00 EST**.`;
+				return `Щелчок **раскрывающееся меню** для подтверждения канала вы хотите отправлять автоматические сообщения RDO на \n**в первый вторник каждого месяца в 14:00 по восточному времени**.`;
 			}
 			if (lang === "de") {
-				return `Klicken **Das Dropdown-Menü** um den Kanal zu bestätigen, an den Sie automatische RDO-Beiträge senden möchten \n** am ersten Dienstag eines jeden Monats um 14:00 EST**.`;
+				return `Klicken **Das Dropdown-Menü** um den Kanal zu bestätigen, an den Sie automatische RDO-Beiträge senden möchten \n** am ersten Dienstag eines jeden Monats um 14:00 Uhr Ostküsten-Standardzeit (Nordamerika)**.`;
 			}
 			if (lang === "pt") {
-				return `Clique **no menu suspenso** para confirmar o canal para o qual deseja enviar as publicações automáticas do Red Dead Online \n**na primeira terça-feira de cada mês às 14:00 EST**.`;
+				return `Clique **no menu suspenso** para confirmar o canal para o qual deseja enviar as publicações automáticas do Red Dead Online \n**na primeira terça-feira de cada mês às 14:00 Hora do Leste**.`;
 			}
 			else {
 				return `Click **the dropdown menu** to confirm the channel you want to send Red Dead Online Auto Posts to \n**the first Tuesday of every month at 2:00 PM EST**.`;

@@ -120,16 +120,16 @@ module.exports = {
 			return `You will now get GTA Online auto posts to the <#${menuChannelID}> channel \n**every Thursday at 2:00 PM EST**.`;
 		}
 		if (lang === "es") {
-			return `Ahora recibirás publicaciones automáticas de GTA Online en el canal <#${menuChannelID}> \n** todos los jueves a las 14:00 EST**.`;
+			return `Ahora recibirás publicaciones automáticas de GTA Online en el canal <#${menuChannelID}> \n** todos los jueves a las 14:00 hora del este**.`;
 		}	
 		if (lang === "ru") {
-			return `Теперь вы будете получать автоматические сообщения GTA Online на <#${menuChannelID}> канале \n**каждый четверг в 14:00 EST**.`;
+			return `Теперь вы будете получать автоматические сообщения GTA Online на <#${menuChannelID}> канале \n**каждый четверг в 14:00 по восточному времени**.`;
 		}		
 		if (lang === "de") {
-			return `Sie erhalten jetzt GTA Online Auto-Posts auf dem <#${menuChannelID}>-Kanal \n**jeden Donnerstag um 14:00 EST**.`;
+			return `Sie erhalten jetzt GTA Online Auto-Posts auf dem <#${menuChannelID}>-Kanal \n**jeden Donnerstag um 14:00 Uhr Ostküsten-Standardzeit (Nordamerika)**.`;
 		}		
 		if (lang === "pt") {
-			return `Agora você receberá postagens automáticas de GTA Online no canal <#${menuChannelID}> \n**todas as quintas-feiras às 14:00 EST**.`;
+			return `Agora você receberá postagens automáticas de GTA Online no canal <#${menuChannelID}> \n**todas as quintas-feiras às 14:00 Hora do Leste**.`;
 		}		
 		else {
 			return `You will now get GTA Online auto posts to the <#${menuChannelID}> channel \n**every Thursday at 2:00 PM EST**.`;
