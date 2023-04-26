@@ -662,22 +662,22 @@ module.exports = {
 						}						
 						function now() {
 							if (lang === "en") {
-								return "EST now.";
+								return " EST now.";
 							}
 							else if (lang === "es") {
-								return "hora del este ahora.";
+								return " hora del este ahora.";
 							}
 							else if (lang === "ru") {
-								return "по восточному поясному времени.";
+								return " по восточному поясному времени.";
 							}
 							else if (lang === "de") {
-								return "Ostküsten-Standardzeit (Nordamerika).";
+								return " Ostküsten-Standardzeit (Nordamerika).";
 							}
 							else if (lang === "pt") {
 								return ", horário do leste agora.";
 							}
 							else {
-								return "EST now.";
+								return " EST now.";
 							}
 						}						
 
@@ -717,7 +717,7 @@ module.exports = {
 						let gtaExpiredEmbed = new EmbedBuilder()
 							.setColor(0x00CD06) //Green
 							.setDescription(`${gtaExpiredEmbedString()}`)
-							.setFooter({ text: `${itIs()} ${hourCheck()}:${estMinute}${amPMCheck()} ${now()}`, iconURL: process.env.logo_link })
+							.setFooter({ text: `${itIs()} ${hourCheck()}:${estMinute}${amPMCheck()}${now()}`, iconURL: process.env.logo_link })
 
 						//console.log(`isPast: ${isPast()}`);
 						if (isPast() === "true") {
