@@ -169,16 +169,16 @@ module.exports = {
 					return `\nEvery Thursday at 2:00 PM EST`;
 				}
 				else if (lang === "es") {
-					return `\nTodos los jueves a las 14:00 EST`;
+					return `\nTodos los jueves a las 14:00 hora del este`;
 				}
 				else if (lang === "ru") {
-					return `\nКаждый четверг в 14:00 EST`;
+					return `\nКаждый четверг в 14:00 по восточному времени`;
 				}
 				else if (lang === "de") {
-					return `\nJeden Donnerstag um 14:00 Uhr EST`;
+					return `\nJeden Donnerstag um 14:00 Uhr Ostküsten-Standardzeit (Nordamerika)`;
 				}
 				else if (lang === "pt") {
-					return `\nTodas as quintas-feiras às 14:00 EST`;
+					return `\nTodas as quintas-feiras às 14:00 Hora do Leste`;
 				}
 				else {
 				  return `\nEvery Thursday at 2:00 PM EST`;
@@ -195,16 +195,16 @@ module.exports = {
 					return `\nThe first Tuesday of every month at 2:00 PM EST`;
 				}
 				else if (lang === "es") {
-					return `\nEl primer martes de cada mes a las 14:00 EST`;
+					return `\nEl primer martes de cada mes a las 14:00 hora del este`;
 				}
 				else if (lang === "ru") {
-					return `\nB первый вторник каждого месяца в 14:00 EST`;
+					return `\nB первый вторник каждого месяца в 14:00 по восточному времени`;
 				}
 				else if (lang === "de") {
-					return `\nJeden ersten Dienstag im Monat um 14:00 Uhr EST`;
+					return `\nJeden ersten Dienstag im Monat um 14:00 Uhr Ostküsten-Standardzeit (Nordamerika)`;
 				}
 				else if (lang === "pt") {
-					return `\nA primeira terça-feira de cada mês às 14:00 EST`;
+					return `\nA primeira terça-feira de cada mês às 14:00 Hora do Leste`;
 				}
 				else {
 				  return `\nThe first Tuesday of every month at 2:00 PM EST`;
