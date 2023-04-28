@@ -102,7 +102,7 @@ Click **\'RDO\'** to set up Red Dead Online Auto Posts for **the first Tuesday o
 Haga clic en **\'RDO\'** para comenzar a publicar publicaciones automáticas de Red Dead Online para **el primer martes de cada mes a las 2:00 PM EST**.`;
 			}
 			if (lang === "ru") {
-				return `Щелчок **\'GTA\'** для запуска GTA Online Auto Posts для **каждый четверг в 14:00 EST**.
+				return `Щелчок **\'GTA\'** чтобы начать автоматическую публикацию GTA Online Auto Posts для **каждый четверг в 14:00 EST**.
 
 Щелчок **\'RDO\'** чтобы начать автоматическую публикацию Red Dead Online для **первого вторника каждого месяца в 14:00 EST**.`;
 			}

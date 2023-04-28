@@ -17,7 +17,7 @@ module.exports = {
 
 		let buttonUserID01 = (interaction.customId).split(`${rdo_gta}stopback - `);
 		let buttonUserID = buttonUserID01[1];
-			console.log(`stopback buttonUserID: ${buttonUserID}`);
+			//console.log(`stopback buttonUserID: ${buttonUserID}`);
 			//console.log(`stopback interaction.user.id === buttonUserID? ${interaction.user.id === buttonUserID}`);
 			//console.log(`stopback interaction.user.id: ${interaction.user.id} && buttonUserID: ${buttonUserID}`);
 

@@ -71,7 +71,7 @@ module.exports = {
 				return `Thinking...`;
 			}
 			else if (lang === "es") {
-				return `Pensamiento...`;
+				return `Pensando...`;
 			}
 			else if (lang === "ru") {
 				return `мышление...`;

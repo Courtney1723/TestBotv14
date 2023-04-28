@@ -239,6 +239,22 @@ module.exports = {
 
 
 //-----END TRANSLATIONS-----//
+
+		var subscriptionCheckGTA = false;
+			fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) { //Checks for GTA subscriptions
+				if (err) {console.log(`Error: ${err}`)} //If an error, console.log
+	
+				if (!data.includes(interaction.guild.id)) {
+					subscriptionCheckGTA = true;
+				}
+
+		var subscriptionCheckRDO = false;
+			fs.readFile('./RDODataBase.txt', 'utf8', async function (err, data) { //Checks for RDO subscriptions
+				if (err) {console.log(`Error: ${err}`)} //If an error, console.log
+	
+				if (!data.includes(interaction.guild.id)) {
+					subscriptionCheckRDO = true;
+				}	
 						  
 			const stopEmbed = new EmbedBuilder()
 			.setColor(0xFF0000) //Red
@@ -250,11 +266,13 @@ module.exports = {
 				new ButtonBuilder()
 					.setCustomId(`gtastop - ${interaction.user.id}`)
 					.setLabel('GTA')
-					.setStyle(ButtonStyle.Success),
+					.setStyle(ButtonStyle.Success)
+					.setDisabled(subscriptionCheckGTA),	
 				new ButtonBuilder()
 					.setCustomId(`rdostop - ${interaction.user.id}`)
 					.setLabel('RDO')
-					.setStyle(ButtonStyle.Danger),			
+					.setStyle(ButtonStyle.Danger)
+					.setDisabled(subscriptionCheckRDO),	
 					new ButtonBuilder()
 					.setCustomId(`stopback - ${interaction.user.id}`)
 					.setLabel(`${goBack()}`)
@@ -262,12 +280,12 @@ module.exports = {
 			);						  	
 
 //begin checking for permissions
-		await interaction.deferUpdate();
+		await interaction.deferUpdate(); 
 		if (!interaction.user.id === buttonUserID) {
 			await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });
 		}		
 		else if ( (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) && (interaction.user.id === buttonUserID) ) {
-			await interaction.editReply({ embeds: [stopEmbed], components: [stopButtons] }).catch(err => {console.log(`stopEmbed Error: ${err.stack}`); process.kill(1)});					
+				await interaction.editReply({ embeds: [stopEmbed], components: [stopButtons] }).catch(err => {console.log(`stopEmbed Error: ${err.stack}`); process.kill(1)});	
 		} 	
 		else if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) { 
 			await interaction.followUp({content: `${missingPermissions()}`, ephemeral: true});
@@ -309,8 +327,11 @@ module.exports = {
 
 				setTimeout(() => {
 					interaction.editReply({components: [expiredButton]});
-				}, (60000 * 5))							
+				}, (60000 * 5))			
 
+				
+				}); //end fs.readFile for RDOData.txt
+				}); //end fs.readFile for GTAData.txt
 				}}); //end fs.readFile for LANGData.txt
 							
 	

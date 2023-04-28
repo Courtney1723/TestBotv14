@@ -157,6 +157,48 @@ module.exports = {
 		}					
 	}	
 
+	function duplicateTitle() {
+		if (lang === "en") {
+			return `Please Try Again`;
+		}
+		else if (lang === "es") {
+			return `Por favor, inténtalo de nuevo`;
+		}
+		else if (lang === "ru") {
+			return `Пожалуйста, попробуйте еще раз`;
+		}
+		else if (lang === "de") {
+			return `Inténtalo de nuevo`;
+		}
+		else if (lang === "pt") {
+			return `Por favor, tente novamente`;
+		}
+		else {
+			return `Please Try Again`;
+		}			
+	}
+
+	function invalidResponse() {
+		if (lang === "en") {
+			return `You selected an invalid response.`;
+		}
+		else if (lang === "es") {
+			return `Seleccionó una respuesta no válida.`;
+		}
+		else if (lang === "ru") {
+			return `Вы выбрали неправильный ответ.`;
+		}
+		else if (lang === "de") {
+			return `Sie haben eine ungültige Antwort ausgewählt.`;
+		}
+		else if (lang === "pt") {
+			return `Você selecionou uma resposta inválida.`;
+		}
+		else {
+			return `You selected an invalid response.`;
+		}			
+	}							
+
 //-----END TRANSLATIONS-----//
 
 					if (interaction.user.id != menuUserID) {
@@ -166,8 +208,8 @@ module.exports = {
 
 						const rdoDuplicateEmbed = new EmbedBuilder()
 								.setColor(0xFFAE00) //Orange 
-								.setTitle(`Please Try Again`)
-								.setDescription(`You selected an invalid response "No Channel Selected".\nPlease Try again. || (◕ᴥ◕ʋ) ||`)	
+								.setTitle(`${duplicateTitle()}`)
+								.setDescription(`${invalidResponse()} || ʕっ•ᴥ•ʔっ ||`)	
 						
 						await interaction.deferUpdate();
 						if (interaction.user.id === menuUserID) {

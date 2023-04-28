@@ -19,12 +19,101 @@ module.exports = {
 		let menuChannelID = menuChannelID01[1];
 				//console.log(`gtaStopMenu menuChannelID: ${menuChannelID}`)
 
+		fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
+			if (err) {console.log(`Error: ${err}`)} 
+			else {
+				let lang03 = data.split("lang:");
+				//console.log(`lang03.length: ${lang03.length}`);
+
+				let langArray = [];
+				for (i=2; i <= lang03.length - 1; i++) { //first will always be undefined
+					let lang02 = lang03[i].split(" -");
+					//console.log(`lang02 at ${i}: ${lang02}`);
+					
+					let lang01 = lang02[0];
+					//console.log(`lang01 at ${i}: ${lang01}`);
+
+					langArray.push(lang01);
+				}
+
+				//console.log(`langArray: ${langArray}`);
+
+				let guildID03 = data.split("guild:");
+				//console.log(`guildID03.length: ${guildID03.length}`);
+				let guildIDArray = [];
+				for (i=2; i <= guildID03.length - 1; i++) { //first two will always be undefined
+					let guildID02 = guildID03[i].split(" -");
+					//console.log(`lang02 at ${i}: ${lang02}`);
+					
+					let guildID01 = guildID02[0];
+					//console.log(`lang01 at ${i}: ${lang01}`);
+
+					guildIDArray.push(guildID01);
+				}
+
+				//console.log(`guildIDArray: ${guildIDArray}`);	
+
+				let lang = "";
+				for (i=0; i <= guildIDArray.length - 1; i++) {
+					//console.log(`guildIDArray at ${i}: ${guildIDArray[i]}`);
+					//console.log(`langArray at ${i}: ${langArray[i]}`);
+					//console.log(`interaction.guildID at ${i}: ${interaction.guild.id}`);
+
+					if (interaction.guild.id === guildIDArray[i]) {
+						lang += `${langArray[i]}`;
+					}
+				}
+
+				//console.log(`lang: ${lang}`);	
+
+			function duplicateTitle() {
+				if (lang === "en") {
+					return `Please Try Again`;
+				}
+				else if (lang === "es") {
+					return `Por favor, inténtalo de nuevo`;
+				}
+				else if (lang === "ru") {
+					return `Пожалуйста, попробуйте еще раз`;
+				}
+				else if (lang === "de") {
+					return `Inténtalo de nuevo`;
+				}
+				else if (lang === "pt") {
+					return `Por favor, tente novamente`;
+				}
+				else {
+					return `Please Try Again`;
+				}			
+			}
+		
+			function invalidResponse() {
+				if (lang === "en") {
+					return `You selected an invalid response.`;
+				}
+				else if (lang === "es") {
+					return `Seleccionó una respuesta no válida.`;
+				}
+				else if (lang === "ru") {
+					return `Вы выбрали неправильный ответ.`;
+				}
+				else if (lang === "de") {
+					return `Sie haben eine ungültige Antwort ausgewählt.`;
+				}
+				else if (lang === "pt") {
+					return `Você selecionou uma resposta inválida.`;
+				}
+				else {
+					return `You selected an invalid response.`;
+				}			
+			}						
+
 			if (menuChannelID.includes(`undefinedchannel`)) { //user selected an invalid response
 
 				const gtaDuplicateEmbed = new EmbedBuilder()
 						.setColor(0xFFAE00) //Orange 
-						.setTitle(`Please Try Again`)
-						.setDescription(`You selected an invalid response "No Channel Selected".\nPlease Try again. || (◕ᴥ◕ʋ) ||`)	
+						.setTitle(`${duplicateTitle()}`)
+						.setDescription(`${invalidResponse()} || (= ФェФ=) ||`)	
 				
 				await interaction.deferUpdate();
 				if (interaction.user.id === menuUserID) {
@@ -50,52 +139,6 @@ module.exports = {
 									throw err;
 								}
 								else {
-									fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
-										if (err) {console.log(`Error: ${err}`)} 
-										else {
-											let lang03 = data.split("lang:");
-											//console.log(`lang03.length: ${lang03.length}`);
-						
-											let langArray = [];
-											for (i=2; i <= lang03.length - 1; i++) { //first will always be undefined
-												let lang02 = lang03[i].split(" -");
-												//console.log(`lang02 at ${i}: ${lang02}`);
-												
-												let lang01 = lang02[0];
-												//console.log(`lang01 at ${i}: ${lang01}`);
-						
-												langArray.push(lang01);
-											}
-						
-											//console.log(`langArray: ${langArray}`);
-						
-											let guildID03 = data.split("guild:");
-											//console.log(`guildID03.length: ${guildID03.length}`);
-											let guildIDArray = [];
-											for (i=2; i <= guildID03.length - 1; i++) { //first two will always be undefined
-												let guildID02 = guildID03[i].split(" -");
-												//console.log(`lang02 at ${i}: ${lang02}`);
-												
-												let guildID01 = guildID02[0];
-												//console.log(`lang01 at ${i}: ${lang01}`);
-						
-												guildIDArray.push(guildID01);
-											}
-						
-											//console.log(`guildIDArray: ${guildIDArray}`);	
-						
-											let lang = "";
-											for (i=0; i <= guildIDArray.length - 1; i++) {
-												//console.log(`guildIDArray at ${i}: ${guildIDArray[i]}`);
-												//console.log(`langArray at ${i}: ${langArray[i]}`);
-												//console.log(`interaction.guildID at ${i}: ${interaction.guild.id}`);
-						
-												if (interaction.guild.id === guildIDArray[i]) {
-													lang += `${langArray[i]}`;
-												}
-											}
-						
-											//console.log(`lang: ${lang}`);	
 
 				function success() {
 					if (lang === "en") {
@@ -247,16 +290,15 @@ module.exports = {
 					interaction.editReply({components: [expiredButton]});
 				}, (60000 * 5))											
 
-				}}); //end fs.readFile for LANGDataBase.txt
-			} //end if button is gtaRemove
-			}); //end fs:writeFile to remove channel from autoposts
+		}}); //end fs:writeFile to remove channel from autoposts
 	}); //end fs:readFile GTADataBase.txt	
+
+	} //end if button is gtaRemove - not undefinedchannel
+
+	}}); //end fs.readFile for LANGDataBase.txt
 			
 		}// end if interaction.customId === 'gtaStopMenu'
 		
-	
-
-	} //end if interaction ID is gta StopMenu
 	
 	},
 };

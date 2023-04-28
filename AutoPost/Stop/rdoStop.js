@@ -170,6 +170,48 @@ module.exports = {
 			return `These buttons are not for you.`;
 		}				
 	}	
+
+				function selectChannel() {
+					if (lang === "en") {
+						return `Select A Channel`;
+					}
+					else if (lang === "es") {
+						return `Elige un canal`;
+					}
+					else if (lang === "ru") {
+						return `Выберите канал`;
+					}
+					else if (lang === "de") {
+						return `Wählen Sie einen Kanal aus`;
+					}
+					else if (lang === "pt") {
+						return `Escolha um canal`;
+					}
+					else {
+						return `Select A Channel`;
+					}						
+				}
+
+				function noChannel() {
+					if (lang === "en") {
+						return `No Channel Selected`;
+					}
+					else if (lang === "es") {
+						return `Ningún canal elegido`;
+					}
+					else if (lang === "ru") {
+						return `Канал не выбран`;
+					}
+					else if (lang === "de") {
+						return `Kein Kanal ausgewählt`;
+					}
+					else if (lang === "pt") {
+						return `Nenhum canal escolhido`;
+					}
+					else {
+						return `No Channel Selected`;
+					}						
+				}						
 					
 //-----END TRANSLATIONS-----//				
 			
@@ -185,10 +227,10 @@ module.exports = {
 			    .addComponents(
 			        new StringSelectMenuBuilder()
 			        .setCustomId(`rdoStopMenu - u:${interaction.user.id} - c:undefinedchannel`)
-			        .setPlaceholder('Select a Channel')
+			        .setPlaceholder(`${selectChannel()}`)
 			        .addOptions([{
-			            label: `No Channel Selected`,
-			            description: 'No Channel Selected',
+			            label: `${noChannel()}`,
+			            description: `${noChannel()}`,
 			            value: `rdoStopMenu - u:${interaction.user.id} - c:undefinedchannel`,
 			        }])
 			    )
