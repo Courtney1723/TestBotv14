@@ -77,7 +77,7 @@ module.exports = {
 				return `мышление...`;
 			}
 			else if (lang === "de") {
-				return `Denken...`;
+				return `Ich denke...`;
 			}
 			else if (lang === "pt") {
 				return `Pensamento...`;
@@ -148,26 +148,50 @@ module.exports = {
 			else {
 				return `Go Back`;
 			}			
-		}					
+		}		
 
-	const thinkingButtons = new ActionRowBuilder()
-		.addComponents(
-				new ButtonBuilder()
-						.setCustomId(`gtaTest - ${buttonUserID}`)
-						.setLabel(`${testGTAButtonString()}`)
-						.setStyle(ButtonStyle.Success),
-				new ButtonBuilder()
-						.setCustomId(`thinking - ${buttonUserID}`)
-						.setLabel(`${thinking()}`)
-						.setStyle(ButtonStyle.Danger)
-						.setDisabled(true),						
-				new ButtonBuilder()
-						.setCustomId(`confirmback - ${buttonUserID}`)
-						.setLabel(`${backButtonString()}`)
-						.setStyle(ButtonStyle.Secondary),
-		);						
+//BEGIN THINKING BUTTONS					
+	fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
+		if (err) {console.log(`Error: ${err}`)} 
+		else {		
+			
+			var gtaChannelIds = [];
+			interaction.guild.channels.cache.forEach(channel => {
+				if (data.includes(channel.id)) {
+					gtaChannelIds.push(channel.id);
+				}
+			});
+			//console.log(`rdoChannelIds: ${rdoChannelIds}`);
+
+			gtaDisabled = false;
+			if (gtaChannelIds[0] === undefined) {
+				gtaDisabled = true;
+			}						
+
+			const thinkingButtons = new ActionRowBuilder()
+				.addComponents(
+						new ButtonBuilder()
+								.setCustomId(`gtaTest - ${buttonUserID}`)
+								.setLabel(`${testGTAButtonString()}`)
+								.setStyle(ButtonStyle.Success)
+								.setDisabled(gtaDisabled),
+						new ButtonBuilder()
+								.setCustomId(`thinking - ${buttonUserID}`)
+								.setLabel(`${thinking()}`)
+								.setStyle(ButtonStyle.Danger)
+								.setDisabled(true),						
+						new ButtonBuilder()
+								.setCustomId(`confirmback - ${buttonUserID}`)
+								.setLabel(`${backButtonString()}`)
+								.setStyle(ButtonStyle.Secondary),
+				);						
 					
-interaction.editReply({ components: [thinkingButtons], ephemeral: true }).catch(err => console.log(`thinkingButtons Error: ${err.stack}`));						
+interaction.editReply({ components: [thinkingButtons], ephemeral: true }).catch(err => console.log(`thinkingButtons Error: ${err.stack}`));				
+
+				}}); //end fs.readFile for RDODataBase.txt
+
+
+//END THINKING BUTTONS											
 
 			fs.readFile('./RDODataBase.txt', 'utf8', async function (err, data) {
 			  if (err) {console.log(`Error: ${err}`)} 
@@ -325,12 +349,10 @@ let rdoLinkTitles002 = rdoLinkTitles.split("||");
 
 let rdoLinkFormatted = rdoString;
 for (m = 0; m <= rdoLinks002.length - 1; m++) { // keep - 2; the last element will always be blank
-if (m != 9) { //FIXME - remove next month
 		rdoLinkFormatted = rdoLinkFormatted.replace(/<a.*?a>/, `[${rdoLinkTitles002[m]}](${rdoLinks002[m]})`); //replaces each link with proper discord formatted link
 		//console.log(`rdoLinkFormatted at ${m}: ${rdoLinkFormatted}`);
 		//console.log(`rdoLinkTitles002 at ${m}: ${rdoLinkTitles002[m]}`);
 		//console.log(`rdoLinks002 at ${m}: ${rdoLinks002[m]}`);
-	}
 }
 //console.log(`rdoLinkFormatted: ${rdoLinkFormatted}`);
 //--------------------END formatting for links--------------------//
@@ -1051,16 +1073,33 @@ function permission() {
 		});
 		//console.log(`gtaChannelIds: ${gtaChannelIds}`);	
 
+		var gtaChannelIds = [];
+		fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
+			if (err) {console.log(`Error: ${err}`)} 
+			else {
+				interaction.guild.channels.cache.forEach(channel => {
+					if (data.includes(channel.id)) {
+						gtaChannelIds.push(channel.id);
+					}
+				});
+		//console.log(`rdoChannelIds: ${rdoChannelIds}`);
+
+		gtaDisabled = false;
+		if (gtaChannelIds[0] === undefined) {
+			gtaDisabled = true;
+		}						
+
 		const confirmButtons = new ActionRowBuilder()
 			.addComponents(
 			    new ButtonBuilder()
 			        .setCustomId(`gtaTest - ${buttonUserID}`)
 			        .setLabel(`${testGTAButtonString()}`)
-			        .setStyle(ButtonStyle.Success),	
+			        .setStyle(ButtonStyle.Success)
+							.setDisabled(gtaDisabled),	
 			    new ButtonBuilder()
 			        .setCustomId(`rdoTest - ${buttonUserID}`)
 			        .setLabel(`${testRDOButtonString()}`)
-			        .setStyle(ButtonStyle.Danger),			
+			        .setStyle(ButtonStyle.Danger),		
 			    new ButtonBuilder()
 			        .setCustomId(`confirmback - ${buttonUserID}`)
 			        .setLabel(`${backButtonString()}`)
@@ -1105,7 +1144,8 @@ function permission() {
 			await interaction.followUp({ content: `There was an error executing this button.`, ephemeral: true });
 			await interaction.editReply({ components: [confirmButtonsMissingPermission], ephemeral: true }).catch(err => console.log(`thinkingButtons Error: ${err.stack}`));			
 		} //end checking for permissions	
-
+				
+		}}); //end fs.readFile for GTADataBase.txt
 		}}); //end fs.readFile for RDODataBase.txt
 
 			function expiredDesc() {
