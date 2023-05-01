@@ -15,7 +15,7 @@ const expiredButton = new ActionRowBuilder()
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('language')
-		.setDescription('Change Language')
+		.setDescription('Language | Idioma | Язык | Sprache')
 		.setDMPermission(false),
 	async execute(interaction) {
 
