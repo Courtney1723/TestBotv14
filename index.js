@@ -247,21 +247,6 @@ for (const file of StopFiles) {
 	}
 }
 
-//Access Configure files
-const ConfigurePath = path.join(__dirname, 'AutoPost/Configure');
-const ConfigureFiles = fs.readdirSync(ConfigurePath).filter(file => file.endsWith('.js'));
-
-for (const file of ConfigureFiles) {
-
-	const filePath = path.join(ConfigurePath, file);
-	const component = require(filePath);
-	if (component.once) {
-		client.once(component.name, (...args) => component.execute(...args));
-	} else {
-		client.on(component.name, (...args) => component.execute(...args));
-	}
-}
-
 //Access Confirm files
 const ConfirmPath = path.join(__dirname, 'AutoPost/Confirm');
 const ConfirmFiles = fs.readdirSync(ConfirmPath).filter(file => file.endsWith('.js'));
