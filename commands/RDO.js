@@ -282,7 +282,7 @@ for (i = 0; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 						rdoTitleString += `${Titles2[j].charAt(0)}${Titles2[j].toLowerCase().slice(1)} `; 
 					}
 	//returns all caps if title is RDO, RDO$, or XP							
-					else if ( (Titles2[j].includes("RDO")) || (Titles2[j] === "XP") || (Titles2[j] === "RP") || (Titles2[j] === "GT")  || (Titles2[j] === "LD") || (Titles2[j] === "LSPD") || (Titles2[j] === "HSW") ) { 
+					else if ( (Titles2[j].includes("RDO")) || (Titles2[j].includes("XP")) || (Titles2[j] === "RP") || (Titles2[j] === "GT")  || (Titles2[j] === "LD") || (Titles2[j] === "LSPD") || (Titles2[j] === "HSW") ) { 
 							rdoTitleString += `${Titles2[j]} `;
 					}
 	//returns all lowercase if not a title word					
@@ -305,15 +305,15 @@ for (i = 0; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 //--------------------END capitalization Function-----------------//		
 		
 	let RDO_Bonus = RDOBonuses[1];
-		console.log(`RDO_Title at ${i}: ${RDO_Title}`);
-		console.log(`RDO_Bonus at ${i}: ${RDO_Bonus}`);
+		//console.log(`RDO_Title at ${i}: ${RDO_Title}`);
+		//console.log(`RDO_Bonus at ${i}: ${RDO_Bonus}`);
 	
 //-----BEGIN populating rdoFinalString01 -----//
 		if (i === 0) {
 			let rdoParas = RDO_Title.split("<p>");
 			for (c = 1; c <= rdoParas.length - 1; c++) {
 				
-				rdoFinalString01 += `• ${rdoParas[c].charAt(0).toUpperCase()}${rdoParas[c].substring(1)}\n`;
+				rdoFinalString01 += `• ${rdoParas[c].charAt(0).toUpperCase()}${rdoParas[c].substring(1)}\n\n`;
 			}
 		}
 		if (RDO_Bonus !== undefined) {
@@ -323,7 +323,7 @@ for (i = 0; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 				(RDO_Title.includes("Скидки")) || 
 				(RDO_Title.includes("Rabatte")) || 
 				(RDO_Title.includes("Descontos")) ) { 
-					rdoFinalString01 += `**${RDO_Title}\n**${RDO_Bonus}\n\n`;
+					rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
 			}	
 			else if ( 
 				(RDO_Title.includes("2x")) || //German, and Portuguese use numbers 
