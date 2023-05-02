@@ -95,57 +95,6 @@ var cron = require('node-cron'); //https://github.com/node-cron/node-cron
 		} // end rdoRemove()
 		rdoRemove();
 		setInterval(rdoRemove, 18e5); //every 30 minutes
-
-
-		
-		//The bot was removed from a guild with roles configured
-		function roleRemove() {
-		fs.readFile('./rolesDataBase.txt', 'utf8', async function (err, data) {
- 			if (err) {console.log(`Error: ${err}`)} //If an error, console.log
-				const GuildIDs = client.guilds.cache.map(guild => guild.id);
-				const roleGuildIDs01 = data.split("guild:");
-				const adminIDs01 = data.split("admin:");
-				const roleIDs01 = data.split("role:");
-				const guildIdString = GuildIDs.toString();
-					//console.log(`guildIdString: ${guildIdString}`); 
-
-				let newData = data;
-				for (i = 2; i <= roleGuildIDs01.length - 1; i++) {
-					const guildID01 = roleGuildIDs01[i].split(" ");
-					const guildID = guildID01[0];
-					const adminID01 = adminIDs01[i].split(" ");
-					const adminID = adminID01[0];	
-					const roleID01 = roleIDs01[i].split(" ");
-					const roleID = roleID01[0];		
-					// console.log(`guildID at ${i}: ${guildID} - adminID: ${adminID} - roleID: ${roleID}`);
-					// console.log(`guildIdString.includes(guildID)? ${guildIdString.includes(guildID)}`);
-					if (!guildIdString.includes(guildID)) {//if a guild id in rolesDataBase.txt is not a guild that the bot is in, delete subscription
-							const find = `guild:${guildID} - admin:${adminID} - role:${roleID} - \n`;
-							const replace = "";
-							newData = newData.replace(new RegExp(find), replace);
-							console.log(`The bot was removed from ${guildID} - admin:${adminID} - role:${roleID} still subscribed.`);
-					}
-				} //end i loop
-				// console.log(`data at ${i}: ${data}`);
-				// console.log(`\nnewData at ${i}: ${newData}\n`);
-				// console.log(`data !== newData? ${data !== newData}`);
-
-					if (data !== newData) { //the bot was kicked from a guild that still had a role subscribed
-				 //Replaces the rolesDataBase.txt file with only subscribed guilds
-				 fs.writeFile(`./rolesDataBase.txt`,`${newData}`, err => {
-							if (err) {
-									console.error(err)
-									return
-									}					
-				 }); //end fs.writeFile to change the admin privileges		
-					}
-			
-			}); //END FS:READFILE rolesDataBase.txt		
-		}	//end of roleRemove()
-			roleRemove();
-			setInterval(roleRemove, 18e5); //every 30 minutes		
-		
-
 		
 		//The bot was removed from a guild with an alternate language 
 		function LANGRemove() {
