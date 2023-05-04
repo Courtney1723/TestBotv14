@@ -1,5 +1,6 @@
 const { Client, GatewayIntentBits, PermissionsBitField, Collection, Partials, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } = require('discord.js');
-const phantom = require('phantom'); //https://github.com/amir20/phantomjs-node
+const phantom = require('phantom'); //https://github.com/amir20/phantomjs-nodz
+const LANG = require('../../events/LANG.js');
 		let errorText = `There was an error while executing this command!\nThe error has been sent to the developer and it will be fixed as soon as possible. \nIf the error persists you can try re-inviting the Rockstar Weekly bot by [clicking here](<${process.env.invite_link}>). \nReport the error by joining the Rockstar Weekly bot support server: [click here](<${process.env.support_link}>).`;
 
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
@@ -19,52 +20,8 @@ module.exports = {
 
 		await interaction.deferUpdate();		
 
-			fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
-			  if (err) {console.log(`Error: ${err}`)} 
-				else {
-					let lang03 = data.split("lang:");
-					//console.log(`lang03.length: ${lang03.length}`);
-
-					let langArray = [];
-					for (i=2; i <= lang03.length - 1; i++) { //first will always be undefined
-						let lang02 = lang03[i].split(" -");
-						//console.log(`lang02 at ${i}: ${lang02}`);
-						
-						let lang01 = lang02[0];
-						//console.log(`lang01 at ${i}: ${lang01}`);
-
-						langArray.push(lang01);
-					}
-
-					//console.log(`langArray: ${langArray}`);
-
-					let guildID03 = data.split("guild:");
-					//console.log(`guildID03.length: ${guildID03.length}`);
-					let guildIDArray = [];
-					for (i=2; i <= guildID03.length - 1; i++) { //first two will always be undefined
-						let guildID02 = guildID03[i].split(" -");
-						//console.log(`lang02 at ${i}: ${lang02}`);
-						
-						let guildID01 = guildID02[0];
-						//console.log(`lang01 at ${i}: ${lang01}`);
-
-						guildIDArray.push(guildID01);
-					}
-
-					//console.log(`guildIDArray: ${guildIDArray}`);	
-
-					let lang = "";
-					for (i=0; i <= guildIDArray.length - 1; i++) {
-						//console.log(`guildIDArray at ${i}: ${guildIDArray[i]}`);
-						//console.log(`langArray at ${i}: ${langArray[i]}`);
-						//console.log(`interaction.guildID at ${i}: ${interaction.guild.id}`);
-
-						if (interaction.guild.id === guildIDArray[i]) {
-							lang += `${langArray[i]}`;
-						}
-					}
-
-					//console.log(`lang: ${lang}`);
+		var lang = await LANG.LANG(interaction);
+		//console.log(`LANG:${await LANG.LANG(interaction)}`);				
 
 		function thinking() {
 			if (lang === "en") {
@@ -1217,7 +1174,6 @@ function permission() {
 			interaction.editReply({components: [expiredButton]});
 		}, (60000 * 5))	
 					
-		}}); //end fs.readFile for LANGDataBase.txt
 	}
 },
 
