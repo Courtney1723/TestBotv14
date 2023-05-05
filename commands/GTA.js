@@ -22,29 +22,12 @@ module.exports = {
 	async execute(interaction) {
 		await interaction.deferReply().catch(console.error);
 
-		var lang = await LANG.LANG(interaction);
-		//console.log(`LANG:${await LANG.LANG(interaction)}`);		
+		//var lang = await LANG.LANG(interaction);
+		//console.log(`LANG:${await LANG.LANG(interaction)}`);
 
-		function langDesc() {
-			if (lang === "") {
-				return `Latest GTA Online Bonuses`;
-			}
-			if (lang === "es") {
-				return `Bonificaciones de GTA Online`;
-			}
-			if (lang === "ru") {
-				return `Бонусы GTA Online`;
-			}				
-			if (lang === "de") {
-				return `Boni in GTA Online`;
-			}				
-			if (lang === "pt") {
-				return `Bônus no GTA Online`;
-			}								
-			else {
-				return `Latest GTA Online Bonuses`;
-			}
-		}
+		var LANG02 = interaction.locale.toString().split("-");
+		var lang = LANG02[0];
+		//console.log(`lang:${lang}`);		
 
 		let gtaURL = process.env.SOCIAL_URL_GTA2;
 
@@ -123,10 +106,14 @@ module.exports = {
 						//console.log(`gtaImage: ${gtaImage[0]}`);
 
 						let gtaDate02 = gtaHeader.split("class=\"date\">"); //gets the event date
-						//console.log(`${gtaDate01[1]}`);
 						let gtaDate01 = gtaDate02[1].split("<"); //cuts off the end of the date
 						let gtaDate = gtaDate01[0].replace(/&nbsp;/g, " ");
 						//console.log(`Date: ${gtaDate}\n`);	
+
+						let gtaTitleOG01 = gtaHeader.split("h1>");
+						let gtaTitleOG02 = gtaTitleOG01[1].split("<");
+						let gtaTitleOG = gtaTitleOG02[0];
+						//console.log(`gtaTitleOG:${gtaTitleOG}`);
 
 						let gtaString002 = gtaString01[1]; //Splits the header from the body
 						//console.log(`gtaString: ${gtaString002}`)
@@ -447,30 +434,8 @@ module.exports = {
 							.replace(/\n\n\n/g, "\n\n")
 						//console.log(`gtaFinalString: ${gtaFinalString}`); //gtaFinalString after HTML formatting
 						//console.log(`gtaFinalString.length: ${gtaFinalString.length}`);
-						
 
-						function gtaTitleString() {
-							if (lang === "en") {
-								return "GTA Online Bonuses:";
-							}
-							else if (lang === "es") {
-								return "Bonificaciones de GTA Online:";
-							}
-							else if (lang === "ru") {
-								return "Бонусы GTA Online:";
-							}
-							else if (lang === "de") {
-								return "Boni in GTA Online:";
-							}
-							else if (lang === "pt") {
-								return "Bônus no GTA Online:";
-							}
-							else {
-								return "GTA Online Bonuses:";
-							}
-						}
-
-						var constChars = (gtaDate.length + 2) + (gtaTitleString().length);
+						var constChars = (gtaDate.length + 2) + (gtaTitleOG.length);
 						function ellipsisFunction() {
 							if (gtaFinalString.length >= (4000 - constChars)) {
 								return "...";
@@ -572,7 +537,7 @@ module.exports = {
 
 						let gtaEmbed = new EmbedBuilder()
 							.setColor(0x00CD06) //Green
-							.setTitle(`${gtaTitleString()}`)
+							.setTitle(`${gtaTitleOG}`)
 							.setDescription(`${gtaDate}\n${gtaPost()}${gtaFooterMin()}${ellipsisFunction()}`)
 						let gtaEmbed2 = new EmbedBuilder()
 							.setColor(0x00CD06) //Green

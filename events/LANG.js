@@ -8,7 +8,10 @@ module.exports = {
 	LANG: async function(interaction) {
 
 		if (interaction.channel.type === ChannelType.DM) {
-			return "";
+			var LANG02 = interaction.locale.toString().split("-");
+			var lang = LANG02[0];
+			//console.log(`lang:${lang}`);			
+			return lang;
 		}
 		else {
 	
