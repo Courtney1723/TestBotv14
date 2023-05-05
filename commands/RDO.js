@@ -12,6 +12,12 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('rdo')
 		.setDescription('Latest Red Dead Online Bonuses')
+		.setDescriptionLocalizations({
+			"es-ES": 'Bonificaciones de Red Dead Online',
+			ru: 'Бонусы Red Dead Online',
+			de: 'Boni in Red Dead Online',
+			"pt-BR": 'Bônus no Red Dead Online',
+		})			
 		.setDMPermission(true),
 	async execute(interaction) {
 		await interaction.deferReply().catch(console.error);

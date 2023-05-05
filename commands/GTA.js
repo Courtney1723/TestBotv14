@@ -10,14 +10,41 @@ let errorEmbed = new EmbedBuilder()
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('gta')
+		.setName('gta')	
 		.setDescription('Latest GTA Online Bonuses')
+		.setDescriptionLocalizations({
+			"es-ES": 'Bonificaciones de GTA Online',
+			ru: 'Бонусы GTA Online',
+			de: 'Boni in GTA Online',
+			"pt-BR": 'Bônus no GTA Online',
+		})		
 		.setDMPermission(true),
 	async execute(interaction) {
 		await interaction.deferReply().catch(console.error);
 
 		var lang = await LANG.LANG(interaction);
 		//console.log(`LANG:${await LANG.LANG(interaction)}`);		
+
+		function langDesc() {
+			if (lang === "") {
+				return `Latest GTA Online Bonuses`;
+			}
+			if (lang === "es") {
+				return `Bonificaciones de GTA Online`;
+			}
+			if (lang === "ru") {
+				return `Бонусы GTA Online`;
+			}				
+			if (lang === "de") {
+				return `Boni in GTA Online`;
+			}				
+			if (lang === "pt") {
+				return `Bônus no GTA Online`;
+			}								
+			else {
+				return `Latest GTA Online Bonuses`;
+			}
+		}
 
 		let gtaURL = process.env.SOCIAL_URL_GTA2;
 

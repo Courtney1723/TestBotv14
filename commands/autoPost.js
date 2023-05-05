@@ -6,7 +6,19 @@ const { exec } = require('node:child_process');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('autopost')
+		.setNameLocalizations({
+			"es-ES": 'publicaciones-automáticas',
+			ru: 'автопубликации',
+			de: 'automatische-veröffentlichung',
+			"pt-BR": 'postagens-automáticas',
+		})		
 		.setDescription('Configure and Confirm Auto Post Settings')
+		.setDescriptionLocalizations({
+			"es-ES": 'Configuración de publicación automática',
+			ru: 'Настройка и подтверждение изменений автопубликации',
+			de: 'Einstellungen für die automatische Veröffentlichung',
+			"pt-BR": 'Configurações de Publicação Automática',
+		})
 		.setDMPermission(false),
 	async execute(interaction) {
 
