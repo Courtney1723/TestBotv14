@@ -17,6 +17,12 @@ module.exports = {
 			ru: 'Бонусы Red Dead Online',
 			de: 'Boni in Red Dead Online',
 			"pt-BR": 'Bônus no Red Dead Online',
+			"zh-CN": 'Red Dead 線上模式獎勵',
+			fr: 'Bonus dans Red Dead Online',
+			pl: 'Premie Red Dead Online',
+			it: 'Bonus di Red Dead Online',			
+			ja: '「レッド・デッド・オンライン」ボーナス',
+			ko: 'Red Dead 온라인 보너스',			
 		})			
 		.setDMPermission(true),
 	async execute(interaction) {
@@ -429,22 +435,40 @@ for (i = 0; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 						function rdoFooterMin() {
 							if (rdoFinalString.length < (4000 - constChars)) {
 								if (lang === "en") {
-									return `** [Click here](${url}) for more details**`;
+									return `** [More details](${url})**`;
 								}
 								else if (lang === "es") {
-									return `** [Haga clic aquí](${url}) para más detalles**`;
+									return `** [Más detalles](${url})**`;
 								}
 								else if (lang === "ru") {
-									return `** [нажмите здесь](${url}) для получения более подробной информации**`;
+									return `** [Подробнее](${url})**`;
 								}
 								else if (lang === "de") {
-									return `** [Klicken Sie hier](${url}) für weitere Details**`;
+									return `** [Mehr Details]](${url})**`;
 								}
 								else if (lang === "pt") {
-									return `** [Clique aqui](${url}) para mais detalhes**`;
+									return `** [Mais detalhes](${url})**`;
 								}
+								else if (lang === "fr") {
+									return `** [Plus de détails](${url})**`;
+								}
+								else if (lang === "it") {
+									return `** [Più dettagli](${url})**`;
+								}			
+								else if (lang === "zh") {
+									return `** [更多細節](${url})**`;
+								}			
+								else if (lang === "pl") {
+									return `** [Więcej szczegółów](${url})**`;
+								}	
+								else if (lang === "ko") {
+									return `** [자세한 내용은](${url})**`;
+								}		
+								else if (lang === "ja") {
+									return `** [詳細](${url})**`;
+								}										
 								else {
-									return `** [Click here](${url}) for more details**`;
+									return `** [More Details](${url})**`;
 								}
 							} else {
 								return "";
@@ -453,22 +477,40 @@ for (i = 0; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 						function rdoFooterMax() {
 							if (rdoFinalString.length >= (4000 - constChars)) {
 								if (lang === "en") {
-									return `** [Click here](${url}) for more details**`;
+									return `** [More details](${url})**`;
 								}
 								else if (lang === "es") {
-									return `** [Haga clic aquí](${url}) para más detalles**`;
+									return `** [Más detalles](${url})**`;
 								}
 								else if (lang === "ru") {
-									return `** [Hажмите здесь](${url}) для получения более подробной информации**`;
+									return `** [Подробнее](${url})**`;
 								}
 								else if (lang === "de") {
-									return `** [Klicken Sie hier](${url}) für weitere Details**`;
+									return `** [Mehr Details]](${url})**`;
 								}
 								else if (lang === "pt") {
-									return `** [Clique aqui](${url}) para mais detalhes**`;
+									return `** [Mais detalhes](${url})**`;
 								}
+								else if (lang === "fr") {
+									return `** [Plus de détails](${url})**`;
+								}
+								else if (lang === "it") {
+									return `** [Più dettagli](${url})**`;
+								}			
+								else if (lang === "zh") {
+									return `** [更多細節](${url})**`;
+								}			
+								else if (lang === "pl") {
+									return `** [Więcej szczegółów](${url})**`;
+								}	
+								else if (lang === "ko") {
+									return `** [자세한 내용은](${url})**`;
+								}		
+								else if (lang === "ja") {
+									return `** [詳細](${url})**`;
+								}										
 								else {
-									return `** [Click here](${url}) for more details**`;
+									return `** [More Details](${url})**`;
 								}
 							} else {
 								return "";

@@ -21,8 +21,15 @@ module.exports = {
 			ru: 'язык',
 			de: 'sprache',
 			"pt-BR": 'idioma',
-		})			
-		.setDescription('Language | Idioma | Язык | Sprache')
+			pl: 'język',
+			fr: 'langue',
+			it: 'lingua',
+			"zh-CN": '語言',
+			"zh-TW": '語言',
+			ja: '言語',
+			ko: '언어',	
+		})
+		.setDescription('Language | Idioma | Язык | Sprache | Język | Langue | Lingua | 語言 | 言語 | 언어')
 		.setDMPermission(false),
 	async execute(interaction) {
 
@@ -45,6 +52,24 @@ module.exports = {
 				else if (lang === "pt") {
 					return `Configurações de idioma`;
 				}
+				else if (lang === "pl") {
+					return `Ustawienia języka`;
+				}
+				else if (lang === "fr") {
+					return `Paramètres de langue`;
+				}	
+				else if (lang === "it") {
+					return `Impostazioni della lingua`;
+				}	
+				else if (lang === "zh") {
+					return `語言設定`;
+				}		
+				else if (lang === "ja") {
+					return `言語設定`;
+				}			
+				else if (lang === "ko") {
+					return `언어 설정`;
+				}					
 				else {
 					return `Language Settings`;
 				}				
@@ -66,6 +91,24 @@ module.exports = {
 				else if (lang === "pt") {
 					return `Seu idioma atual é o português.`;
 				}
+				else if (lang === "pl") {
+					return `Twój obecny język to polski.`;
+				}		
+				else if (lang === "fr") {
+					return `Votre langue actuelle est le français.`;
+				}	
+				else if (lang === "it") {
+					return `La tua lingua attuale è l'italiano.`;
+				}	
+				else if (lang === "zh") {
+					return `您當前的語言是中文`;
+				}	
+				else if (lang === "ja") {
+					return `あなたの現在の言語は日本語です。`;
+				}	
+				else if (lang === "ko") {
+					return `현재 언어는 한국어입니다.`;
+				}						
 				else {
 					return `Your current language is English.`;
 				}				
@@ -305,7 +348,7 @@ module.exports = {
 				.setDescription(`${currentLanguage()}\n${languagesDesc()}`)
 				.setFooter({text: `${footerText()}`, iconURL: process.env.logo_link })		
 
-			const initialButtons = new ActionRowBuilder()
+			const languageButtons = new ActionRowBuilder()
 				.addComponents(				
 					new ButtonBuilder()
 						.setCustomId(`${languageNames01ID()} - ${interaction.user.id}`)
@@ -325,7 +368,7 @@ module.exports = {
 						.setStyle(ButtonStyle.Success),						
 					);	
 
-					interaction.reply({ embeds: [initialEmbed], components:[initialButtons] });		
+					interaction.reply({ embeds: [languageEmbed], components:[languageButtons] });		
 
 		setTimeout(() => {
 			interaction.editReply({components: [expiredButton]}).catch(err => {console.log(`language command expiredButton Error: ${err.stack}`)});
