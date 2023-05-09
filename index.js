@@ -3,6 +3,7 @@ global.client = new Client({
 	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions],
 	partials: [Partials.Message, Partials.Channel, Partials.Reaction],
 });
+global.supportedLanguages = ["en", "es", "pt", "ru", "de", "pl", "fr", "it", "zh", "ja", "ko"];
 const { exec } = require('node:child_process');
 const keepAlive = require('./server');
 var cron = require('node-cron'); //https://github.com/node-cron/node-cron
@@ -188,20 +189,6 @@ for (const file of eventFiles) {
 	}
 }
 
-//Access Language files
-const languagePath = path.join(__dirname, 'language');
-const languageFiles = fs.readdirSync(languagePath).filter(file => file.endsWith('.js'));
-
-for (const file of languageFiles) {
-	const filePath = path.join(languagePath, file);
-	const language = require(filePath);
-	if (language.once) {
-		client.once(language.name, (...args) => language.execute(...args));
-	} else {
-		client.on(language.name, (...args) => language.execute(...args));
-	}
-}
-
 //Access Component files
 const componentsPath = path.join(__dirname, 'components');
 const componentsFiles = fs.readdirSync(componentsPath).filter(file => file.endsWith('.js'));
@@ -269,6 +256,21 @@ const backButtonFiles = fs.readdirSync(backButtonPath).filter(file => file.endsW
 for (const file of backButtonFiles) {
 
 	const filePath = path.join(backButtonPath, file);
+	const component = require(filePath);
+	if (component.once) {
+		client.once(component.name, (...args) => component.execute(...args));
+	} else {
+		client.on(component.name, (...args) => component.execute(...args));
+	}
+}
+
+//Access Autopost language files
+const autoLanguagePath = path.join(__dirname, 'AutoPost/Language');
+const autoLanguageFiles = fs.readdirSync(autoLanguagePath).filter(file => file.endsWith('.js'));
+
+for (const file of autoLanguageFiles) {
+
+	const filePath = path.join(autoLanguagePath, file);
 	const component = require(filePath);
 	if (component.once) {
 		client.once(component.name, (...args) => component.execute(...args));

@@ -1,6 +1,6 @@
 const { Client, GatewayIntentBits, Partials,  SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, PermissionsBitField } = require('discord.js');
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
-const LANG = require('../events/LANG.js');
+const LANG01 = require('../events/LANG.js');
 const { exec } = require('node:child_process');
 
 module.exports = {
@@ -21,11 +21,18 @@ module.exports = {
 		})
 		.setDMPermission(false),
 	async execute(interaction) {
+		await interaction.deferReply().catch(console.error);
 
 //--BEGIN TRANSLATIONS--//		
 
-		var lang = await LANG.LANG(interaction);
-		//console.log(`LANG:${await LANG.LANG(interaction)}`);	
+		//stored language
+		var lang = await LANG01.LANG(interaction);
+		//console.log(`LANG:${await LANG.LANG(interaction)}`);		
+
+		//user language
+		var LANG02 = interaction.locale.toString().split("-");
+		var LANG = LANG02[0];
+		//console.log(`lang:${lang}`);	
 
 		function autoPostTitle() {
 			if (lang === "en") {
@@ -142,6 +149,42 @@ Click **\'Confirm\'** to view and test current settings.`;
 			else {
 				return `Stop`;
 			}
+		}	
+
+		function language() {
+			if (lang === "en") {
+				return `Language`;
+			}
+			if (lang === ["es", "pt"]) {
+				return `Idioma`
+			}
+			if (lang === "ru") {
+				return `Язык`;
+			}
+			if (lang === "de") {
+				return `Sprache`;	
+			}
+			if (lang === "pl") {
+				return `Język`;
+			}
+			if (lang === "fr") {
+				return `Langue`;
+			}
+			if (lang === "it") {
+				return `Lingua`;
+			}
+			if (lang === "zh") {
+				retuen `語言`;
+			}
+			if (lang === "ja") {
+				return `言語`;
+			}
+			if (lang === "ko") {
+				return `언어`;
+			}
+			else {
+				return `Language`;
+			}
 		}
 
 		function confirm() {
@@ -163,7 +206,85 @@ Click **\'Confirm\'** to view and test current settings.`;
 			else {
 				return `Confirm`;
 			}			
+		}	
+
+	function langDuplicateTitle() {
+		if (LANG === "en") {
+			return `Change the server langage to English?`;
+		}
+		if (LANG === "es") {
+			return `¿Cambiar el idioma del servidor a español?`;
+		}
+		if (LANG === "pt") {
+			return `Alterar o idioma do servidor para português?`;
+		}				
+		if (LANG === "ru") {
+			return `Сменить язык сервера на русский?`;
 		}		
+		if (LANG === "de") {
+			return `Die Serversprache auf Deutsch ändern?`;
+		}
+		if (LANG === "pl") {
+			return `Zmienić język serwera na polski?`;
+		}
+		if (LANG === "fr") {
+			return `Changer la langue du serveur en français ?`;
+		}
+		if (LANG === "it") {
+			return `Cambiare la lingua del server in italiano?`;
+		}
+		if (LANG === "zh") {
+			return `把服務器語言改成中文？`;
+		}
+		if (LANG === "ja") {
+			return `サーバーの言語を日本語に変更しますか?`;
+		}
+		if (LANG === "ko") {
+			return `서버 언어를 한국어로 변경하시겠습니까?`;
+		}
+		else {
+			return `Change the server langage to English?`;
+		}
+	}
+	
+	function yes() {
+		if (LANG === "en") {
+			return `Yes`;
+		}
+		if (LANG === "es") {
+			return `Sí`;
+		}	
+		if (LANG === "pt") {
+			return `Sim`;
+		}
+		if (LANG === "ru") {
+			return `Да`;
+		}
+		if (LANG === "de") {
+			return `Ja`;
+		}
+		if (LANG === "pl") {
+			return `Tak`;
+		}
+		if (LANG === "fr") {
+			return `Oui`;
+		}
+		if (LANG === "it") {
+			return `Sì`;
+		}
+		if (LANG === "zh") {
+			return `是的`;
+		}
+		if (LANG === "ja") {
+			return `はい`;
+		}
+		if (LANG === "ko") {
+			return `예`;
+		}
+		else {
+			return `Yes`;
+		}							
+	}			
 
 //--END TRANSLATIONS--//						
 
@@ -190,7 +311,29 @@ Click **\'Confirm\'** to view and test current settings.`;
 			);									
 
 			//Initial Embed + Buttons (start, stop, confirm, configure)
-			interaction.reply({ embeds: [initialEmbed], components:[initialButtons] });
+			interaction.editReply({ embeds: [initialEmbed], components:[initialButtons] });
+		
+	//BEGIN ADDING A LANGAUGE
+				console.log(`lang:${lang} - LANG:${LANG} - supported?:${(supportedLanguages.indexOf(LANG) !== -1)}`);
+				if ( (lang !== LANG) && (supportedLanguages.indexOf(LANG) !== -1) && (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) ) { //if the stored language is not the same language as the user language && user language is supported && user is an admin
+
+						const langDuplicateEmbed = new EmbedBuilder()
+								.setColor(0xFFAE00) //orange 
+								.setTitle(`${langDuplicateTitle()}`)
+
+						const langDuplicateButton = new ActionRowBuilder()
+							.addComponents(
+								new ButtonBuilder()
+									.setCustomId(`yes - c:${interaction.channel.id}`)
+									.setLabel(`${yes()}`)
+									.setStyle(ButtonStyle.Secondary)
+							);
+
+						interaction.followUp({ embeds: [langDuplicateEmbed], components: [langDuplicateButton], ephemeral: true }).catch(err => console.log(`langDupEmbed error: ${err}`));
+					
+				}; 
+	//END ADDING A LANGAUGE
+						
 
 			function expiredDesc() {
 				if (lang === "en") {
