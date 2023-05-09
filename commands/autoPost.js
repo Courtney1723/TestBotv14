@@ -11,6 +11,12 @@ module.exports = {
 			ru: 'автопубликации',
 			de: 'automatische-veröffentlichung',
 			"pt-BR": 'postagens-automáticas',
+			pl: 'zautomatyzowane-wiadomości',
+			fr: 'messages-automatisés',
+			it: 'messaggi-automatici',
+			"zh-CN": '自動消息',
+			ja: '自動メッセージ',
+			ko: '자동화된-메시지',	
 		})		
 		.setDescription('Configure and Confirm Auto Post Settings')
 		.setDescriptionLocalizations({
@@ -18,6 +24,12 @@ module.exports = {
 			ru: 'Настройка и подтверждение изменений автопубликации',
 			de: 'Einstellungen für die automatische Veröffentlichung',
 			"pt-BR": 'Configurações de Publicação Automática',
+			pl: 'Automatyczne ustawienia wiadomości',
+			fr: 'Paramètres des messages automatisés',
+			it: 'Impostazioni dei messaggi automatici',
+			"zh-CN": '自動消息設置',
+			ja: '自動メッセージ設定',
+			ko: '자동 메시지 설정',			
 		})
 		.setDMPermission(false),
 	async execute(interaction) {
@@ -39,48 +51,96 @@ module.exports = {
 				return `Auto Post Settings`;
 			}
 			else if (lang === "es") {
-				return `Configuración de publicación automática`;
-			}
-			else if (lang === "ru") {
-				return `Настройка и подтверждение изменений автопубликации.`;
-			}
-			else if (lang === "de") {
-				return `Einstellungen für die automatische Veröffentlichung`;
+				return `Configuración automática de publicaciones`;
 			}
 			else if (lang === "pt") {
-				return `Configurações de Publicação Automática`;
+				return `Configurações de mensagens automáticas`;
+			}				
+			else if (lang === "ru") {
+				return `автоматические настройки сообщений`;
 			}
+			else if (lang === "de") {
+				return `Automatische Nachrichteneinstellungen`;
+			}
+			else if (lang === "pl") {
+				return `Automatyczne ustawienia wiadomości`;
+			}		
+			else if (lang === "fr") {
+				return `Paramètres des messages automatisés`;
+			}	
+			else if (lang === "it") {
+				return `Impostazioni dei messaggi automatici`;
+			}			
+			else if (lang === "zh") {
+				return `自動消息設置`;
+			}		
+			else if (lang === "ja") {
+				return `自動メッセージ設定`;
+			}		
+			else if (lang === "ko") {
+				return `자동 메시지 설정`;
+			}						
 			else {
-				return `Auto Post Settings`;
+			  return `Auto Post Settings`;
 			}			
 		}	
 
 		function autoPostDesc() {
 			if (lang === "en") {
-				return `Click **Start** to add an auto post channel.
-Click **Stop** to remove an auto post channel.
-Click **Confirm** to view and test current settings.`;
+				return `Click **${start()}** to add an auto post channel.
+Click **${stop()}** to remove an auto post channel.
+Click **${confirm()}** to view and test current settings.`;
 			}
 			else if (lang === "es") {
-				return `Haga clic en **Empezar** para agregar un canal.
-Haga clic en **Detener** para quitar un canal.
-Haga clic en **Confirmar** para ver y probar la configuración.`;
-			}
-			else if (lang === "ru") {
-				return `Нажмите **Старт**, чтобы добавить канал.
-Нажмите **Стоп**, чтобы исключить канал из автоматической публикации.
-Нажмите **Подтвердить**, для просмотра и подтверждения настроек.`;
-			}
-			else if (lang === "de") {
-				return `Klicken Sie auf **Anfangen** so fügen Sie einen Kanal hinzu.
-Klicken Sie auf **Aufhören** so entfernen Sie einen Kanal.
-Klicken Sie auf **Bestätigen** um die aktuellen Einstellungen anzuzeigen und zu testen.`;
+				return `Haga clic en **${start()}** para agregar un canal.
+Haga clic en **${stop()}** para quitar un canal.
+Haga clic en **${confirm()}** para ver y probar la configuración.`;
 			}
 			else if (lang === "pt") {
-				return `Clique em **Começar** para adicionar um canal.
-Clique em **Parar** para remover um canal.
-Clique em **Confirmar** para exibir e testar as configurações atuais.`;
+				return `Clique em **${start()}** para adicionar um canal.
+Clique em **${stop()}** para remover um canal.
+Clique em **${confirm()}** para exibir e testar as configurações atuais.`;
+			}				
+			else if (lang === "ru") {
+				return `Нажмите **${start()}**, чтобы добавить канал.
+Нажмите **${stop()}**, чтобы исключить канал из автоматической публикации.
+Нажмите **${confirm()}**, для просмотра и подтверждения настроек.`;
 			}
+			else if (lang === "de") {
+				return `Klicken Sie auf **${start()}** so fügen Sie einen Kanal hinzu.
+Klicken Sie auf **${stop()}** so entfernen Sie einen Kanal.
+Klicken Sie auf **${confirm()}** um die aktuellen Einstellungen anzuzeigen und zu testen.`;
+			}
+			if (lang === "pl") {
+				return `Kliknij **${start()}**, aby dodać automatyczny kanał wiadomości.
+Kliknij **${stop()}**, aby usunąć automatyczny kanał wiadomości.
+Kliknij **${confirm()}**, aby wyświetlić i przetestować ustawienia.`;
+			}
+			if (lang === "fr") {
+				return `Cliquez sur **${start()}** pour ajouter un canal de messagerie automatique.
+Cliquez sur **${stop()}** pour supprimer un canal de messagerie automatique.
+Cliquez sur **${confirm()}** pour afficher et tester les paramètres.`;
+			}	
+			if (lang === "it") {
+				return `Fai clic su **${start()}** per aggiungere un canale di messaggio automatico.
+Fai clic su **${stop()}** per rimuovere un canale di messaggio automatico.
+Fai clic su **${confirm()}** per visualizzare e testare le impostazioni.`;
+			}	
+			if (lang === "zh") {
+				return `單擊 **${start()}** 添加自動消息通道。
+單擊 **${stop()}** 刪除自動消息通道。
+單擊 **${confirm()}** 查看和測試設置。`; 
+			}		
+			if (lang === "ja") {
+				return `**${start()}** をクリックして、自動メッセージ チャネルを追加します。
+**${stop()}** をクリックして、自動メッセージ チャネルを削除します。
+**${confirm()}** をクリックして、設定を確認してテストします。`;
+			}		
+			if (lang === "ko") {
+				return `자동 메시지 채널을 추가하려면 **${start()}**을(를) 클릭하십시오.
+자동 메시지 채널을 제거하려면 **${stop()}**을(를) 클릭하십시오.
+설정을 검토하고 테스트하려면 **${confirm()}**을(를) 클릭하십시오.`;
+			}				
 			else {
 				return `Click **Start** to add an auto post channel.
 Click **Stop** to remove an auto post channel.
@@ -139,15 +199,33 @@ Click **Confirm** to view and test current settings.`;
 			else if (lang === "es") {
 				return `Solo los administradores pueden iniciar o detener publicaciones automáticas.`;
 			}
+			else if (lang === "pt") {
+				return `Somente Administradores podem iniciar ou interromper postagens automáticas.`;
+			}				
 			else if (lang === "ru") {
 				return `Только администраторы могут запускать или останавливать автоматические публикации.`;
 			}
 			else if (lang === "de") {
 				return `Nur Administratoren können automatische Beiträge starten oder stoppen.`;
 			}
-			else if (lang === "pt") {
-				return `Somente Administradores podem iniciar ou interromper postagens automáticas.`;
+			if (lang === "pl") {
+				return `Tylko administratorzy mogą uruchamiać i zatrzymywać wiadomości automatyczne.`;
 			}
+			if (lang === "fr") {
+				return `Seuls les administrateurs peuvent démarrer ou arrêter les messages automatiques.`;
+			}
+			if (lang === "it") {
+				return `Solo gli amministratori possono avviare o interrompere i messaggi automatici.`;
+			}
+			if (lang === "zh") {
+				return `只有管​​理員可以啟動或停止自動消息.`;
+			}
+			if (lang === "ja") {
+				return `管理者のみが自動メッセージを開始または停止できます.`;
+			}
+			if (lang === "ko") {
+				return `관리자만 자동 메시지를 시작하거나 중지할 수 있습니다.`;
+			}				
 			else {
 				return `Only Administrators can start or stop auto posts.`;
 			}			
@@ -160,15 +238,33 @@ Click **Confirm** to view and test current settings.`;
 			else if (lang === "es") {
 				return `Empezar`;
 			}
+			else if (lang === "pt") {
+				return `Começar`;
+			}				
 			else if (lang === "ru") {
 				return `Старт`;
 			}
 			else if (lang === "de") {
 				return `Anfangen`;
 			}
-			else if (lang === "pt") {
-				return `Começar`;
+			if (lang === "pl") {
+				return `Początek`;
 			}
+			if (lang === "fr") {
+				return `Commencer`;
+			}
+			if (lang === "it") {
+				return `Inizio`;
+			}
+			if (lang === "zh") {
+				return `開始`;
+			}
+			if (lang === "ja") {
+				return `始める`;
+			}
+			if (lang === "ko") {
+				return `시작`;
+			}				
 			else {
 				return `Start`;
 			}			
@@ -181,27 +277,87 @@ Click **Confirm** to view and test current settings.`;
 			else if (lang === "es") {
 				return `Detener`;
 			}
+			else if (lang === "pt") {
+				return `Parar`;
+			}				
 			else if (lang === "ru") {
 				return `Стоп`;
 			}
 			else if (lang === "de") {
 				return `Aufhören`;
 			}
-			else if (lang === "pt") {
-				return `Parar`;
+			if (lang === "pl") {
+				return `Usunąć`;
 			}
+			if (lang === "fr") {
+				return `Arrêt`;
+			}
+			if (lang === "it") {
+				return `Fermare`;
+			}
+			if (lang === "zh") {
+				return `停止`;
+			}
+			if (lang === "ja") {
+				return `ストップ`;
+			}
+			if (lang === "ko") {
+				return `멈추다`;
+			}				
 			else {
 				return `Stop`;
 			}
 		}	
 
+		function confirm() { //fixme - add translations
+			if (lang === "en") {
+				return `Confirm`;
+			}
+			else if (lang === "es") {
+				return `Confirmar`;
+			}
+			else if (lang === "pt") {
+				return `Confirmar`;
+			}				
+			else if (lang === "ru") {
+				return `Подтвердить`;
+			}
+			else if (lang === "de") {
+				return `Bestätigen`;
+			}
+			if (lang === "pl") {
+				return `Potwierdzać`;
+			}
+			if (lang === "fr") {
+				return `Confirmer`;
+			}
+			if (lang === "it") {
+				return `Confermare`;
+			}
+			if (lang === "zh") {
+				return `確認`;
+			}
+			if (lang === "ja") {
+				return `確認`;
+			}
+			if (lang === "ko") {
+				return `확인하다`;
+			}				
+			else {
+				return `Confirm`;
+			}			
+		}		
+
 		function language() {
 			if (LANG === "en") {
 				return `Language`;
 			}
-			if (LANG === ["es", "pt"]) {
+			if (LANG === "es") {
 				return `Idioma`
 			}
+			if (LANG === "pt") {
+				return `Idioma`
+			}			
 			if (LANG === "ru") {
 				return `Язык`;
 			}
@@ -218,7 +374,7 @@ Click **Confirm** to view and test current settings.`;
 				return `Lingua`;
 			}
 			if (LANG === "zh") {
-				retuen `語言`;
+				return `語言`;
 			}
 			if (LANG === "ja") {
 				return `言語`;
@@ -231,65 +387,42 @@ Click **Confirm** to view and test current settings.`;
 			}
 		}
 
-				var longLangArray = ["English", "español", "português", "русский", "Deutsch", "polski", "français", "italiano", "中國人", "日本", "한국인"];
-
 		function longLang() {
 			if (LANG === "en") {
-			    return longLangArray[0];
+			    return "English";
 			}
 			if (LANG === "es") {
-			    return longLangArray[1];
+			    return "español";
 			}
 			if (LANG === "pt") {
-			    return longLangArray[2];
+			    return "português";
 			}
 			if (LANG === "ru") {
-			    return longLangArray[3];
+			    return "русский";
 			}
 			if (LANG === "de") {
-			    return longLangArray[4];
+			    return "Deutsch";
 			}
 			if (LANG === "pl") {
-			    return longLangArray[5];
+			    return "polski";
 			}
 			if (LANG === "fr") {
-			    return longLangArray[6];
+			    return "français";
 			}
 			if (LANG === "it") {
-			    return longLangArray[7];
+			    return "italiano";
 			}
 			if (LANG === "zh") {
-			    return longLangArray[8];
+			    return "中國人";
 			}
 			if (LANG === "ja") {
-			    return longLangArray[9];
+			    return "日本";
 			}
 			if (LANG === "ko") {
-			    return longLangArray[10];
+			    return "한국인";
 			}
 			else {
-			    return longLangArray[0];
-			}			
-		}
-
-		function confirm() { //fixme - add translations
-			if (lang === "en") {
-				return `Confirm`;
-			}
-			else if (lang === "es") {
-				return `Confirmar`;
-			}
-			else if (lang === "ru") {
-				return `Подтвердить`;
-			}
-			else if (lang === "de") {
-				return `Bestätigen`;
-			}
-			else if (lang === "pt") {
-				return `Confirmar`;
-			}
-			else {
-				return `Confirm`;
+			    return "English";
 			}			
 		}	
 

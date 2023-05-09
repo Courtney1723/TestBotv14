@@ -141,7 +141,7 @@ module.exports = {
 				return `Auto Posts`;
 			}
 			else if (lang === "es") {
-				return `Mensajes automatizados`;
+				return `Automática de publicaciones`;
 			}
 			else if (lang === "pt") {
 				return `Mensagens Automatizadas`;
