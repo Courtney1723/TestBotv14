@@ -141,7 +141,48 @@ module.exports = {
 			else {
 				return "_ _";
 			}
-		}
+		}		
+
+		function backButtonString() {
+			if (lang === "en") {
+				return `Go Back`;
+			}
+			else if (lang === "es") {
+				return `Volver`;
+			}
+			else if (lang === "pt") {
+				return `Voltar`;
+			}				
+			else if (lang === "ru") {
+				return `Вернуться`;
+			}
+			else if (lang === "de") {
+				return `Zurück`;
+			}
+			else if (lang === "pl") {
+				return `wróć`;
+			}
+			else if (lang === "fr") {
+				return `Retournez`;
+			}				
+			else if (lang === "it") {
+				return `Torna all'ultima`;
+			}		
+			else if (lang === "zh") {
+				return `回去`;
+			}			
+			else if (lang === "ja") {
+				return `戻る`;
+			}			
+			else if (lang === "ko") {
+				return `돌아가다`;
+			}				
+			else {
+				return `Go Back`;
+			}			
+		}				
+
+//END TRANSLATIONS				
 			
 		const languageEmbed = new EmbedBuilder()
 			.setColor(0x0FFF00) //Green
@@ -154,14 +195,39 @@ module.exports = {
 			.setTitle(`Success!`)
 			.setDescription(`${languageChangeDesc()}`)
 
-			if (lang === "") {
+				const confirmButton = new ActionRowBuilder()
+					.addComponents(
+						new ButtonBuilder()
+								.setCustomId(`confirmback - ${interaction.user.id}`)
+								.setLabel(`${backButtonString()}`)
+								.setStyle(ButtonStyle.Secondary),	
+				);	
+
+			if (LANG === "en") { //remove language if English
+				fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
+					if (err) {console.log(`Error: ${err}`)} 
+					else {
+					fs.writeFile('./LANGDataBase.txt', `${data.replace(`guild:${interaction.guild.id} - lang:${lang} - \n`, "")}`, function (err) {
+						if (err) throw err;
+							interaction.followUp({ embeds: [languageEmbedEn] })
+							.catch(err => console.log(`languageEmbed Error: ${err.stack}`));							
+						 if ((interaction.user.id === process.env.USER_ID_1) || (interaction.user.id === process.env.USER_ID_2)) {
+							 console.log(`You changed the server language to ${LANG} in ${interaction.guild.id}.`);
+						 }
+						 else {
+							console.log(`A user changed the server language to ${LANG} in ${interaction.guild.id}.`);							 
+						 } 						
+					}); //end fs:writeFile to change server language to spanish	
+				}}); //end fs.readFile for LANGDataBase.txt						
+			}				
+			else if (lang === "") {
 				fs.appendFile(`./LANGDataBase.txt`,`guild:${interaction.guild.id} - lang:${LANG} - \n`, err => {
 					 if (err) {
 						 console.error(err);
 						 throw err;
 						}	
 					 else {
-						client.channels.fetch(menuChannelID).then(channel => channel.send({ embeds: [languageEmbed] }))
+						interaction.followUp({ embeds: [languageEmbed] })
 						.catch(err => console.log(`languageEmbed Error: ${err.stack}`));							 
 						 if ((interaction.user.id === process.env.USER_ID_1) || (interaction.user.id === process.env.USER_ID_2)) {
 							 console.log(`You added ${LANG} as the server language in ${interaction.guild.id}.`);
@@ -178,7 +244,7 @@ module.exports = {
 					else {
 					fs.writeFile('./LANGDataBase.txt', `${data.replace(`guild:${interaction.guild.id} - lang:${lang} - `, `guild:${interaction.guild.id} - lang:${LANG} - `)}`, function (err) {
 						if (err) throw err;
-						client.channels.fetch(menuChannelID).then(channel => channel.send({ embeds: [languageEmbed] }))
+						interaction.followUp({ embeds: [languageEmbed] })
 						.catch(err => console.log(`languageEmbed Error: ${err.stack}`));							
 						 if ((interaction.user.id === process.env.USER_ID_1) || (interaction.user.id === process.env.USER_ID_2)) {
 							 console.log(`You changed the server language to ${LANG}.`);
@@ -188,23 +254,6 @@ module.exports = {
 						 } 						
 					}); //end fs:writeFile to change server language to spanish	
 				}}); //end fs.readFile for LANGDataBase.txt				
-			}
-			else if (LANG === "en") { //remove language if English
-				fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
-					if (err) {console.log(`Error: ${err}`)} 
-					else {
-					fs.writeFile('./LANGDataBase.txt', `${data.replace(`guild:${interaction.guild.id} - lang:${lang} - \n`, "")}`, function (err) {
-						if (err) throw err;
-							client.channels.fetch(menuChannelID).then(channel => channel.send({ embeds: [languageEmbedEn] }))
-							.catch(err => console.log(`languageEmbed Error: ${err.stack}`));							
-						 if ((interaction.user.id === process.env.USER_ID_1) || (interaction.user.id === process.env.USER_ID_2)) {
-							 console.log(`You changed the server language to ${LANG} in ${interaction.guild.id}.`);
-						 }
-						 else {
-							console.log(`A user changed the server language to ${LANG} in ${interaction.guild.id}.`);							 
-						 } 						
-					}); //end fs:writeFile to change server language to spanish	
-				}}); //end fs.readFile for LANGDataBase.txt						
 			}
 		
 		} // end if yes button
