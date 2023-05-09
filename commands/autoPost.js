@@ -502,7 +502,46 @@ Click **Confirm** to view and test current settings.`;
 		else {
 			return `Yes`;
 		}							
-	}			
+	}	
+
+	function buttonFlag() {
+		if (LANG === "en") {
+		    return "\🇺🇸";
+		}
+		else if (LANG === "es") {
+		    return "\🇲🇽";
+		}
+		else if (LANG === "pt") {
+		    return `\🇧🇷`;
+		}
+		else if (LANG === "ru") {
+		    return `\🇷🇺`;
+		}
+		else if (LANG === "de") {
+		    return `\🇩🇪`;
+		}
+		else if (LANG === "pl") {
+		    return `\🇵🇱`;
+		}
+		else if (LANG === "fr") {
+		    return `\🇫🇷`;
+		}
+		else if (LANG === "it") {
+		    return `\🇮🇹`;
+		}
+		else if (LANG === "zh") {
+		    return `\🇨🇳`;
+		}
+		else if (LANG === "ja") {
+		    return `\🇯🇵`;
+		}
+		else if (LANG === "ko") {
+		    return `\🇰🇷`;
+		}
+		else {
+		    return ``;
+		}		
+	}
 
 //--END TRANSLATIONS--//						
 
@@ -560,10 +599,11 @@ Click **Confirm** to view and test current settings.`;
 								new ButtonBuilder()
 									.setCustomId(`yes - ${LANG}`)
 									.setLabel(`${language()}`)
-									.setStyle(ButtonStyle.Primary),		
+									.setStyle(ButtonStyle.Primary)
+									.setEmoji(buttonFlag()),			
 							);	
 
-						interaction.editReply({ embeds: [changeLangEmbed], components:[changeLangButtons] }).catch(err => console.log(`langDupEmbed error: ${err}`));
+						await interaction.editReply({ embeds: [changeLangEmbed], components:[changeLangButtons] }).catch(err => console.log(`langDupEmbed error: ${err}`));
 					
 				}; 
 	//END ADDING A LANGAUGE
