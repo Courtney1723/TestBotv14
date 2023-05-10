@@ -23,47 +23,83 @@ module.exports = {
 		var lang = await LANG.LANG(interaction);
 		//console.log(`LANG:${await LANG.LANG(interaction)}`);	
 
-			function duplicateTitle() {
-				if (lang === "en") {
-					return `Please Try Again`;
-				}
-				else if (lang === "es") {
-					return `Por favor, inténtalo de nuevo`;
-				}
-				else if (lang === "ru") {
-					return `Пожалуйста, попробуйте еще раз`;
-				}
-				else if (lang === "de") {
-					return `Inténtalo de nuevo`;
-				}
-				else if (lang === "pt") {
-					return `Por favor, tente novamente`;
-				}
-				else {
-					return `Please Try Again`;
-				}			
-			}
+	function duplicateTitle() {
+		if (lang === "en") {
+			return `Please Try Again`;
+		}
+		else if (lang === "es") {
+			return `Por favor, inténtalo de nuevo`;
+		}
+		else if (lang === "pt") {
+			return `Por favor, tente novamente`;
+		}			
+		else if (lang === "ru") {
+			return `Пожалуйста, попробуйте еще раз`;
+		}
+		else if (lang === "de") {
+			return `Inténtalo de nuevo`;
+		}
+		else if (lang === "pl") {
+			return `Proszę spróbuj ponownie`;
+		}
+		else if (lang === "fr") {
+			return `Veuillez réessayer`;
+		}
+		else if (lang === "it") {
+			return `Per favore riprova`;
+		}
+		else if (lang === "zh") {
+			return `請再試一次`;
+		}
+		else if (lang === "ja") {
+			return `もう一度お試しください`;
+		}
+		else if (lang === "ko") {
+			return `다시 시도해 주세요`;
+		}			
+		else {
+			return `Please Try Again`;
+		}			
+	}
 		
-			function invalidResponse() {
-				if (lang === "en") {
-					return `You selected an invalid response.`;
-				}
-				else if (lang === "es") {
-					return `Seleccionó una respuesta no válida.`;
-				}
-				else if (lang === "ru") {
-					return `Вы выбрали неправильный ответ.`;
-				}
-				else if (lang === "de") {
-					return `Sie haben eine ungültige Antwort ausgewählt.`;
-				}
-				else if (lang === "pt") {
-					return `Você selecionou uma resposta inválida.`;
-				}
-				else {
-					return `You selected an invalid response.`;
-				}			
-			}						
+	function invalidResponse() {
+		if (lang === "en") {
+			return `You selected an invalid response.`;
+		}
+		else if (lang === "es") {
+			return `Seleccionó una respuesta no válida.`;
+		}
+		else if (lang === "pt") {
+			return `Você selecionou uma resposta inválida.`;
+		}			
+		else if (lang === "ru") {
+			return `Вы выбрали неправильный ответ.`;
+		}
+		else if (lang === "de") {
+			return `Sie haben eine ungültige Antwort ausgewählt.`;
+		}
+		else if (lang === "pl") {
+			return `Wybrałeś nieprawidłową odpowiedź.`;
+		}
+		else if (lang === "fr") {
+			return `Vous avez sélectionné une réponse invalide.`;
+		}
+		else if (lang === "it") {
+			return `Hai selezionato una risposta non valida.`;
+		}
+		else if (lang === "zh") {
+			return `您選擇了無效的回复。`;
+		}
+		else if (lang === "ja") {
+			return `無効な応答を選択しました。`;
+		}
+		else if (lang === "ko") {
+			return `잘못된 응답을 선택했습니다.`;
+		}			
+		else {
+			return `You selected an invalid response.`;
+		}			
+	}						
 
 			if (menuChannelID.includes(`undefinedchannel`)) { //user selected an invalid response
 
@@ -83,6 +119,9 @@ module.exports = {
 			} 
 			else { //remove a channel from GTADataBase.txt
 
+				await interaction.deferUpdate();
+				if (interaction.user.id === menuUserID) { //begin removing a gta channel				
+
 //-----BEGIN TRANSLATIONS----//				
 
 				fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
@@ -97,89 +136,161 @@ module.exports = {
 								}
 								else {
 
-				function success() {
-					if (lang === "en") {
-						return `Success`;
-					}
-					else if (lang === "es") {
-						return `Éxito`;
-					}
-					else if (lang === "ru") {
-						return `Успех`;
-					}
-					else if (lang === "de") {
-						return `Erfolg`;
-					}
-					else if (lang === "pt") {
-						return `Éxito`;
-					}
-					else {
-						return `Success`;
-					}		
-				}	
+		function success() {
+			if (lang === "en") {
+				return `Success`;
+			}
+			else if (lang === "es") {
+				return `Éxito`;
+			}
+			else if (lang === "pt") {
+				return `Éxito`;
+			}				
+			else if (lang === "ru") {
+				return `Успех`;
+			}
+			else if (lang === "de") {
+				return `Erfolg`;
+			}
+			else if (lang === "pl") {
+				return `Powodzenie`;
+			}		
+			else if (lang === "fr") {
+				return `Succès`;
+			}		
+			else if (lang === "it") {
+				return `Successo`;
+			}		
+			else if (lang === "zh") {
+				return `成功`;
+			}			
+			else if (lang === "ja") {
+				return `成功`;
+			}	
+			else if (lang === "ko") {
+				return `성공`;
+			}				
+			else {
+				return `Success`;
+			}		
+		}
 				
-				function gtaRemoveDesc() {
-					if (lang === "en") {
-						return `You will now no longer get GTA auto posts in the <#${menuChannelID}> channel.`;
-					}
-					else if (lang === "es") {
-						return `Ahora ya no obtendrá publicaciones automáticas de GTA en el canal <#${menuChannelID}>.`;
-					}
-					else if (lang === "ru") {
-						return `Теперь вы больше не будете получать автоматические сообщения GTA в канале <#${menuChannelID}>.`;
-					}
-					else if (lang === "de") {
-						return `Sie erhalten jetzt keine automatischen GTA-Beiträge mehr im <#${menuChannelID}>-Kanal.`;
-					}
-					else if (lang === "pt") {
-						return `Agora você não receberá mais postagens automáticas do GTA no canal <#${menuChannelID}>.`;
-					}
-					else {
-						return `You will now no longer get GTA auto posts in the <#${menuChannelID}> channel.`;
-					}		
-				}
+		function gtaRemoveDesc() {
+			if (lang === "en") {
+				return `You will now no longer get GTA auto posts in the <#${menuChannelID}> channel.`;
+			}
+			else if (lang === "es") {
+				return `Ahora ya no obtendrá publicaciones automáticas de GTA en el canal <#${menuChannelID}>.`;
+			}
+			else if (lang === "pt") {
+				return `Agora você não receberá mais postagens automáticas do GTA no canal <#${menuChannelID}>.`;
+			}				
+			else if (lang === "ru") {
+				return `Теперь вы больше не будете получать автоматические сообщения GTA в канале <#${menuChannelID}>.`;
+			}
+			else if (lang === "de") {
+				return `Sie erhalten jetzt keine automatischen GTA-Beiträge mehr im <#${menuChannelID}>-Kanal.`;
+			}
+			else if (lang === "pl") {
+				return `Nie będziesz już otrzymywać automatycznych wiadomości GTA Online na kanale <#${menuChannelID}>.`;
+			}
+			else if (lang === "fr") {
+				return `Vous ne recevrez plus les messages automatisés de GTA Online dans le canal <#${menuChannelID}>.`;
+			}
+			else if (lang === "it") {
+				return `Non riceverai più messaggi automatici di GTA Online nel canale <#${menuChannelID}>.`;
+			}
+			else if (lang === "zh") {
+				return `您將不會再在 <#${menuChannelID}> 頻道中收到 GTA 在線模式的自動消息。`;
+			}
+			else if (lang === "ja") {
+				return `<#${menuChannelID}> チャンネルで GTA Online の自動メッセージが表示されなくなります。`;
+			}
+			else if (lang === "ko") {
+				return `더 이상 <#${menuChannelID}> 채널에서 GTA 온라인 자동 메시지를 받지 않습니다.`;
+			}					
+			else {
+				return `You will now no longer get GTA auto posts in the <#${menuChannelID}> channel.`;
+			}		
+		}
 			
-				function notYourOption() {
-					if (lang === "en") {
-						return `These options aren't for you.`;
-					}
-					else if (lang === "es") {
-						return `Estas opciones no son para ti.`;
-					}
-					else if (lang === "ru") {
-						return `Эти варианты не для вас.`;
-					}
-					else if (lang === "de") {
-						return `Diese Optionen sind nichts für Sie.`;
-					}
-					else if (lang === "pt") {
-						return `Essas opções não são para você.`;
-					}
-					else {
-						return `These options aren't for you.`;
-					}		
-				}		
+		function notYourOption() {
+			if (lang === "en") {
+				return `These options aren't for you.`;
+			}
+			else if (lang === "es") {
+				return `Estas opciones no son para ti.`;
+			}
+			else if (lang === "pt") {
+				return `Essas opções não são para você.`;
+			}				
+			else if (lang === "ru") {
+				return `Эти варианты не для вас.`;
+			}
+			else if (lang === "de") {
+				return `Diese Optionen sind nichts für Sie.`;
+			}
+			else if (lang === "pl") {
+				return `Te opcje nie są dla Ciebie.`;
+			}		
+			else if (lang === "fr") {
+				return `Ces options ne sont pas pour vous.`;
+			}				
+			else if (lang === "it") {
+				return `Queste opzioni non fanno per te.`;
+			}			
+			else if (lang === "zh") {
+				return `這些選項不適合您。`;
+			}			
+			else if (lang === "ja") {
+				return `これらのオプションはあなたのためではありません。`;
+			}		
+			else if (lang === "ko") {
+				return `이러한 옵션은 귀하를 위한 것이 아닙니다.`;
+			}				
+			else {
+				return `These options aren't for you.`;
+			}		
+		}		
 			
-				function confirmSettingsString() {
-					if (lang === "en") {
-							return `Confirm Settings`;
-					}
-					else if (lang === "es") {
-						return `Confirmar la configuración`;
-					}
-					else if (lang === "ru") {
-						return `Подтвердить настройки`;
-					}
-					else if (lang === "de") {
-						return `Einstellungen bestätigen`;
-					}
-					else if (lang === "pt") {
-						return `Confirmar configurações`;
-					}
-					else {
-						return `Confirm Settings`;
-					}					
-				}												
+	function confirmSettingsString() {
+		if (lang === "en") {
+				return `Confirm Settings`;
+		}
+		else if (lang === "es") {
+			return `Confirmar la configuración`;
+		}
+		else if (lang === "pt") {
+			return `Confirmar configurações`;
+		}			
+		else if (lang === "ru") {
+			return `Подтвердить настройки`;
+		}
+		else if (lang === "de") {
+			return `Einstellungen bestätigen`;
+		}
+		else if (lang === "pl") {
+			return `Potwierdź ustawienia`;
+		}
+		else if (lang === "fr") {
+			return `Confirmer les paramètres`;
+		}
+		else if (lang === "it") {
+			return `Conferma impostazioni`;
+		}
+		else if (lang === "zh") {
+			return `確認設置`;
+		}
+		else if (lang === "ja") {
+			return `設定を確認する`;
+		}
+		else if (lang === "ko") {
+			return `설정 확인`;
+		}				
+		else {
+			return `Confirm Settings`;
+		}					
+	}													
 											
 //-----END TRANSLATIONS-----//											
 
@@ -196,42 +307,55 @@ module.exports = {
 								.setStyle(ButtonStyle.Secondary),	
 				);											
 				
-				await interaction.deferUpdate();
-				if (interaction.user.id === menuUserID) { //begin removing an gta channel
-						await interaction.editReply({ embeds: [gtaConfirmEmbed], components: [confirmSettingsButton] })
-						.catch(err => {console.log(`gtaConfirmEmbed Error: ${err}`); process.kill(1);});	
+					await interaction.editReply({ embeds: [gtaConfirmEmbed], components: [confirmSettingsButton] })
+					.catch(err => {console.log(`gtaConfirmEmbed Error: ${err}`); process.kill(1);});	
 
-						if ((interaction.user.id === process.env.USER_ID_1) || (interaction.user.id === process.env.USER_ID_1)) {
-							console.log(`You removed ${menuChannelID} from receiving GTA autop posts.`);
-						}
+					if ((interaction.user.id === process.env.USER_ID_1) || (interaction.user.id === process.env.USER_ID_1)) {
+						console.log(`You removed ${menuChannelID} from receiving GTA autop posts in ${interaction.guild.id}.`);
+					}
 					else {
-						console.log(`A user removed ${menuChannelID} from receiving GTA autop posts.`);
-					}
-				}
-				else {
-					interaction.followUp({ content: `${notYourOption()}`, ephemeral: true });		
+						console.log(`A user removed ${menuChannelID} from receiving GTA autop posts in ${interaction.guild.id}.`);
 					}
 
-			function expiredDesc() {
-				if (lang === "en") {
-					return `This interaction expired`;
+
+				function expiredDesc() {
+					if (lang === "en") {
+						return `This interaction expired`;
+					}
+					if (lang === "es") {
+						return `Esta interacción expiró`;
+					}
+					if (lang === "pt") {
+						return `Esta interação expirou`;
+					}					
+					if (lang === "ru") {
+						return `Срок действия этого взаимодействия истек`;
+					}
+					if (lang === "de") {
+						return `Diese Interaktion ist abgelaufen`;
+					}
+					if (lang === "pl") {
+						return `Ta interakcja wygasła`;
+					}				
+					if (lang === "fr") {
+						return `Cette interaction a expiré`;
+					}		
+					if (lang === "it") {
+						return `Questa interazione è scaduta`;
+					}			
+					if (lang === "zh") {
+						return `此互動已過期`;
+					}					
+					if (lang === "ja") {
+						return `このインタラクションの有効期限が切れました`;
+					}		
+					if (lang === "ko") {
+						return `이 상호 작용이 만료되었습니다`;
+					}								
+					else {
+						return `This interaction expired`;
+					}						
 				}
-				if (lang === "es") {
-					return `Esta interacción expiró.`;
-				}
-				if (lang === "ru") {
-					return `Срок действия этого взаимодействия истек.`;
-				}
-				if (lang === "de") {
-					return `Diese Interaktion ist abgelaufen`;
-				}
-				if (lang === "pt") {
-					return `Esta interação expirou.`;
-				}
-				else {
-					return `This interaction expired`;
-				}						
-			}
 
 			const expiredButton = new ActionRowBuilder()
 				.addComponents(
@@ -249,6 +373,10 @@ module.exports = {
 
 		}}); //end fs:writeFile to remove channel from autoposts
 	}); //end fs:readFile GTADataBase.txt	
+
+		} 	else {
+			interaction.followUp({ content: `${notYourOption()}`, ephemeral: true });		
+		}
 
 	} //end if button is gtaRemove - not undefinedchannel
 			
