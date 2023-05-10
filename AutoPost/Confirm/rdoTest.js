@@ -30,15 +30,33 @@ module.exports = {
 			else if (lang === "es") {
 				return `Pensando...`;
 			}
+			else if (lang === "pt") {
+				return `Pensamento...`;
+			}				
 			else if (lang === "ru") {
 				return `мышление...`;
 			}
 			else if (lang === "de") {
 				return `Ich denke...`;
 			}
-			else if (lang === "pt") {
-				return `Pensamento...`;
+			else if (lang === "pl") {
+				return `Myślę...`;
 			}
+			else if (lang === "fr") {
+				return `Je pense...`;
+			}
+			else if (lang === "it") {
+				return `Pensando...`;
+			}
+			else if (lang === "zh") {
+				return `我在想...`;
+			}
+			else if (lang === "ja") {
+				return `考えています...`;
+			}
+			else if (lang === "ko") {
+				return `나는 생각 중입니다...`;
+			}				
 			else {
 				return `Thinking...`;
 			}						
@@ -51,19 +69,37 @@ module.exports = {
 			else if (lang === "es") {
 				return `Prueba GTA`;
 			}
+			else if (lang === "pt") {
+				return `Testar GTA`;
+			}				
 			else if (lang === "ru") {
 				return `Тест GTA`;
 			}
 			else if (lang === "de") {
 				return `GTA testen`;
 			}
-			else if (lang === "pt") {
-				return `Testar GTA`;
+			else if (lang === "pl") {
+				return `Testuj GTA`;
+			}	
+			else if (lang === "fr") {
+				return `Tester GTA`;
+			}		
+			else if (lang === "it") {
+				return `Prova GTA`;
+			}			
+			else if (lang === "zh") {
+				return `測試 GTA`;
+			}		
+			else if (lang === "ja") {
+				return `テストGTA`;
+			}		
+			else if (lang === "ko") {
+				return `테스트 GTA`;
 			}
 			else {
 				return `Test GTA`;
 			}			
-		}				
+		}
 
 		function testRDOButtonString() {
 			if (lang === "en") {
@@ -72,40 +108,76 @@ module.exports = {
 			else if (lang === "es") {
 				return `Prueba RDO`;
 			}
+			else if (lang === "pt") {
+				return `Testar RDO`;
+			}				
 			else if (lang === "ru") {
 				return `Тест RDO`;
 			}
 			else if (lang === "de") {
 				return `RDO testen`;
 			}
-			else if (lang === "pt") {
-				return `Testar RDO`;
-			}
+			else if (lang === "pl") {
+				return `Testuj RDO`;
+			}		
+			else if (lang === "fr") {
+				return `Tester RDO`;
+			}		
+			else if (lang === "it") {
+				return `Prova RDO`;
+			}		
+			else if (lang === "zh") {
+				return `測試 RDO`;
+			}					
+			else if (lang === "ja") {
+				return `テストRDO`;
+			}			
+			else if (lang === "ko") {
+				return `테스트 RDO`;
+			}						
 			else {
 				return `Test RDO`;
 			}			
 		}	
 
-		function backButtonString() {
+		function goBack() {
 			if (lang === "en") {
 				return `Go Back`;
 			}
 			else if (lang === "es") {
 				return `Volver`;
 			}
+			else if (lang === "pt") {
+				return `Voltar`;
+			}				
 			else if (lang === "ru") {
 				return `Вернуться`;
 			}
 			else if (lang === "de") {
 				return `Zurück`;
 			}
-			else if (lang === "pt") {
-				return `Voltar`;
+			else if (lang === "pl") {
+				return `wróć`;
 			}
+			else if (lang === "fr") {
+				return `Retournez`;
+			}				
+			else if (lang === "it") {
+				return `Torna all'ultima`;
+			}		
+			else if (lang === "zh") {
+				return `回去`;
+			}			
+			else if (lang === "ja") {
+				return `戻る`;
+			}			
+			else if (lang === "ko") {
+				return `돌아가다`;
+			}				
 			else {
 				return `Go Back`;
 			}			
-		}		
+		}			
 
 //BEGIN THINKING BUTTONS					
 	fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
@@ -139,7 +211,7 @@ module.exports = {
 								.setDisabled(true),						
 						new ButtonBuilder()
 								.setCustomId(`confirmback - ${buttonUserID}`)
-								.setLabel(`${backButtonString()}`)
+								.setLabel(`${goBack()}`)
 								.setStyle(ButtonStyle.Secondary),
 				);						
 					
@@ -955,68 +1027,123 @@ function permission() {
 
 //--BEGIN TRANSLATIONS--//		
 
-			function notYourButtonString() {
-				if (lang === "en") {
-					return `These buttons are not for you.`;
-				}
-				else if (lang === "es") {
-					return `Estos botones no son para ti.`;
-				}
-				else if (lang === "ru") {
-					return `Эти кнопки не для вас.`;
-				}
-				else if (lang === "de") {
-					return `Diese Schaltflächen sind nicht für Sie.`;
-				}
-				else if (lang === "pt") {
-					return `Esses botões não são para você.`;
-				}
-				else {
-					return `These buttons are not for you.`;
-				}				
-			}			
 
-			function missingPermissions()	{
-				if (lang === "en") {
-					return `You do not have the required permissions to do that.`;
-				}
-				else if (lang === "es") {
-				  return `No tienes permiso para hacer eso.`;
-				}
-				else if (lang === "ru") {
-				  return `У вас нет разрешения на это.`;
-				}
-				else if (lang === "de") {
-				  return `Sie haben keine Erlaubnis dazu.`;
-				}
-				else if (lang === "pt") {
-				  return `Você não tem permissão para fazer isso.`;
-				}
-				else {
-				  return `You do not have the required permissions to do that.`;
-				}				
-			}	
-
-			function noSubscriptions() {
-				if (lang === "en") {
-					return `You do not have any channels subscribed to Red Dead Online auto posts.`;
-				}
-				else if (lang === "es") {
-					return `No tienes ningún canal suscrito a las publicaciones automáticas de Red Dead Online.`;
-				}
-				else if (lang === "ru") {
-					return `У вас нет каналов, подписанных на автоматические посты Red Dead Online.`;
-				}
-				else if (lang === "de") {
-					return `Sie haben keine Kanäle, die Red Dead Online-Autobeiträge abonniert haben.`;
-				}
-				else if (lang === "pt") {
-					return `Você não tem nenhum canal inscrito nas postagens automáticas do Red Dead Online.`;
-				}
-				else {
-					return `You do not have any channels subscribed to Red Dead Online auto posts.`;
-				}		
+		function notYourButtonString() {
+			if (lang === "en") {
+				return `These buttons are not for you.`;
+			}
+			else if (lang === "es") {
+				return `Estos botones no son para ti.`;
+			}
+			else if (lang === "pt") {
+				return `Esses botões não são para você.`;
+			}				
+			else if (lang === "ru") {
+				return `Эти кнопки не для вас.`;
+			}
+			else if (lang === "de") {
+				return `Diese Schaltflächen sind nicht für Sie.`;
+			}
+			else if (lang === "pl") {
+				return `Te przyciski nie są dla ciebie.`;
 			}		
+			else if (lang === "fr") {
+				return `Ces boutons ne sont pas pour vous.`;
+			}			
+			else if (lang === "it") {
+				return `Questi pulsanti non fanno per te.`;
+			}				
+			else if (lang === "zh") {
+				return `這些按鈕不適合您。`;
+			}			
+			else if (lang === "ja") {
+				return `これらのボタンはあなたのためではありません。`;
+			}				
+			else if (lang === "ko") {
+				return `이 버튼은 당신을 위한 것이 아닙니다.`;
+			}						
+			else {
+				return `These buttons are not for you.`;
+			}				
+		}		
+
+		function missingPermissions()	{
+			if (LANG === "en") {
+				return `You do not have the required permissions to do that.`;
+			}
+			else if (LANG === "es") {
+				return `No tienes permiso para hacer eso.`;
+			}
+			else if (LANG === "pt") {
+				return `Você não tem permissão para fazer isso.`;
+			}					
+			else if (LANG === "ru") {
+				return `У вас нет разрешения на это.`;
+			}
+			else if (LANG === "de") {
+				return `Sie haben keine Erlaubnis dazu.`;
+			}
+			else if (LANG === "pl") {
+				return `Nie masz wymaganych uprawnień.`;
+			}		
+			else if (LANG === "fr") {
+				return `Vous ne disposez pas des autorisations requises.`;
+			}				
+			else if (LANG === "it") {
+				return `Non hai le autorizzazioni necessarie.`;
+			}	
+			else if (LANG === "zh") {
+				return `您沒有所需的權限。`;
+			}				
+			else if (LANG === "ja") {
+				return `必要な権限がありません。`;
+			}		
+			else if (LANG === "ko") {
+				return `필요한 권한이 없습니다.`;
+			}					
+			else {
+				return `You do not have the required permissions to do that.`;
+			}				
+		}			
+
+		function noSubscriptions() {
+			if (lang === "en") {
+				return `There are no channels subscribed to GTA Online.\n`;
+			}
+			else if (lang === "es") {
+				return `No hay canales suscritos a GTA Online.\n`;
+			}
+			else if (lang === "pt") {
+				return `Não há canais inscritos no GTA Online.\n`;
+			}					
+			else if (lang === "ru") {
+				return `Нет каналов, подписанных на GTA Online.\n`;
+			}
+			else if (lang === "de") {
+				return `Es sind keine Kanäle bei GTA Online abonniert.\n`;
+			}
+			else if (lang === "pl") {
+				return `Brak kanałów subskrybowanych w GTA Online.\n`;
+			}					
+			else if (lang === "fr") {
+				return `Il n'y a aucune chaîne abonnée à GTA Online.\n`;
+			}			
+			else if (lang === "it") {
+				return `Non ci sono canali abbonati a GTA Online.\n`;
+			}		
+			else if (lang === "zh") {
+				return `沒有訂閱 GTA 在線模式的頻道。\n`;
+			}	
+			else if (lang === "ja") {
+				return `GTA Online に登録しているチャンネルはありません。\n`;
+			}		
+			else if (lang === "ko") {
+				return `GTA 온라인을 구독하는 채널이 없습니다.\n`;
+			}					
+			else {
+				return `There are no channels subscribed to GTA Online.\n`;
+			}
+		}	
 
 //--END TRANSLATIONS--//				
 
@@ -1059,7 +1186,7 @@ function permission() {
 			        .setStyle(ButtonStyle.Danger),		
 			    new ButtonBuilder()
 			        .setCustomId(`confirmback - ${buttonUserID}`)
-			        .setLabel(`${backButtonString()}`)
+			        .setLabel(`${goBack()}`)
 			        .setStyle(ButtonStyle.Secondary),
 			);			
 
@@ -1077,7 +1204,7 @@ function permission() {
 								.setDisabled(true),	
 				    new ButtonBuilder()
 				        .setCustomId(`confirmback - ${buttonUserID}`)
-				        .setLabel(`${backButtonString()}`)
+				        .setLabel(`${goBack()}`)
 				        .setStyle(ButtonStyle.Secondary),
 				);						
 					
@@ -1110,17 +1237,35 @@ function permission() {
 					return `This interaction expired`;
 				}
 				if (lang === "es") {
-					return `Esta interacción expiró.`;
+					return `Esta interacción expiró`;
 				}
+				if (lang === "pt") {
+					return `Esta interação expirou`;
+				}					
 				if (lang === "ru") {
-					return `Срок действия этого взаимодействия истек.`;
+					return `Срок действия этого взаимодействия истек`;
 				}
 				if (lang === "de") {
 					return `Diese Interaktion ist abgelaufen`;
 				}
-				if (lang === "pt") {
-					return `Esta interação expirou.`;
-				}
+				if (lang === "pl") {
+					return `Ta interakcja wygasła`;
+				}				
+				if (lang === "fr") {
+					return `Cette interaction a expiré`;
+				}		
+				if (lang === "it") {
+					return `Questa interazione è scaduta`;
+				}			
+				if (lang === "zh") {
+					return `此互動已過期`;
+				}					
+				if (lang === "ja") {
+					return `このインタラクションの有効期限が切れました`;
+				}		
+				if (lang === "ko") {
+					return `이 상호 작용이 만료되었습니다`;
+				}								
 				else {
 					return `This interaction expired`;
 				}						
