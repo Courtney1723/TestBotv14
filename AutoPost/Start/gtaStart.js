@@ -87,7 +87,7 @@ module.exports = {
 						return `Fai clic sul **menu a discesa** per confermare il canale a cui desideri inviare i post automatici di GTA Online \n**ogni giovedì alle 14:00 ora di New York**.`;
 					}
 					else if (lang === "zh") {
-						return `單擊**下拉菜單**以確認您要將 GTA 在線模式自動帖子發送到\n**東部時間每週四 14:00** 的頻道。`;
+						return `單擊下拉菜單以確認您要在東部時間每週四 14:00 將 GTA 在線模式自動消息發送到的頻道。`;
 					}
 					else if (lang === "ja") {
 						return `**ドロップダウン メニュー**をクリックして、\n**毎週木曜日の東部時間の 14:00**に GTA オンラインの自動投稿を送信するチャンネルを確認します。`;

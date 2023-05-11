@@ -14,9 +14,9 @@ module.exports = {
 		.setDescription('Latest Red Dead Online Bonuses')
 		.setDescriptionLocalizations({
 			"es-ES": 'Bonificaciones de Red Dead Online',
+			"pt-BR": 'Bônus no Red Dead Online',			
 			ru: 'Бонусы Red Dead Online',
 			de: 'Boni in Red Dead Online',
-			"pt-BR": 'Bônus no Red Dead Online',
 			"zh-CN": 'Red Dead 線上模式獎勵',
 			fr: 'Bonus dans Red Dead Online',
 			pl: 'Premie Red Dead Online',
@@ -74,7 +74,7 @@ module.exports = {
 
 						function isPast() {
 							let isPast003 = content.split("isPast\":");
-							let isPast002 = isPast003[1].split(",\"");
+							let isPast002 = isPast003[2].split(",\"");
 
 							return isPast002[0];
 						}
@@ -115,10 +115,11 @@ module.exports = {
 		let rdoDate = rdoDate01[1].split("<"); //cuts off the end of the date
 			//console.log(`Date: ${rdoDate[0]}\n`);	
 
-		let rdoTitleOG01 = rdoHeader.split("h1>");
-		let rdoTitleOG02 = rdoTitleOG01[1].split("<");
-		let rdoTitleOG = rdoTitleOG02[0];
-		//console.log(`gtaTitleOG:${gtaTitleOG}`);		
+		let rdoTitleOG01 = rdoHeader.split("h1");
+		let rdoTitleOG02 = rdoTitleOG01[1].split(">");
+		let rdoTitleOG03 = rdoTitleOG02[1].split("<");
+		let rdoTitleOG = rdoTitleOG03[0];
+			//console.log(`rdoTitleOG:${rdoTitleOG}`);		
 		
 		let rdoString002 = rdoString01[1]; //Splits the header from the body
 			//console.log(`rdoString: ${rdoString002}`)
@@ -396,28 +397,7 @@ for (i = 0; i <= RDOBonuses01.length - 2; i++) { //final element will always be 
 						//console.log(`rdoFinalString01.length: ${rdoFinalString01.length}`);
 						//console.log(`rdoFinalString.length: ${rdoFinalString.length}`);
 
-						function rdoTitleString() {
-							if (lang === "en") {
-								return "Red Dead Online Bonuses:";
-							}
-							else if (lang === "es") {
-								return "Bonificaciones de Red Dead Online:";
-							}
-							else if (lang === "ru") {
-								return "Бонусы Red Dead Online:";
-							}
-							else if (lang === "de") {
-								return "Boni in Red Dead Online:";
-							}
-							else if (lang === "pt") {
-								return "Bônus no Red Dead Online:";
-							}
-							else {
-								return "Red Dead Online Bonuses:";
-							}
-						}
-
-						var constChars = (rdoDate.length + 2) + (rdoTitleString().length);
+						var constChars = (rdoDate.length + 2) + (rdoTitleOG.length);
 						function ellipsisFunction() {
 							if (rdoFinalString.length >= (4000 - constChars)) {
 								return "...";

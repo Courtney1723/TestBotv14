@@ -71,7 +71,7 @@ module.exports = {
 				  GTAConfirmString += `• 沒有訂閱 GTA 在線模式的頻道。\n`;
 				}	
 				else if (lang === "ja") {
-				  GTAConfirmString += `• GTA Online に登録しているチャンネルはありません。\n`;
+				  GTAConfirmString += `• GTA Online を購読しているチャンネルはありません。\n`;
 				}		
 				else if (lang === "ko") {
 				  GTAConfirmString += `• GTA 온라인을 구독하는 채널이 없습니다.\n`;
@@ -114,22 +114,22 @@ module.exports = {
 				  RDOConfirmString += `• Es gibt keine Kanäle, die Red Dead Online abonniert haben.\n`;
 				}
 				else if (lang === "pl") {
-				  GTAConfirmString += `• Brak kanałów subskrybowanych w Red Dead Online.\n`;
+				  RDOConfirmString += `• Brak kanałów subskrybowanych w Red Dead Online.\n`;
 				}					
 				else if (lang === "fr") {
-				  GTAConfirmString += `• Il n'y a aucune chaîne abonnée à Red Dead Online.\n`;
+				  RDOConfirmString += `• Il n'y a aucune chaîne abonnée à Red Dead Online.\n`;
 				}			
 				else if (lang === "it") {
-				  GTAConfirmString += `• Non ci sono canali abbonati a Red Dead Online.\n`;
+				  RDOConfirmString += `• Non ci sono canali abbonati a Red Dead Online.\n`;
 				}		
 				else if (lang === "zh") {
-				  GTAConfirmString += `• 沒有訂閱 Red Dead 在線模式的頻道。\n`;
+				  RDOConfirmString += `• 沒有訂閱 Red Dead 在線模式的頻道。\n`;
 				}	
 				else if (lang === "ja") {
-				  GTAConfirmString += `• Red Dead Online を購読しているチャンネルはありません。\n`;
+				  RDOConfirmString += `• Red Dead Online を購読しているチャンネルはありません。\n`;
 				}		
 				else if (lang === "ko") {
-				  GTAConfirmString += `• Red Dead 온라인을 구독하는 채널이 없습니다.\n`;
+				  RDOConfirmString += `• Red Dead 온라인을 구독하는 채널이 없습니다.\n`;
 				}						
 				else {
 				  RDOConfirmString += `• There are no channels in this server subscribed to Red Dead Online.\n`;
@@ -280,7 +280,7 @@ module.exports = {
 				return `Testen Sie automatische Beiträge`;
 			}
 			else if (lang === "pl") {
-				return `Testuj automatyczne posty`;
+				return `Testuj zautomatyzowane wiadomości`;
 			}
 			else if (lang === "fr") {
 				return `Tester les publications automatiques`;
@@ -292,7 +292,7 @@ module.exports = {
 				return `測試自動發布`;
 			}					
 			else if (lang === "ja") {
-				return `自動発行のテスト`;
+				return `自動メッセージのテスト`;
 			}			
 			else if (lang === "ko") {
 				return `자동 게시 테스트`;
@@ -331,7 +331,7 @@ module.exports = {
 				return `單擊 **測試 GTA** 將測試帖子發送到您訂閱的 GTA 在線模式頻道。`;
 			}		
 			else if (lang === "ja") {
-				return `**テストGTA** をクリックして、サブスクライブしている GTA オンライン チャンネルにテスト投稿を送信します。`;
+				return `[テストGTA] をクリックして、サブスクライブしている GTA オンライン チャンネルにテスト投稿を送信します。`;
 			}					
 			else if (lang === "ko") {
 				return `구독한 GTA 온라인 채널에 테스트 게시물을 보내려면 **테스트 GTA**을(를) 클릭하십시오.`;
@@ -361,7 +361,7 @@ module.exports = {
 				return `Kliknij **Testuj RDO**, aby wysłać post testowy do subskrybowanych kanałów Red Dead Online.`;
 			}				
 			else if (lang === "fr") {
-				return `Cliquez sur **Tester RDO** pour envoyer une publication de test à vos chaînes Red Dead Online auxquelles vous êtes abonné.`;
+				return `Cliquez sur **Tester RDO** pour envoyer une publication test aux chaînes Red Dead Online auxquelles vous êtes abonné.`;
 			}					
 			else if (lang === "it") {
 				return `Fai clic su **Prova RDO** per inviare un post di prova ai canali di Red Dead Online a cui sei iscritto.`;
@@ -370,7 +370,7 @@ module.exports = {
 				return `單擊 **測試 RDO** 將測試帖子發送到您訂閱的 Red Dead 在線模式頻道。`;
 			}	
 			else if (lang === "ja") {
-				return `**テストRDO** をクリックして、購読している Red Dead Online チャンネルにテスト投稿を送信します。`;
+				return `[テストRDO] をクリックして、サブスクライブしている Red Dead オンライン チャンネルにテスト投稿を送信します。`;
 			}		
 			else if (lang === "ko") {
 				return `구독한 Red Dead 온라인 채널에 테스트 게시물을 보내려면 **테스트 RDO**을(를) 클릭하세요.`;
@@ -397,7 +397,7 @@ module.exports = {
 				return `Sie müssen ein Administrator sein, um automatisierte Posts zu testen`;
 			}
 			else if (lang === "pl") {
-				return `Aby przetestować automatyczne posty, musisz być administratorem.`;
+				return `Aby przetestować wiadomości automatyczne, musisz być administratorem.`;
 			}				
 			else if (lang === "fr") {
 				return `Vous devez être administrateur pour tester les messages automatisés.`;
@@ -409,7 +409,7 @@ module.exports = {
 				return `只有管理員可以測試自動消息`;
 			}		
 			else if (lang === "ja") {
-				return `管理者のみが自動投稿をテストできます`;
+				return `管理者のみが自動メッセージをテストできます`;
 			}				
 			else if (lang === "ko") {
 				return `관리자만 자동 게시물을 테스트할 수 있습니다.`;

@@ -85,7 +85,7 @@ module.exports = {
 				return `Fai clic sul **menu a discesa** per confermare il canale a cui vuoi inviare i messaggi automatici di Red Dead Online \n**il primo martedì di ogni mese alle 14:00 ora di New York**.`;
 			}
 			else if (lang === "zh") {
-				return `單擊 **下拉菜單** 以確認您要將 Red Dead 在線模式自動消息發送到\n**每月第一個星期二東部時間 14:00** 的頻道。`;
+				return `單擊下拉菜單以確認您要將 Red Dead 在線模式自動消息發送到東部時間每個第一個星期二 14:00 的頻道。`;
 			}
 			else if (lang === "ja") {
 				return `**ドロップダウン メニュー**をクリックして、Red Dead Online の自動メッセージを\n**毎月第 1 火曜日の東部時間 14:00** に送信するチャンネルを確認します。`;

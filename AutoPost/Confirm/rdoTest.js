@@ -327,6 +327,12 @@ let rdoDate01 = rdoHeader.split("class=\"date\">"); //gets the event date
 let rdoDate = rdoDate01[1].split("<"); //cuts off the end of the date
 	//console.log(`Date: ${rdoDate[0]}\n`);	
 
+let rdoTitleOG01 = rdoHeader.split("h1");
+let rdoTitleOG02 = rdoTitleOG01[1].split(">");
+let rdoTitleOG03 = rdoTitleOG02[1].split("<");
+let rdoTitleOG = rdoTitleOG03[0];
+	//console.log(`rdoTitleOG:${rdoTitleOG}`);		
+
 let rdoString002 = rdoString01[1]; //Splits the header from the body
 	//console.log(`rdoString: ${rdoString002}`)
 let rdoString02 = rdoString002.split("</div>"); //splits the footer from the body
@@ -632,29 +638,7 @@ let rdoFinalString = rdoFinalString01.replace(/<p>/g, "")
 				//console.log(`rdoFinalString01.length: ${rdoFinalString01.length}`);
 				//console.log(`rdoFinalString.length: ${rdoFinalString.length}`);
 
-
-							function rdoTitleString() {
-							if (lang === "en") {
-								return "Red Dead Online Bonuses:";
-							}
-							else if (lang === "es") {
-								return "Bonificaciones de Red Dead Online:";
-							}
-							else if (lang === "ru") {
-								return "Бонусы Red Dead Online:";
-							}
-							else if (lang === "de") {
-								return "Boni in Red Dead Online:";
-							}
-							else if (lang === "pt") {
-								return "Bônus no Red Dead Online:";
-							}
-							else {
-								return "Red Dead Online Bonuses:";
-							}
-						}
-
-						var constChars = (rdoDate.length + 2) + (rdoTitleString().length);
+						var constChars = (rdoDate.length + 2) + (rdoTitleOG.length);
 						function ellipsisFunction() {
 							if (rdoFinalString.length >= (4000 - constChars)) {
 								return "...";
@@ -672,22 +656,40 @@ let rdoFinalString = rdoFinalString01.replace(/<p>/g, "")
 						function rdoFooterMin() {
 							if (rdoFinalString.length < (4000 - constChars)) {
 								if (lang === "en") {
-									return `** [Click here](${url}) for more details**`;
+									return `** [More details](${url})**`;
 								}
 								else if (lang === "es") {
-									return `** [Haga clic aquí](${url}) para más detalles**`;
+									return `** [Más detalles](${url})**`;
 								}
 								else if (lang === "ru") {
-									return `** [нажмите здесь](${url}) для получения более подробной информации**`;
+									return `** [Подробнее](${url})**`;
 								}
 								else if (lang === "de") {
-									return `** [Klicken Sie hier](${url}) für weitere Details**`;
+									return `** [Mehr Details]](${url})**`;
 								}
 								else if (lang === "pt") {
-									return `** [Clique aqui](${url}) para mais detalhes**`;
+									return `** [Mais detalhes](${url})**`;
 								}
+								else if (lang === "fr") {
+									return `** [Plus de détails](${url})**`;
+								}
+								else if (lang === "it") {
+									return `** [Più dettagli](${url})**`;
+								}			
+								else if (lang === "zh") {
+									return `** [更多細節](${url})**`;
+								}			
+								else if (lang === "pl") {
+									return `** [Więcej szczegółów](${url})**`;
+								}	
+								else if (lang === "ko") {
+									return `** [자세한 내용은](${url})**`;
+								}		
+								else if (lang === "ja") {
+									return `** [詳細](${url})**`;
+								}										
 								else {
-									return `** [Click here](${url}) for more details**`;
+									return `** [More Details](${url})**`;
 								}
 							} else {
 								return "";
@@ -696,22 +698,40 @@ let rdoFinalString = rdoFinalString01.replace(/<p>/g, "")
 						function rdoFooterMax() {
 							if (rdoFinalString.length >= (4000 - constChars)) {
 								if (lang === "en") {
-									return `** [Click here](${url}) for more details**`;
+									return `** [More details](${url})**`;
 								}
 								else if (lang === "es") {
-									return `** [Haga clic aquí](${url}) para más detalles**`;
+									return `** [Más detalles](${url})**`;
 								}
 								else if (lang === "ru") {
-									return `** [Hажмите здесь](${url}) для получения более подробной информации**`;
+									return `** [Подробнее](${url})**`;
 								}
 								else if (lang === "de") {
-									return `** [Klicken Sie hier](${url}) für weitere Details**`;
+									return `** [Mehr Details]](${url})**`;
 								}
 								else if (lang === "pt") {
-									return `** [Clique aqui](${url}) para mais detalhes**`;
+									return `** [Mais detalhes](${url})**`;
 								}
+								else if (lang === "fr") {
+									return `** [Plus de détails](${url})**`;
+								}
+								else if (lang === "it") {
+									return `** [Più dettagli](${url})**`;
+								}			
+								else if (lang === "zh") {
+									return `** [更多細節](${url})**`;
+								}			
+								else if (lang === "pl") {
+									return `** [Więcej szczegółów](${url})**`;
+								}	
+								else if (lang === "ko") {
+									return `** [자세한 내용은](${url})**`;
+								}		
+								else if (lang === "ja") {
+									return `** [詳細](${url})**`;
+								}										
 								else {
-									return `** [Click here](${url}) for more details**`;
+									return `** [More Details](${url})**`;
 								}
 							} else {
 								return "";
@@ -754,37 +774,10 @@ let rdoFinalString = rdoFinalString01.replace(/<p>/g, "")
 						}
 						//console.log(`rdoPost2().length:${rdoPost2().length || 0}`);
 
-//--BEGIN TRANSLATIONS--//
-
-		function rdoTitleFunction() {
-					
-			if (lang === "en") {
-				return `Red Dead Online Bonuses:`;
-			}
-			else if (lang === "es") {
-				return `Bonificaciones de Red Dead Online:`;
-			}
-			else if (lang === "ru") {
-				return `Бонусы Red Dead Online:`;
-			}
-			else if (lang === "de") {
-				return `Boni in Red Dead Online:`;
-			}
-			else if (lang === "pt") {
-				return `Bônus no Red Dead Online:`;
-			}
-			else {
-			return `Red Dead Online Bonuses:`;
-			}		
-		}
-		//console.log(`rdoTitleFunction: ${rdoTitleFunction()}`);
-
-//--END TRANSLATIONS--//
-
 
 let rdoEmbed = new EmbedBuilder()
 	.setColor(0xC10000) //Red
-	.setTitle(`${rdoTitleFunction()}`)
+	.setTitle(`${rdoTitleOG}`)
 	.setDescription(`${rdoDate[0]}\n\n${rdoPost()} \n${rdoFooterMin()} ${ellipsisFunction()}`)
 let rdoEmbed2 = new EmbedBuilder()
 	.setColor(0xC10000) //Red
@@ -875,20 +868,38 @@ function permission() {
 		function sentPostDesc() {
 			if (permission() === undefined) {
 				if (lang === "en") {
-					return `• Posts have been sent to <#${channelIDArray[c]}>!\n`;
+					return `• A post has been sent to <#${channelIDArray[c]}>!\n`;
 				}
 				else if (lang === "es") {
 					return `• El mensaje ha sido enviado a <#${channelIDArray[c]}>.\n`;
 				}
+				else if (lang === "pt") {
+					return `• Uma mensagem foi enviada para <#${channelIDArray[c]}>.\n`;
+				}					
 				else if (lang === "ru") {
 					return `• Cообщение было отправлено на <#${channelIDArray[c]}>.\n`;
 				}
 				else if (lang === "de") {
 					return `• Eine Nachricht wurde an <#${channelIDArray[c]}> gesendet.\n`;
 				}
-				else if (lang === "pt") {
-					return `• Uma mensagem foi enviada para <#${channelIDArray[c]}>.\n`;
+				else if (lang === "pl") {
+					return `• Wiadomość została wysłana do <#${channelIDArray[c]}>.`;
 				}
+				else if (lang === "fr") {
+					return `• Un message a été envoyé à <#${channelIDArray[c]}>.`;
+				}
+				else if (lang === "it") {
+					return `• Un messaggio è stato inviato a <#${channelIDArray[c]}>.`;
+				}
+				else if (lang === "zh") {
+					return `• 消息已發送至<#${channelIDArray[c]}>。`;
+				}
+				else if (lang === "ja") {
+					return `• メッセージが <#${channelIDArray[c]}> チャネルに送信されました。`;
+				}
+				else if (lang === "ko") {
+					return `• 메시지가 <#${channelIDArray[c]}>로 전송되었습니다.`;
+				}		
 				else {
 					return `• Posts have been sent to <#${channelIDArray[c]}>!\n`;
 				}	
@@ -899,15 +910,33 @@ function permission() {
 				else if (lang === "es") {
 					return `• Al bot le falta el permiso ${permission()} en <#${channelIDArray[c]}>.\n`;
 				}
+				else if (lang === "pt") {
+					return `• O bot está sem a permissão ${permission()} em <#${channelIDArray[c]}>.\n`;
+				}						
 				else if (lang === "ru") {
 					return `• У бота нет разрешения на ${permission()} в <#${channelIDArray[c]}>.\n`;
 				}				
 				else if (lang === "de") {
 					return `• Dem Bot fehlt die ${permission()} in <#${channelIDArray[c]}>.\n`;
-				}		
-				else if (lang === "pt") {
-					return `• O bot está sem a permissão ${permission()} em <#${channelIDArray[c]}>.\n`;
-				}				
+				}			
+				else if (lang === "pl") {
+					return `• Bot nie ma uprawnień ${permission()} w <#${channelIDArray[c]}>.\n`;
+				}
+				else if (lang === "fr") {
+					return `• Le bot n'a pas l'autorisation ${permission()} dans <#${channelIDArray[c]}>.\n`;
+				}
+				else if (lang === "it") {
+					return `• Al bot manca l'autorizzazione ${permission()} in <#${channelIDArray[c]}>.\n`;
+				}
+				else if (lang === "zh") {
+					return `• 機器人缺少 <#${channelIDArray[c]}> 中的 ${permission()} 權限.\n`;
+				}
+				else if (lang === "ja") {
+					return `• ボットに <#${channelIDArray[c]}> の ${permission()} 権限がありません.\n`;
+				}
+				else if (lang === "ko") {
+					return `• 봇에 <#${channelIDArray[c]}>의 ${permission()} 권한이 없습니다.\n`;
+				}					
 				else {
 					return `• The bot is missing the ${permission()} permission in <#${channelIDArray[c]}>.\n`;
 				}
@@ -970,12 +999,39 @@ function permission() {
 					else if (lang === "ru") {
 						return `Успех`;
 					}
+					else					if (lang === "en") {
+						return `Success`;
+					}
+					else if (lang === "es") {
+						return `Éxito`;
+					}
+					else if (lang === "pt") {
+						return `Éxito`;
+					}				
+					else if (lang === "ru") {
+						return `Успех`;
+					}
 					else if (lang === "de") {
 						return `Erfolg`;
 					}
-					else if (lang === "pt") {
-						return `Êxito`;
-					}
+					else if (lang === "pl") {
+						return `Powodzenie`;
+					}		
+					else if (lang === "fr") {
+						return `Succès`;
+					}		
+					else if (lang === "it") {
+						return `Successo`;
+					}		
+					else if (lang === "zh") {
+						return `成功`;
+					}			
+					else if (lang === "ja") {
+						return `成功`;
+					}	
+					else if (lang === "ko") {
+						return `성공`;
+					}	
 					else {
 						return `Success`;
 					}		
@@ -993,9 +1049,24 @@ function permission() {
 					else if (lang === "de") {
 						return `Fehlende Berechtigungen`;
 					}
-					else if (lang === "pt") {
-						return `Permissões Ausentes`;
+					else if (lang === "pl") {
+						return `Brak Uprawnień`;
 					}
+					else if (lang === "fr") {
+						return `Autorisations Manquantes`;
+					}
+					else if (lang === "it") {
+						return `Autorizzazioni Mancanti`;
+					}
+					else if (lang === "zh") {
+						return `缺少權限`;
+					}
+					else if (lang === "ja") {
+						return `権限がありません`;
+					}
+					else if (lang === "ko") {
+						return `権限がありません`;
+					}		
 					else {
 						return `Missing Permisions`;
 					}						

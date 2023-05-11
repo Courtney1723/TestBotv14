@@ -8,9 +8,9 @@ module.exports = {
 		.setName('autopost')
 		.setNameLocalizations({
 			"es-ES": 'publicaciones-automáticas',
+			"pt-BR": 'postagens-automáticas',			
 			ru: 'автопубликации',
 			de: 'automatische-veröffentlichung',
-			"pt-BR": 'postagens-automáticas',
 			pl: 'zautomatyzowane-wiadomości',
 			fr: 'messages-automatisés',
 			it: 'messaggi-automatici',
@@ -21,9 +21,9 @@ module.exports = {
 		.setDescription('Configure and Confirm Auto Post Settings')
 		.setDescriptionLocalizations({
 			"es-ES": 'Configuración de publicación automática',
+			"pt-BR": 'Configurações de Publicação Automática',			
 			ru: 'Настройка и подтверждение изменений автопубликации',
 			de: 'Einstellungen für die automatische Veröffentlichung',
-			"pt-BR": 'Configurações de Publicação Automática',
 			pl: 'Automatyczne ustawienia wiadomości',
 			fr: 'Paramètres des messages automatisés',
 			it: 'Impostazioni dei messaggi automatici',

@@ -189,6 +189,12 @@ module.exports = {
 			//console.log(`${rdoDate01[1]}`);
 		let rdoDate = rdoDate01[1].split("<"); //cuts off the end of the date
 			//console.log(`Date: ${rdoDate[0]}\n`);	
+
+		let rdoTitleOG01 = rdoHeader.split("h1");
+		let rdoTitleOG02 = rdoTitleOG01[1].split(">");
+		let rdoTitleOG03 = rdoTitleOG02[1].split("<");
+		let rdoTitleOG = rdoTitleOG03[0];
+			//console.log(`rdoTitleOG:${rdoTitleOG}`);				
 		
 		let rdoString002 = rdoString01[1]; //Splits the header from the body
 			//console.log(`rdoString: ${rdoString002}`)
@@ -488,28 +494,7 @@ else if (RDO_Bonus != undefined) {
 											.replace(/• undefined/g, "• ")
 											.replace(/\)• /g, ")\n• ") //adds a newline between link lists
 
-						function rdoTitleString() {
-							if (lang === "en") {
-								return "Red Dead Online Bonuses:";
-							}
-							else if (lang === "es") {
-								return "Bonificaciones de Red Dead Online:";
-							}
-							else if (lang === "ru") {
-								return "Бонусы Red Dead Online:";
-							}
-							else if (lang === "de") {
-								return "Boni in Red Dead Online:";
-							}
-							else if (lang === "pt") {
-								return "Bônus no Red Dead Online:";
-							}
-							else {
-								return "Red Dead Online Bonuses:";
-							}
-						}
-
-						var constChars = (rdoDate.length + 2) + (rdoTitleString().length);
+						var constChars = (rdoDate.length + 2) + (rdoTitleOG.length);
 						function ellipsisFunction() {
 							if (rdoFinalString.length >= (4000 - constChars)) {
 								return "...";
@@ -612,7 +597,7 @@ else if (RDO_Bonus != undefined) {
 
 		let rdoEmbed = new EmbedBuilder()
 			.setColor(0xC10000) //Red
-			.setTitle(`${rdoTitleString()}`)
+			.setTitle(`${rdoTitleOG}`)
 			.setDescription(`${rdoDate[0]}\n\n${rdoPost()} \n${rdoFooterMin()} ${ellipsisFunction()}`)
 		let rdoEmbed2 = new EmbedBuilder()
 			.setColor(0xC10000) //Red

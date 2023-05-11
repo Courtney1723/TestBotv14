@@ -199,6 +199,13 @@ let gtaURL = process.env.SOCIAL_URL_GTA2;
 		let gtaDate01 = gtaDate02[1].split("<"); //cuts off the end of the date
 		let gtaDate = gtaDate01[0].replace(/&nbsp;/g, " ");
 		//console.log(`Date: ${gtaDate}\n`);	
+
+		let gtaTitleOG01 = gtaHeader.split("h1");
+		let gtaTitleOG02 = gtaTitleOG01[1].split(">");
+		let gtaTitleOG03 = gtaTitleOG02[1].split("<");
+		let gtaTitleOG = gtaTitleOG03[0];
+			//console.log(`gtaTitleOG:${gtaTitleOG}`);		
+		
 		
 		let gtaString002 = gtaString01[1]; //Splits the header from the body
 			//console.log(`gtaString: ${gtaString002}`)
@@ -519,30 +526,8 @@ let gtaURL = process.env.SOCIAL_URL_GTA2;
 							.replace(/\n\n\n/g, "\n\n")
 						//console.log(`gtaFinalString: ${gtaFinalString}`); //gtaFinalString after HTML formatting
 						//console.log(`gtaFinalString.length: ${gtaFinalString.length}`);
-						
 
-						function gtaTitleString() {
-							if (lang === "en") {
-								return "GTA Online Bonuses:";
-							}
-							else if (lang === "es") {
-								return "Bonificaciones de GTA Online:";
-							}
-							else if (lang === "ru") {
-								return "Бонусы GTA Online:";
-							}
-							else if (lang === "de") {
-								return "Boni in GTA Online:";
-							}
-							else if (lang === "pt") {
-								return "Bônus no GTA Online:";
-							}
-							else {
-								return "GTA Online Bonuses:";
-							}
-						}
-
-						var constChars = (gtaDate.length + 2) + (gtaTitleString().length);
+						var constChars = (gtaDate.length + 2) + (gtaTitleOG.length);
 						function ellipsisFunction() {
 							if (gtaFinalString.length >= (4000 - constChars)) {
 								return "...";
@@ -560,22 +545,40 @@ let gtaURL = process.env.SOCIAL_URL_GTA2;
 						function gtaFooterMin() {
 							if (gtaFinalString.length < (4000 - constChars)) {
 								if (lang === "en") {
-									return `** [Click here](${url}) for more details**`;
+									return `** [More details](${url})**`;
 								}
 								else if (lang === "es") {
-									return `** [Haga clic aquí](${url}) para más detalles**`;
+									return `** [Más detalles](${url})**`;
 								}
 								else if (lang === "ru") {
-									return `** [нажмите здесь](${url}) для получения более подробной информации**`;
+									return `** [Подробнее](${url})**`;
 								}
 								else if (lang === "de") {
-									return `** [Klicken Sie hier](${url}) für weitere Details**`;
+									return `** [Mehr Details]](${url})**`;
 								}
 								else if (lang === "pt") {
-									return `** [Clique aqui](${url}) para mais detalhes**`;
+									return `** [Mais detalhes](${url})**`;
 								}
+								else if (lang === "fr") {
+									return `** [Plus de détails](${url})**`;
+								}
+								else if (lang === "it") {
+									return `** [Più dettagli](${url})**`;
+								}			
+								else if (lang === "zh") {
+									return `** [更多細節](${url})**`;
+								}			
+								else if (lang === "pl") {
+									return `** [Więcej szczegółów](${url})**`;
+								}	
+								else if (lang === "ko") {
+									return `** [자세한 내용은](${url})**`;
+								}		
+								else if (lang === "ja") {
+									return `** [詳細](${url})**`;
+								}										
 								else {
-									return `** [Click here](${url}) for more details**`;
+									return `** [More Details](${url})**`;
 								}
 							} else {
 								return "";
@@ -584,23 +587,42 @@ let gtaURL = process.env.SOCIAL_URL_GTA2;
 						function gtaFooterMax() {
 							if (gtaFinalString.length >= (4000 - constChars)) {
 								if (lang === "en") {
-									return `** [Click here](${url}) for more details**`;
+									return `** [More details](${url})**`;
 								}
 								else if (lang === "es") {
-									return `** [Haga clic aquí](${url}) para más detalles**`;
+									return `** [Más detalles](${url})**`;
 								}
 								else if (lang === "ru") {
-									return `** [Hажмите здесь](${url}) для получения более подробной информации**`;
+									return `** [Подробнее](${url})**`;
 								}
 								else if (lang === "de") {
-									return `** [Klicken Sie hier](${url}) für weitere Details**`;
+									return `** [Mehr Details]](${url})**`;
 								}
 								else if (lang === "pt") {
-									return `** [Clique aqui](${url}) para mais detalhes**`;
+									return `** [Mais detalhes](${url})**`;
 								}
+								else if (lang === "fr") {
+									return `** [Plus de détails](${url})**`;
+								}
+								else if (lang === "it") {
+									return `** [Più dettagli](${url})**`;
+								}			
+								else if (lang === "zh") {
+									return `** [更多細節](${url})**`;
+								}			
+								else if (lang === "pl") {
+									return `** [Więcej szczegółów](${url})**`;
+								}	
+								else if (lang === "ko") {
+									return `** [자세한 내용은](${url})**`;
+								}		
+								else if (lang === "ja") {
+									return `** [詳細](${url})**`;
+								}										
 								else {
-									return `** [Click here](${url}) for more details**`;
+									return `** [More Details](${url})**`;
 								}
+
 							} else {
 								return "";
 							}
@@ -644,7 +666,7 @@ let gtaURL = process.env.SOCIAL_URL_GTA2;
 
 						let gtaEmbed = new EmbedBuilder()
 							.setColor(0x00CD06) //Green
-							.setTitle(`${gtaTitleString()}`)
+							.setTitle(`${gtaTitleOG}`)
 							.setDescription(`${gtaDate}\n${gtaPost()}${gtaFooterMin()}${ellipsisFunction()}`)
 						let gtaEmbed2 = new EmbedBuilder()
 							.setColor(0x00CD06) //Green

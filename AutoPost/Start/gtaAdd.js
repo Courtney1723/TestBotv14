@@ -125,19 +125,19 @@ module.exports = {
 			return `Sie erhalten jetzt GTA Online Auto-Posts auf dem <#${menuChannelID}>-Kanal \n**jeden Donnerstag um 14:00 Uhr Ostküsten-Standardzeit (Nordamerika)**.`;
 		}				
 		else if (lang === "pl") {
-			return `Od teraz będziesz otrzymywać automatyczne posty GTA Online na kanale <#${menuChannelID}> \n**w każdy czwartek o 14:00 czasu wschodniego**.`;
+			return `Będziesz teraz otrzymywać automatyczne wiadomości GTA Online na kanale <#${menuChannelID}> \n**w każdy czwartek o 14:00 czasu wschodniego**.`; 
 		}
 		else if (lang === "fr") {
-			return `Vous recevrez désormais les publications automatiques de GTA Online sur la chaîne <#${menuChannelID}> \n**tous les jeudis à 14h00, heure de l'Est**.`;
+			return `Vous recevrez désormais des messages automatisés pour GTA Online dans le canal <#${menuChannelID}> \n**tous les jeudis à 14h00, heure de l'Est**.`;
 		}
 		else if (lang === "it") {
-			return `Ora riceverai post automatici di GTA Online sul canale <#${menuChannelID}> \n**ogni giovedì alle 14:00 ora di New York**.`;
+			return `Ora riceverai messaggi automatici di GTA Online nel canale <#${menuChannelID}> \n**ogni giovedì alle 14:00 ora di New York**.`;
 		}
 		else if (lang === "zh") {
-			return `您現在將在 <#${menuChannelID}> 頻道\n**每週四東部時間 14:00 自動收到 GTA 在線模式的帖子**。`;
+			return `現在東部時間每週四 14:00，您將在 <#${menuChannelID}> 頻道收到 GTA 在線模式消息。`;
 		}
 		else if (lang === "ja") {
-			return `<#${menuChannelID}> チャンネルへの GTA オンラインの自動投稿が\n**毎週木曜日の東部時間 14:00** に配信されます。`;
+			return `<#${menuChannelID}> チャンネルで、毎週木曜日の東部標準時の 14:00 に GTA オンライン メッセージを受け取るようになりました。`;
 		}
 		else if (lang === "ko") {
 			return `이제 <#${menuChannelID}> 채널에 \n**매주 목요일 14:00 동부 시간**에 GTA 온라인 자동 게시를 받게 됩니다.`;

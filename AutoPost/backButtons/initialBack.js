@@ -601,26 +601,44 @@ Click **Confirm** to view and test current settings.`;
 				}; 
 	//END ADDING A LANGAUGE
 						
-			function expiredDesc() {
-				if (lang === "en") {
-					return `This interaction expired`;
+				function expiredDesc() {
+					if (lang === "en") {
+						return `This interaction expired`;
+					}
+					if (lang === "es") {
+						return `Esta interacción expiró`;
+					}
+					if (lang === "pt") {
+						return `Esta interação expirou`;
+					}					
+					if (lang === "ru") {
+						return `Срок действия этого взаимодействия истек`;
+					}
+					if (lang === "de") {
+						return `Diese Interaktion ist abgelaufen`;
+					}
+					if (lang === "pl") {
+						return `Ta interakcja wygasła`;
+					}				
+					if (lang === "fr") {
+						return `Cette interaction a expiré`;
+					}		
+					if (lang === "it") {
+						return `Questa interazione è scaduta`;
+					}			
+					if (lang === "zh") {
+						return `此互動已過期`;
+					}					
+					if (lang === "ja") {
+						return `このインタラクションの有効期限が切れました`;
+					}		
+					if (lang === "ko") {
+						return `이 상호 작용이 만료되었습니다`;
+					}								
+					else {
+						return `This interaction expired`;
+					}						
 				}
-				if (lang === "es") {
-					return `Esta interacción expiró.`;
-				}
-				if (lang === "ru") {
-					return `Срок действия этого взаимодействия истек.`;
-				}
-				if (lang === "de") {
-					return `Diese Interaktion ist abgelaufen`;
-				}
-				if (lang === "pt") {
-					return `Esta interação expirou.`;
-				}
-				else {
-					return `This interaction expired`;
-				}						
-			}
 
 			const expiredButton = new ActionRowBuilder()
 				.addComponents(

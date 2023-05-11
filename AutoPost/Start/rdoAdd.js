@@ -89,16 +89,16 @@ module.exports = {
 			return `Będziesz teraz otrzymywać automatyczne wiadomości Red Dead Online na kanale <#${menuChannelID}> \n**w pierwszy wtorek każdego miesiąca o godzinie 14:00 czasu wschodniego**.`;
 		}
 		else if (lang === "fr") {
-			return `Vous recevrez désormais des messages automatiques de Red Dead Online sur la chaîne <#${menuChannelID}> \n**le premier mardi de chaque mois à 14h00, heure de l'Est**.`;
+			return `Vous recevrez désormais des messages automatisés pour Red Dead Online dans le canal <#${menuChannelID}> \n**le premier mardi de chaque mois à 14h00, heure de l'Est**.`;
 		}
 		else if (lang === "it") {
-			return `Ora riceverai messaggi automatici di Red Dead Online sul canale <#${menuChannelID}> \n**il primo martedì di ogni mese alle 14:00 ora di New York**.`;
+			return `Ora riceverai messaggi automatici di Red Dead Online nel canale <#${menuChannelID}> \n**il primo martedì di ogni mese alle 14:00 ora di New York**.`;
 		}
 		else if (lang === "zh") {
-			return `您現在將在 <#${menuChannelID}> 頻道\n**每月第一個星期二東部時間 14:00** 收到 Red Dead 在線模式自動消息。`;
+			return `現在東部時間每個第一個星期二 14:00，您將在 <#${menuChannelID}> 頻道收到 Red Dead 在線模式消息。`;
 		}
 		else if (lang === "ja") {
-			return `これで、<#${menuChannelID}> チャンネルに Red Dead Online の自動メッセージが\n**毎月第 1 火曜日の東部時間 14:00** に届きます。`;
+			return `毎月第 1 火曜日の東部標準時の 14:00 に、<#${menuChannelID}> チャネルで Red Dead Online メッセージを受け取ります。`;
 		}
 		else if (lang === "ko") {
 			return `이제 <#${menuChannelID}> 채널로 Red Dead 온라인 자동 메시지를 받게 됩니다. \n**매월 첫 번째 화요일 14:00 동부 표준시**에.`;

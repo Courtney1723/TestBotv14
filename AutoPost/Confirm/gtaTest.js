@@ -357,10 +357,11 @@ interaction.editReply({ components: [thinkingButtons], ephemeral: true }).catch(
 		let gtaDate = gtaDate01[0].replace(/&nbsp;/g, " ");
 		//console.log(`Date: ${gtaDate}\n`);	
 
-		let gtaTitleOG01 = gtaHeader.split("h1>");
-		let gtaTitleOG02 = gtaTitleOG01[1].split("<");
-		let gtaTitleOG = gtaTitleOG02[0];
-		//console.log(`gtaTitleOG:${gtaTitleOG}`);			
+		let gtaTitleOG01 = gtaHeader.split("h1");
+		let gtaTitleOG02 = gtaTitleOG01[1].split(">");
+		let gtaTitleOG03 = gtaTitleOG02[1].split("<");
+		let gtaTitleOG = gtaTitleOG03[0];
+			//console.log(`gtaTitleOG:${gtaTitleOG}`);		
 		
 		let gtaString002 = gtaString01[1]; //Splits the header from the body
 			//console.log(`gtaString: ${gtaString002}`)
@@ -995,7 +996,7 @@ function permission() {
 					return `• 消息已發送至<#${channelIDArray[c]}>。`;
 				}
 				else if (lang === "ja") {
-					return `• 메시지가 <#${channelIDArray[c]}>로 전송되었습니다.`;
+					return `• メッセージが <#${channelIDArray[c]}> チャネルに送信されました。`;
 				}
 				else if (lang === "ko") {
 					return `• 메시지가 <#${channelIDArray[c]}>로 전송되었습니다.`;

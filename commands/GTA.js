@@ -82,7 +82,7 @@ module.exports = {
 
 						function isPast() {
 							let isPast003 = content.split("isPast\":");
-							let isPast002 = isPast003[1].split(",\"");
+							let isPast002 = isPast003[2].split(",\"");
 
 							return isPast002[0];
 						}
@@ -116,10 +116,11 @@ module.exports = {
 						let gtaDate = gtaDate01[0].replace(/&nbsp;/g, " ");
 						//console.log(`Date: ${gtaDate}\n`);	
 
-						let gtaTitleOG01 = gtaHeader.split("h1>");
-						let gtaTitleOG02 = gtaTitleOG01[1].split("<");
-						let gtaTitleOG = gtaTitleOG02[0];
-						//console.log(`gtaTitleOG:${gtaTitleOG}`);
+						let gtaTitleOG01 = gtaHeader.split("h1");
+						let gtaTitleOG02 = gtaTitleOG01[1].split(">");
+						let gtaTitleOG03 = gtaTitleOG02[1].split("<");
+						let gtaTitleOG = gtaTitleOG03[0];
+							//console.log(`gtaTitleOG:${gtaTitleOG}`);
 
 						let gtaString002 = gtaString01[1]; //Splits the header from the body
 						//console.log(`gtaString: ${gtaString002}`)

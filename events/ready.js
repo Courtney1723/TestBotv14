@@ -26,7 +26,7 @@ module.exports = {
 	
 				function isPast() {
 					let isPast003 = content.split("isPast\":");
-					let isPast002 = isPast003[1].split(",\"");
+					let isPast002 = isPast003[2].split(",\"");
 	
 					return isPast002[0];
 				}
@@ -107,6 +107,7 @@ module.exports = {
 		//Counts the guilds
 		const GuildIDs = client.guilds.cache.map(guild => guild.id);
 		console.log(`${GuildIDs.length} guilds`);
+
 
 
 	},

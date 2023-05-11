@@ -18,16 +18,15 @@ module.exports = {
 		.setName('language')
 		.setNameLocalizations({
 			"es-ES": 'idioma',
+			"pt-BR": 'idioma',			
 			ru: 'язык',
 			de: 'sprache',
-			"pt-BR": 'idioma',
 			pl: 'język',
 			fr: 'langue',
 			it: 'lingua',
 			"zh-CN": '語言',
-			"zh-TW": '語言',
 			ja: '言語',
-			ko: '언어',	
+			ko: '언어',					
 		})
 		.setDescription('Language | Idioma | Язык | Sprache | Język | Langue | Lingua | 語言 | 言語 | 언어')
 		.setDMPermission(false),
