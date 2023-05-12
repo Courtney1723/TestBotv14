@@ -27,10 +27,141 @@ module.exports = {
             let menuUserID02 = interaction.customId.split(`u:`);
             let menuUserID01 = menuUserID02[1].split(" -");
             let menuUserID = menuUserID01[0];
-            //console.log(`languageMenu menuUserID: ${menuUserID}`);
+            //console.log(`languageMenu menuUserID: ${menuUserID}`);					
 
+            function duplicateTitle() {
+                if (LANG === "en") {
+                    return `Please Try Again`;
+                }
+                else if (LANG === "es") {
+                    return `Por favor, inténtalo de nuevo`;
+                }
+                else if (LANG === "pt") {
+                    return `Por favor, tente novamente`;
+                }
+                else if (LANG === "ru") {
+                    return `Пожалуйста, попробуйте еще раз`;
+                }
+                else if (LANG === "de") {
+                    return `Inténtalo de nuevo`;
+                }
+                else if (LANG === "pl") {
+                    return `Proszę spróbuj ponownie`;
+                }
+                else if (LANG === "fr") {
+                    return `Veuillez réessayer`;
+                }
+                else if (LANG === "it") {
+                    return `Per favore riprova`;
+                }
+                else if (LANG === "zh") {
+                    return `請再試一次`;
+                }
+                else if (LANG === "ja") {
+                    return `もう一度お試しください`;
+                }
+                else if (LANG === "ko") {
+                    return `다시 시도해 주세요`;
+                }
+                else {
+                    return `Please Try Again`;
+                }
+            }					
 
-            //BEGIN TRANSLATIONS
+            function invalidResponse() {
+                if (LANG === "en") {
+                    return `You selected an invalid response.`;
+                }
+                else if (LANG === "es") {
+                    return `Seleccionó una respuesta no válida.`;
+                }
+                else if (LANG === "pt") {
+                    return `Você selecionou uma resposta inválida.`;
+                }
+                else if (LANG === "ru") {
+                    return `Вы выбрали неправильный ответ.`;
+                }
+                else if (LANG === "de") {
+                    return `Sie haben eine ungültige Antwort ausgewählt.`;
+                }
+                else if (LANG === "pl") {
+                    return `Wybrałeś nieprawidłową odpowiedź.`;
+                }
+                else if (LANG === "fr") {
+                    return `Vous avez sélectionné une réponse invalide.`;
+                }
+                else if (LANG === "it") {
+                    return `Hai selezionato una risposta non valida.`;
+                }
+                else if (LANG === "zh") {
+                    return `您選擇了無效的回复。`;
+                }
+                else if (LANG === "ja") {
+                    return `無効な応答を選択しました。`;
+                }
+                else if (LANG === "ko") {
+                    return `잘못된 응답을 선택했습니다.`;
+                }
+                else {
+                    return `You selected an invalid response.`;
+                }
+            }					
+
+            function notYourOption() {
+                if (LANG === "en") {
+                    return `These options aren't for you.`;
+                }
+                else if (LANG === "es") {
+                    return `Estas opciones no son para ti.`;
+                }
+                else if (LANG === "pt") {
+                    return `Essas opções não são para você.`;
+                }
+                else if (LANG === "ru") {
+                    return `Эти варианты не для вас.`;
+                }
+                else if (LANG === "de") {
+                    return `Diese Optionen sind nichts für Sie.`;
+                }
+                else if (LANG === "pl") {
+                    return `Te opcje nie są dla Ciebie.`;
+                }
+                else if (LANG === "fr") {
+                    return `Ces options ne sont pas pour vous.`;
+                }
+                else if (LANG === "it") {
+                    return `Queste opzioni non fanno per te.`;
+                }
+                else if (LANG === "zh") {
+                    return `這些選項不適合您。`;
+                }
+                else if (LANG === "ja") {
+                    return `これらのオプションはあなたのためではありません。`;
+                }
+                else if (LANG === "ko") {
+                    return `이러한 옵션은 귀하를 위한 것이 아닙니다.`;
+                }
+                else {
+                    return `These options aren't for you.`;
+                }
+            }					
+
+            if (chosenLang.includes(`undefined`)) { 
+
+                const langDuplicateEmbed = new EmbedBuilder()
+                    .setColor(0xFFAE00) //Orange 
+                    .setTitle(`${duplicateTitle()}`)
+                    .setDescription(`${invalidResponse()} || ʕっ•ᴥ•ʔっ ||`)
+
+                if (interaction.user.id === menuUserID) {
+                    await interaction.followUp({ embeds: [langDuplicateEmbed], components: [], ephemeral: true })
+                        .catch(err => console.log(`langDuplicateEmbed Error: ${err}`));
+                } else {
+                    interaction.followUp({ content: `${notYourOption()}`, ephemeral: true });
+                }
+
+            }		
+						else {
 
             function success() {
                 if (chosenLang === "en") {
@@ -146,45 +277,6 @@ module.exports = {
                 }
                 else {
                     return "_ _";
-                }
-            }
-
-            function notYourOption() {
-                if (LANG === "en") {
-                    return `These options aren't for you.`;
-                }
-                else if (LANG === "es") {
-                    return `Estas opciones no son para ti.`;
-                }
-                else if (LANG === "pt") {
-                    return `Essas opções não são para você.`;
-                }
-                else if (LANG === "ru") {
-                    return `Эти варианты не для вас.`;
-                }
-                else if (LANG === "de") {
-                    return `Diese Optionen sind nichts für Sie.`;
-                }
-                else if (LANG === "pl") {
-                    return `Te opcje nie są dla Ciebie.`;
-                }
-                else if (LANG === "fr") {
-                    return `Ces options ne sont pas pour vous.`;
-                }
-                else if (LANG === "it") {
-                    return `Queste opzioni non fanno per te.`;
-                }
-                else if (LANG === "zh") {
-                    return `這些選項不適合您。`;
-                }
-                else if (LANG === "ja") {
-                    return `これらのオプションはあなたのためではありません。`;
-                }
-                else if (LANG === "ko") {
-                    return `이러한 옵션은 귀하를 위한 것이 아닙니다.`;
-                }
-                else {
-                    return `These options aren't for you.`;
                 }
             }
 
@@ -304,6 +396,8 @@ module.exports = {
                     }
                 }); //end fs.readFile for LANGDataBase.txt						
             }
+
+				}
 
         } // end if languageMenu button
 

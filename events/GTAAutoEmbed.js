@@ -554,7 +554,7 @@ module.exports = {
                                                     return `** [Подробнее](${url})**`;
                                                 }
                                                 else if (lang === "de") {
-                                                    return `** [Mehr Details]](${url})**`;
+                                                    return `** [Mehr Details](${url})**`;
                                                 }
                                                 else if (lang === "pt") {
                                                     return `** [Mais detalhes](${url})**`;
@@ -596,7 +596,7 @@ module.exports = {
                                                     return `** [Подробнее](${url})**`;
                                                 }
                                                 else if (lang === "de") {
-                                                    return `** [Mehr Details]](${url})**`;
+                                                    return `** [Mehr Details](${url})**`;
                                                 }
                                                 else if (lang === "pt") {
                                                     return `** [Mais detalhes](${url})**`;
