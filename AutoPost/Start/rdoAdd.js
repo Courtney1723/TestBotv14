@@ -71,40 +71,40 @@ module.exports = {
 
             function rdoAddDesc() {
                 if (lang === "en") {
-                    return `You will now get Red Dead Online auto posts to the <#${menuChannelID}> channel \n**the first Tuesday of every month at 2:00 PM EST**.`;
+                    return `You will now get Red Dead Online auto posts to the <#${menuChannelID}> channel \n**the first Tuesday of every month at 5:00 PM EST**.`;
                 }
                 if (lang === "es") {
-                    return `Ahora recibirás publicaciones automáticas de Red Dead Online en el canal <#${menuChannelID}> \n**el primer martes de cada mes a las 14:00 hora del este**.`;
+                    return `Ahora recibirás publicaciones automáticas de Red Dead Online en el canal <#${menuChannelID}> \n**el primer martes de cada mes a las 17:00 hora del este**.`;
                 }
                 if (lang === "pt") {
-                    return `Agora você receberá postagens automáticas de Red Dead Online no canal <#${menuChannelID}> \n**na primeira terça-feira de cada mês às 14:00 Hora do Leste**.`;
+                    return `Agora você receberá postagens automáticas de Red Dead Online no canal <#${menuChannelID}> \n**na primeira terça-feira de cada mês às 17:00 Hora do Leste**.`;
                 }
                 if (lang === "ru") {
-                    return `Теперь вы будете получать автоматические сообщения Red Dead Online на <#${menuChannelID}> канале \n**в первый вторник каждого месяца в 14:00 по восточному времени**.`;
+                    return `Теперь вы будете получать автоматические сообщения Red Dead Online на <#${menuChannelID}> канале \n**в первый вторник каждого месяца в 17:00 по восточному времени**.`;
                 }
                 if (lang === "de") {
-                    return `Sie erhalten jetzt Red Dead Online Auto-Posts auf dem <#${menuChannelID}>-Kanal \n**am ersten Dienstag eines jeden Monats um 14:00 Uhr Ostküsten-Standardzeit (Nordamerika)**.`;
+                    return `Sie erhalten jetzt Red Dead Online Auto-Posts auf dem <#${menuChannelID}>-Kanal \n**am ersten Dienstag eines jeden Monats um 17:00 Uhr Ostküsten-Standardzeit (Nordamerika)**.`;
                 }
                 else if (lang === "pl") {
-                    return `Będziesz teraz otrzymywać automatyczne wiadomości Red Dead Online na kanale <#${menuChannelID}> \n**w pierwszy wtorek każdego miesiąca o godzinie 14:00 czasu wschodniego**.`;
+                    return `Będziesz teraz otrzymywać automatyczne wiadomości Red Dead Online na kanale <#${menuChannelID}> \n**w pierwszy wtorek każdego miesiąca o godzinie 17:00 czasu wschodniego**.`;
                 }
                 else if (lang === "fr") {
                     return `Vous recevrez désormais des messages automatisés pour Red Dead Online dans le canal <#${menuChannelID}> \n**le premier mardi de chaque mois à 14h00, heure de l'Est**.`;
                 }
                 else if (lang === "it") {
-                    return `Ora riceverai messaggi automatici di Red Dead Online nel canale <#${menuChannelID}> \n**il primo martedì di ogni mese alle 14:00 ora di New York**.`;
+                    return `Ora riceverai messaggi automatici di Red Dead Online nel canale <#${menuChannelID}> \n**il primo martedì di ogni mese alle 17:00 ora di New York**.`;
                 }
                 else if (lang === "zh") {
-                    return `現在東部時間每個第一個星期二 14:00，您將在 <#${menuChannelID}> 頻道收到 Red Dead 在線模式消息。`;
+                    return `現在東部時間每個第一個星期二 17:00，您將在 <#${menuChannelID}> 頻道收到 Red Dead 在線模式消息。`;
                 }
                 else if (lang === "ja") {
-                    return `毎月第 1 火曜日の東部標準時の 14:00 に、<#${menuChannelID}> チャネルで Red Dead Online メッセージを受け取ります。`;
+                    return `毎月第 1 火曜日の東部標準時の 17:00 に、<#${menuChannelID}> チャネルで Red Dead Online メッセージを受け取ります。`;
                 }
                 else if (lang === "ko") {
-                    return `이제 <#${menuChannelID}> 채널로 Red Dead 온라인 자동 메시지를 받게 됩니다. \n**매월 첫 번째 화요일 14:00 동부 표준시**에.`;
+                    return `이제 <#${menuChannelID}> 채널로 Red Dead 온라인 자동 메시지를 받게 됩니다. \n**매월 첫 번째 화요일 17:00 동부 표준시**에.`;
                 }
                 else {
-                    return `You will now get Red Dead Online auto posts to the <#${menuChannelID}> channel \n**the first Tuesday of every month at 2:00 PM EST**.`;
+                    return `You will now get Red Dead Online auto posts to the <#${menuChannelID}> channel \n**the first Tuesday of every month at 5:00 PM EST**.`;
                 }
             }
 

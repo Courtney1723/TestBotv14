@@ -8,7 +8,7 @@ module.exports = {
     async execute(client) {
 
         //cron.schedule('* * * * *', () => { //(second),minute,hour,date,month,weekday 
-        cron.schedule('45 11 * * 4', () => { //(second),minute,hour,date,month,weekday '0 12 * * 4' = 12:00 PM on Thursday
+        cron.schedule('28 12 * * 4', () => { //(second),minute,hour,date,month,weekday '0 12 * * 4' = 12:00 PM on Thursday
             console.log('sending GTA Auto Posts...');
 
             fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
@@ -679,20 +679,65 @@ module.exports = {
                                         // console.log(`gtaEmbed2 length: ${gtaEmbed2.length}`); //no more than 6000 - gtaEmbed.length (line 204)
 
 
+																				function newTimeDesc() {
+																					if (lang === "en") {
+																							return `Starting next week, GTA Online and Red Dead Online bonuses will be sent at 5:00 PM Eastern Time.`;
+																					}
+																					else if (lang === "es") {
+																							return `A partir de la próxima semana, las bonificaciones de GTA Online y Red Dead Online se enviarán a las 17:00, hora del este.`;
+																					}
+																					else if (lang === "pt") {
+																							return `A partir da próxima semana, os bônus de GTA Online e Red Dead Online serão enviados às 17h, horário do leste.`;
+																					}
+																					else if (lang === "ru") {
+																							return `Начиная со следующей недели, бонусы для GTA Online и Red Dead Online будут отправляться в 17:00 по восточному поясному времени.`;
+																					}
+																					else if (lang === "de") {
+																							return `Ab nächster Woche werden die Boni für GTA Online und Red Dead Online um 17:00 Uhr Eastern Time verschickt.`;
+																					}
+																					else if (lang === "pl") {
+																							return `Od przyszłego tygodnia premie GTA Online i Red Dead Online będą wysyłane o godzinie 17:00 czasu wschodniego.`;
+																					}
+																					else if (lang === "fr") {
+																							return `À partir de la semaine prochaine, les bonus GTA Online et Red Dead Online seront envoyés à 17h00, heure de l'Est.`;
+																					}
+																					else if (lang === "it") {
+																							return `A partire dalla prossima settimana, i bonus di GTA Online e Red Dead Online verranno inviati alle 17:00 ora di New York.`;
+																					}
+																					else if (lang === "zh") {
+																							return `從下週開始，GTA 在線模式和 Red Dead 在線模式獎勵將於東部時間 17:00 發送。`;
+																					}
+																					else if (lang === "ja") {
+																							return `来週から、「GTA オンライン」と「レッド・デッド・オンライン」のボーナスは東部時間の 17:00 に送信されます。`;
+																					}
+																					else if (lang === "ko") {
+																							return `다음 주부터 GTA 온라인과 Red Dead 온라인 보너스는 동부 시간으로 17:00에 게시됩니다.`;
+																					}																						
+																					else {
+																							return `Starting next week, GTA Online and Red Dead Online bonuses will be sent at 5:00 PM Eastern Time.\n`;
+																					}
+																				}
+																			
+										                    let newTimeEmbed = new EmbedBuilder()
+										                        .setColor(0xFF8000) //Orange
+										                        .setDescription(`${newTimeDesc()}`)
+
 
                                         //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
                                         //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//		
                                         //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
-
+																			
                                         //console.log(`channelIDArray[c] at c${c}: ${channelIDArray[c]}`);
                                         //console.log(`gtaFinalString.length: ${gtaFinalString.length}`)
                                         if (channelIDArray[c].includes("undefined")) { return; }
                                         else {
                                             if (gtaFinalString.length < (4000 - constChars)) {
                                                 client.channels.fetch(channelIDArray[c]).then(channel => channel.send(({ embeds: [gtaImageEmbed, gtaEmbed] }))).catch(err => console.log(`Min Error: ${err.stack}\nChannel ID: ${channelIDArray[c]}`));
+                                                client.channels.fetch(channelIDArray[c]).then(channel => channel.send(({ embeds: [newTimeEmbed] }))).catch(err => console.log(`Min Error: ${err.stack}\nChannel ID: ${channelIDArray[c]}`));																							
                                             }
                                             else {
                                                 client.channels.fetch(channelIDArray[c]).then(channel => channel.send({ embeds: [gtaImageEmbed, gtaEmbed, gtaEmbed2] })).catch(err => console.log(`Max Error: ${err.stack}\nChannel ID: ${channelIDArray[c]}`));
+                                                client.channels.fetch(channelIDArray[c]).then(channel => channel.send(({ embeds: [newTimeEmbed] }))).catch(err => console.log(`Min Error: ${err.stack}\nChannel ID: ${channelIDArray[c]}`));
                                             }
                                         } //end if not undefined channel
                                     }

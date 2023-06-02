@@ -63,40 +63,40 @@ module.exports = {
 
             function startDesc() {
                 if (lang === "en") {
-                    return `Click **the dropdown menu** to confirm the channel you want to send GTA Online auto posts to \n**every Thursday at 2:00 PM EST**.`;
+                    return `Click **the dropdown menu** to confirm the channel you want to send GTA Online auto posts to \n**every Thursday at 5:00 PM EST**.`;
                 }
                 if (lang === "es") {
-                    return `Hage clic en **el menú desplegable** para confirmar el canal al que desea enviar publicaciones automáticas de GTA Online \n** todos los jueves a las 14:00 hora del este**.`;
+                    return `Hage clic en **el menú desplegable** para confirmar el canal al que desea enviar publicaciones automáticas de GTA Online \n** todos los jueves a las 17:00 hora del este**.`;
                 }
                 if (lang === "pt") {
-                    return `Clique **o menu suspenso** para confirmar o canal que você deseja enviar GTA Online auto posts para \n**todas as quintas-feiras às 14:00 Hora do Leste**.`;
+                    return `Clique **o menu suspenso** para confirmar o canal que você deseja enviar GTA Online auto posts para \n**todas as quintas-feiras às 17:00 Hora do Leste**.`;
                 }
                 if (lang === "ru") {
-                    return `Щелчок **раскрывающееся меню** для подтверждения канала, вы хотите отправлять автопосты GTA Online на \n**каждый четверг в 14:00 по восточному времени**.`;
+                    return `Щелчок **раскрывающееся меню** для подтверждения канала, вы хотите отправлять автопосты GTA Online на \n**каждый четверг в 17:00 по восточному времени**.`;
                 }
                 if (lang === "de") {
-                    return `Klicken **Das Dropdown-Menü** um den Kanal zu bestätigen, an den Sie GTA Online automatische Beiträge senden möchten \n**jeden Donnerstag um 14:00 Uhr Ostküsten-Standardzeit (Nordamerika)**.`;
+                    return `Klicken **Das Dropdown-Menü** um den Kanal zu bestätigen, an den Sie GTA Online automatische Beiträge senden möchten \n**jeden Donnerstag um 17:00 Uhr Ostküsten-Standardzeit (Nordamerika)**.`;
                 }
                 else if (lang === "pl") {
-                    return `Kliknij **menu**, aby potwierdzić kanał, na który chcesz wysyłać automatyczne posty z GTA Online \n**w każdy czwartek o 14:00 czasu wschodniego**.`;
+                    return `Kliknij **menu**, aby potwierdzić kanał, na który chcesz wysyłać automatyczne posty z GTA Online \n**w każdy czwartek o 17:00 czasu wschodniego**.`;
                 }
                 else if (lang === "fr") {
                     return `Cliquez sur **le menu déroulant** pour confirmer la chaîne sur laquelle vous souhaitez envoyer les publications automatiques de GTA Online \n**tous les jeudis à 14h00, heure de l'Est**.`;
                 }
                 else if (lang === "it") {
-                    return `Fai clic sul **menu a discesa** per confermare il canale a cui desideri inviare i post automatici di GTA Online \n**ogni giovedì alle 14:00 ora di New York**.`;
+                    return `Fai clic sul **menu a discesa** per confermare il canale a cui desideri inviare i post automatici di GTA Online \n**ogni giovedì alle 17:00 ora di New York**.`;
                 }
                 else if (lang === "zh") {
-                    return `單擊下拉菜單以確認您要在東部時間每週四 14:00 將 GTA 在線模式自動消息發送到的頻道。`;
+                    return `單擊下拉菜單以確認您要在東部時間每週四 17:00 將 GTA 在線模式自動消息發送到的頻道。`;
                 }
                 else if (lang === "ja") {
-                    return `**ドロップダウン メニュー**をクリックして、\n**毎週木曜日の東部時間の 14:00**に GTA オンラインの自動投稿を送信するチャンネルを確認します。`;
+                    return `**ドロップダウン メニュー**をクリックして、\n**毎週木曜日の東部時間の 17:00**に GTA オンラインの自動投稿を送信するチャンネルを確認します。`;
                 }
                 else if (lang === "ko") {
-                    return `**드롭다운 메뉴**를 클릭하여 GTA 온라인 자동 게시물을 \n**매주 목요일 14:00 동부 시간**에 보낼 채널을 확인하세요.`;
+                    return `**드롭다운 메뉴**를 클릭하여 GTA 온라인 자동 게시물을 \n**매주 목요일 17:00 동부 시간**에 보낼 채널을 확인하세요.`;
                 }
                 else {
-                    return `Click **the dropdown menu** to confirm the channel you want to send GTA Online auto posts to \n**every Thursday at 2:00 PM EST**.`;
+                    return `Click **the dropdown menu** to confirm the channel you want to send GTA Online auto posts to \n**every Thursday at 5:00 PM EST**.`;
                 }
             }
 

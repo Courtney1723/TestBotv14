@@ -178,40 +178,40 @@ module.exports = {
                     function everyThursday() {
                         if (subscriptionCheckGTA === false) {
                             if (lang === "en") {
-                                return `\nEvery Thursday at 2:00 PM EST`;
+                                return `\nEvery Thursday at 5:00 PM EST`;
                             }
                             else if (lang === "es") {
-                                return `\nTodos los jueves a las 14:00 hora del este`;
+                                return `\nTodos los jueves a las 17:00 hora del este`;
                             }
                             else if (lang === "pt") {
-                                return `\nTodas as quintas-feiras às 14:00 Hora do Leste`;
+                                return `\nTodas as quintas-feiras às 17:00 Hora do Leste`;
                             }
                             else if (lang === "ru") {
-                                return `\nКаждый четверг в 14:00 по восточному времени`;
+                                return `\nКаждый четверг в 17:00 по восточному времени`;
                             }
                             else if (lang === "de") {
-                                return `\nJeden Donnerstag um 14:00 Uhr Ostküsten-Standardzeit (Nordamerika)`;
+                                return `\nJeden Donnerstag um 17:00 Uhr Ostküsten-Standardzeit (Nordamerika)`;
                             }
                             else if (lang === "pl") {
-                                return `\nW każdy czwartek o godzinie 14:00 czasu wschodnioamerykańskiego`;
+                                return `\nW każdy czwartek o godzinie 17:00 czasu wschodnioamerykańskiego`;
                             }
                             else if (lang === "fr") {
                                 return `\nTous les jeudis à 14h00, heure normale de l'Est`;
                             }
                             else if (lang === "it") {
-                                return `\nOgni giovedì alle 14:00 ora standard orientale`;
+                                return `\nOgni giovedì alle 17:00 ora standard orientale`;
                             }
                             else if (lang === "zh") {
-                                return `\n東部時間每週四 14:00`;
+                                return `\n東部時間每週四 17:00`;
                             }
                             else if (lang === "ja") {
-                                return `\n毎週木曜日 14:00 東部標準時`;
+                                return `\n毎週木曜日 17:00 東部標準時`;
                             }
                             else if (lang === "ko") {
-                                return `\n매주 목요일 동부 표준시 14:00`;
+                                return `\n매주 목요일 동부 표준시 17:00`;
                             }
                             else {
-                                return `\nEvery Thursday at 2:00 PM EST`;
+                                return `\nEvery Thursday at 5:00 PM EST`;
                             }
                         }
                         else {
@@ -222,40 +222,40 @@ module.exports = {
                     function firstTuesday() {
                         if (subscriptionCheckRDO === false) {
                             if (lang === "en") {
-                                return `\nThe first Tuesday of every month at 2:00 PM EST`;
+                                return `\nThe first Tuesday of every month at 5:00 PM EST`;
                             }
                             else if (lang === "es") {
-                                return `\nEl primer martes de cada mes a las 14:00 hora del este`;
+                                return `\nEl primer martes de cada mes a las 17:00 hora del este`;
                             }
                             else if (lang === "pt") {
-                                return `\nA primeira terça-feira de cada mês às 14:00 Hora do Leste`;
+                                return `\nA primeira terça-feira de cada mês às 17:00 Hora do Leste`;
                             }
                             else if (lang === "ru") {
-                                return `\nB первый вторник каждого месяца в 14:00 по восточному времени`;
+                                return `\nB первый вторник каждого месяца в 17:00 по восточному времени`;
                             }
                             else if (lang === "de") {
-                                return `\nJeden ersten Dienstag im Monat um 14:00 Uhr Ostküsten-Standardzeit (Nordamerika)`;
+                                return `\nJeden ersten Dienstag im Monat um 17:00 Uhr Ostküsten-Standardzeit (Nordamerika)`;
                             }
                             else if (lang === "pl") {
-                                return `\nPierwszy wtorek każdego miesiąca o godzinie 14:00 czasu wschodniego`;
+                                return `\nPierwszy wtorek każdego miesiąca o godzinie 17:00 czasu wschodniego`;
                             }
                             else if (lang === "fr") {
                                 return `\nLe premier mardi de chaque mois à 14h00 heure de l'Est`;
                             }
                             else if (lang === "it") {
-                                return `\nIl primo martedì di ogni mese alle 14:00 ora orientale`;
+                                return `\nIl primo martedì di ogni mese alle 17:00 ora orientale`;
                             }
                             else if (lang === "zh") {
-                                return `\n每個月的第一個星期二東部標準時間 14:00`;
+                                return `\n每個月的第一個星期二東部標準時間 17:00`;
                             }
                             else if (lang === "ja") {
-                                return `\n毎月第 1 火曜日の東部時間 14:00`;
+                                return `\n毎月第 1 火曜日の東部時間 17:00`;
                             }
                             else if (lang === "ko") {
-                                return `\n매월 첫 번째 화요일 14:00 동부 표준시`;
+                                return `\n매월 첫 번째 화요일 17:00 동부 표준시`;
                             }
                             else {
-                                return `\nThe first Tuesday of every month at 2:00 PM EST`;
+                                return `\nThe first Tuesday of every month at 5:00 PM EST`;
                             }
                         }
                         else {

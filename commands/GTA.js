@@ -714,6 +714,53 @@ module.exports = {
 
                 //interaction.editReply(`Console logged! 👍`);
 
+								//begin missing translations embed
+
+								function missingTransDesc() {
+									if (lang === "es") {
+										return `Las traducciones son proporcionadas por Rockstar y aún no están disponibles. Por favor, inténtelo de nuevo más tarde.`
+									}
+									if (lang === "pt") {
+										return `As traduções são fornecidas pela Rockstar e ainda não estão disponíveis. Por favor, tente novamente mais tarde.`
+									}			
+									if (lang === "de") {
+										return `Übersetzungen werden von Rockstar bereitgestellt und sind noch nicht verfügbar. Bitte versuchen Sie es später noch einmal.`
+									}	
+									if (lang === "pl") {
+										return `Tłumaczenia są dostarczane przez Rockstar i nie są jeszcze dostępne. Spróbuj ponownie później.`
+									}	
+									if (lang === "ru") {
+										return `Переводы предоставлены Rockstar и пока недоступны. Пожалуйста, повторите попытку позже.`
+									}		
+									if (lang === "fr") {
+										return `Les traductions sont fournies par Rockstar et ne sont pas encore disponibles. Veuillez réessayer plus tard.`
+									}		
+									if (lang === "it") {
+										return `Le traduzioni sono fornite da Rockstar e non sono ancora disponibili. Per favore riprova più tardi.`
+									}		
+									if (lang === "zh") {
+										return `翻譯由 Rockstar 提供，目前尚不可用。請稍後再試。`
+									}			
+									if (lang === "ja") {
+										return `翻訳は Rockstar によって提供されており、まだ利用できません。後でもう一度試してください。`
+									}			
+									if (lang === "ko") {
+										return `번역은 Rockstar에서 제공하며 아직 사용할 수 없습니다. 나중에 다시 시도 해주십시오.`
+									}		
+									else {
+										return `Translations are provided by Rockstar and are not yet available. Please try again later.`
+									}										
+								}
+
+                let missingTranslations = new EmbedBuilder()
+                    .setColor(0x00CD06) //Green
+                    .setDescription(`${missingTransDesc()}`)	
+
+							console.log(`LANG: ${lang} - LANG==="es"? ${lang === "es"}`);
+                if (lang !== "en") {
+                    await interaction.followUp({ embeds: [missingTranslations], ephemeral: true }).catch(err => console.log(`missingTranslations Error: ${err.stack}`));
+                }
+
 
             }
             else {
