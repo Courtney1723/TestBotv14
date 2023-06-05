@@ -338,7 +338,7 @@ module.exports = {
         for (i = 0; i <= 10; i++) {
             if (lang !== supportedLanguages[i]) {
                 //console.log(`i:${i} - sL:${supportedLanguages[i]} - longLang:${longLangArray[i]}`);
-                if ((lang === "") && (LANG === "en") && (supportedLanguages[i] === "en")) {
+                if ((lang === "") && (supportedLanguages[i] === "en")) {
                     //console.log(`lang:${lang} - LANG:${LANG} - sL[i]:${supportedLanguages[i]}`)
                 }
                 else {
