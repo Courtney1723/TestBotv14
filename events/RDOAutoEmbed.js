@@ -8,7 +8,7 @@ module.exports = {
     async execute(client) {
 
         //cron.schedule('* * * * *', () => { //every 60 seconds - testbench
-        cron.schedule('45 11 1-7 * 2', () => { //(second),minute,hour,date,month,weekday '0 12 1-7 * 2' = 12:00 PM on 1st Tuesday
+        cron.schedule('45 14 1-7 * 2', () => { //(second),minute,hour,date,month,weekday '0 12 1-7 * 2' = 12:00 PM on 1st Tuesday
             console.log('Sending RDO Auto Posts...');
 
             fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
@@ -83,9 +83,6 @@ module.exports = {
 
                                 rdo_gtaIDs += `${rdo_gtaIDs03} - `;
 
-
-                                //client.channels.fetch(channelIDs03).then(channel => channel.send('<content>')) //example DO NOT UNCOMMENT
-
                             }
 
                             //console.log(`guildIDs: ${guildIDs}`);
@@ -100,7 +97,8 @@ module.exports = {
                             //console.log(`guildIDsArray: ${guildIDsArray}`);
                             //console.log(`guildIDLangArray: ${guildIDLangArray}`);
                             //console.log(`channelIDArray: ${channelIDArray}`);
-                            for (c = 0; c <= channelIDArray.length - 2; c++) { //first & last elements will always be undefined	
+														var c = 0;
+                            while (c <= channelIDArray.length - 2) { //first & last elements will always be undefined	
                                 let lang = "";
 
                                 for (langCheck = 0; langCheck <= langArray.length - 1; langCheck++) { //iterates through all the languages
@@ -212,13 +210,22 @@ module.exports = {
                                             .replace(/\n\n/g, "\n")
                                             .replace(/<ul style="line-height:1.5;">/g, "\n")
 
+																						//russian
+																						.replace(/3="" июля="" включительно="" зарабатывайте="" \<strong=""\>/, "") //FIXME - remove next month
+																						.replace(/\<span style="font-family: Calibri, sans-serif; font-size: 11pt;"\>/, "") //FIXME - remove next month
+																						.replace(/\<\/pДо>/, "")
+																						.replace(/<\/span>/, "")
+
                                             //spanish
                                             .replace(/<\/strong>/g, "")
                                             .replace(/<strong>/g, "")
 
                                             //German
                                             .replace(/" draggable="false/g, "")
-                                        //.replace(/\n<p>/g, "<p>") //Removes spaces after a bonus
+
+																						//Japanese
+																						.replace(/&gt;\<ul>/, "\n")
+
                                         //console.log(`rdoString: ${rdoString}`);
 
                                         //--------------------BEGIN formatting for links--------------------//
@@ -494,6 +501,13 @@ module.exports = {
                                             .replace(/• undefined/g, "• ")
                                             .replace(/\)• /g, ")\n• ") //adds a newline between link lists
 
+																						//russian
+																						.replace(/\<pдо /, "• ")
+
+																						//german
+																						.replace(/• •/g, "•")
+																						.replace(/• \n•/g, "•")
+
                                         var constChars = (rdoDate.length + 2) + (rdoTitleOG.length);
                                         function ellipsisFunction() {
                                             if (rdoFinalString.length >= (4000 - constChars)) {
@@ -656,12 +670,12 @@ module.exports = {
                                         //console.log(`channelIDArray at c${c}: ${channelIDArray[c]}`);
                                         if (channelIDArray[c].startsWith("undefined")) { }
                                         else {
-                                            if (rdoPost2() === "") {
-                                                client.channels.fetch(channelIDArray[c]).then(channel => channel.send(({ embeds: [rdoImageEmbed, rdoEmbed] }))).catch(err => console.log(`Min Error: ${err}\nChannel ID: ${channelIDArray[c]}`));
-                                            }
-                                            else {
-                                                client.channels.fetch(channelIDArray[c]).then(channel => channel.send({ embeds: [rdoImageEmbed, rdoEmbed, rdoEmbed2] })).catch(err => console.log(`Max Error: ${err}\nChannel ID: ${channelIDArray[c]}`));
-                                            }
+																						if (rdoPost2() === "") {
+																								await client.channels.fetch(channelIDArray[c]).then(channel => channel.send(({ embeds: [rdoImageEmbed, rdoEmbed] }))).then(c++).catch(err => console.log(`Min Error: ${err}\nChannel ID: ${channelIDArray[c]}`));
+																						}
+																						else {
+																								await client.channels.fetch(channelIDArray[c]).then(channel => channel.send({ embeds: [rdoImageEmbed, rdoEmbed, rdoEmbed2] })).then(c++).catch(err => console.log(`Max Error: ${err}\nChannel ID: ${channelIDArray[c]}`));
+																						}
                                         }
 
                                     }

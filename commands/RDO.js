@@ -137,14 +137,23 @@ module.exports = {
                         .replace(/\n\n/g, "\n")
                         .replace(/<ul style="line-height:1.5;">/g, "\n")
 
+												//russian
+												.replace(/3="" июля="" включительно="" зарабатывайте="" \<strong=""\>/, "") //FIXME - remove next month
+												.replace(/\<span style="font-family: Calibri, sans-serif; font-size: 11pt;"\>/, "") //FIXME - remove next month
+												.replace(/\<\/pДо>/, "")
+												.replace(/<\/span>/, "")
+
                         //spanish
                         .replace(/<\/strong>/g, "")
                         .replace(/<strong>/g, "")
 
                         //German
                         .replace(/" draggable="false/g, "")
-                    //.replace(/\n<p>/g, "<p>") //Removes spaces after a bonus
-                    //console.log(`rdoString: ${rdoString}`);
+
+												//Japanese
+												.replace(/&gt;<ul>/, "\n")
+
+									//console.log(`rdoString: ${rdoString}`);
 
                     //--------------------BEGIN formatting for links--------------------//
                     let rdoLinks001 = rdoString.split("<a href=\"");
@@ -393,6 +402,13 @@ module.exports = {
                         .replace(/\*\*\n\*\*/g, "**\n\n**")
                         .replace(/• undefined/g, "• ")
                         .replace(/\)• /g, ")\n• ") //adds a newline between link lists	
+
+												//russian
+												.replace(/\<pдо /, "• ")
+
+												//german
+												.replace(/• •/g, "•")
+												.replace(/• \n•/g, "•")
 
                     //console.log(`rdoFinalString01.length: ${rdoFinalString01.length}`);
                     //console.log(`rdoFinalString.length: ${rdoFinalString.length}`);

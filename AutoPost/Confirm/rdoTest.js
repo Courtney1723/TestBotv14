@@ -350,13 +350,19 @@ module.exports = {
                                     .replace(/\n\n/g, "\n")
                                     .replace(/<ul style="line-height:1.5;">/g, "\n")
 
+																		//russian
+																		.replace(/3="" июля="" включительно="" зарабатывайте="" \<strong=""\>/, "") //FIXME - remove next month
+																		.replace(/\<span style="font-family: Calibri, sans-serif; font-size: 11pt;"\>/, "") //FIXME - remove next month
+																		.replace(/\<\/pДо>/, "")
+																		.replace(/<\/span>/, "")																	
+
                                     //spanish
                                     .replace(/<\/strong>/g, "")
                                     .replace(/<strong>/g, "")
 
                                     //German
                                     .replace(/" draggable="false/g, "")
-                                //.replace(/\n<p>/g, "<p>") //Removes spaces after a bonus
+
                                 //console.log(`rdoString: ${rdoString}`);
 
                                 //--------------------BEGIN formatting for links--------------------//
@@ -636,6 +642,13 @@ module.exports = {
                                     .replace(/• undefined/g, "• ")
                                     .replace(/\)• /g, ")\n• ") //adds a newline between link lists	
 
+																		//russian
+																		.replace(/\<pдо /, "• ")
+						
+																		//german
+																		.replace(/• •/g, "•")
+																		.replace(/• \n•/g, "•")															
+
                                 //console.log(`rdoFinalString01.length: ${rdoFinalString01.length}`);
                                 //console.log(`rdoFinalString.length: ${rdoFinalString.length}`);
 
@@ -804,44 +817,80 @@ module.exports = {
 
                                     function permission() {
                                         if (!(interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.ViewChannel)) { // missing all permissions - can't send messages or embed links without view permission
-                                            if (lang === "en") {
-                                                return `View Channel, Send Messages, and Embed Links`;
-                                            }
-                                            if (lang === "es") {
-                                                return `Ver canal y Enviar mensajes y Insertar enlaces`;
-                                            }
-                                            if (lang === "ru") {
-                                                return `Посмотреть каналa и Отправить сообщения и Вставить ссылки`
-                                            }
-                                            if (lang === "de") {
-                                                return `Kanal anzeigen-Berechtigung und Nachrichten senden-Berechtigung und Links einbetten-Berechtigung`;
-                                            }
-                                            if (lang === "pt") {
-                                                return `Ver canal e Enviar mensagens e Inserir links`;
-                                            }
-                                            else {
-                                                return `View Channel, Send Messages, and Embed Links`;
-                                            }
+																					if (lang === "en") {
+																							return `View Channel, Send Messages, and Embed Links`;
+																					}
+																					if (lang === "es") {
+																							return `Ver canal y Enviar mensajes y Insertar enlaces`;
+																					}
+																					if (lang === "pt") {
+																							return `Ver canal e Enviar mensagens e Inserir links`;
+																					}
+																					if (lang === "ru") {
+																							return `Посмотреть каналa и Отправить сообщения и Вставить ссылки`
+																					}
+																					if (lang === "de") {
+																							return `Kanal anzeigen-Berechtigung und Nachrichten senden-Berechtigung und Links einbetten-Berechtigung`;
+																					}
+																					else if (lang === "pl") {
+																							return `Wyswietlanie kanalu, Wysykanie wiadomosci i Wyswietlanie podgladu linku`;
+																					}
+																					else if (lang === "fr") {
+																							return `Voir le salon, Envoyer des messages et intégrer des liens`;
+																					}
+																					else if (lang === "it") {
+																							return `Visualizzare il canale, Inviare i messaggi e Incorporare i link`;
+																					}
+																					else if (lang === "zh") {
+																							return `查看频道、发送消息、嵌入链接`;
+																					}
+																					else if (lang === "ja") {
+																							return `チャンネルを見る、メッセージを送信、埋め込みリンク`;
+																					}
+																					else if (lang === "ko") {
+																							return `채널 보기、 메시지 보내기、 링크 첨부`;
+																					}
+																					else {
+																							return `View Channel, Send Messages, and Embed Links`;
+																					}
                                         }
                                         else if (!((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.EmbedLinks))) {
-                                            if (lang === "en") {
-                                                return `Embed Links`;
-                                            }
-                                            if (lang === "es") {
-                                                return `Insertar enlaces`;
-                                            }
-                                            if (lang === "ru") {
-                                                return `Вставить ссылки`
-                                            }
-                                            if (lang === "de") {
-                                                return `Links einbetten-Berechtigung`;
-                                            }
-                                            if (lang === "pt") {
-                                                return `Inserir links`;
-                                            }
-                                            else {
-                                                return `Embed Links`;
-                                            }
+																					if (lang === "en") {
+																							return `Embed Links`;
+																					}
+																					if (lang === "pt") {
+																							return `Inserir links`;
+																					}
+																					if (lang === "es") {
+																							return `Insertar enlaces`;
+																					}
+																					if (lang === "ru") {
+																							return `Вставить ссылки`
+																					}
+																					if (lang === "de") {
+																							return `Links einbetten-Berechtigung`;
+																					}
+																					else if (lang === "pl") {
+																							return `Wyswietlanie podgladu linku`;
+																					}
+																					else if (lang === "fr") {
+																							return `Intégrer des liens`;
+																					}
+																					else if (lang === "it") {
+																							return `Incorporare i link`;
+																					}
+																					else if (lang === "zh") {
+																							return `嵌入链接`;
+																					}
+																					else if (lang === "ja") {
+																							return `埋め込みリンク`;
+																					}
+																					else if (lang === "ko") {
+																							return `링크 첨부`;
+																					}
+																					else {
+																							return `Embed Links`;
+																					}
                                         }
                                         else if (!(interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.SendMessages)) { //missing send messages also prevents embedding links
                                             if (lang === "en") {
@@ -850,14 +899,32 @@ module.exports = {
                                             if (lang === "es") {
                                                 return `Enviar mensajes y Insertar enlaces`;
                                             }
+                                            if (lang === "pt") {
+                                                return `Enviar mensagens e Inserir links`;
+                                            }
                                             if (lang === "ru") {
                                                 return `Отправить сообщения и Вставить ссылки`
                                             }
                                             if (lang === "de") {
                                                 return `Nachrichten senden-Berechtigung und Links einbetten-Berechtigung`;
                                             }
-                                            if (lang === "pt") {
-                                                return `Enviar mensagens e Inserir links`;
+                                            else if (lang === "pl") {
+                                                return `Wysykanie wiadomosci i Wyswietlanie podgladu linku`;
+                                            }
+                                            else if (lang === "fr") {
+                                                return `Envoyer des messages et intégrer des liens`;
+                                            }
+                                            else if (lang === "it") {
+                                                return `Inviare i messaggi e Incorporare i link`;
+                                            }
+                                            else if (lang === "zh") {
+                                                return `发送消息 和 嵌入链接`;
+                                            }
+                                            else if (lang === "ja") {
+                                                return `メッセージを送信 と 埋め込みリンク`;
+                                            }
+                                            else if (lang === "ko") {
+                                                return `메시지 보내기 그리고 링크 첨부`;
                                             }
                                             else {
                                                 return `Send Messages and Embed Links`;
