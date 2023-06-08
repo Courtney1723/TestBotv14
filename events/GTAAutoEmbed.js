@@ -8,7 +8,7 @@ module.exports = {
     async execute(client) {
 
         //cron.schedule('* * * * *', () => { //(second),minute,hour,date,month,weekday 
-        cron.schedule('28 12 * * 4', () => { //(second),minute,hour,date,month,weekday '0 12 * * 4' = 12:00 PM on Thursday
+        cron.schedule('45 14 * * 4', () => { //(second),minute,hour,date,month,weekday '0 12 * * 4' = 12:00 PM on Thursday
             console.log('sending GTA Auto Posts...');
 
             fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
@@ -100,8 +100,9 @@ module.exports = {
                             //console.log(`guildIDsArray: ${guildIDsArray}`);
                             //console.log(`guildIDLangArray: ${guildIDLangArray}`);
                             //console.log(`channelIDArray: ${channelIDArray}`);
-
-                            for (c = 0; c <= channelIDArray.length - 2; c++) { //first & last elements will always be undefined	
+													
+														c = 0;
+                            while (c <= channelIDArray.length - 2) { //first & last elements will always be undefined	
                                 let lang = "";
 
                                 for (langCheck = 0; langCheck <= langArray.length - 1; langCheck++) { //iterates through all the languages
@@ -420,13 +421,19 @@ module.exports = {
                                             if ((GTA_Bonus != null) && (!GTA_Title.includes("undefined")) && (!GTA_Bonus.includes("undefined"))) {
                                                 let gtaParas = GTA_Bonus.split("<p>");
                                                 if (
-                                                    (GTA_Title.toLowerCase() === "gta+ ") ||
-                                                    (GTA_Title.toLowerCase() === "discounts ") ||
-                                                    (GTA_Title.toLowerCase() === "descuentos ") ||
-                                                    (GTA_Title === "cкидки ") ||
-                                                    (GTA_Title === "Скидки ") ||
-                                                    (GTA_Title.toLowerCase() === "rabatte ") ||
-                                                    (GTA_Title.toLowerCase() === "descontos ")
+											                            (GTA_Title.toLowerCase() === "gta+ ") ||
+											                            (GTA_Title.toLowerCase() === "discounts ") ||
+											                            (GTA_Title.toLowerCase() === "descuentos ") ||
+											                            (GTA_Title === "cкидки ") ||
+											                            (GTA_Title === "Скидки ") ||
+																									(GTA_Title === "折扣優惠 ") ||
+																									(GTA_Title === "割引 ") ||
+																									(GTA_Title === "할인 ") ||
+											                            (GTA_Title.toLowerCase() === "rabatte ") ||
+																									(GTA_Title.toLowerCase() === "zniżki ") ||
+											                            (GTA_Title.toLowerCase() === "descontos ") ||
+																									(GTA_Title.toLowerCase() === "promotions ") ||
+																									(GTA_Title.toLowerCase() === "sconti ")
                                                 ) {
                                                     //console.log(`1 - discount`);
                                                     gtaFinalString01 += `**${GTA_Title}**\n`;
@@ -460,24 +467,26 @@ module.exports = {
                                                     }
                                                 }
                                                 else if ( //Adds only the title if the paragraph is unecessary
-                                                    (GTA_Title.toLowerCase().includes("1.5x")) ||
-                                                    (GTA_Title.toLowerCase().includes("1,5x")) ||
-                                                    (GTA_Title.toLowerCase().includes("2x")) ||
-                                                    (GTA_Title.toLowerCase().includes("2.5x")) ||
-                                                    (GTA_Title.toLowerCase().includes("2,5x")) ||
-                                                    (GTA_Title.toLowerCase().includes("3x")) ||
-                                                    (GTA_Title.toLowerCase().includes("4x")) ||
-                                                    (GTA_Title.toLowerCase().includes("40%")) ||
-                                                    (GTA_Title.toLowerCase().includes("40 %")) ||
-                                                    (GTA_Title.toLowerCase().includes("50%")) ||
-                                                    (GTA_Title.toLowerCase().includes("50 %")) ||
-                                                    (GTA_Title.toLowerCase().includes("double")) ||
-                                                    (GTA_Title.toLowerCase().includes("doble")) ||
-                                                    (GTA_Title.toLowerCase().includes("preisfahrzeug")) ||
-                                                    (GTA_Title.toLowerCase().includes("veículo-prêmio")) ||
-                                                    (GTA_Title.toLowerCase().includes("diamond casino")) ||
-                                                    (GTA_Title.toLowerCase().includes("cassino diamond")) ||
-                                                    (GTA_Title.includes("Премиальный Транспорт"))
+											                            (GTA_Title.toLowerCase().includes("1.5x")) ||
+											                            (GTA_Title.toLowerCase().includes("1,5x")) ||
+											                            (GTA_Title.toLowerCase().includes("2x")) ||
+											                            (GTA_Title.toLowerCase().includes("2.5x")) ||
+											                            (GTA_Title.toLowerCase().includes("2,5x")) ||
+											                            (GTA_Title.toLowerCase().includes("3x")) ||
+											                            (GTA_Title.toLowerCase().includes("4x")) ||
+											                            (GTA_Title.toLowerCase().includes("40%")) ||
+											                            (GTA_Title.toLowerCase().includes("40 %")) ||
+											                            (GTA_Title.toLowerCase().includes("50%")) ||
+											                            (GTA_Title.toLowerCase().includes("50 %")) ||
+											                            (GTA_Title.toLowerCase().includes("double")) ||
+											                            (GTA_Title.toLowerCase().includes("doble")) ||
+																									(GTA_Title.toLowerCase().includes("doublés")) ||
+																									(GTA_Title.toLowerCase().includes("doppi")) ||
+											                            (GTA_Title.toLowerCase().includes("preisfahrzeug")) ||
+											                            (GTA_Title.toLowerCase().includes("veículo-prêmio")) ||
+											                            (GTA_Title.toLowerCase().includes("diamond casino")) ||
+											                            (GTA_Title.toLowerCase().includes("cassino diamond")) ||
+											                            (GTA_Title.includes("Премиальный Транспорт"))
                                                 ) {
                                                     //console.log(`3 - only title`);
                                                     gtaFinalString01 += `**${GTA_Title}**\n\n`;
@@ -679,50 +688,6 @@ module.exports = {
                                         // console.log(`gtaEmbed2 length: ${gtaEmbed2.length}`); //no more than 6000 - gtaEmbed.length (line 204)
 
 
-																				function newTimeDesc() {
-																					if (lang === "en") {
-																							return `Starting next week, GTA Online and Red Dead Online bonuses will be sent at 5:00 PM Eastern Time.`;
-																					}
-																					else if (lang === "es") {
-																							return `A partir de la próxima semana, las bonificaciones de GTA Online y Red Dead Online se enviarán a las 17:00, hora del este.`;
-																					}
-																					else if (lang === "pt") {
-																							return `A partir da próxima semana, os bônus de GTA Online e Red Dead Online serão enviados às 17h, horário do leste.`;
-																					}
-																					else if (lang === "ru") {
-																							return `Начиная со следующей недели, бонусы для GTA Online и Red Dead Online будут отправляться в 17:00 по восточному поясному времени.`;
-																					}
-																					else if (lang === "de") {
-																							return `Ab nächster Woche werden die Boni für GTA Online und Red Dead Online um 17:00 Uhr Eastern Time verschickt.`;
-																					}
-																					else if (lang === "pl") {
-																							return `Od przyszłego tygodnia premie GTA Online i Red Dead Online będą wysyłane o godzinie 17:00 czasu wschodniego.`;
-																					}
-																					else if (lang === "fr") {
-																							return `À partir de la semaine prochaine, les bonus GTA Online et Red Dead Online seront envoyés à 17h00, heure de l'Est.`;
-																					}
-																					else if (lang === "it") {
-																							return `A partire dalla prossima settimana, i bonus di GTA Online e Red Dead Online verranno inviati alle 17:00 ora di New York.`;
-																					}
-																					else if (lang === "zh") {
-																							return `從下週開始，GTA 在線模式和 Red Dead 在線模式獎勵將於東部時間 17:00 發送。`;
-																					}
-																					else if (lang === "ja") {
-																							return `来週から、「GTA オンライン」と「レッド・デッド・オンライン」のボーナスは東部時間の 17:00 に送信されます。`;
-																					}
-																					else if (lang === "ko") {
-																							return `다음 주부터 GTA 온라인과 Red Dead 온라인 보너스는 동부 시간으로 17:00에 게시됩니다.`;
-																					}																						
-																					else {
-																							return `Starting next week, GTA Online and Red Dead Online bonuses will be sent at 5:00 PM Eastern Time.\n`;
-																					}
-																				}
-																			
-										                    let newTimeEmbed = new EmbedBuilder()
-										                        .setColor(0xFF8000) //Orange
-										                        .setDescription(`${newTimeDesc()}`)
-
-
                                         //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
                                         //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//		
                                         //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
@@ -732,12 +697,10 @@ module.exports = {
                                         if (channelIDArray[c].includes("undefined")) { return; }
                                         else {
                                             if (gtaFinalString.length < (4000 - constChars)) {
-                                                client.channels.fetch(channelIDArray[c]).then(channel => channel.send(({ embeds: [gtaImageEmbed, gtaEmbed] }))).catch(err => console.log(`Min Error: ${err.stack}\nChannel ID: ${channelIDArray[c]}`));
-                                                client.channels.fetch(channelIDArray[c]).then(channel => channel.send(({ embeds: [newTimeEmbed] }))).catch(err => console.log(`Min Error: ${err.stack}\nChannel ID: ${channelIDArray[c]}`));																							
+                                                client.channels.fetch(channelIDArray[c]).then(channel => channel.send(({ embeds: [gtaImageEmbed, gtaEmbed] }))).then(c++).catch(err => console.log(`Min Error: ${err.stack}\nChannel ID: ${channelIDArray[c]}`));																					
                                             }
                                             else {
-                                                client.channels.fetch(channelIDArray[c]).then(channel => channel.send({ embeds: [gtaImageEmbed, gtaEmbed, gtaEmbed2] })).catch(err => console.log(`Max Error: ${err.stack}\nChannel ID: ${channelIDArray[c]}`));
-                                                client.channels.fetch(channelIDArray[c]).then(channel => channel.send(({ embeds: [newTimeEmbed] }))).catch(err => console.log(`Min Error: ${err.stack}\nChannel ID: ${channelIDArray[c]}`));
+                                                client.channels.fetch(channelIDArray[c]).then(channel => channel.send({ embeds: [gtaImageEmbed, gtaEmbed, gtaEmbed2] })).then(c++).catch(err => console.log(`Max Error: ${err.stack}\nChannel ID: ${channelIDArray[c]}`));
                                             }
                                         } //end if not undefined channel
                                     }

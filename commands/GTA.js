@@ -2,7 +2,7 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 const phantom = require('phantom'); //https://github.com/amir20/phantomjs-node
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
-const LANG = require('../events/LANG.js');
+const lang = require('../events/LANG.js');
 let errorEmbed = new EmbedBuilder()
     .setColor('Red')
     .setTitle(`Uh Oh!`)
@@ -340,8 +340,14 @@ module.exports = {
                             (GTA_Title.toLowerCase() === "descuentos ") ||
                             (GTA_Title === "cкидки ") ||
                             (GTA_Title === "Скидки ") ||
+														(GTA_Title === "折扣優惠 ") ||
+														(GTA_Title === "割引 ") ||
+														(GTA_Title === "할인 ") ||
                             (GTA_Title.toLowerCase() === "rabatte ") ||
-                            (GTA_Title.toLowerCase() === "descontos ")
+														(GTA_Title.toLowerCase() === "zniżki ") ||
+                            (GTA_Title.toLowerCase() === "descontos ") ||
+														(GTA_Title.toLowerCase() === "promotions ") ||
+														(GTA_Title.toLowerCase() === "sconti ")
                         ) {
                             //console.log(`1 - discount`);
                             gtaFinalString01 += `**${GTA_Title}**\n`;
@@ -388,6 +394,8 @@ module.exports = {
                             (GTA_Title.toLowerCase().includes("50 %")) ||
                             (GTA_Title.toLowerCase().includes("double")) ||
                             (GTA_Title.toLowerCase().includes("doble")) ||
+														(GTA_Title.toLowerCase().includes("doublés")) ||
+														(GTA_Title.toLowerCase().includes("doppi")) ||
                             (GTA_Title.toLowerCase().includes("preisfahrzeug")) ||
                             (GTA_Title.toLowerCase().includes("veículo-prêmio")) ||
                             (GTA_Title.toLowerCase().includes("diamond casino")) ||
@@ -613,15 +621,33 @@ module.exports = {
                     else if (lang === "es") {
                         return `Estos bonos pueden estar vencidos. \nRockstar suele publicar bonificaciones cada \njueves después de las 13:00 hora del este.`;
                     }
+                    else if (lang === "pt") {
+                        return `Esses bônus expiraram. \nA Rockstar normalmente lança os últimos bônus semanais a cada \nquinta-feira depois das 13:00 Hora do Leste.`;
+                    }											
                     else if (lang === "ru") {
                         return `Срок действия этих бонусов истек. \nRockstar обычно выпускает последние еженедельные бонусы каждый \nчетверг после 13:00 по восточному поясному времени.`;
                     }
                     else if (lang === "de") {
                         return `Diese Boni sind möglicherweise abgelaufen. \nNormalerweise veröffentlicht Rockstar die Boni \nDonnerstags nach 13:00 Uhr Ostküsten-Standardzeit (Nordamerika).`;
                     }
-                    else if (lang === "pt") {
-                        return `Esses bônus expiraram. \nA Rockstar normalmente lança os últimos bônus semanais a cada \nquinta-feira depois das 13:00 Hora do Leste.`;
+                    else if (lang === "pl") {
+                        return `Te bonusy wygasły. \nRockstar zazwyczaj udostępnia najnowsze cotygodniowe bonusy w każdy \nczwartek po godzinie 13:00 czasu wschodniego.`;
+                    }												
+                    else if (lang === "fr") {
+                        return `Ces bonus ont expiré. \nRockstar publie généralement les derniers bonus hebdomadaires tous les \njeudis après 13h00, heure de l'Est.`;
                     }
+                    else if (lang === "it") {
+                        return `Questi bonus sono scaduti. \nRockstar in genere rilascia gli ultimi bonus settimanali ogni \ngiovedì dopo le 13:00, ora di New York.`;
+                    }		
+                    else if (lang === "zh") {
+                        return `此獎金已過期。 Rockstar 通常在東部時間每週四 13:00 之後發布最新的每週獎金。`;
+                    }	
+                    else if (lang === "ja") {
+                        return `このボーナスは期限切れです。 Rockstar は通常、毎週木曜日の東部時間 13:00 以降に新しい週次ボーナスをリリースします。`;
+                    }	
+                    else if (lang === "ko") {
+                        return `이 보너스는 만료되었습니다. Rockstar는 일반적으로 동부 표준시로 매주 목요일 13:00 이후에 최신 주간 보너스를 출시합니다.`;
+                    }												
                     else {
                         return `These bonuses are expired. \nRockstar typically releases the latest weekly bonuses every \nThursday after 1:00 PM EST.`;
                     }
@@ -635,15 +661,33 @@ module.exports = {
                     else if (lang === "es") {
                         return "Son las";
                     }
+                    else if (lang === "pt") {
+                        return "São";
+                    }											
                     else if (lang === "ru") {
                         return "Сейчас";
                     }
                     else if (lang === "de") {
                         return "Es ist jetzt";
                     }
-                    else if (lang === "pt") {
-                        return "São";
-                    }
+                    if (lang === "pl") {
+                        return "Jest";
+                    }		
+                    if (lang === "fr") {
+                        return "Il est";
+                    }	
+                    if (lang === "it") {
+                        return "Sono le";
+                    }	
+                    if (lang === "zh") {
+                        return "現在是東部時間";
+                    }	
+                    if (lang === "ja") {
+                        return "東部時間";
+                    }		
+                    if (lang === "ko") {
+                        return "동부 시간으로";
+                    }												
                     else {
                         return "It is";
                     }
@@ -655,15 +699,33 @@ module.exports = {
                     else if (lang === "es") {
                         return " hora del este ahora.";
                     }
+                    else if (lang === "pt") {
+                        return ", horário do leste agora.";
+                    }											
                     else if (lang === "ru") {
                         return " по восточному поясному времени.";
                     }
                     else if (lang === "de") {
                         return " Ostküsten-Standardzeit (Nordamerika).";
                     }
-                    else if (lang === "pt") {
-                        return ", horário do leste agora.";
-                    }
+                    else if (lang === "pl") {
+                        return " czasu wschodniego.";
+                    }	
+                    else if (lang === "fr") {
+                        return ", heure de l'Est.";
+                    }			
+                    else if (lang === "it") {
+                        return " ora di New York.";
+                    }												
+                    else if (lang === "zh") {
+                        return "";
+                    }						
+                    else if (lang === "ja") {
+                        return "分です。";
+                    }												
+                    else if (lang === "ko") {
+                        return " 분입니다.";
+                    }												
                     else {
                         return " EST now.";
                     }
@@ -713,53 +775,6 @@ module.exports = {
                 }
 
                 //interaction.editReply(`Console logged! 👍`);
-
-								//begin missing translations embed
-
-								function missingTransDesc() {
-									if (lang === "es") {
-										return `Las traducciones son proporcionadas por Rockstar y aún no están disponibles. Por favor, inténtelo de nuevo más tarde.`
-									}
-									if (lang === "pt") {
-										return `As traduções são fornecidas pela Rockstar e ainda não estão disponíveis. Por favor, tente novamente mais tarde.`
-									}			
-									if (lang === "de") {
-										return `Übersetzungen werden von Rockstar bereitgestellt und sind noch nicht verfügbar. Bitte versuchen Sie es später noch einmal.`
-									}	
-									if (lang === "pl") {
-										return `Tłumaczenia są dostarczane przez Rockstar i nie są jeszcze dostępne. Spróbuj ponownie później.`
-									}	
-									if (lang === "ru") {
-										return `Переводы предоставлены Rockstar и пока недоступны. Пожалуйста, повторите попытку позже.`
-									}		
-									if (lang === "fr") {
-										return `Les traductions sont fournies par Rockstar et ne sont pas encore disponibles. Veuillez réessayer plus tard.`
-									}		
-									if (lang === "it") {
-										return `Le traduzioni sono fornite da Rockstar e non sono ancora disponibili. Per favore riprova più tardi.`
-									}		
-									if (lang === "zh") {
-										return `翻譯由 Rockstar 提供，目前尚不可用。請稍後再試。`
-									}			
-									if (lang === "ja") {
-										return `翻訳は Rockstar によって提供されており、まだ利用できません。後でもう一度試してください。`
-									}			
-									if (lang === "ko") {
-										return `번역은 Rockstar에서 제공하며 아직 사용할 수 없습니다. 나중에 다시 시도 해주십시오.`
-									}		
-									else {
-										return `Translations are provided by Rockstar and are not yet available. Please try again later.`
-									}										
-								}
-
-                let missingTranslations = new EmbedBuilder()
-                    .setColor(0x00CD06) //Green
-                    .setDescription(`${missingTransDesc()}`)	
-
-							console.log(`LANG: ${lang} - LANG==="es"? ${lang === "es"}`);
-                if (lang !== "en") {
-                    await interaction.followUp({ embeds: [missingTranslations], ephemeral: true }).catch(err => console.log(`missingTranslations Error: ${err.stack}`));
-                }
 
 
             }
