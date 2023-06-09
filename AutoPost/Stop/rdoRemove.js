@@ -349,10 +349,10 @@ module.exports = {
                                     .catch(err => { console.log(`gtaConfirmEmbed Error: ${err}`); process.kill(1); });
 
                                 if ((interaction.user.id === process.env.USER_ID_1) || (interaction.user.id === process.env.USER_ID_1)) {
-                                    console.log(`You removed ${menuChannelID} from receiving GTA autop posts in ${interaction.guild.id}.`);
+                                    console.log(`You removed ${menuChannelID} from receiving RDO auto posts in ${interaction.guild.id}.`);
                                 }
                                 else {
-                                    console.log(`A user removed ${menuChannelID} from receiving GTA autop posts in ${interaction.guild.id}.`);
+                                    console.log(`A user removed ${menuChannelID} from receiving RDO auto posts in ${interaction.guild.id}.`);
                                 }
 
                                 function expiredDesc() {
