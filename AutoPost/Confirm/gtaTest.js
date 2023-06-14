@@ -382,7 +382,8 @@ module.exports = {
                                     .replace(/\n<p>/g, "<p>") //Removes spaces after a bonus
                                     .replace(/<p>Only/g, "<p><b>Only")
                                     .replace(/<\/span>/, "")
-                                    .replace(/<span style=\"font-weight: 700;\">/g, "") //FIXME- remove next week										
+																		.replace(/<p><b>Grotti Itali GTO Stinger TT/, "<p></p><p><b>GROTTI Itali GTO Stinger TT") //FIXME - remove next week
+																		.replace(/<p><b>Maibatsu MonstroCiti/, "<p><b>MAIBATSU MonstroCiti") //FIXME - remove next week							
 
                                     //--BEGIN FOREIGN LANGUAGE FORMATTING-----//
                                     //--RUSSIAN--//
@@ -580,6 +581,7 @@ module.exports = {
                                         if (
 							                            (GTA_Title.toLowerCase() === "gta+ ") ||
 							                            (GTA_Title.toLowerCase() === "discounts ") ||
+																					(GTA_Title.toLowerCase() === "and more... ") ||
 							                            (GTA_Title.toLowerCase() === "descuentos ") ||
 							                            (GTA_Title === "cкидки ") ||
 							                            (GTA_Title === "Скидки ") ||
@@ -652,7 +654,7 @@ module.exports = {
                                             //console.log(`4 - else`);
                                             if ((gtaParas[1] !== undefined) && (gtaParas[1] !== "")) {
                                                 //console.log(`4 - title + bonus - bonus length:${gtaParas[1].length}`);
-                                                if (gtaParas[1].length <= 500) {
+                                                if (gtaParas[1].length <= 510) {
                                                     gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n\n`;
                                                 }
                                                 else {
@@ -689,7 +691,7 @@ module.exports = {
                                     .replace(/• •/g, "•") //removes double bullet points
                                     .replace(/.\n\*\*/g, ".\n\n**") //fixes missing space before new title 
                                     .replace(/        /, "")//removes the trailing spaces 
-                                    .replace(/\n\n\n/g, "\n\n")
+                                    .replace(/\n\n\n/g, "\n")
                                 //console.log(`gtaFinalString: ${gtaFinalString}`); //gtaFinalString after HTML formatting
                                 //console.log(`gtaFinalString.length: ${gtaFinalString.length}`);
 
