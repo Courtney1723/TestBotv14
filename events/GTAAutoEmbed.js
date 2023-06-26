@@ -8,7 +8,7 @@ module.exports = {
     async execute(client) {
 
         //cron.schedule('* * * * *', () => { //(second),minute,hour,date,month,weekday 
-        cron.schedule('45 14 * * 2', () => { //(second),minute,hour,date,month,weekday '0 12 * * 4' = 12:00 PM on Thursday
+        cron.schedule('45 14 * * 4', () => { //(second),minute,hour,date,month,weekday '0 12 * * 4' = 12:00 PM on Thursday
             console.log('sending GTA Auto Posts...');
 
             fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
@@ -225,9 +225,7 @@ module.exports = {
                                             .replace(/<ul style="line-height:1.5;">/g, "")
                                             .replace(/\n<p>/g, "<p>") //Removes spaces after a bonus
                                             .replace(/<p>Only/g, "<p><b>Only")
-                                            .replace(/<\/span>/, "")
-																						.replace(/<p><b>Grotti Itali GTO Stinger TT/, "<p></p><p><b>GROTTI Itali GTO Stinger TT") //FIXME - remove next week
-																						.replace(/<p><b>Maibatsu MonstroCiti/, "<p><b>MAIBATSU MonstroCiti") //FIXME - remove next week																					
+                                            .replace(/<\/span>/, "")																					
 
                                             //--BEGIN FOREIGN LANGUAGE FORMATTING-----//
                                             //--RUSSIAN--//

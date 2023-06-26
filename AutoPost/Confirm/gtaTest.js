@@ -381,9 +381,7 @@ module.exports = {
                                     .replace(/<ul style="line-height:1.5;">/g, "")
                                     .replace(/\n<p>/g, "<p>") //Removes spaces after a bonus
                                     .replace(/<p>Only/g, "<p><b>Only")
-                                    .replace(/<\/span>/, "")
-																		.replace(/<p><b>Grotti Itali GTO Stinger TT/, "<p></p><p><b>GROTTI Itali GTO Stinger TT") //FIXME - remove next week
-																		.replace(/<p><b>Maibatsu MonstroCiti/, "<p><b>MAIBATSU MonstroCiti") //FIXME - remove next week							
+                                    .replace(/<\/span>/, "")							
 
                                     //--BEGIN FOREIGN LANGUAGE FORMATTING-----//
                                     //--RUSSIAN--//
