@@ -526,52 +526,10 @@ module.exports = {
                                     let GTABonuses = GTABonuses01[i].split("</b></p>");
                                     //console.log(`GTATitles at ${i}: ${GTABonuses[0]}\nGTABonuses at ${i}: ${GTABonuses[1]}`);
 
-                                    let GTA_Bonus = GTABonuses[1];
-                                    //console.log(`GTA_Bonus at ${i}: ${GTA_Bonus}`);
-
-                                    //------------------BEGIN capitalization Function-----------------//
-                                    function titleCapitalization(titles) {
-                                        //console.log(`Titles1: ${titles[0]}\n`); // Full Title
-                                        let Titles2 = titles[0].split(` `);
-                                        //console.log(`Titles2: ${Titles2[0]}\n`); // First word of the title
-                                        let titlesLength = Object.keys(Titles2).length; //counts the number of words in the title array
-                                        //console.log(`Titles2 size at ${i}: ${titlesLength}\n`);
-                                        let gtaTitleString = ""; //initial empty title, will be populated in the j loop
-
-                                        for (j = 0; j <= titlesLength; ++j) {
-                                            while (j <= (titlesLength)) {
-                                                //console.log(`I: ${i}, J: ${j}\n`); //while loop check, expected: i = title number, j = index of title words
-                                                if ((Titles2[j] != null) && (Titles2[j] != "")) { //ignores blank space elements
-                                                    //console.log(`Titles2 at J: ${j}: ${Titles2[j]}\n`); //checks for blank elements
-                                                    //console.log(`${Titles2[j].charAt(0)}${Titles2[j].toLowerCase().slice(1)}`); //capital first letters check 
-                                                    //returns first letter capitalized + rest of the word lowercase if the word is the first word in the title - unless GTA
-                                                    if ((Titles2[j] === Titles2[0]) && (!Titles2[j].includes("GTA")) && (Titles2[j] != "XP") && (Titles2[j] != "RP") && (Titles2[j] != "GT") && (Titles2[j] != "LD") && (Titles2[j] != "LSPD") && (Titles2[j] != "HSW")) {
-                                                        gtaTitleString += `${Titles2[j].charAt(0)}${Titles2[j].toLowerCase().slice(1)} `;
-                                                    }
-                                                    //returns all caps if title is GTA, GTA$, or XP							
-                                                    else if ((Titles2[j].includes("GTA")) || (Titles2[j] === "XP") || (Titles2[j] === "RP") || (Titles2[j] === "GT") || (Titles2[j] === "LD") || (Titles2[j] === "LSPD") || (Titles2[j] === "HSW") || (Titles2[j] === "LS") || (Titles2[j] === "X|S")) {
-                                                        gtaTitleString += `${Titles2[j]} `;
-                                                    }
-                                                    //returns all lowercase if not a title word					
-                                                    else if ((Titles2[j] === "ON") || (Titles2[j] === "OF") || (Titles2[j] === "THE") || (Titles2[j] === "AN") || (Titles2[j] === "AND") || (Titles2[j] === "FOR") || (Titles2[j] === "A") || (Titles2[j] === "AT") || (Titles2[j] === "IN")) {
-                                                        gtaTitleString += `${Titles2[j].toLowerCase()} `;
-                                                    }
-                                                    //else returns capital first letter and lowercase rest of the word				
-                                                    else {
-                                                        gtaTitleString += `${Titles2[j].charAt(0)}${Titles2[j].toLowerCase().slice(1)} `;
-                                                    }
-                                                }
-                                                ++j;
-                                            }
-                                        }
-                                        //return Titles2[0]; //Testbench if gtaTitleString has an error, this returns the first word of every title
-                                        return `${gtaTitleString}`;
-                                    }
-                                    let GTA_Title = titleCapitalization(GTABonuses);
-                                    // console.log(`GTA_Title at ${i}: ${GTA_Title} `);		
-                                    // console.log(`GTA_Bonus at ${i}: ${GTA_Bonus}`);	
-                                    //--------------------END capitalization Function-----------------//		
-
+																		let GTA_Title = `${GTABonuses[0]} `;
+								                    let GTA_Bonus = GTABonuses[1];
+								                    //console.log(`GTA_Title at ${i}: ${GTA_Title} `);		
+								                    //console.log(`GTA_Bonus at ${i}: ${GTA_Bonus}`);
 
                                     //----------BEGIN populating gtaFinalString01 ----------//
                                     if ((GTA_Bonus != null) && (!GTA_Title.includes("undefined")) && (!GTA_Bonus.includes("undefined"))) {
@@ -690,6 +648,7 @@ module.exports = {
                                     .replace(/.\n\*\*/g, ".\n\n**") //fixes missing space before new title 
                                     .replace(/        /, "")//removes the trailing spaces 
                                     .replace(/\n\n\n/g, "\n")
+																		.replace(/ \n\*\*/g, " \n\n\*\*") //adds a space before titles if missing
                                 //console.log(`gtaFinalString: ${gtaFinalString}`); //gtaFinalString after HTML formatting
                                 //console.log(`gtaFinalString.length: ${gtaFinalString.length}`);
 

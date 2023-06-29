@@ -8,7 +8,7 @@ module.exports = {
     async execute(client) {
 
         //cron.schedule('* * * * *', () => { //every 60 seconds - testbench
-        cron.schedule('45 14 1-7 * 2', () => { //(second),minute,hour,date,month,weekday '0 12 1-7 * 2' = 12:00 PM on 1st Tuesday
+        cron.schedule('45 14 1-7 * 2', () => { //(second),minute,hour,date,month,weekday '45 14 1-7 * 2' = 2:45 PM on 1st Tuesday
             console.log('Sending RDO Auto Posts...');
 
             fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
@@ -319,45 +319,10 @@ module.exports = {
                                             let RDOBonuses = RDOBonuses01[i].split("</b></p>");
                                             //console.log(`RDOTitles at ${i}: ${RDOBonuses[0]}\nRDOBonuses at ${i}: ${RDOBonuses[1]}`);
 
-                                            //------------------BEGIN capitalization Function-----------------//
-                                            function titleCapitalization(titles) {
-                                                //console.log(`Titles1: ${titles[0]}\n`); // Full Title
-                                                let Titles2 = titles[0].split(` `);
-                                                //console.log(`Titles2: ${Titles2[0]}\n`); // First word of the title
-                                                let titlesLength = Object.keys(Titles2).length; //counts the number of words in the title array
-                                                //console.log(`Titles2 size at ${i}: ${titlesLength}\n`);
-                                                let rdoTitleString = ""; //initial empty title, will be populated in the j loop
-
-                                                for (j = 0; j <= titlesLength; j++) {
-                                                    //console.log(`I: ${i}, J: ${j}\n`); //while loop check, expected: i = title number, j = index of title words
-                                                    if ((Titles2[j] != null) && (Titles2[j] != "")) { //ignores blank space elements
-                                                        //console.log(`Titles2 at J: ${j}: ${Titles2[j]}\n`); //checks for blank elements
-                                                        //console.log(`${Titles2[j].charAt(0)}${Titles2[j].toLowerCase().slice(1)}`); //capital first letters check 
-                                                        //returns first letter capitalized + rest of the word lowercase if the word is the first word in the title - unless RDO
-                                                        if ((Titles2[j] === Titles2[0]) && (!Titles2[j].includes("RDO")) && (Titles2[j] != "XP") && (Titles2[j] != "RP") && (Titles2[j] != "GT") && (Titles2[j] != "LD") && (Titles2[j] != "LSPD") && (Titles2[j] != "HSW")) {
-                                                            rdoTitleString += `${Titles2[j].charAt(0)}${Titles2[j].toLowerCase().slice(1)} `;
-                                                        }
-                                                        //returns all caps if title is RDO, RDO$, or XP							
-                                                        else if ((Titles2[j].includes("RDO")) || (Titles2[j].includes("XP")) || (Titles2[j] === "RP") || (Titles2[j] === "GT") || (Titles2[j] === "LD") || (Titles2[j] === "LSPD") || (Titles2[j] === "HSW")) {
-                                                            rdoTitleString += `${Titles2[j]} `;
-                                                        }
-                                                        //returns all lowercase if not a title word					
-                                                        else if ((Titles2[j] === "ON") || (Titles2[j] === "OF") || (Titles2[j] === "THE") || (Titles2[j] === "AN") || (Titles2[j] === "AND") || (Titles2[j] === "FOR") || (Titles2[j] === "A") || (Titles2[j] === "AT") || (Titles2[j] === "IN")) {
-                                                            rdoTitleString += `${Titles2[j].toLowerCase()} `;
-                                                        }
-                                                        //else returns capital first letter and lowercase rest of the word				
-                                                        else {
-                                                            rdoTitleString += `${Titles2[j].charAt(0)}${Titles2[j].toLowerCase().slice(1)} `;
-                                                        }
-                                                    }
-                                                }
-                                                //return Titles2[0]; //Testbench if rdoTitleString has an error, this returns the first word of every title
-                                                return `${rdoTitleString}`;
-                                            }
-                                            let RDO_Title = titleCapitalization(RDOBonuses);
-                                            //console.log(`RDO_Title at ${i}: ${RDO_Title}`);		
-
-                                            //--------------------END capitalization Function-----------------//		
+																						let RDO_Title = `${RDOBonuses[0]} `;
+												                    let RDO_Bonus = RDOBonuses[1];
+												                    //console.log(`RDO_Title at ${i}: ${RDO_Title} `);
+												                    //console.log(`RDO_Bonus at ${i}: ${RDO_Bonus}`);	
 
                                             //-----BEGIN get the index of "Only on PlayStation..." title-----//
 
@@ -389,9 +354,6 @@ module.exports = {
                                             }
                                             //console.log(`nextGenIndex2 at ${i}: ${nextGenIndex2}`);								
                                             //-----END get the index of "Only on PlayStation..." title-----//			
-
-                                            let RDO_Bonus = RDOBonuses[1];
-                                            //console.log(`RDO_Bonus at ${i}: ${RDO_Bonus}`);
 
                                             //-----BEGIN populating rdoFinalString01 -----//
                                             if (i === 0) {
