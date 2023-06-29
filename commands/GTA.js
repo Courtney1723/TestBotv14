@@ -49,6 +49,11 @@ module.exports = {
             const content = await page.property('content'); // Gets the latest gta updates
             //console.log(content); 
 
+						let gtaImage01 = content.split("imgUrl\":\"");
+						//console.log(`gtaImage01: ${gtaImage01[1]}`);
+						let gtaImage = gtaImage01[2].split("\","); //fixme - change to gtaImage01[1] next week
+						//console.log(`gtaImage: ${gtaImage[0]}`); 
+
             let baseURL = "https://socialclub.rockstargames.com";
 
             let urlHash02 = content.split("urlHash\":\"");
@@ -106,11 +111,6 @@ module.exports = {
                 let gtaHeader = gtaString01[0];
                 //console.log(`gtaHeader: ${gtaHeader}`);
 
-                let gtaImage01 = gtaHeader.split("og:image\" content=\"");
-                //console.log(`gtaImage01: ${gtaImage01[1]}`);
-                let gtaImage = gtaImage01[1].split("\" data-rh=");
-                //console.log(`gtaImage: ${gtaImage[0]}`);
-
                 let gtaDate02 = gtaHeader.split("class=\"date\">"); //gets the event date
                 let gtaDate01 = gtaDate02[1].split("<"); //cuts off the end of the date
                 let gtaDate = gtaDate01[0].replace(/&nbsp;/g, " ");
@@ -139,7 +139,7 @@ module.exports = {
                     .replace(/<ul style="line-height:1.5;">/g, "")
                     .replace(/\n<p>/g, "<p>") //Removes spaces after a bonus
                     .replace(/<p>Only/g, "<p><b>Only")
-                    .replace(/<\/span>/, "")
+                    .replace(/<\/span>/, "")								
 
                     //--BEGIN FOREIGN LANGUAGE FORMATTING-----//
                     //--RUSSIAN--//
@@ -326,8 +326,8 @@ module.exports = {
                         return `${gtaTitleString}`;
                     }
                     let GTA_Title = titleCapitalization(GTABonuses);
-                    //console.log(`GTA_Title at ${i}: ${GTA_Title} `);		
-                    //console.log(`GTA_Bonus at ${i}: ${GTA_Bonus}`);	
+                    // console.log(`GTA_Title at ${i}: ${GTA_Title} `);		
+                    // console.log(`GTA_Bonus at ${i}: ${GTA_Bonus}`);	
                     //--------------------END capitalization Function-----------------//		
 
 

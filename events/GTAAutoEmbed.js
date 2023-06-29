@@ -141,6 +141,11 @@ module.exports = {
                                     const content = await page.property('content'); // Gets the latest gta updates
                                     //console.log(content); 
 
+																		let gtaImage01 = content.split("imgUrl\":\"");
+																		//console.log(`gtaImage01: ${gtaImage01[1]}`);
+																		let gtaImage = gtaImage01[2].split("\","); //fixme - change to gtaImage01[1] next week
+																		//console.log(`gtaImage: ${gtaImage[0]}`);
+
                                     let baseURL = "https://socialclub.rockstargames.com";
 
                                     let urlHash02 = content.split("urlHash\":\"");
@@ -189,11 +194,6 @@ module.exports = {
                                         let gtaString01 = gtaString001.split("cm-content\">"); //splits the header from the body
                                         let gtaHeader = gtaString01[0];
                                         //console.log(`gtaHeader: ${gtaHeader}`);
-
-                                        let gtaImage01 = gtaHeader.split("og:image\" content=\"");
-                                        //console.log(`gtaImage01: ${gtaImage01[1]}`);
-                                        let gtaImage = gtaImage01[1].split("\" data-rh=");
-                                        //console.log(`gtaImage: ${gtaImage[0]}`);
 
                                         let gtaDate02 = gtaHeader.split("class=\"date\">"); //gets the event date
                                         //console.log(`${gtaDate01[1]}`);
