@@ -89,7 +89,8 @@ module.exports = {
                             }
 
                             //console.log(`guildIDs: ${guildIDs}`);
-                            console.log(`channelIDs: ${channelIDs}`); //do not comment out 
+														var channelIDLength = channelIDs.split("-")
+                            console.log(`channelIDs: ${channelIDLength.length}`); //do not comment out
                             //console.log(`rdo_gtaIDs: ${rdo_gtaIDs}`);
 
                             let guildIDsArray = guildIDs.split('  - ');
