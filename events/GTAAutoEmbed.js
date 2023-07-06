@@ -144,7 +144,7 @@ module.exports = {
 
 																		let gtaImage01 = content.split("imgUrl\":\"");
 																		//console.log(`gtaImage01: ${gtaImage01[1]}`);
-																		let gtaImage = gtaImage01[2].split("\","); //fixme - change to gtaImage01[1] next week
+																		let gtaImage = gtaImage01[1].split("\",");
 																		//console.log(`gtaImage: ${gtaImage[0]}`);
 
                                     let baseURL = "https://socialclub.rockstargames.com";
