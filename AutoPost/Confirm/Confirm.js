@@ -196,7 +196,7 @@ module.exports = {
                                 return `\nW każdy czwartek o godzinie 17:00 czasu wschodnioamerykańskiego`;
                             }
                             else if (lang === "fr") {
-                                return `\nTous les jeudis à 14h00, heure normale de l'Est`;
+                                return `\nTous les jeudis à 17h00, heure normale de l'Est`;
                             }
                             else if (lang === "it") {
                                 return `\nOgni giovedì alle 17:00 ora standard orientale`;
@@ -240,7 +240,7 @@ module.exports = {
                                 return `\nPierwszy wtorek każdego miesiąca o godzinie 17:00 czasu wschodniego`;
                             }
                             else if (lang === "fr") {
-                                return `\nLe premier mardi de chaque mois à 14h00 heure de l'Est`;
+                                return `\nLe premier mardi de chaque mois à 17h00 heure de l'Est`;
                             }
                             else if (lang === "it") {
                                 return `\nIl primo martedì di ogni mese alle 17:00 ora orientale`;

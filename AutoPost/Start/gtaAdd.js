@@ -128,7 +128,7 @@ module.exports = {
                     return `Będziesz teraz otrzymywać automatyczne wiadomości GTA Online na kanale <#${menuChannelID}> \n**w każdy czwartek o 17:00 czasu wschodniego**.`;
                 }
                 else if (lang === "fr") {
-                    return `Vous recevrez désormais des messages automatisés pour GTA Online dans le canal <#${menuChannelID}> \n**tous les jeudis à 14h00, heure de l'Est**.`;
+                    return `Vous recevrez désormais des messages automatisés pour GTA Online dans le canal <#${menuChannelID}> \n**tous les jeudis à 17h00, heure de l'Est**.`;
                 }
                 else if (lang === "it") {
                     return `Ora riceverai messaggi automatici di GTA Online nel canale <#${menuChannelID}> \n**ogni giovedì alle 17:00 ora di New York**.`;

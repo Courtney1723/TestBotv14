@@ -89,7 +89,7 @@ module.exports = {
                     return `Będziesz teraz otrzymywać automatyczne wiadomości Red Dead Online na kanale <#${menuChannelID}> \n**w pierwszy wtorek każdego miesiąca o godzinie 17:00 czasu wschodniego**.`;
                 }
                 else if (lang === "fr") {
-                    return `Vous recevrez désormais des messages automatisés pour Red Dead Online dans le canal <#${menuChannelID}> \n**le premier mardi de chaque mois à 14h00, heure de l'Est**.`;
+                    return `Vous recevrez désormais des messages automatisés pour Red Dead Online dans le canal <#${menuChannelID}> \n**le premier mardi de chaque mois à 17h00, heure de l'Est**.`;
                 }
                 else if (lang === "it") {
                     return `Ora riceverai messaggi automatici di Red Dead Online nel canale <#${menuChannelID}> \n**il primo martedì di ogni mese alle 17:00 ora di New York**.`;

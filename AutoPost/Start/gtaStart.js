@@ -81,7 +81,7 @@ module.exports = {
                     return `Kliknij **menu**, aby potwierdzić kanał, na który chcesz wysyłać automatyczne posty z GTA Online \n**w każdy czwartek o 17:00 czasu wschodniego**.`;
                 }
                 else if (lang === "fr") {
-                    return `Cliquez sur **le menu déroulant** pour confirmer la chaîne sur laquelle vous souhaitez envoyer les publications automatiques de GTA Online \n**tous les jeudis à 14h00, heure de l'Est**.`;
+                    return `Cliquez sur **le menu déroulant** pour confirmer la chaîne sur laquelle vous souhaitez envoyer les publications automatiques de GTA Online \n**tous les jeudis à 17h00, heure de l'Est**.`;
                 }
                 else if (lang === "it") {
                     return `Fai clic sul **menu a discesa** per confermare il canale a cui desideri inviare i post automatici di GTA Online \n**ogni giovedì alle 17:00 ora di New York**.`;
