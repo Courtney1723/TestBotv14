@@ -351,8 +351,6 @@ module.exports = {
                                     .replace(/<ul style="line-height:1.5;">/g, "\n")
 
 																		//russian
-																		.replace(/3="" июля="" включительно="" зарабатывайте="" \<strong=""\>/, "") //FIXME - remove next month
-																		.replace(/\<span style="font-family: Calibri, sans-serif; font-size: 11pt;"\>/, "") //FIXME - remove next month
 																		.replace(/\<\/pДо>/, "")
 																		.replace(/<\/span>/, "")																	
 
@@ -502,28 +500,36 @@ module.exports = {
                                             rdoFinalString01 += `• ${rdoParas[c].charAt(0).toUpperCase()}${rdoParas[c].substring(1)}\n\n`;
                                         }
                                     }
-                                    else if (RDO_Bonus != undefined) {
-                                        if (
-                                            (RDO_Title.toLowerCase().includes("discounts")) ||
-                                            (RDO_Title.toLowerCase().includes("descuentos")) ||
-                                            (RDO_Title.includes("Скидки")) ||
-                                            (RDO_Title.includes("Rabatte")) ||
-                                            (RDO_Title.includes("Descontos"))) {
+																	else if (RDO_Bonus != undefined) {
+					                            if ((RDO_Title.toLowerCase() === "discounts ") ||
+							                            (RDO_Title.toLowerCase() === "descuentos ") ||
+							                            (RDO_Title === "СКИДКИ ") ||
+																					(RDO_Title === "折扣優惠 ") ||
+																					(RDO_Title === "割引 ") ||
+																					(RDO_Title === "할인 ") ||
+							                            (RDO_Title.toLowerCase() === "rabatte ") ||
+																					(RDO_Title.toLowerCase() === "zniżki ") ||
+							                            (RDO_Title.toLowerCase() === "descontos ") ||
+																					(RDO_Title === "PROMOTIONS ") ||
+																					(RDO_Title.toLowerCase() === "sconti ") ||
+					                                (RDO_Title.includes("DESCONTOS"))) {
                                             rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
                                         }
-                                        else if (
-                                            (RDO_Title.includes("2x")) || //German, and Portuguese use numbers 
-                                            (RDO_Title.includes("3x")) ||
-                                            (RDO_Title.includes("4x")) ||
-                                            (RDO_Title.toLowerCase().includes("double rewards")) || //English uses both.. of course 
-                                            (RDO_Title.toLowerCase().includes("triple rewards")) ||
-                                            (RDO_Title.toLowerCase().includes("doble de")) || //Spanish and Russian use words
-                                            (RDO_Title.toLowerCase().includes("triple de")) ||
-                                            (RDO_Title.toLowerCase().includes("cuádruple de")) ||
-                                            (RDO_Title.includes("Вдвое Больше")) ||
-                                            (RDO_Title.includes("Втрое Больше")) ||
-                                            (RDO_Title.includes("Удвоенные Награды")) ||
-                                            (RDO_Title.includes("Четыре Раза"))) {
+					                            else if (
+					                                (RDO_Title.includes("2X")) || //German, and Portuguese use numbers 
+					                                (RDO_Title.includes("3X")) ||
+					                                (RDO_Title.includes("4X")) ||
+					                                (RDO_Title.toLowerCase().includes("double rewards")) || //English uses both.. of course 
+					                                (RDO_Title.toLowerCase().includes("triple rewards")) ||
+					                                (RDO_Title.toLowerCase().includes("doble de")) || //Spanish and Russian use words
+					                                (RDO_Title.toLowerCase().includes("triple de")) ||
+					                                (RDO_Title.toLowerCase().includes("cuádruple de")) ||
+					                                (RDO_Title.includes("Вдвое Больше")) ||
+					                                (RDO_Title.includes("Втрое Больше")) ||
+					                                (RDO_Title.includes("Удвоенные Награды")) ||
+																					(RDO_Title.includes("DOUBLÉS")) || //French
+																					(RDO_Title.includes("DOPPI")) || //Italian
+					                                (RDO_Title.includes("Четыре Раза"))) {
                                             rdoFinalString01 += `**${RDO_Title}**\n\n`;
                                         }
                                         else if (
@@ -578,16 +584,6 @@ module.exports = {
                                         }
 
                                     }
-                                    else if (RDO_Title !== undefined) { //FIXME NEXT MONTH
-                                        if (
-                                            (RDO_Title.toLowerCase().includes("discounts")) ||
-                                            (RDO_Title.toLowerCase().includes("descuentos")) ||
-                                            (RDO_Title.includes("Скидки")) ||
-                                            (RDO_Title.includes("Rabatte")) ||
-                                            (RDO_Title.includes("Descontos"))) {
-                                            rdoFinalString01 += `**${RDO_Title}**\n`;
-                                        }
-                                    }
                                 }
                                 //-----------END for loop----------//		
                                 //console.log(`rdoFinalString01: ${rdoFinalString01}`); //rdoFinalString before HTML formatting
@@ -601,14 +597,7 @@ module.exports = {
                                     .replace(/\n\n\n/g, "\n")
                                     .replace(/\*\*\n\*\*/g, "**\n\n**")
                                     .replace(/• undefined/g, "• ")
-                                    .replace(/\)• /g, ")\n• ") //adds a newline between link lists	
-
-																		//russian
-																		.replace(/\<pдо /, "• ")
-						
-																		//german
-																		.replace(/• •/g, "•")
-																		.replace(/• \n•/g, "•")															
+                                    .replace(/\)• /g, ")\n• ") //adds a newline between link lists														
 
                                 //console.log(`rdoFinalString01.length: ${rdoFinalString01.length}`);
                                 //console.log(`rdoFinalString.length: ${rdoFinalString.length}`);
