@@ -179,8 +179,8 @@ module.exports = {
 
                     gtaLinkTitles += `${gtaLinkTitles02[0]},`;
                 }
-                //console.log(`gtaLinks: ${gtaLinks}`);
-                //console.log(`gtaLinkTitles: ${gtaLinkTitles}`);
+                // console.log(`gtaLinks: ${gtaLinks}`);
+                // console.log(`gtaLinkTitles: ${gtaLinkTitles}`);
 
                 let gtaLinks002 = gtaLinks.split(",");
                 //console.log(`gtaLinks002: ${gtaLinks002}`);
@@ -189,7 +189,7 @@ module.exports = {
 
                 let gtaLinkFormatted = gtaString;
                 for (m = 0; m <= gtaLinks002.length - 2; m++) { // keep - 2; the last element will always be blank
-                    gtaLinkFormatted = gtaLinkFormatted.replace(/<a.*?a>/, `[${gtaLinkTitles002[m]}](${gtaLinks002[m]})`); //replaces each link with proper discord formatted link
+                    gtaLinkFormatted = gtaLinkFormatted.replace(/<a.*?a>/, `[${gtaLinkTitles002[m]}](${gtaLinks002[m]})`); //replaces each link with proper discord formatted link									
                     //console.log(`gtaLinkFormatted at ${m}: ${gtaLinkFormatted}`);
                 }
                 //console.log(`gtaLinkFormatted: ${gtaLinkFormatted}`);
@@ -287,39 +287,37 @@ module.exports = {
 										let GTA_Title = `${GTABonuses[0]} `;
                     let GTA_Bonus = GTABonuses[1];
                     //console.log(`GTA_Title at ${i}: ${GTA_Title} `);		
-                    //console.log(`GTA_Bonus at ${i}: ${GTA_Bonus}`);	
+                    // console.log(`GTA_Bonus at ${i}: ${GTA_Bonus}`);	
                     //--------------------END capitalization Function-----------------//		
-
 
                     //----------BEGIN populating gtaFinalString01 ----------//
                     if ((GTA_Bonus != null) && (!GTA_Title.includes("undefined")) && (!GTA_Bonus.includes("undefined"))) {
                         let gtaParas = GTA_Bonus.split("<p>");
                         if (
-                            (GTA_Title.toLowerCase() === "gta+ ") ||
-                            (GTA_Title.toLowerCase() === "discounts ") ||
-														(GTA_Title.toLowerCase() === "and more... ") ||
-                            (GTA_Title.toLowerCase() === "descuentos ") ||
-                            (GTA_Title === "cкидки ") ||
-                            (GTA_Title === "Скидки ") ||
-														(GTA_Title === "折扣優惠 ") ||
-														(GTA_Title === "割引 ") ||
-														(GTA_Title === "할인 ") ||
-                            (GTA_Title.toLowerCase() === "rabatte ") ||
-														(GTA_Title.toLowerCase() === "zniżki ") ||
-                            (GTA_Title.toLowerCase() === "descontos ") ||
-														(GTA_Title.toLowerCase() === "promotions ") ||
-														(GTA_Title.toLowerCase() === "sconti ")
+                            (GTA_Title.toLowerCase().includes("gta+ ")) ||
+                            (GTA_Title.toLowerCase().includes("discounts ")) ||
+														(GTA_Title.toLowerCase().includes("and more... ")) ||
+                            (GTA_Title.toLowerCase().includes("descuentos ")) ||
+                            (GTA_Title.includes("СКИДКИ")) ||
+														(GTA_Title.includes("折扣優惠")) ||
+														(GTA_Title.includes("割引")) ||
+														(GTA_Title.includes("할인")) ||
+                            (GTA_Title.toLowerCase().includes("rabatte")) ||
+														(GTA_Title.toLowerCase().includes("zniżki")) ||
+                            (GTA_Title.toLowerCase().includes("descontos")) ||
+														(GTA_Title.toLowerCase().includes("promotions")) ||
+														(GTA_Title.toLowerCase().includes("sconti"))
                         ) {
-                            //console.log(`1 - discount`);
+                            // console.log(`1 - discount`);
                             gtaFinalString01 += `**${GTA_Title}**\n`;
                             var k = 0;
                             while (gtaParas[k] !== undefined) {
                                 if (gtaParas[k].includes("•")) {
-                                    //console.log(`1 - discount includes •`);
+                                    // console.log(`1 - discount includes •`);
                                     gtaFinalString01 += `${gtaParas[k]}`;
                                 }
                                 else {
-                                    //console.log(`1 - discount does not include •`);
+                                    // console.log(`1 - discount does not include •`);
                                     gtaFinalString01 += `• ${gtaParas[k]}`;
                                 }
                                 k++;
@@ -335,7 +333,7 @@ module.exports = {
                             (GTA_Title.toLowerCase().includes("premium-testfahrzeug")) ||
                             (GTA_Title.toLowerCase().includes("veículo de teste premium"))
                         ) {
-                            //console.log(`2 - only on playstation`);
+                            // console.log(`2 - only on playstation`);
                             gtaFinalString01 += `• ${GTA_Title}\n`;
                             if (GTA_Title.toLowerCase().includes("hsw")) {
                                 gtaFinalString01 += "\n"
@@ -361,15 +359,17 @@ module.exports = {
                             (GTA_Title.toLowerCase().includes("veículo-prêmio")) ||
                             (GTA_Title.toLowerCase().includes("diamond casino")) ||
                             (GTA_Title.toLowerCase().includes("cassino diamond")) ||
-                            (GTA_Title.includes("Премиальный Транспорт"))
+                            (GTA_Title.includes("ПРИЗОВОЙ ТРАНСПОРТ")) ||
+														(GTA_Title.includes("ВДВОЕ БОЛЬШЕ")) ||
+														(GTA_Title.includes("ВТРОЕ БОЛЬШЕ"))
                         ) {
-                            //console.log(`3 - only title`);
+                            // console.log(`3 - only title`);
                             gtaFinalString01 += `**${GTA_Title}**\n\n`;
                         }
                         else { // only post the first paragraph
-                            //console.log(`4 - else`);
+                            // console.log(`4 - else`);
                             if ((gtaParas[1] !== undefined) && (gtaParas[1] !== "")) {
-                                //console.log(`4 - title + bonus - bonus length:${gtaParas[1].length}`);
+                                // console.log(`4 - title + bonus - bonus length:${gtaParas[1].length}`);
                                 if (gtaParas[1].length <= 510) {
                                     gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n\n`;
                                 }
@@ -378,13 +378,13 @@ module.exports = {
                                 }
                             }
                             else if ((GTA_Title !== undefined) && (GTA_Title !== "")) {
-                                //console.log(`4 - title only`);
+                                // console.log(`4 - title only`);
                                 gtaFinalString01 += `**${GTA_Title}**\n\n`;
                             }
                         }
                     }
                     else if ((GTA_Title != null) && (!GTA_Title.includes("undefined")) && (GTA_Title != "")) { //if the bonus is in the title
-                        //console.log(`5 - bonusintitle`);
+                        // console.log(`5 - bonusintitle`);
                         var bonusInTitle = GTA_Title.split("<");
                         var bonusInTitleBonus = bonusInTitle[1].split(">");
                         gtaFinalString01 += `**${bonusInTitle[0]}**\n`;
@@ -566,7 +566,7 @@ module.exports = {
                     await interaction.editReply({ embeds: [gtaImageEmbed, gtaEmbed] }).catch(err =>
                         interaction.editReply({ embeds: [errorEmbed], ephemeral: true }).then(
                             console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`))
-                    );
+                    );									
                 } else {
                     await interaction.editReply({ embeds: [gtaImageEmbed, gtaEmbed, gtaEmbed2] }).catch(err =>
                         interaction.editReply({ embeds: [errorEmbed], ephemeral: true }).then(

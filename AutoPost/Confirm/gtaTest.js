@@ -539,11 +539,10 @@ module.exports = {
 							                            (GTA_Title.toLowerCase() === "discounts ") ||
 																					(GTA_Title.toLowerCase() === "and more... ") ||
 							                            (GTA_Title.toLowerCase() === "descuentos ") ||
-							                            (GTA_Title === "cкидки ") ||
-							                            (GTA_Title === "Скидки ") ||
-																					(GTA_Title === "折扣優惠 ") ||
-																					(GTA_Title === "割引 ") ||
-																					(GTA_Title === "할인 ") ||
+							                            (GTA_Title.includes("СКИДКИ")) ||
+																					(GTA_Title.includes("折扣優惠")) ||
+																					(GTA_Title.includes("割引")) ||
+																					(GTA_Title.includes("할인")) ||
 							                            (GTA_Title.toLowerCase() === "rabatte ") ||
 																					(GTA_Title.toLowerCase() === "zniżki ") ||
 							                            (GTA_Title.toLowerCase() === "descontos ") ||
@@ -601,7 +600,9 @@ module.exports = {
 							                            (GTA_Title.toLowerCase().includes("veículo-prêmio")) ||
 							                            (GTA_Title.toLowerCase().includes("diamond casino")) ||
 							                            (GTA_Title.toLowerCase().includes("cassino diamond")) ||
-							                            (GTA_Title.includes("Премиальный Транспорт"))
+							                            (GTA_Title.includes("ПРИЗОВОЙ ТРАНСПОРТ")) ||
+																					(GTA_Title.includes("ВДВОЕ БОЛЬШЕ")) ||
+																					(GTA_Title.includes("ВТРОЕ БОЛЬШЕ"))
                                         ) {
                                             //console.log(`3 - only title`);
                                             gtaFinalString01 += `**${GTA_Title}**\n\n`;
