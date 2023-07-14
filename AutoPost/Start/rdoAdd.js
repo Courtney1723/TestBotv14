@@ -1,6 +1,7 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
 const LANG = require('../../events/LANG.js');
+const NEXT_BONUS = require('../../events/nextBonus.js');
 
 module.exports = {
     name: 'interactionCreate',
@@ -29,6 +30,9 @@ module.exports = {
 
             var lang = await LANG.LANG(interaction);
             //console.log(`LANG:${await LANG.LANG(interaction)}`);	
+
+						var nextBONUSRDO = await NEXT_BONUS.nextBonus("rdo");
+						//console.log(`rdo: ${nextBONUSRDO}`);							
 
             function success() {
                 if (lang === "en") {
@@ -71,40 +75,40 @@ module.exports = {
 
             function rdoAddDesc() {
                 if (lang === "en") {
-                    return `You will now get Red Dead Online auto posts to the <#${menuChannelID}> channel \n**the first Tuesday of every month at 5:00 PM EST**.`;
+                    return `You will now get Red Dead Online auto posts to the <#${menuChannelID}> channel every month.\nNext Update: `;
                 }
                 if (lang === "es") {
-                    return `Ahora recibirás publicaciones automáticas de Red Dead Online en el canal <#${menuChannelID}> \n**el primer martes de cada mes a las 17:00 hora del este**.`;
+                    return `Ahora recibirá actualizaciones automáticas de Red Dead Online en el canal <#${menuChannelID}> todos los meses.\nPróxima actualización: <t:${Math.round(nextBONUSRDO / 1000)}:F>.`;
                 }
                 if (lang === "pt") {
-                    return `Agora você receberá postagens automáticas de Red Dead Online no canal <#${menuChannelID}> \n**na primeira terça-feira de cada mês às 17:00 Hora do Leste**.`;
+                    return `Agora você receberá atualizações automáticas do Red Dead Online no canal <#${menuChannelID}> todos os meses.\n Próxima atualização: <t:${Math.round(nextBONUSRDO / 1000)}:F>.`;
                 }
                 if (lang === "ru") {
-                    return `Теперь вы будете получать автоматические сообщения Red Dead Online на <#${menuChannelID}> канале \n**в первый вторник каждого месяца в 17:00 по восточному времени**.`;
+                    return `Теперь вы будете ежемесячно получать автоматические обновления Red Dead Online на канале <#${menuChannelID}>.\nСледующее обновление: <t:${Math.round(nextBONUSRDO / 1000)}:F>.`;
                 }
                 if (lang === "de") {
-                    return `Sie erhalten jetzt Red Dead Online Auto-Posts auf dem <#${menuChannelID}>-Kanal \n**am ersten Dienstag eines jeden Monats um 17:00 Uhr Ostküsten-Standardzeit (Nordamerika)**.`;
+                    return `Sie erhalten jetzt jeden Monat automatische Red Dead Online-Updates für den <#${menuChannelID}>-Kanal.\nNächstes Update: <t:${Math.round(nextBONUSRDO / 1000)}:F>.`;
                 }
                 else if (lang === "pl") {
-                    return `Będziesz teraz otrzymywać automatyczne wiadomości Red Dead Online na kanale <#${menuChannelID}> \n**w pierwszy wtorek każdego miesiąca o godzinie 17:00 czasu wschodniego**.`;
+                    return `Teraz co miesiąc będziesz otrzymywać automatyczne aktualizacje Red Dead Online na kanale <#${menuChannelID}>.\nNastępna aktualizacja: <t:${Math.round(nextBONUSRDO / 1000)}:F>.`;
                 }
                 else if (lang === "fr") {
-                    return `Vous recevrez désormais des messages automatisés pour Red Dead Online dans le canal <#${menuChannelID}> \n**le premier mardi de chaque mois à 17h00, heure de l'Est**.`;
+                    return `Vous recevrez désormais des mises à jour automatiques de Red Dead Online sur le canal <#${menuChannelID}> tous les mois.\nProchaine mise à jour : <t:${Math.round(nextBONUSRDO / 1000)}:F>.`;
                 }
                 else if (lang === "it") {
-                    return `Ora riceverai messaggi automatici di Red Dead Online nel canale <#${menuChannelID}> \n**il primo martedì di ogni mese alle 17:00 ora di New York**.`;
+                    return `Ora riceverai aggiornamenti automatici di Red Dead Online sul canale <#${menuChannelID}> ogni mese.\n Prossimo aggiornamento: <t:${Math.round(nextBONUSRDO / 1000)}:F>.`;
                 }
                 else if (lang === "zh") {
-                    return `現在東部時間每個第一個星期二 17:00，您將在 <#${menuChannelID}> 頻道收到 Red Dead 在線模式消息。`;
+                    return `現在，您將每月獲得 <#${menuChannelID}> 頻道的 Red Dead 在線模式自動更新。\n下次更新：<t:${Math.round(nextBONUSRDO / 1000)}:F>`;
                 }
                 else if (lang === "ja") {
-                    return `毎月第 1 火曜日の東部標準時の 17:00 に、<#${menuChannelID}> チャネルで Red Dead Online メッセージを受け取ります。`;
+                    return `今後、レッド・デッド・オンラインの自動アップデートが毎月<#${menuChannelID}>チャンネルに送信されるようになります。\n次回の更新: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
                 }
                 else if (lang === "ko") {
-                    return `이제 <#${menuChannelID}> 채널로 Red Dead 온라인 자동 메시지를 받게 됩니다. \n**매월 첫 번째 화요일 17:00 동부 표준시**에.`;
+                    return `이제 매달 <#${menuChannelID}> 채널에 대한 Red Dead 온라인 자동 업데이트를 받게 됩니다.\n다음 업데이트: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
                 }
                 else {
-                    return `You will now get Red Dead Online auto posts to the <#${menuChannelID}> channel \n**the first Tuesday of every month at 5:00 PM EST**.`;
+                    return `You will now get Red Dead Online auto posts to the <#${menuChannelID}> channel every month.\nNext Update: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
                 }
             }
 

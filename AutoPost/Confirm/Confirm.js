@@ -1,6 +1,8 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType } = require('discord.js');
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
+const fetch = require("@replit/node-fetch");
 const LANG = require('../../events/LANG.js');
+const NEXT_BONUS = require('../../events/nextBonus.js');
 
 module.exports = {
     name: 'interactionCreate',
@@ -17,6 +19,10 @@ module.exports = {
 
             var lang = await LANG.LANG(interaction);
             //console.log(`LANG:${await LANG.LANG(interaction)}`);	
+
+						var nextBONUSGTA = await NEXT_BONUS.nextBonus("gta");
+						var nextBONUSRDO = await NEXT_BONUS.nextBonus("rdo");
+						//console.log(`gta: ${nextBONUSGTA} - rdo: ${nextBONUSRDO}`);
 
             let channelIDArray = [];
             interaction.guild.channels.cache.forEach(channel => { //populates channelIDArray with the server text channels
@@ -178,40 +184,40 @@ module.exports = {
                     function everyThursday() {
                         if (subscriptionCheckGTA === false) {
                             if (lang === "en") {
-                                return `\nEvery Thursday at 5:00 PM EST`;
+                                return `\nNext Update: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
                             }
                             else if (lang === "es") {
-                                return `\nTodos los jueves a las 17:00 hora del este`;
+                                return `\nPróxima actualización: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
                             }
                             else if (lang === "pt") {
-                                return `\nTodas as quintas-feiras às 17:00 Hora do Leste`;
+                                return `\nPróxima atualização: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
                             }
                             else if (lang === "ru") {
-                                return `\nКаждый четверг в 17:00 по восточному времени`;
+                                return `\nСледующее обновление: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
                             }
                             else if (lang === "de") {
-                                return `\nJeden Donnerstag um 17:00 Uhr Ostküsten-Standardzeit (Nordamerika)`;
+                                return `\nNächstes Update: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
                             }
                             else if (lang === "pl") {
-                                return `\nW każdy czwartek o godzinie 17:00 czasu wschodnioamerykańskiego`;
+                                return `\nNastępna aktualizacja: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
                             }
                             else if (lang === "fr") {
-                                return `\nTous les jeudis à 17h00, heure normale de l'Est`;
+                                return `\nProchaine mise à jour: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
                             }
                             else if (lang === "it") {
-                                return `\nOgni giovedì alle 17:00 ora standard orientale`;
+                                return `\nProssimo aggiornamento: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
                             }
                             else if (lang === "zh") {
-                                return `\n東部時間每週四 17:00`;
+                                return `\n下次更新：<t:${Math.round(nextBONUSGTA / 1000)}:F>`;
                             }
                             else if (lang === "ja") {
-                                return `\n毎週木曜日 17:00 東部標準時`;
+                                return `\n次回の更新: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
                             }
                             else if (lang === "ko") {
-                                return `\n매주 목요일 동부 표준시 17:00`;
+                                return `\n다음 업데이트: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
                             }
                             else {
-                                return `\nEvery Thursday at 5:00 PM EST`;
+                                return `\nNext Update: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
                             }
                         }
                         else {
@@ -221,42 +227,42 @@ module.exports = {
 
                     function firstTuesday() {
                         if (subscriptionCheckRDO === false) {
-                            if (lang === "en") {
-                                return `\nThe first Tuesday of every month at 5:00 PM EST`;
-                            }
-                            else if (lang === "es") {
-                                return `\nEl primer martes de cada mes a las 17:00 hora del este`;
-                            }
-                            else if (lang === "pt") {
-                                return `\nA primeira terça-feira de cada mês às 17:00 Hora do Leste`;
-                            }
-                            else if (lang === "ru") {
-                                return `\nB первый вторник каждого месяца в 17:00 по восточному времени`;
-                            }
-                            else if (lang === "de") {
-                                return `\nJeden ersten Dienstag im Monat um 17:00 Uhr Ostküsten-Standardzeit (Nordamerika)`;
-                            }
-                            else if (lang === "pl") {
-                                return `\nPierwszy wtorek każdego miesiąca o godzinie 17:00 czasu wschodniego`;
-                            }
-                            else if (lang === "fr") {
-                                return `\nLe premier mardi de chaque mois à 17h00 heure de l'Est`;
-                            }
-                            else if (lang === "it") {
-                                return `\nIl primo martedì di ogni mese alle 17:00 ora orientale`;
-                            }
-                            else if (lang === "zh") {
-                                return `\n每個月的第一個星期二東部標準時間 17:00`;
-                            }
-                            else if (lang === "ja") {
-                                return `\n毎月第 1 火曜日の東部時間 17:00`;
-                            }
-                            else if (lang === "ko") {
-                                return `\n매월 첫 번째 화요일 17:00 동부 표준시`;
-                            }
-                            else {
-                                return `\nThe first Tuesday of every month at 5:00 PM EST`;
-                            }
+													if (lang === "en") {
+													    return `\nNext Update: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+													}
+													else if (lang === "es") {
+													    return `\nPróxima actualización: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+													}
+													else if (lang === "pt") {
+													    return `\nPróxima atualização: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+													}
+													else if (lang === "ru") {
+													    return `\nСледующее обновление: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+													}
+													else if (lang === "de") {
+													    return `\nNächstes Update: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+													}
+													else if (lang === "pl") {
+													    return `\nNastępna aktualizacja: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+													}
+													else if (lang === "fr") {
+													    return `\nProchaine mise à jour: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+													}
+													else if (lang === "it") {
+													    return `\nProssimo aggiornamento: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+													}
+													else if (lang === "zh") {
+													    return `\n下次更新：<t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+													}
+													else if (lang === "ja") {
+													    return `\n次回の更新: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+													}
+													else if (lang === "ko") {
+													    return `\n다음 업데이트: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+													}
+													else {
+													    return `\nNext Update: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+													}
                         }
                         else {
                             return "";

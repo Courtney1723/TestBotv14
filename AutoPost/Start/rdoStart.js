@@ -1,6 +1,7 @@
 const { PermissionsBitField, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, ChannelType } = require('discord.js');
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
 const LANG = require('../../events/LANG.js');
+const NEXT_BONUS = require('../../events/nextBonus.js');
 
 module.exports = {
     name: 'interactionCreate',
@@ -19,6 +20,8 @@ module.exports = {
 
             var lang = await LANG.LANG(interaction);
             //console.log(`LANG:${await LANG.LANG(interaction)}`);	
+						var nextBONUSRDO = await NEXT_BONUS.nextBonus("rdo");
+						//console.log(`rdo: ${nextBONUSRDO}`);						
 
             function rdoStartTitle() {
                 if (lang === "en") {
@@ -61,40 +64,40 @@ module.exports = {
 
             function rdoStartDesc() {
                 if (lang === "en") {
-                    return `Click **the dropdown menu** to confirm the channel you want to send Red Dead Online Auto Posts to \n**the first Tuesday of every month at 5:00 PM EST**.`;
+                    return `Click **the dropdown menu** to confirm the channel you want to send Red Dead Online Auto Posts to every month.\nNext Update: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
                 }
                 if (lang === "es") {
-                    return `Haga clic en **El menú desplegable** para confirmar el canal al que desea enviar publicaciones automáticas de RDO \n**el primer martes de cada mes a las 17:00 hora del este**.`;
+                    return `Haga clic en el menú desplegable para confirmar el canal al que desea enviar actualizaciones automáticas de Red Dead Online cada mes.\nPróxima actualización: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
                 }
                 if (lang === "pt") {
-                    return `Clique **no menu suspenso** para confirmar o canal para o qual deseja enviar as publicações automáticas do Red Dead Online \n**na primeira terça-feira de cada mês às 17:00 Hora do Leste**.`;
+                    return `Clique no menu suspenso para confirmar o canal para o qual você deseja enviar atualizações automáticas do Red Dead Online a cada mês.\nPróxima atualização: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
                 }
                 if (lang === "ru") {
-                    return `Щелчок **раскрывающееся меню** для подтверждения канала вы хотите отправлять автоматические сообщения RDO на \n**в первый вторник каждого месяца в 17:00 по восточному времени**.`;
+                    return `Щелкните раскрывающееся меню, чтобы подтвердить канал, на который вы хотите ежемесячно отправлять автоматические обновления Red Dead Online.\nСледующее обновление: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
                 }
                 if (lang === "de") {
-                    return `Klicken **Das Dropdown-Menü** um den Kanal zu bestätigen, an den Sie automatische RDO-Beiträge senden möchten \n** am ersten Dienstag eines jeden Monats um 17:00 Uhr Ostküsten-Standardzeit (Nordamerika)**.`;
+                    return `Klicken Sie auf das Dropdown-Menü, um den Kanal zu bestätigen, an den Sie jeden Monat automatische Red Dead Online-Updates senden möchten.\nNächstes Update: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
                 }
                 else if (lang === "pl") {
-                    return `Kliknij **menu**, aby potwierdzić kanał, na który chcesz wysyłać automatyczne wiadomości Red Dead Online \n**w pierwszy wtorek każdego miesiąca o godzinie 17:00 czasu wschodniego**.`;
+                    return `Kliknij menu rozwijane, aby potwierdzić kanał, na który chcesz co miesiąc wysyłać automatyczne aktualizacje Red Dead Online.\nNastępna aktualizacja: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
                 }
                 else if (lang === "fr") {
-                    return `Cliquez sur **le menu déroulant** pour confirmer la chaîne à laquelle vous souhaitez envoyer des messages automatiques de Red Dead Online \n**le premier mardi de chaque mois à 17h00, heure de l'Est**.`;
+                    return `Cliquez sur le menu déroulant pour confirmer la chaîne à laquelle vous souhaitez envoyer des mises à jour automatiques de Red Dead Online chaque mois.\nProchaine mise à jour : <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
                 }
                 else if (lang === "it") {
-                    return `Fai clic sul **menu a discesa** per confermare il canale a cui vuoi inviare i messaggi automatici di Red Dead Online \n**il primo martedì di ogni mese alle 17:00 ora di New York**.`;
+                    return `Fai clic sul menu a discesa per confermare il canale a cui desideri inviare gli aggiornamenti automatici di Red Dead Online ogni mese.\nProssimo aggiornamento: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
                 }
                 else if (lang === "zh") {
-                    return `單擊下拉菜單以確認您要將 Red Dead 在線模式自動消息發送到東部時間每個第一個星期二 17:00 的頻道。`;
+                    return `單擊下拉菜單確認您想要每月自動發送 Red Dead 在線模式更新的頻道。\n下次更新：<t:${Math.round(nextBONUSRDO / 1000)}:F>`;
                 }
                 else if (lang === "ja") {
-                    return `**ドロップダウン メニュー**をクリックして、Red Dead Online の自動メッセージを\n**毎月第 1 火曜日の東部時間 17:00** に送信するチャンネルを確認します。`;
+                    return `ドロップダウン メニューをクリックして、レッド デッド オンラインの自動アップデートを毎月送信するチャネルを確認します。\n次回の更新: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
                 }
                 else if (lang === "ko") {
-                    return `**드롭다운 메뉴**를 클릭하여 Red Dead 온라인 자동 메시지를 \n**매월 첫 번째 화요일 17:00 동부 표준시**에 보낼 채널을 확인하세요.`;
+                    return `드롭다운 메뉴를 클릭하여 매달 자동 Red Dead 온라인 업데이트를 보낼 채널을 확인하세요.\n다음 업데이트: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
                 }
                 else {
-                    return `Click **the dropdown menu** to confirm the channel you want to send Red Dead Online Auto Posts to \n**the first Tuesday of every month at 5:00 PM EST**.`;
+                    return `Click **the dropdown menu** to confirm the channel you want to send Red Dead Online Auto Posts to every month.\nNext Update: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
                 }
             }
 

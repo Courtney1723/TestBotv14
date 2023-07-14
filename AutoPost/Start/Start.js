@@ -62,64 +62,64 @@ module.exports = {
 
             function startDesc() {
                 if (lang === "en") {
-                    return `Click **\'GTA\'** to set up GTA Online Auto Posts for **every Thursday at 5:00 PM EST**.
+                    return `Click **\'GTA\'** to set up GTA Online Auto Posts every week.
 
-Click **\'RDO\'** to set up Red Dead Online Auto Posts for **the first Tuesday of every month at 5:00 PM EST**.`;
+Click **\'RDO\'** to set up Red Dead Online Auto Posts every month.`;
                 }
                 if (lang === "es") {
-                    return `Haga clic en **\'GTA\'** para comenzar a publicar publicaciones automáticas en línea de GTA Online para **todos los jueves a las 17:00 hora del este**.
+                    return `Haz clic en **\'GTA\'** para configurar las actualizaciones automáticas de GTA Online todas las semanas.
 
-Haga clic en **\'RDO\'** para comenzar a publicar publicaciones automáticas de Red Dead Online para **el primer martes de cada mes a las 17:00 hora del este**.`;
+Haga clic en **\'RDO\'** para configurar las actualizaciones automáticas de Red Dead Online todos los meses.`;
                 }
                 if (lang === "pt") {
-                    return `Clique **\'GTA\'** para iniciar GTA Online auto posts para **todas as quintas-feiras às 17:00 Hora do Leste**.
+                    return `Clique em **\'GTA\'** para configurar as atualizações automáticas do GTA Online toda semana.
 
-Clique **\'RDO\'** para iniciar Red Dead Online auto posts para **a primeira terça-feira de cada mês às 17:00 Hora do Leste**.`;
+Clique em **\'RDO\'** para configurar as atualizações automáticas do Red Dead Online todos os meses.`;
                 }
                 if (lang === "ru") {
-                    return `Щелчок **\'GTA\'** чтобы начать автоматическую публикацию GTA Online Auto Posts для **каждый четверг в 17:00 по восточному времени**.
+                    return `Нажмите **\'GTA\'**, чтобы настроить еженедельное автоматическое обновление GTA Online.
 
-Щелчок **\'RDO\'** чтобы начать автоматическую публикацию Red Dead Online для **первого вторника каждого месяца в 17:00 по восточному времени**.`;
+Нажмите **\'RDO\'**, чтобы настроить ежемесячное автоматическое обновление Red Dead Online.`;
                 }
                 if (lang === "de") {
-                    return `Klicken Sie auf **\'GTA\'**, GTA Online Auto-Beiträge für jeden Donnerstag um **17:00 Uhr Ostküsten-Standardzeit (Nordamerika)** zu starten.
+                    return `Klicken Sie auf **\'GTA\'**, um jede Woche automatische Updates für GTA Online einzurichten.
 
-Klicken Sie auf **\'RDO\'**, Red Dead Online Auto-Beiträge für **den ersten Dienstag um jedes Monats 17:00 Uhr Ostküsten-Standardzeit (Nordamerika)** zu starten.`;
+Klicken Sie auf **\'RDO\'**, um jeden Monat automatische Updates für Red Dead Online einzurichten.`;
                 }
                 else if (lang === "pl") {
-                    return `Kliknij **GTA**, aby uruchomić automatyczne wiadomości GTA Online w **każdy czwartek o 17:00 czasu wschodniego**.
+                    return `Kliknij **\'GTA\'**, aby skonfigurować automatyczne aktualizacje GTA Online co tydzień.
 
-Kliknij **RDO**, aby uruchomić automatyczne wiadomości Red Dead Online na **pierwszy wtorek każdego miesiąca o 17:00 czasu wschodniego**.`;
+Kliknij **\'RDO\'**, aby skonfigurować automatyczne aktualizacje Red Dead Online co miesiąc.`;
                 }
                 else if (lang === "fr") {
-                    return `Cliquez sur **GTA** pour démarrer les messages automatiques de GTA Online pour **tous les jeudis à 17h00, heure de l'Est**.
+                    return `Cliquez sur **\'GTA\'** pour configurer les mises à jour automatiques de GTA Online chaque semaine.
 				
-Cliquez sur **RDO** pour démarrer les messages automatiques de Red Dead Online pour **le premier mardi de chaque mois à 17h00, heure de l'Est**.`;
+Cliquez sur **\'RDO\'** pour configurer les mises à jour automatiques de Red Dead Online tous les mois.`;
                 }
                 else if (lang === "it") {
-                    return `Fai clic su **GTA** per avviare i messaggi automatici di GTA Online per **ogni giovedì alle 17:00 ora di New York**.
+                    return `Fai clic su **\'GTA\'** per configurare gli aggiornamenti automatici di GTA Online ogni settimana.
 				
-Fai clic su **RDO** per avviare i messaggi automatici di Red Dead Online per **il primo martedì di ogni mese alle 17:00 ora di New York**.`;
+Fai clic su **\'RDO\'** per configurare gli aggiornamenti automatici di Red Dead Online ogni mese.`;
                 }
                 else if (lang === "zh") {
-                    return `單擊 **GTA** 啟動 GTA 在線模式自動發送消息，時間為 **東部時間每週四 17:00**。
+                    return `點擊 **\'GTA\'** 設置 GTA 在線模式每周自動更新。
 				
-單擊 **RDO** 啟動 Red Dead 在線模式在 **每月第一個星期二東部時間 17:00 自動發送消息**。`;
+單擊 **\'RDO\'** 設置 Red Dead 在線模式每月自動更新。`;
                 }
                 else if (lang === "ja") {
-                    return `**GTA** をクリックすると、**毎週木曜日の東部標準時間の 17:00** に GTA Online の自動メッセージが開始されます。
+                    return `**\'GTA\'** をクリックして、GTA オンラインの毎週の自動アップデートを設定します。
 				
-**RDO** をクリックすると、**毎月第 1 火曜日の東部時間 17:00** に Red Dead Online の自動メッセージが開始されます。`;
+**\'RDO\'** をクリックして、レッド・デッド・オンラインの毎月の自動アップデートを設定します。`;
                 }
                 else if (lang === "ko") {
-                    return `**GTA**을(를) 클릭하면 **매주 목요일 동부 표준시 17:00**에 GTA 온라인 자동 메시지가 시작됩니다.
+                    return `매주 GTA 온라인 자동 업데이트를 설정하려면 **\'GTA\'**를 클릭하십시오.
 				
-**RDO**을(를) 클릭하면 **매월 첫 번째 화요일 동부 표준시 17:00**에 Red Dead 온라인 자동 메시지가 시작됩니다.`;
+매달 Red Dead 온라인 자동 업데이트를 설정하려면 **\'RDO\'**를 클릭하세요.`;
                 }
                 else {
-                    return `Click **\'GTA\'** to set up GTA Online Auto Posts for **every Thursday at 5:00 PM EST**.
+                    return `Click **\'GTA\'** to set up GTA Online Auto Posts every week.
 
-Click **\'RDO\'** to set up Red Dead Online Auto Posts for **the first Tuesday of every month at 5:00 PM EST**.`;
+Click **\'RDO\'** to set up Red Dead Online Auto Posts every month.`;
                 }
             }
 

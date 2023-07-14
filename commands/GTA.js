@@ -3,6 +3,7 @@ const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fet
 const phantom = require('phantom'); //https://github.com/amir20/phantomjs-node
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
 const lang = require('../events/LANG.js');
+const NEXT_BONUS = require('../events/nextBonus.js');
 let errorEmbed = new EmbedBuilder()
     .setColor('Red')
     .setTitle(`Uh Oh!`)
@@ -34,6 +35,9 @@ module.exports = {
         var LANG02 = interaction.locale.toString().split("-");
         var lang = LANG02[0];
         //console.log(`lang:${lang}`);		
+
+				var nextBONUSGTA = await NEXT_BONUS.nextBonus("gta");
+				//console.log(`gta: ${nextBONUSGTA}`);
 
         let gtaURL = process.env.SOCIAL_URL_GTA2;
 
@@ -578,118 +582,80 @@ module.exports = {
 
                 function gtaExpiredEmbedString() {
                     if (lang === "en") {
-                        return `These bonuses are expired. \nRockstar typically releases the latest weekly bonuses every \nThursday after 1:00 PM EST.`;
+                        return `These bonuses are expired.`;
                     }
                     else if (lang === "es") {
-                        return `Estos bonos pueden estar vencidos. \nRockstar suele publicar bonificaciones cada \njueves después de las 13:00 hora del este.`;
+                        return `Estos bonos pueden estar vencidos.`;
                     }
                     else if (lang === "pt") {
-                        return `Esses bônus expiraram. \nA Rockstar normalmente lança os últimos bônus semanais a cada \nquinta-feira depois das 13:00 Hora do Leste.`;
+                        return `Esses bônus expiraram.`;
                     }											
                     else if (lang === "ru") {
-                        return `Срок действия этих бонусов истек. \nRockstar обычно выпускает последние еженедельные бонусы каждый \nчетверг после 13:00 по восточному поясному времени.`;
+                        return `Срок действия этих бонусов истек.`;
                     }
                     else if (lang === "de") {
-                        return `Diese Boni sind möglicherweise abgelaufen. \nNormalerweise veröffentlicht Rockstar die Boni \nDonnerstags nach 13:00 Uhr Ostküsten-Standardzeit (Nordamerika).`;
+                        return `Diese Boni sind möglicherweise abgelaufen.`;
                     }
                     else if (lang === "pl") {
-                        return `Te bonusy wygasły. \nRockstar zazwyczaj udostępnia najnowsze cotygodniowe bonusy w każdy \nczwartek po godzinie 13:00 czasu wschodniego.`;
+                        return `Te bonusy wygasły.`;
                     }												
                     else if (lang === "fr") {
-                        return `Ces bonus ont expiré. \nRockstar publie généralement les derniers bonus hebdomadaires tous les \njeudis après 13h00, heure de l'Est.`;
+                        return `Ces bonus ont expiré.`;
                     }
                     else if (lang === "it") {
-                        return `Questi bonus sono scaduti. \nRockstar in genere rilascia gli ultimi bonus settimanali ogni \ngiovedì dopo le 13:00, ora di New York.`;
+                        return `Questi bonus sono scaduti.`;
                     }		
                     else if (lang === "zh") {
-                        return `此獎金已過期。 Rockstar 通常在東部時間每週四 13:00 之後發布最新的每週獎金。`;
+                        return `此獎金已過期。`;
                     }	
                     else if (lang === "ja") {
-                        return `このボーナスは期限切れです。 Rockstar は通常、毎週木曜日の東部時間 13:00 以降に新しい週次ボーナスをリリースします。`;
+                        return `このボーナスは期限切れです。`;
                     }	
                     else if (lang === "ko") {
-                        return `이 보너스는 만료되었습니다. Rockstar는 일반적으로 동부 표준시로 매주 목요일 13:00 이후에 최신 주간 보너스를 출시합니다.`;
+                        return `이 보너스는 만료되었습니다.`;
                     }												
                     else {
-                        return `These bonuses are expired. \nRockstar typically releases the latest weekly bonuses every \nThursday after 1:00 PM EST.`;
+                        return `These bonuses are expired.`;
                     }
                 }
 
 
-                function itIs() {
+                function nextUpdate() {
                     if (lang === "en") {
-                        return "It is";
+                        return "Next Update";
                     }
                     else if (lang === "es") {
-                        return "Son las";
+                        return "Próxima actualización";
                     }
                     else if (lang === "pt") {
-                        return "São";
+                        return "Próxima atualização";
                     }											
                     else if (lang === "ru") {
-                        return "Сейчас";
+                        return "Следующее обновление";
                     }
                     else if (lang === "de") {
-                        return "Es ist jetzt";
+                        return "Nächstes Update";
                     }
                     if (lang === "pl") {
-                        return "Jest";
+                        return "Następna aktualizacja";
                     }		
                     if (lang === "fr") {
-                        return "Il est";
+                        return "Prochaine mise à jour ";
                     }	
                     if (lang === "it") {
-                        return "Sono le";
+                        return "Prossimo aggiornamento";
                     }	
                     if (lang === "zh") {
-                        return "現在是東部時間";
+                        return "下次更新";
                     }	
                     if (lang === "ja") {
-                        return "東部時間";
+                        return "次回の更新";
                     }		
                     if (lang === "ko") {
-                        return "동부 시간으로";
+                        return "다음 업데이트";
                     }												
                     else {
-                        return "It is";
-                    }
-                }
-                function now() {
-                    if (lang === "en") {
-                        return " EST now.";
-                    }
-                    else if (lang === "es") {
-                        return " hora del este ahora.";
-                    }
-                    else if (lang === "pt") {
-                        return ", horário do leste agora.";
-                    }											
-                    else if (lang === "ru") {
-                        return " по восточному поясному времени.";
-                    }
-                    else if (lang === "de") {
-                        return " Ostküsten-Standardzeit (Nordamerika).";
-                    }
-                    else if (lang === "pl") {
-                        return " czasu wschodniego.";
-                    }	
-                    else if (lang === "fr") {
-                        return ", heure de l'Est.";
-                    }			
-                    else if (lang === "it") {
-                        return " ora di New York.";
-                    }												
-                    else if (lang === "zh") {
-                        return "";
-                    }						
-                    else if (lang === "ja") {
-                        return "分です。";
-                    }												
-                    else if (lang === "ko") {
-                        return " 분입니다.";
-                    }												
-                    else {
-                        return " EST now.";
+                        return "Next Update";
                     }
                 }
 
@@ -728,8 +694,7 @@ module.exports = {
 
                 let gtaExpiredEmbed = new EmbedBuilder()
                     .setColor(0x00CD06) //Green
-                    .setDescription(`${gtaExpiredEmbedString()}`)
-                    .setFooter({ text: `${itIs()} ${hourCheck()}:${estMinute}${amPMCheck()}${now()}`, iconURL: process.env.logo_link })
+                    .setDescription(`${gtaExpiredEmbedString()}\n${nextUpdate()}: <t:${Math.round(nextBONUSGTA / 1000)}:F>.`)
 
                 //console.log(`isPast: ${isPast()}`);
                 if (isPast() === "true") {

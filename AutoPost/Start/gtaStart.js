@@ -1,6 +1,7 @@
 const { PermissionsBitField, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, ChannelType } = require('discord.js');
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
 const LANG = require('../../events/LANG.js');
+const NEXT_BONUS = require('../../events/nextBonus.js');
 
 module.exports = {
     name: 'interactionCreate',
@@ -21,6 +22,10 @@ module.exports = {
 
             var lang = await LANG.LANG(interaction);
             //console.log(`LANG:${await LANG.LANG(interaction)}`);	
+
+						var nextBONUSGTA = await NEXT_BONUS.nextBonus("gta");
+						var nextBONUSRDO = await NEXT_BONUS.nextBonus("rdo");
+						//console.log(`gta: ${nextBONUSGTA} - rdo: ${nextBONUSRDO}`);					
 
             function startTitle() {
                 if (lang === "en") {
@@ -63,40 +68,40 @@ module.exports = {
 
             function startDesc() {
                 if (lang === "en") {
-                    return `Click **the dropdown menu** to confirm the channel you want to send GTA Online auto posts to \n**every Thursday at 5:00 PM EST**.`;
+                    return `Click **the dropdown menu** to confirm the channel you want to send GTA Online auto posts to every week. \nNext Update: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
                 }
                 if (lang === "es") {
-                    return `Hage clic en **el menú desplegable** para confirmar el canal al que desea enviar publicaciones automáticas de GTA Online \n** todos los jueves a las 17:00 hora del este**.`;
+                    return `Hage clic en **el menú desplegable** para confirmar el canal al que desea enviar publicaciones automáticas de GTA Online todas las semanas.\n**Próxima actualización:** <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
                 }
                 if (lang === "pt") {
-                    return `Clique **o menu suspenso** para confirmar o canal que você deseja enviar GTA Online auto posts para \n**todas as quintas-feiras às 17:00 Hora do Leste**.`;
+                    return `Clique **o menu suspenso** para confirmar o canal que você deseja enviar GTA Online toda semana.\nPróxima atualização: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
                 }
                 if (lang === "ru") {
-                    return `Щелчок **раскрывающееся меню** для подтверждения канала, вы хотите отправлять автопосты GTA Online на \n**каждый четверг в 17:00 по восточному времени**.`;
+                    return `Щелкните **раскрывающееся меню**, чтобы выбрать канал, на который вы хотите автоматически публиковать обновления GTA Online каждую неделю.\nСледующее обновление: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
                 }
                 if (lang === "de") {
-                    return `Klicken **Das Dropdown-Menü** um den Kanal zu bestätigen, an den Sie GTA Online automatische Beiträge senden möchten \n**jeden Donnerstag um 17:00 Uhr Ostküsten-Standardzeit (Nordamerika)**.`;
+                    return `Klicken Sie auf **Das Dropdown-Menü**, um den Kanal zu bestätigen, an den Sie jede Woche automatische GTA Online-Updates senden möchten.\nNächstes Update: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
                 }
                 else if (lang === "pl") {
-                    return `Kliknij **menu**, aby potwierdzić kanał, na który chcesz wysyłać automatyczne posty z GTA Online \n**w każdy czwartek o 17:00 czasu wschodniego**.`;
+                    return `Kliknij **menu**, aby potwierdzić kanał, na który co tydzień mają być wysyłane automatyczne aktualizacje GTA Online.\nNastępna aktualizacja: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
                 }
                 else if (lang === "fr") {
-                    return `Cliquez sur **le menu déroulant** pour confirmer la chaîne sur laquelle vous souhaitez envoyer les publications automatiques de GTA Online \n**tous les jeudis à 17h00, heure de l'Est**.`;
+                    return `Cliquez sur le **menu déroulant** pour confirmer la chaîne à laquelle vous souhaitez que les mises à jour automatiques de GTA Online soient envoyées chaque semaine.\nProchaine mise à jour : <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
                 }
                 else if (lang === "it") {
-                    return `Fai clic sul **menu a discesa** per confermare il canale a cui desideri inviare i post automatici di GTA Online \n**ogni giovedì alle 17:00 ora di New York**.`;
+                    return `Fai clic sul **menu a discesa** per confermare il canale a cui desideri che vengano inviati gli aggiornamenti automatici di GTA Online ogni settimana.\nProssimo aggiornamento: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
                 }
                 else if (lang === "zh") {
-                    return `單擊下拉菜單以確認您要在東部時間每週四 17:00 將 GTA 在線模式自動消息發送到的頻道。`;
+                    return `單擊菜單以確認您希望 GTA 在線模式每周自動發送更新的頻道\n下次更新：<t:${Math.round(nextBONUSGTA / 1000)}:F>`;
                 }
                 else if (lang === "ja") {
-                    return `**ドロップダウン メニュー**をクリックして、\n**毎週木曜日の東部時間の 17:00**に GTA オンラインの自動投稿を送信するチャンネルを確認します。`;
+                    return `メニューをクリックして、「GTA オンライン」自動アップデートを毎週送信するチャンネルを確認します\n次回の更新: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
                 }
                 else if (lang === "ko") {
-                    return `**드롭다운 메뉴**를 클릭하여 GTA 온라인 자동 게시물을 \n**매주 목요일 17:00 동부 시간**에 보낼 채널을 확인하세요.`;
+                    return `매주 GTA 온라인 자동 업데이트를 보낼 채널을 확인하려면 메뉴를 클릭하십시오.\n다음 업데이트: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
                 }
                 else {
-                    return `Click **the dropdown menu** to confirm the channel you want to send GTA Online auto posts to \n**every Thursday at 5:00 PM EST**.`;
+                    return `Click **the dropdown menu** to confirm the channel you want to send GTA Online auto posts to every week. \nNext Update: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
                 }
             }
 
