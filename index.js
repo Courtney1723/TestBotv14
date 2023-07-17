@@ -108,19 +108,7 @@ client.on('interactionCreate', async interaction => {
     if (!command) return;
 
     try {
-			if (process.env.BannedGuilds.includes(interaction.guild.id)) {
-
-        let bannedEmbed = new EmbedBuilder()
-            .setColor(0xFF0000)
-            .setTitle(`Uh Oh!`)
-            .setDescription(`• This server has been banned from using the <@${process.env.CLIENT_ID}> bot for violating the [Discord Community Guidelines](https://discord.com/guidelines). \n• If you believe this ban is an error you may appeal in the [Rockstar Weekly Support Server](${process.env.support_link}).`);
-
-				interaction.reply({embeds: [bannedEmbed]});
-				
-			}
-			else {
-        command.execute(interaction);
-			}
+			command.execute(interaction);
     } catch (error) {
         console.log(`There was an error! \n${error.stack}`);
 

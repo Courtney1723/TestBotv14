@@ -21,7 +21,8 @@ module.exports = {
         .setDMPermission(true),
     async execute(interaction) {
 				var startTime = performance.now();
-				await interaction.deferReply().catch(error => {console.log(`GTA deferReply error: ${error}`)});
+				interaction.reply('<a:RStar_Loading:1129814509381501008>').catch(error => {console.log(`GTA reply error: ${error}`)});
+				//await interaction.deferReply().catch(error => {console.log(`GTA deferReply error: ${error}`)});
 
         var lang = interaction.locale.toString();
         //console.log(`lang:${lang}`);
@@ -274,8 +275,8 @@ module.exports = {
 
 					console.log(`gtaFinal.l: ${gtaFinal.length}`);
 
-				await interaction.editReply({ embeds: [gtaEmbed] }).catch(err =>
-						interaction.editReply({ embeds: [errorEmbed], ephemeral: true }).then(
+				await interaction.editReply({ content: "", embeds: [gtaEmbed] }).catch(err =>
+						interaction.editReply({ content: "", embeds: [errorEmbed], ephemeral: true }).then(
 								console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`))
 				);			
 

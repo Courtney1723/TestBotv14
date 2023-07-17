@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 const phantom = require('phantom'); //https://github.com/amir20/phantomjs-node
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
@@ -431,92 +431,46 @@ module.exports = {
                         return "";
                     }
                 }
-                function gtaFooterMin() {
-                    if (gtaFinalString.length < (4000 - constChars)) {
-                        if (lang === "en") {
-                            return `** [More details](${url})**`;
-                        }
-                        else if (lang === "es") {
-                            return `** [Más detalles](${url})**`;
-                        }
-                        else if (lang === "ru") {
-                            return `** [Подробнее](${url})**`;
-                        }
-                        else if (lang === "de") {
-                            return `** [Mehr Details](${url})**`;
-                        }
-                        else if (lang === "pt") {
-                            return `** [Mais detalhes](${url})**`;
-                        }
-                        else if (lang === "fr") {
-                            return `** [Plus de détails](${url})**`;
-                        }
-                        else if (lang === "it") {
-                            return `** [Più dettagli](${url})**`;
-                        }
-                        else if (lang === "zh") {
-                            return `** [更多細節](${url})**`;
-                        }
-                        else if (lang === "pl") {
-                            return `** [Więcej szczegółów](${url})**`;
-                        }
-                        else if (lang === "ko") {
-                            return `** [자세한 내용은](${url})**`;
-                        }
-                        else if (lang === "ja") {
-                            return `** [詳細](${url})**`;
-                        }
-                        else {
-                            return `** [More Details](${url})**`;
-                        }
-                    } else {
-                        return "";
-                    }
-                }
-                function gtaFooterMax() {
-                    if (gtaFinalString.length >= (4000 - constChars)) {
-                        if (lang === "en") {
-                            return `** [More details](${url})**`;
-                        }
-                        else if (lang === "es") {
-                            return `** [Más detalles](${url})**`;
-                        }
-                        else if (lang === "ru") {
-                            return `** [Подробнее](${url})**`;
-                        }
-                        else if (lang === "de") {
-                            return `** [Mehr Details](${url})**`;
-                        }
-                        else if (lang === "pt") {
-                            return `** [Mais detalhes](${url})**`;
-                        }
-                        else if (lang === "fr") {
-                            return `** [Plus de détails](${url})**`;
-                        }
-                        else if (lang === "it") {
-                            return `** [Più dettagli](${url})**`;
-                        }
-                        else if (lang === "zh") {
-                            return `** [更多細節](${url})**`;
-                        }
-                        else if (lang === "pl") {
-                            return `** [Więcej szczegółów](${url})**`;
-                        }
-                        else if (lang === "ko") {
-                            return `** [자세한 내용은](${url})**`;
-                        }
-                        else if (lang === "ja") {
-                            return `** [詳細](${url})**`;
-                        }
-                        else {
-                            return `** [More Details](${url})**`;
-                        }
-                    } else {
-                        return "";
-                    }
-                }
+                function gtaFooter() {
+									if (lang === "en") {
+											return `More details`;
+									}
+									else if (lang === "es") {
+											return `Más detalles`;
+									}
+									else if (lang === "pt") {
+											return `Mais detalhes`;
+									}													
+									else if (lang === "ru") {
+											return `Подробнее`;
+									}
+									else if (lang === "de") {
+											return `Mehr Details`;
+									}
+									else if (lang === "pl") {
+											return `Więcej szczegółów`;
+									}
+									else if (lang === "fr") {
+											return `Plus de détails`;
+									}
+									else if (lang === "it") {
+											return `Più dettagli`;
+									}
+									else if (lang === "zh") {
+											return `更多細節`;
+									}
+									else if (lang === "ja") {
+											return `詳細`;
+									}
+									else if (lang === "ko") {
+											return `자세한 내용은`;
+									}													
+									else {
+											return `More Details`;
+									}
+                }						
 
-                constChars += (gtaFooterMin().length) + (ellipsisFunction().length);
+                constChars += ellipsisFunction().length;
                 var gtaNewlines = gtaFinalString.substr(0, (4000 - constChars)).split("\n\n");
                 var tempString = gtaNewlines[gtaNewlines.length - 1];
                 function bestBreak() {
@@ -527,7 +481,7 @@ module.exports = {
                 }
                 //console.log(`bestBreak: ${bestBreak()}`);
 
-                var constChars1 = (gtaFooterMax().length) + (ellipsisFunction().length) + (ellipsisFunction2().length) + gtaImage[0].length;
+                var constChars1 = (ellipsisFunction().length) + (ellipsisFunction2().length) + gtaImage[0].length;
                 var gtaNewlines1 = gtaFinalString.substr(bestBreak(), (6000 - constChars - constChars1 - bestBreak())).split("\n");
                 var tempString1 = gtaNewlines1[gtaNewlines1.length - 1];
                 function bestEndBreak() {
@@ -555,24 +509,37 @@ module.exports = {
                 let gtaEmbed = new EmbedBuilder()
                     .setColor(0x00CD06) //Green
                     .setTitle(`${gtaTitleOG}`)
-                    .setDescription(`${gtaDate}\n${gtaPost()}${gtaFooterMin()}${ellipsisFunction()}`)
+                    .setDescription(`${gtaDate}\n${gtaPost()}${ellipsisFunction()}`)
                 let gtaEmbed2 = new EmbedBuilder()
                     .setColor(0x00CD06) //Green
-                    .setDescription(`${ellipsisFunction()} \n${gtaPost2()} ${ellipsisFunction2()}${gtaFooterMax()}`)
+                    .setDescription(`${ellipsisFunction()} \n${gtaPost2()} ${ellipsisFunction2()}`)					
                 let gtaImageEmbed = new EmbedBuilder()
                     .setColor(0x00CD06) //Green
                     .setImage(`${gtaImage[0]}`);
+
+		            const moreButton = new ActionRowBuilder()
+		                .addComponents(
+		                    new ButtonBuilder()
+		                        .setEmoji(`<:RStar_Kofi_Donate:1130584945815994539>`)
+														.setURL(`https://ko-fi.com/courtney1723`)
+		                        .setStyle(ButtonStyle.Link),											
+		                    new ButtonBuilder()
+		                        .setEmoji(`<:RockstarLogo:1130583450710188032>`)
+														.setLabel(`${gtaFooter()}`)
+														.setURL(`${url}`)									
+		                        .setStyle(ButtonStyle.Link)
+		                );
 
                 // console.log(`gtaEmbed length: ${gtaEmbed.length}`); //no more than 4000 (line 199)
                 // console.log(`gtaEmbed2 length: ${gtaEmbed2.length}`); //no more than 6000 - gtaEmbed.length (line 204)
 
                 if (gtaPost2() === "") {
-                    await interaction.editReply({ embeds: [gtaImageEmbed, gtaEmbed] }).catch(err =>
+                    await interaction.editReply({ embeds: [gtaImageEmbed, gtaEmbed], components: [moreButton] }).catch(err =>
                         interaction.editReply({ embeds: [errorEmbed], ephemeral: true }).then(
                             console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`))
                     );									
                 } else {
-                    await interaction.editReply({ embeds: [gtaImageEmbed, gtaEmbed, gtaEmbed2] }).catch(err =>
+                    await interaction.editReply({ embeds: [gtaImageEmbed, gtaEmbed, gtaEmbed2], components: [moreButton]  }).catch(err =>
                         interaction.editReply({ embeds: [errorEmbed], ephemeral: true }).then(
                             console.log(`There was an error! \nUser:${interaction.user.tag} - ${interaction} \nError: ${err.stack}`))
                     );
