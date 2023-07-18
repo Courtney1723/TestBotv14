@@ -50,30 +50,6 @@ const fetch = require("@replit/node-fetch");
 
 // });
 
-//Check channel permissions - uncomment for main bot
-// client.on("ready", () => {
-// 		fs.readFile('./GTADataBase.txt', 'utf8', async function (err, data) {
-// 			if (err) {console.log(`Error: ${err}`)} 
-// 			else {
-// 				let channelIDs01 = data.split("channel:");
-// 				let channelIDs = [];
-// 				for (i = 1; i <= channelIDs01.length - 1; i++) {
-// 					let channelIDs02 = channelIDs01[i].split("-");
-// 					let channelIDs03 = channelIDs02[0];
-
-// 					channelIDs.push(channelIDs03);
-// 				}
-// 				console.log(`channelIDs: ${channelIDs}`);
-// 				for (c = 1; c <= channelIDs.length - 1; c++) {
-
-// 					client.channels.fetch(channelIDs[c]).then(channel => {
-// 						console.log(`Send message permission in ${channel.id}: ${channel.permissionsFor(process.env.CLIENT_ID).has(PermissionsBitField.Flags.SendMessages)}`);
-// 					});
-// 				}
-// 			}
-// 		}); //end fs.readFile for GTADataBase.txt
-// }); 
-
 //prevents errors from shutting the bot off
 process.on("unhandledRejection", async (err) => {
     console.error("Unhandled Promise Rejection:\n", err.stack);
