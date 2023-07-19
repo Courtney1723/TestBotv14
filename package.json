@@ -17,6 +17,7 @@
     "node": "^18.9.0",
     "node-cron": "^3.0.2",
     "node-fetch": "^3.2.10",
-    "phantom": "^6.3.0"
+    "phantom": "^6.3.0",
+    "tough-cookie": "^4.1.3"
   }
 }
