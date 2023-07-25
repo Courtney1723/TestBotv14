@@ -218,40 +218,40 @@ module.exports = {
 		}
 		function Support() {
 			if (lang === "en") {
-				return `Support`;
+				return `Support Server`;
 			}
 			else if (lang === "es") {
-				return `Apoyo`;
+				return `Servidor de soporte`;
 			}
 			else if (lang === "pt") {
-				return `Apoiar`;
+				return `servidor de suporte`;
 			}
 			else if (lang === "ru") {
-				return `Поддерживать`;
+				return `Сервер поддержки`;
 			}
 			else if (lang === "de") {
-				return `Unterstützung`;
+				return `Support-Server`;
 			}
 			else if (lang === "pl") {
-				return `Wsparcie`;
+				return `Serwer wsparcia`;
 			}
 			else if (lang === "fr") {
-				return `Soutien`;
+				return `Serveur d'assistance`;
 			}
 			else if (lang === "it") {
-				return `Supporto`;
+				return `Server di supporto`;
 			}
 			else if (lang === "zh") {
-				return `支持`;
+				return `支持服務器`;
 			}
 			else if (lang === "ja") {
-				return `サポート`;
+				return `サポートサーバー`;
 			}
 			else if (lang === "ko") {
-				return `지원하다`;
+				return `지원 서버`;
 			}
 			else {
-				return `Support`;
+				return `Support Server`;
 			}
 		}
 		function Website() {
@@ -306,26 +306,34 @@ module.exports = {
 					.setURL(`${YouTubeLink()}`)
 					.setStyle(ButtonStyle.Link),
 				new ButtonBuilder()
+					.setEmoji(`<:RSWeekly:1025248227248848940>`)
+					.setLabel(`${Website()}`)
+					.setURL(`https://www.RockstarWeeklyBot.com`)
+					.setStyle(ButtonStyle.Link)				
+			);
+		const linkButtons2 = new ActionRowBuilder()
+			.addComponents(
+				new ButtonBuilder()
 					.setEmoji(`<:RStar_Kofi_Donate:1130584945815994539>`)
 					.setLabel(`${Donate()}`)
 					.setURL(`https://ko-fi.com/courtney1723`)
-					.setStyle(ButtonStyle.Link)
-			);
-		const linkButtons2 = new ActionRowBuilder()
+					.setStyle(ButtonStyle.Link),
+				new ButtonBuilder()
+					.setEmoji(`<:RStar_Patreon_Donate:1133200999008456764>`)
+					.setLabel(`${Donate()}`)
+					.setURL(`https://www.patreon.com/Courtney1723`)
+					.setStyle(ButtonStyle.Link)				
+			);		
+		const linkButtons3 = new ActionRowBuilder()
 			.addComponents(
 				new ButtonBuilder()
 					.setEmoji(`<:RStar_Support:1130593247908085860>`)
 					.setLabel(`${Support()}`)
 					.setURL(`${process.env.support_link}`)
-					.setStyle(ButtonStyle.Link),
-				new ButtonBuilder()
-					.setEmoji(`<:RSWeekly:1025248227248848940>`)
-					.setLabel(`${Website()}`)
-					.setURL(`https://www.RockstarWeeklyBot.com`)
 					.setStyle(ButtonStyle.Link)
 			);
 
-		await interaction.editReply({ embeds: [helpEmbed], components: [linkButtons, linkButtons2] }).catch(console.error.stack);
+		await interaction.editReply({ embeds: [helpEmbed], components: [linkButtons, linkButtons2, linkButtons3] }).catch(console.error.stack);
 
 	},
 };
