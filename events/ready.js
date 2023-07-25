@@ -2,6 +2,7 @@ const { ActivityType } = require('discord.js');
 const phantom = require('phantom'); //https://github.com/amir20/phantomjs-node
 var cron = require('node-cron'); //https://github.com/node-cron/node-cron
 const fetch = require("@replit/node-fetch");
+const os = require("os");
 
 module.exports = {
     name: 'ready',
@@ -106,7 +107,22 @@ module.exports = {
         const GuildIDs = client.guilds.cache.map(guild => guild.id);
         console.log(`${GuildIDs.length} guilds`);
 
-
+				function bTG(num) {
+				  return (num / Math.pow(1024,3));
+				}
+				function freeRAM() {
+					if (bTG(os.freemem) <= 1) {
+						console.log(`Ran out of RAM. Restarting...`);
+						setTimeout(() => {
+							process.kill(1);
+						}, "1000");
+					}
+					else {
+						console.log(`free RAM: ${bTG(os.freemem)}`);
+					}
+				}
+				freeRAM();
+				setInterval(freeRAM, 18e5);//checks every 30 minutes
 
     },
 };

@@ -12,6 +12,7 @@ module.exports = {
             fr: 'latence',
             it: 'latenza',
             "zh-CN": '乒',
+						"zh-TW": '乒',
             ja: 'レイテンシー',
             ko: '지연',
         })

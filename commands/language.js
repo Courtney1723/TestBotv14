@@ -24,7 +24,8 @@ module.exports = {
             pl: 'język',
             fr: 'langue',
             it: 'lingua',
-            "zh-CN": '語言',
+            "zh-CN": '语言',
+            "zh-TW": '語言',					
             ja: '言語',
             ko: '언어',
         })

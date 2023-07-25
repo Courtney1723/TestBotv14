@@ -1,13 +1,15 @@
 const { EmbedBuilder } = require('discord.js');
 var cron = require('node-cron'); //https://github.com/node-cron/node-cron
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
-const phantom = require('phantom'); //https://github.com/amir20/phantomjs-node
+const fetch = require("@replit/node-fetch");
+const NEXT_BONUS = require("../events/nextBonus.js");
+const THIS_BONUS = require("../events/thisBonus.js");
 
 module.exports = {
     name: 'ready',
     async execute(client) {
 
-        cron.schedule('45 14 1-14 * 2', () => { //(second),minute,hour,date,month,weekday '45 14 1-7 * 2' = 2:45 PM on 1st Tuesday
+        cron.schedule('45 14 1-7 * 2', () => { //(second),minute,hour,date,month,weekday '45 14 1-7 * 2' = 2:45 PM on 1st Tuesday
             console.log('Sending RDO Auto Posts...');
 
             fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
@@ -85,7 +87,7 @@ module.exports = {
                             }
 
                             //console.log(`guildIDs: ${guildIDs}`);
-                            console.log(`channelIDs: ${channelIDs}`); //do not comment out - no idea why 
+                            console.log(`channelIDs: ${channelIDs.length}`); //do not comment out
                             //console.log(`rdo_gtaIDs: ${rdo_gtaIDs}`);
 
                             let guildIDsArray = guildIDs.split('  - ');
@@ -96,7 +98,7 @@ module.exports = {
                             //console.log(`guildIDsArray: ${guildIDsArray}`);
                             //console.log(`guildIDLangArray: ${guildIDLangArray}`);
                             //console.log(`channelIDArray: ${channelIDArray}`);
-														var c = 0;
+                            var c = 0;
                             while (c <= channelIDArray.length - 2) { //first & last elements will always be undefined	
                                 let lang = "";
 
@@ -121,533 +123,383 @@ module.exports = {
 
 
                                 //Begin RDO Formatting	
+                                var nextBonus01 = await NEXT_BONUS.nextBonus("rdo");
+                                var thisBonus01 = await THIS_BONUS.thisBonus("rdo");
+                                // console.log(`next Bonus: <t:${Math.round(nextBonus01 / 1000)}>`);
 
-                                let rdoURL = process.env.SOCIAL_URL_RDO2;
+                                var rdoFetch = await fetch(`${process.env.rdoGraphURL1}${lang}${process.env.rdoGraphURL2}`, {
+                                    "cache": "default",
+                                    "credentials": "omit",
+                                    "headers": {
+                                        "Accept": "*/*",
+                                        "Accept-Language": "en-US,en;q=0.9",
+                                        "Content-Type": "application/json",
+                                        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4 Safari/605.1.15"
+                                    },
+                                    "method": "GET",
+                                    "mode": "cors",
+                                    "redirect": "follow",
+                                    "referrer": "https://www.rockstargames.com/",
+                                    "referrerPolicy": "strict-origin-when-cross-origin"
+                                });
 
-                                //await interaction.editReply(`Console Logged 👍`).catch(console.error);
+                                var getrdoJSON01 = await rdoFetch.json();
+                                var getrdoJSON = JSON.stringify(getrdoJSON01);
+                                var getrdoParse = JSON.parse(getrdoJSON);
+                                //console.log(getrdoJSON);
 
-                                const instance = await phantom.create();
-                                const page = await instance.createPage();
-
-                                await page.property('viewportSize', { width: 1024, height: 600 });
-                                const status = await page.open(rdoURL);
-                                //console.log(`Page opened with status [${status}].`);
-                                if (status === `success`) { //checks if Rockstar Social Club website is down
-                                    const content = await page.property('content'); // Gets the latest rdo updates
-                                    //console.log(content); 
-
-                                    let baseURL = "https://socialclub.rockstargames.com/";
-
-                                    let urlHash02 = content.split("linkToUrl\":\"");
-                                    let urlHash01 = urlHash02[1].split("\"");
-                                    let urlHash = urlHash01[0];
-                                    //console.log(`urlHash: ${urlHash}`);
-
-                                    let urlLink02 = content.split("linkToUrl\":");
-                                    let urlLink01 = urlLink02[1].split("\"");
-                                    //let urlLink = urlLink01[1];
-                                    //console.log(`urlLink: ${urlLink01[1]}`);
-
-                                    function urlLink() {
-                                        if (urlLink01[1].includes(`\?`)) {
-                                            let urlLinkFix = urlLink01[1].split(`\?`);
-                                            let urlLink = urlLinkFix[0];
-                                            return urlLink;
-                                        }
-                                        else {
-                                            let urlLink = urlLink01[1];
-                                            return urlLink;
-                                        }
+                                function langFunction() {
+                                    if (supportedLanguages.indexOf(lang.substring(0, 2)) < 0) { //unsupported languages are treated as English
+                                        return "";
                                     }
-                                    //console.log(`urlLink: ${urlLink()}`);		
-
-                                    let langBase = `/?lang=`;
-                                    let langURL = `${langBase}${lang}`;
-
-                                    let url = `${baseURL}/${urlLink()}${langURL}`;
-                                    //console.log(`url: ${url}`);
-
-                                    const rdoStatus = await page.open(url);
-                                    if (rdoStatus === `success`) {
-                                        const content = await page.property('content'); // Gets the latest rdo updates
-                                        //console.log(content); 
-                                        let rdoString001 = content.toString(); //converts HTML to string (necessary? not sure.);
-                                        //console.log(`rdoString001: ${rdoString001}`);	
-                                        let rdoString01 = rdoString001.split("cm-content\">"); //splits the header from the body
-                                        let rdoHeader = rdoString01[0];
-                                        //console.log(`rdoHeader: ${rdoHeader}`);
-
-                                        let rdoImage01 = rdoHeader.split("og:image\" content=\"");
-                                        //console.log(`rdoImage01: ${rdoImage01[1]}`);
-                                        let rdoImage = rdoImage01[1].split("\" data-rh=");
-                                        //console.log(`rdoImage: ${rdoImage[0]}`);
-
-                                        let rdoDate01 = rdoHeader.split("class=\"date\">"); //gets the event date
-                                        //console.log(`${rdoDate01[1]}`);
-                                        let rdoDate = rdoDate01[1].split("<"); //cuts off the end of the date
-                                        //console.log(`Date: ${rdoDate[0]}\n`);	
-
-                                        let rdoTitleOG01 = rdoHeader.split("h1");
-                                        let rdoTitleOG02 = rdoTitleOG01[1].split(">");
-                                        let rdoTitleOG03 = rdoTitleOG02[1].split("<");
-                                        let rdoTitleOG = rdoTitleOG03[0];
-                                        //console.log(`rdoTitleOG:${rdoTitleOG}`);				
-
-                                        let rdoString002 = rdoString01[1]; //Splits the header from the body
-                                        //console.log(`rdoString: ${rdoString002}`)
-                                        let rdoString02 = rdoString002.split("</div>"); //splits the footer from the body
-                                        //console.log(`rdoString02: ${rdoString02[0]}`);
-                                        let rdoStringOG = `${rdoString02[0]}<p><b>`; //the entire string before any editing w/o footer or header
-                                        //console.log(`rdoStringOG: ${rdoStringOG}`);
-
-                                        //Replaces or removes HTML formatting that can interfere with split functions or is constant
-                                        let rdoString = rdoStringOG.replace(/<li>/g, "• ")
-                                            .replace(/<\/li>/g, "")
-                                            .replace(/<\/ul>/g, "")
-                                            .replace(/&amp;/g, "&")
-                                            .replace(/&nbsp;/g, " ") //Non breaking space
-                                            .replace(/\n\n/g, "\n")
-                                            .replace(/<ul style="line-height:1.5;">/g, "\n")
-
-																						//russian
-																						.replace(/\<\/pДо>/, "")
-																						.replace(/<\/span>/, "")
-
-                                            //spanish
-                                            .replace(/<\/strong>/g, "")
-                                            .replace(/<strong>/g, "")
-
-                                            //German
-                                            .replace(/" draggable="false/g, "")
-
-																						//Japanese
-																						.replace(/&gt;\<ul>/, "\n")
-
-                                        //console.log(`rdoString: ${rdoString}`);
-
-                                        //--------------------BEGIN formatting for links--------------------//
-                                        let rdoLinks001 = rdoString.split("<a href=\"");
-                                        let rdoLinks = "";
-                                        let rdoLinkTitles = "";
-                                        for (j = 1; j <= rdoLinks001.length - 1; j++) {
-                                            let rdoLinks01 = rdoLinks001[j].split("\" target");
-                                            //console.log(`rdoLinks01 at ${j}: ${rdoLinks01[0]}`);
-                                            let rdoLinks02 = rdoLinks01[0].split("\">");
-                                            //console.log(`rdoLinks02 at ${j}: ${rdoLinks02[0]}`);
-                                            rdoLinks += `${rdoLinks02[0]}||`;
-
-                                            let rdoLinkTitles01 = rdoLinks001[j].split("\">");
-                                            let rdoLinkTitles02 = rdoLinkTitles01[1].split("</a>");
-
-                                            rdoLinkTitles += `${rdoLinkTitles02[0]}||`;
-                                        }
-                                        //console.log(`rdoLinks: ${rdoLinks}`);
-                                        //console.log(`rdoLinkTitles: ${rdoLinkTitles}`);
-
-                                        let rdoLinks002 = rdoLinks.split("||");
-                                        //console.log(`rdoLinks002: ${rdoLinks002}`);
-                                        let rdoLinkTitles002 = rdoLinkTitles.split("||");
-                                        //console.log(`rdoLinkTitles002: ${rdoLinkTitles002}`);
-
-                                        let rdoLinkFormatted = rdoString;
-                                        for (m = 0; m <= rdoLinks002.length - 1; m++) { // keep - 2; the last element will always be blank
-                                            rdoLinkFormatted = rdoLinkFormatted.replace(/<a.*?a>/, `[${rdoLinkTitles002[m]}](${rdoLinks002[m]})`); //replaces each link with proper discord formatted link
-                                            //console.log(`rdoLinkFormatted at ${m}: ${rdoLinkFormatted}`);
-                                        }
-                                        //console.log(`rdoLinkFormatted: ${rdoLinkFormatted}`);
-                                        //--------------------END formatting for links--------------------//
-
-                                        //--------------------BEGIN checking for words that are bold at the beginning of a paragraph-------------------//
-
-                                        function notATitleIndex() {
-                                            let rdoTitles001 = rdoLinkFormatted.split("<p><b>");
-
-                                            let notATitleIndex001 = "";
-                                            for (i = 0; i <= rdoTitles001.length - 1; i++) {
-                                                if (rdoTitles001[i].charAt(1) != rdoTitles001[i].charAt(1).toUpperCase()) {
-                                                    notATitleIndex001 += `${i}`;
-                                                }
-                                            }
-                                            return `${notATitleIndex001}`;
-                                        }
-                                        //console.log(`notATitleIndex: ${notATitleIndex()}`);
-                                        let notATitleIndex01 = notATitleIndex();
-                                        //console.log(`notATitleIndex01: ${notATitleIndex01}`);
-
-                                        function notATitleBonus() {
-                                            let rdoTitles001 = rdoLinkFormatted.split("<p><b>");
-
-                                            let notATitleBonus = "";
-                                            for (i = 0; i <= rdoTitles001.length - 1; i++) {
-                                                if (rdoTitles001[i].charAt(1) != rdoTitles001[i].charAt(1).toUpperCase()) {
-                                                    notATitleBonus += `${rdoTitles001[i]}`;
-                                                }
-                                            }
-                                            return `${notATitleBonus}`;
-                                        }
-                                        //console.log(`notATitleBonus: ${notATitleBonus()}`);
-                                        let notATitleBonus01 = notATitleBonus();
-                                        let notATitleBonusFirstWord = notATitleBonus01.split(" ");
-                                        //console.log(`notATitleBonusFirstWord[0]: ${notATitleBonusFirstWord[0]}`);
-
-                                        function rdoBoldFormatted() {
-                                            if (notATitleIndex01 != "") {
-                                                return rdoLinkFormatted.replace(new RegExp(`<p><b>${notATitleBonusFirstWord[0]}`, "g"), `<p>${notATitleBonusFirstWord[0]}`); //replaces any words that are bold at the beginning of a paragraph with non-bold
-                                            }
-                                            else {
-                                                return rdoLinkFormatted;
-                                            }
-                                        }
-                                        //console.log(`rdoBoldFormatted(): ${rdoBoldFormatted()}`);
-
-                                        //--------------------END checking for words that are bold at the beginning of a paragraph-------------------//
-
-                                        let RDOBonuses01 = rdoBoldFormatted().split("<p><b>");
-                                        //console.log(`RDOBonuses01: ${RDOBonuses01}`)
-                                        let rdoFinalString01 = "";	//rdoFinalString before HTML formatting
-                                        let nextGenIndex1 = "";
-                                        let nextGenIndex2 = "";
-
-                                        //-----BEGIN for loop-----//		
-
-                                        //console.log(`RDOBonuses01 length: ${RDOBonuses01.length}`);
-                                        for (i = 0; i <= RDOBonuses01.length - 2; i++) { //final element will always be blank
-                                            //console.log(`RDOBonuses01 at ${i}: ${RDOBonuses01}`);
-                                            let RDOBonuses = RDOBonuses01[i].split("</b></p>");
-                                            //console.log(`RDOTitles at ${i}: ${RDOBonuses[0]}\nRDOBonuses at ${i}: ${RDOBonuses[1]}`);
-
-																						let RDO_Title = `${RDOBonuses[0]} `;
-												                    let RDO_Bonus = RDOBonuses[1];
-												                    //console.log(`RDO_Title at ${i}: ${RDO_Title} `);
-												                    //console.log(`RDO_Bonus at ${i}: ${RDO_Bonus}`);	
-
-                                            //-----BEGIN get the index of "Only on PlayStation..." title-----//
-
-                                            function onlyOnIndex1() { //returns the index of the title: Only on Playstation...
-                                                if (RDO_Title.toLowerCase().includes("only on playstation")) {
-                                                    return i + 1;
-                                                } else {
-                                                    return -1;
-                                                }
-                                            }
-                                            //console.log(`onlyOnIndex1() at ${i}: ${onlyOnIndex1()}`);
-
-                                            function onlyOnIndex2() { //returns the index of the title: Only on Playstation...
-                                                if (RDO_Title.toLowerCase().includes("only on playstation")) {
-                                                    return i + 2;
-                                                } else {
-                                                    return -2;
-                                                }
-                                            }
-                                            //console.log(`onlyOnIndex2() at ${i}: ${onlyOnIndex2()}`);		
-
-                                            if (onlyOnIndex1() > 0) {
-                                                nextGenIndex1 += onlyOnIndex1(); //populates nextGenIndex1 with the index of the title after "Only on PS5..."
-                                            }
-                                            //console.log(`nextGenIndex1 at ${i}: ${nextGenIndex1}`);
-
-                                            if (onlyOnIndex2() > 0) {
-                                                nextGenIndex2 += onlyOnIndex2(); //populates nextGenIndex1 with the index of the second title after "Only on PS5..."
-                                            }
-                                            //console.log(`nextGenIndex2 at ${i}: ${nextGenIndex2}`);								
-                                            //-----END get the index of "Only on PlayStation..." title-----//			
-
-                                            //-----BEGIN populating rdoFinalString01 -----//
-                                            if (i === 0) {
-                                                let rdoParas = RDO_Title.split("<p>");
-                                                for (d = 1; d <= rdoParas.length - 1; d++) {
-
-                                                    rdoFinalString01 += `• ${rdoParas[d].charAt(0).toUpperCase()}${rdoParas[d].substring(1)}\n\n`;
-                                                }
-                                            }
-                                            else if (RDO_Bonus != undefined) {
-									                            if ((RDO_Title.toLowerCase() === "discounts ") ||
-											                            (RDO_Title.toLowerCase() === "descuentos ") ||
-											                            (RDO_Title === "СКИДКИ ") ||
-																									(RDO_Title === "折扣優惠 ") ||
-																									(RDO_Title === "割引 ") ||
-																									(RDO_Title === "할인 ") ||
-											                            (RDO_Title.toLowerCase() === "rabatte ") ||
-																									(RDO_Title.toLowerCase() === "zniżki ") ||
-											                            (RDO_Title.toLowerCase() === "descontos ") ||
-																									(RDO_Title === "PROMOTIONS ") ||
-																									(RDO_Title.toLowerCase() === "sconti ") ||
-									                                (RDO_Title.includes("DESCONTOS"))) {
-                                                    rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
-                                              }
-																							else if (
-																									(RDO_Title.includes("2X")) || //German, and Portuguese use numbers 
-																									(RDO_Title.includes("3X")) ||
-																									(RDO_Title.includes("4X")) ||
-																									(RDO_Title.toLowerCase().includes("double rewards")) || //English uses both.. of course 
-																									(RDO_Title.toLowerCase().includes("triple rewards")) ||
-																									(RDO_Title.toLowerCase().includes("doble de")) || //Spanish and Russian use words
-																									(RDO_Title.toLowerCase().includes("triple de")) ||
-																									(RDO_Title.toLowerCase().includes("cuádruple de")) ||
-																									(RDO_Title.includes("Вдвое Больше")) ||
-																									(RDO_Title.includes("Втрое Больше")) ||
-																									(RDO_Title.includes("Удвоенные Награды")) ||
-																									(RDO_Title.includes("DOUBLÉS")) || //French
-																									(RDO_Title.includes("DOPPI")) || //Italian
-																									(RDO_Title.includes("Четыре Раза"))) {
-                                                    rdoFinalString01 += `**${RDO_Title}**\n\n`;
-                                                }
-                                                else if (
-                                                    (RDO_Title.toLowerCase().includes("featured series")) ||
-                                                    (RDO_Title.includes("Calendario De Series Destacadas")) ||
-                                                    (RDO_Title.includes("Расписание избранных серий")) ||
-                                                    (RDO_Title.includes("Übersicht Über Die Präsentierten Serien")) ||
-                                                    (RDO_Title.includes("Calendário De Série Em Destaque"))) {
-                                                    rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
-                                                }
-                                                else if (
-                                                    (RDO_Title.toLowerCase().includes("weekly bonuses")) ||
-                                                    (RDO_Title.includes("Bonificaciones Semanales")) ||
-                                                    (RDO_Title.includes("Еженедельные бонусы")) ||
-                                                    (RDO_Title.includes("Wöchentliche Boni")) ||
-                                                    (RDO_Title.includes("Bônus Semanais"))) {
-                                                    rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
-                                                }
-                                                else if (
-                                                    (RDO_Title.toLowerCase().includes("monthlong rewards")) ||
-                                                    (RDO_Title.includes("Recompensas Durante Todo El Mes")) ||
-                                                    (RDO_Title.includes("Награды месяца")) ||
-                                                    (RDO_Title.includes("Monatsbelohnungen")) ||
-                                                    (RDO_Title.includes("Recompensas O Mês Inteiro"))) {
-                                                    rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
-                                                }
-                                                else if (RDO_Title.toLowerCase().includes(":")) {
-                                                    rdoFinalString01 += `**${RDO_Title}**${RDO_Bonus}\n\n`;
-                                                }
-                                                else if (RDO_Bonus.includes("• ")) { // If the bonus includes a list
-
-                                                    let rdoParas = RDO_Bonus.split("<p>");
-                                                    //console.log(`rdoParas at ${i}: ${rdoParas}`);
-                                                    //console.log(`rdoParas length at ${i}: ${rdoParas.length}`);
-                                                    let rdoParaBonuses = "";
-
-                                                    for (e = 1; e <= rdoParas.length - 1; e++) {
-                                                        rdoParaBonuses += `• ${rdoParas[e]}\n`;
-                                                    }
-
-                                                    rdoFinalString01 += `**${RDO_Title}**\n${rdoParaBonuses}\n`;
-                                                }
-                                                else {
-                                                    let rdoParas = RDO_Bonus.split("<p>");
-                                                    //console.log(`rdoParas at ${i}: ${rdoParas}`);
-                                                    //console.log(`rdoParas length at ${i}: ${rdoParas.length}`);
-                                                    let rdoParaBonuses = "";
-                                                    for (f = 1; f <= rdoParas.length - 1; f++) {
-                                                        rdoParaBonuses += `• ${rdoParas[f]}\n`;
-                                                    }
-                                                    rdoFinalString01 += `**${RDO_Title}**\n${rdoParaBonuses}\n`;
-                                                }
-
-                                            }
-                                        }
-                                        //-----------END for loop----------//		
-                                        //console.log(`rdoFinalString01: ${rdoFinalString01}`); //rdoFinalString before HTML formatting
-                                        let rdoFinalString = rdoFinalString01.replace(/<p>/g, "")
-                                            .replace(/<\/p>/g, "")
-                                            .replace(/<\/b>/g, "")
-                                            .replace(/<b>/g, "")
-                                            .replace(/\n\n• /g, "• ") //removes spaces before a list item - titles already have newlines
-                                            .replace(/\n\n/g, "\n")
-                                            .replace(/\n\n\n/g, "\n")
-                                            .replace(/\*\*\n\*\*/g, "**\n\n**")
-                                            .replace(/• undefined/g, "• ")
-                                            .replace(/\)• /g, ")\n• ") //adds a newline between link lists
-
-                                        var constChars = (rdoDate.length + 2) + (rdoTitleOG.length);
-                                        function ellipsisFunction() {
-                                            if (rdoFinalString.length >= (4000 - constChars)) {
-                                                return "...";
-                                            } else {
-                                                return "";
-                                            }
-                                        }
-                                        function ellipsisFunction2() {
-                                            if (rdoFinalString.length >= (6000 - constChars - rdoImage[0].length)) {
-                                                return "...\n";
-                                            } else {
-                                                return "";
-                                            }
-                                        }
-                                        function rdoFooterMin() {
-                                            if (rdoFinalString.length < (4000 - constChars)) {
-																							if (lang === "en") {
-																									return `** [More details](${url})**`;
-																							}
-																							else if (lang === "es") {
-																									return `** [Más detalles](${url})**`;
-																							}
-																							else if (lang === "ru") {
-																									return `** [Подробнее](${url})**`;
-																							}
-																							else if (lang === "de") {
-																									return `** [Mehr Details](${url})**`;
-																							}
-																							else if (lang === "pt") {
-																									return `** [Mais detalhes](${url})**`;
-																							}
-																							else if (lang === "fr") {
-																									return `** [Plus de détails](${url})**`;
-																							}
-																							else if (lang === "it") {
-																									return `** [Più dettagli](${url})**`;
-																							}
-																							else if (lang === "zh") {
-																									return `** [更多細節](${url})**`;
-																							}
-																							else if (lang === "pl") {
-																									return `** [Więcej szczegółów](${url})**`;
-																							}
-																							else if (lang === "ko") {
-																									return `** [자세한 내용은](${url})**`;
-																							}
-																							else if (lang === "ja") {
-																									return `** [詳細](${url})**`;
-																							}
-																							else {
-																									return `** [More Details](${url})**`;
-																							}
-                                            } else {
-                                                return "";
-                                            }
-                                        }
-                                        function rdoFooterMax() {
-                                            if (rdoFinalString.length >= (4000 - constChars)) {
-																							if (lang === "en") {
-																									return `** [More details](${url})**`;
-																							}
-																							else if (lang === "es") {
-																									return `** [Más detalles](${url})**`;
-																							}
-																							else if (lang === "ru") {
-																									return `** [Подробнее](${url})**`;
-																							}
-																							else if (lang === "de") {
-																									return `** [Mehr Details](${url})**`;
-																							}
-																							else if (lang === "pt") {
-																									return `** [Mais detalhes](${url})**`;
-																							}
-																							else if (lang === "fr") {
-																									return `** [Plus de détails](${url})**`;
-																							}
-																							else if (lang === "it") {
-																									return `** [Più dettagli](${url})**`;
-																							}
-																							else if (lang === "zh") {
-																									return `** [更多細節](${url})**`;
-																							}
-																							else if (lang === "pl") {
-																									return `** [Więcej szczegółów](${url})**`;
-																							}
-																							else if (lang === "ko") {
-																									return `** [자세한 내용은](${url})**`;
-																							}
-																							else if (lang === "ja") {
-																									return `** [詳細](${url})**`;
-																							}
-																							else {
-																									return `** [More Details](${url})**`;
-																							}
-                                            } else {
-                                                return "";
-                                            }
-                                        }
-
-                                        constChars += (rdoFooterMin().length) + (ellipsisFunction().length);
-                                        var rdoNewlines = rdoFinalString.substr(0, (4000 - constChars)).split("\n\n");
-                                        var tempString = rdoNewlines[rdoNewlines.length - 1];
-                                        function bestBreak() {
-                                            if (rdoFinalString.length <= (4000 - constChars)) {
-                                                return (rdoFinalString.length);
-                                            }
-                                            return (4000 - constChars - tempString.length);
-                                        }
-                                        //console.log(`bestBreak: ${bestBreak()}`);
-
-                                        var constChars1 = (rdoFooterMax().length) + (ellipsisFunction().length) + (ellipsisFunction2().length) + rdoImage[0].length;
-                                        var rdoNewlines1 = rdoFinalString.substr(bestBreak(), (6000 - constChars - constChars1 - bestBreak())).split("\n");
-                                        var tempString1 = rdoNewlines1[rdoNewlines1.length - 1];
-                                        function bestEndBreak() {
-                                            if (rdoFinalString.length <= (6000 - constChars - constChars1)) {
-                                                return rdoFinalString.length;
-                                            }
-                                            return (6000 - bestBreak() - constChars - constChars1 - tempString1.length); //removes the last bonus if over 6000 chars
-                                        }
-                                        //console.log(`bestEndBreak:${bestEndBreak()}`);
-
-                                        function rdoPost() {
-                                            return rdoFinalString.slice(0, (bestBreak()));
-                                        }
-                                        //console.log(`rdoPost().length:${rdoPost().length || 0}`);
-                                        function rdoPost2() {
-                                            if (rdoPost().length < rdoFinalString.length) {
-                                                let post02 = rdoFinalString.substr((bestBreak()), (bestEndBreak()));
-                                                return post02;
-                                            } else {
-                                                return "";
-                                            }
-                                        }
-                                        //console.log(`rdoPost2().length:${rdoPost2().length || 0}`);		
-
-
-                                        let rdoEmbed = new EmbedBuilder()
-                                            .setColor(0xC10000) //Red
-                                            .setTitle(`${rdoTitleOG}`)
-                                            .setDescription(`${rdoDate[0]}\n\n${rdoPost()} \n${rdoFooterMin()} ${ellipsisFunction()}`)
-                                        let rdoEmbed2 = new EmbedBuilder()
-                                            .setColor(0xC10000) //Red
-                                            .setDescription(`${ellipsisFunction()} \n${rdoPost2()} ${rdoFooterMax()}`)
-                                        let rdoImageEmbed = new EmbedBuilder()
-                                            .setColor(0xC10000) //Red
-                                            .setImage(`${rdoImage[0]}`);
-
-                                        // console.log(`rdoEmbed length: ${rdoEmbed.length}`); //no more than 4096 (line 199)
-                                        // console.log(`rdoEmbed2 length: ${rdoEmbed2.length}`); //no more than 6000 - rdoEmbed.length (line 204)
-
-
-
-                                        //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
-                                        //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//		
-                                        //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
-
-                                        //console.log(`channelIDArray length: ${channelIDArray.length}`);
-                                        //console.log(`channelIDArray: ${channelIDArray}`);
-                                        //console.log(`channelIDArray at c${c}: ${channelIDArray[c]}`);
-                                        if (channelIDArray[c].startsWith("undefined")) { }
-                                        else {
-																						if (rdoPost2() === "") {
-																								await client.channels.fetch(channelIDArray[c]).then(channel => channel.send(({ embeds: [rdoImageEmbed, rdoEmbed] }))).then(c++).catch(err => console.log(`Min Error: ${err}\nChannel ID: ${channelIDArray[c]}`));
-																						}
-																						else {
-																								await client.channels.fetch(channelIDArray[c]).then(channel => channel.send({ embeds: [rdoImageEmbed, rdoEmbed, rdoEmbed2] })).then(c++).catch(err => console.log(`Max Error: ${err}\nChannel ID: ${channelIDArray[c]}`));
-																						}
-                                        }
-
+                                    if (lang === "en") {
+                                        return "";
+                                    }
+                                    if (lang === "pt") {
+                                        return "/br";
+                                    }
+                                    if (lang === "zh") { //traditional Chinese (Taiwan)
+                                        return "/tw";
+                                    }
+                                    if (lang === "ja") {
+                                        return "/jp";
+                                    }
+                                    if (lang === "ko") {
+                                        return "/kr";
+                                    }
+                                    if (lang.length >= 3) { //languages like "es-ES" or "pt-BR" are returned as "es" or "pt"
+                                        return `/${lang.substring(0, 2)}`;
                                     }
                                     else {
-                                        let RStarDownEmbed = new EmbedBuilder()
-                                            .setColor(0xFF0000) //RED
-                                            .setDescription(`The Rockstar Social Club website is down. \nPlease try again later. \nSorry for the inconvenience.`)
-                                        client.channels.fetch(process.env.logChannel).then(channel => channel.send({ embeds: [RStarDownEmbed], ephemeral: true }));
-                                        console.log(`The Rockstar Social Club website is down.`);
+                                        return `/${lang}`;
                                     }
                                 }
+                                function gold() {
+                                    if (lang === "en") {
+                                        return "Gold Bars";
+                                    }
+                                    if (lang === "es") {
+                                        return "lingotes de oro";
+                                    }
+                                    if (lang === "pt") {
+                                        return "Barras de Ouro";
+                                    }
+                                    if (lang === "ru") {
+                                        return "золотых слитков";
+                                    }
+                                    if (lang === "de") {
+                                        return "Goldbarren";
+                                    }
+                                    if (lang === "pl") {
+                                        return "sztabek złota";
+                                    }
+                                    if (lang === "fr") {
+                                        return "lingots d'or";
+                                    }
+                                    if (lang === "it") {
+                                        return "Lingotti d'Oro";
+                                    }
+                                    if (lang === "zh") {
+                                        return "金條";
+                                    }
+                                    if (lang === "ja") {
+                                        return "格のゴールド バー";
+                                    }
+                                    if (lang === "ko") {
+                                        return "금괴";
+                                    }
+                                    else {
+                                        return "Gold Bars";
+                                    }
+                                }
+                                function discounts() {
+                                    if (lang === "en") {
+                                        return "Discounts";
+                                    }
+                                    if (lang === "es") {
+                                        return "Descuentos";
+                                    }
+                                    if (lang === "pt") {
+                                        return "Descontos";
+                                    }
+                                    if (lang === "ru") {
+                                        return "Скидки";
+                                    }
+                                    if (lang === "de") {
+                                        return "Rabatte";
+                                    }
+                                    if (lang === "pl") {
+                                        return "Zniżki";
+                                    }
+                                    if (lang === "fr") {
+                                        return "Promotions";
+                                    }
+                                    if (lang === "it") {
+                                        return "Sconti";
+                                    }
+                                    if (lang === "zh") {
+                                        return "折扣優惠";
+                                    }
+                                    if (lang === "ja") {
+                                        return "割引";
+                                    }
+                                    if (lang === "ko") {
+                                        return "할인";
+                                    }
+                                    else {
+                                        return "Discounts";
+                                    }
+                                }
+
+                                var rdoImage = getrdoParse.data.posts.results[0].preview_images_parsed.newswire_block.d16x9;
+                                //console.log(`rdoImage: ${rdoImage}`);			
+                                var rdoURLHash = getrdoParse.data.posts.results[0].id;
+                                var rdoURLFull = `https://www.rockstargames.com${langFunction()}${getrdoParse.data.posts.results[0].url}`;
+                                var fetchRDO = await fetch(`${process.env.rdoGraphURL3}${rdoURLHash}%22%2C%22locale%22%3A%22${lang}${process.env.rdoGraphURL4}`, {
+                                    "cache": "default",
+                                    "credentials": "omit",
+                                    "headers": {
+                                        "Accept": "*/*",
+                                        "Accept-Language": "en-US,en;q=0.9",
+                                        "Content-Type": "application/json",
+                                        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4 Safari/605.1.15"
+                                    },
+                                    "method": "GET",
+                                    "mode": "cors",
+                                    "redirect": "follow",
+                                    "referrer": "https://www.rockstargames.com/",
+                                    "referrerPolicy": "strict-origin-when-cross-origin"
+                                });
+
+                                var rdoPost = "";
+                                var rdoJSON01 = await fetchRDO.json();
+                                var rdoJSON = JSON.stringify(rdoJSON01);
+                                var rdoParse = JSON.parse(rdoJSON);
+                                //console.log(`rdoJSON: \n\n${rdoJSON}\n\n`);
+
+                                var rdoMainTitle = rdoParse.data.post.title
+                                var rdoSubTitle = rdoParse.data.post.subtitle;
+                                var rdoDate = rdoParse.data.post.created_formatted;
+                                //console.log(`rdoTitle: ${rdoTitle}\nrdoSubTitle: ${rdoSubTitle}\nrdoDate: ${rdoDate}`);
+                                var thisBonus = Math.round((thisBonus01) / 1000) + 21600; // plus 6 hours
+                                var nextBonus = Math.round((nextBonus01) / 1000) - 54060; // minus 15.016 hours
+                                // console.log(`thisBonus01: ${thisBonus01} - nextBonus01: ${nextBonus01}`);
+                                // console.log(`thisBonus: ${thisBonus} - nextBonus: ${nextBonus}`);
+                                rdoPost += `¶¶t:${thisBonus}:D∞∞ - ¶¶t:${nextBonus}:D∞∞\n\n• ${rdoSubTitle}\n\n`;
+
+                                var allBonuses = rdoParse.data.post.tina.variables.keys;
+                                var rdoBonus = Object.values(allBonuses);
+
+                                var rdoDiscountPercent = [`-10 ${gold()}`, "-30%", "-30%", "-40%", "-35%", "-40%", "-30%", "-40%", "-40%", "-30%"]; //FIXME next month
+                                var discountElementCount = 0;
+
+                                //START Populating rdoPost
+                                for (var i = 2; i <= rdoBonus.length - 1; i++) { //first bonus is the subtitle
+                                    //console.log(`${JSON.stringify(rdoBonus[k])}\n\n`);
+                                    var noBonusArray = ["1.5X", "1.5x", "1,5X", "1,5x", "2X", "2x", "2.5X", "2.5x", "2,5X", "2,5x", "3X", "3x", "4X", "4x", "40%", "40 %", "50%", "50 %", "Double", "Doble", "RDO$"];
+                                    if (rdoBonus[i].text !== undefined) {
+                                        rdoPost += `\n**${rdoBonus[i].text}**\n`;
+                                    }
+                                    if (rdoBonus[i].content !== undefined) {
+                                        rdoPost += `• ${rdoBonus[i].content}\n`;
+                                    }
+                                    if ((rdoBonus[i].title !== undefined) && ((rdoBonus[i].description !== undefined) || (rdoBonus[i].subtitle !== undefined))) { //adds a title if not a discount
+                                        rdoPost += `\n**${rdoBonus[i].title}**\n`;
+                                    }
+                                    if ((rdoBonus[i].title !== undefined) && ((rdoBonus[i].description === undefined) && (rdoBonus[i].subtitle === undefined))) {
+                                        if (discountElementCount === 0) {
+                                            rdoPost += `\n**${discounts()}**\n`;
+                                        }
+                                        rdoPost += `${rdoDiscountPercent[discountElementCount]}: ${rdoBonus[i].title}\n`;
+                                        discountElementCount++;
+                                    }
+                                    if (rdoBonus[i].description !== undefined) {
+                                        if (rdoBonus[i].title !== undefined) { //do not add the description if 2x, 3x, 4x, etc... bonus
+                                            var joinTitle = rdoBonus[i].title.split(" ")[0]; //first word of title
+                                            if (noBonusArray.indexOf(joinTitle) >= 0) {
+                                                i++;
+                                            }
+                                            else {
+                                                rdoPost += `• ${rdoBonus[i].description}\n`;
+                                            }
+                                        }
+                                        else {
+                                            rdoPost += `• ${rdoBonus[i].description}\n`;
+                                        }
+                                    }
+                                }
+                                //END for loop
+
+                                function replaceLinks() {
+                                    var rdoLinks = /<a href=\".*?<\/a>/g;
+                                    for (const match of rdoPost.matchAll(rdoLinks)) {
+                                        //console.log(match[0]);
+                                        var rdoLinkURL2 = match[0].toString().split("href=\"");
+                                        for (var j = 0; j <= rdoLinkURL2.length - 1; j++) { //iterates through all the links
+                                            var rdoLinkURL1 = rdoLinkURL2[j].split("\">");
+                                            if (rdoLinkURL1[1] !== undefined) {
+                                                var rdoLinkTitle1 = rdoLinkURL1[1].split("<");
+                                                var rdoLinkTitle = rdoLinkTitle1[0];
+                                                var rdoLinkURL = rdoLinkURL1[0];
+                                                //console.log(`match[0]: ${match[0]} - rdoLinkTitle: ${rdoLinkTitle} - rdoLinkURL: ${rdoLinkURL}`);
+                                                rdoPost = rdoPost.replace(match[0], `[${rdoLinkTitle}](${rdoLinkURL})`);
+                                            }
+                                        }
+                                    }
+                                }
+                                replaceLinks();
+
+                                var rdoReGex = /<.*?>/g;
+                                var rdoFinalString = rdoPost
+                                    .replace(/<br><br>/g, "\n• ") //adds a bullet for additional paragraphs
+                                    .replace(/<li>/g, "\n• ") //adds a bullet point to list items
+                                    .replace(/<h3>/g, "\n\n**") //adds a newline for missed titles
+                                    .replace(/<\/h3>/g, "**\n• ") //adds a newline for missed titles
+                                    .replace(rdoReGex, "") //removes all remaining HTML
+                                    .replace(/\¶\¶/g, "<") //creates timestamps for thisBonus && nextBonus
+                                    .replace(/\∞\∞/g, ">")//creates timestamps for thisBonus && nextBonus
+                                    .replace(/• \n/g, "") //removes extra bullet points
+                                    .replace(/\n\n\n/g, "\n\n") //removes excess newlines
+
+                                //console.log(rdoFinalString);
+
+                                var constChars = (rdoMainTitle.length);
+                                function ellipsisFunction() {
+                                    if (rdoFinalString.length >= (4000 - constChars)) {
+                                        return "...";
+                                    } else {
+                                        return "";
+                                    }
+                                }
+                                function ellipsisFunction2() {
+                                    if (rdoFinalString.length >= (6000 - constChars - rdoImage.length)) {
+                                        return "...\n";
+                                    } else {
+                                        return "";
+                                    }
+                                }
+                                function footerText() {
+                                    if (lang === "en") {
+                                        return `\n** [More details](${rdoURLFull})**`;
+                                    }
+                                    else if (lang === "es") {
+                                        return `\n** [Más detalles](${rdoURLFull})**`;
+                                    }
+                                    else if (lang === "pt") {
+                                        return `\n** [Mais detalhes](${rdoURLFull})**`;
+                                    }
+                                    else if (lang === "ru") {
+                                        return `\n** [Подробнее](${rdoURLFull})**`;
+                                    }
+                                    else if (lang === "de") {
+                                        return `\n** [Mehr Details](${rdoURLFull})**`;
+                                    }
+                                    else if (lang === "pl") {
+                                        return `\n** [Więcej szczegółów](${rdoURLFull})**`;
+                                    }
+                                    else if (lang === "fr") {
+                                        return `\n** [Plus de détails](${rdoURLFull})**`;
+                                    }
+                                    else if (lang === "it") {
+                                        return `\n** [Più dettagli](${rdoURLFull})**`;
+                                    }
+                                    else if (lang === "zh") {
+                                        return `\n** [更多細節](${rdoURLFull})**`;
+                                    }
+                                    else if (lang === "ja") {
+                                        return `\n** [자세한 내용은](${rdoURLFull})**`;
+                                    }
+                                    else if (lang === "ko") {
+                                        return `\n** [詳細](${rdoURLFull})**`;
+                                    }
+                                    else {
+                                        return `\n** [More Details](${rdoURLFull})**`;
+                                    }
+                                }
+                                function rdoFooterMin() {
+                                    if (rdoFinalString.length < (4000 - constChars)) {
+                                        return footerText();
+                                    } else {
+                                        return "";
+                                    }
+                                }
+                                function rdoFooterMax() {
+                                    if (rdoFinalString.length >= (4000 - constChars)) {
+                                        return footerText();
+                                    } else {
+                                        return "";
+                                    }
+                                }
+
+                                constChars += (rdoFooterMin().length) + (ellipsisFunction().length);
+                                var rdoNewlines = rdoFinalString.substr(0, (4000 - constChars)).split("\n\n");
+                                var tempString = rdoNewlines[rdoNewlines.length - 1];
+                                function bestBreak() {
+                                    if (rdoFinalString.length <= (4000 - constChars)) {
+                                        return (rdoFinalString.length);
+                                    }
+                                    return (4000 - constChars - tempString.length);
+                                }
+                                //console.log(`bestBreak: ${bestBreak()}`);
+
+                                var constChars1 = (rdoFooterMax().length) + (ellipsisFunction().length) + (ellipsisFunction2().length) + rdoImage.length;
+                                var rdoNewlines1 = rdoFinalString.substr(bestBreak(), (6000 - constChars - constChars1 - bestBreak())).split("\n");
+                                var tempString1 = rdoNewlines1[rdoNewlines1.length - 1];
+                                function bestEndBreak() {
+                                    if (rdoFinalString.length <= (6000 - constChars - constChars1)) {
+                                        return rdoFinalString.length;
+                                    }
+                                    return (6000 - bestBreak() - constChars - constChars1 - tempString1.length); //removes the last bonus if over 6000 chars
+                                }
+                                //console.log(`bestEndBreak:${bestEndBreak()}`);
+
+                                rdoPost = rdoFinalString.slice(0, (bestBreak()));
+                                //console.log(`rdoPost.length:${rdoPost.length || 0}`);
+                                function rdoPost2() {
+                                    if (rdoPost.length < rdoFinalString.length) {
+                                        let post02 = rdoFinalString.substr((bestBreak()), (bestEndBreak()));
+                                        return post02;
+                                    } else {
+                                        return "";
+                                    }
+                                }
+                                //console.log(`rdoPost2().length:${rdoPost2().length || 0}`);
+
+                                let rdoEmbed = new EmbedBuilder()
+                                    .setColor(0xC10000) //Red
+                                    .setTitle(`${rdoMainTitle}`)
+                                    .setDescription(`${rdoPost}${rdoFooterMin()}${ellipsisFunction()}`)
+                                let rdoEmbed2 = new EmbedBuilder()
+                                    .setColor(0xC10000) //Red
+                                    .setDescription(`${ellipsisFunction()} \n${rdoPost2()} ${ellipsisFunction2()}${rdoFooterMax()}`)
+                                let rdoImageEmbed = new EmbedBuilder()
+                                    .setColor(0xC10000) //Red
+                                    .setImage(`${rdoImage}`);
+
+                                //console.log(`rdoFinal.l: ${rdoFinal.length}`);
+
+
+
+                                //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
+                                //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//		
+                                //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
+
+                                //console.log(`channelIDArray length: ${channelIDArray.length}`);
+                                //console.log(`channelIDArray: ${channelIDArray}`);
+                                //console.log(`channelIDArray at c${c}: ${channelIDArray[c]}`);
+                                if (channelIDArray[c].startsWith("undefined")) { }
                                 else {
-                                    let RStarDownEmbed = new EmbedBuilder()
-                                        .setColor(0xFF0000) //RED
-                                        .setDescription(`The Rockstar Social Club website is down. \nPlease try again later. \nSorry for the inconvenience.`)
-                                    client.channels.fetch(process.env.logChannel).then(channel => channel.send({ embeds: [RStarDownEmbed], ephemeral: true }));
-                                    console.log(`The Rockstar Social Club website is down.`);
+                                    if (rdoPost2() === "") {
+                                        await client.channels.fetch(channelIDArray[c]).then(channel => channel.send(({ embeds: [rdoImageEmbed, rdoEmbed] }))).then(c++).catch(err => console.log(`Min Error: ${err}\nChannel ID: ${channelIDArray[c]}`));
+                                    }
+                                    else {
+                                        await client.channels.fetch(channelIDArray[c]).then(channel => channel.send({ embeds: [rdoImageEmbed, rdoEmbed, rdoEmbed2] })).then(c++).catch(err => console.log(`Max Error: ${err}\nChannel ID: ${channelIDArray[c]}`));
+                                    }
                                 }
                             } //end c loop
                         }
                     }); //end fs.readFile for RDODataBase? 
-
+                    Å
                 }
             }); //end fs.readFile for LANGDataBase
         }, {

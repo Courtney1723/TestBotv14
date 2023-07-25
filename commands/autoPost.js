@@ -14,7 +14,8 @@ module.exports = {
             pl: 'zautomatyzowane-wiadomości',
             fr: 'messages-automatisés',
             it: 'messaggi-automatici',
-            "zh-CN": '自動消息',
+            "zh-CN": '自动消息',
+            "zh-TW": '自動消息',
             ja: '自動メッセージ',
             ko: '자동화된-메시지',
         })

@@ -10,6 +10,11 @@ var cron = require('node-cron'); //https://github.com/node-cron/node-cron
 const { get } = require("https");
 const fetch = require("@replit/node-fetch");
 
+global.errorEmbed = new EmbedBuilder()
+    .setColor('Red')
+    .setTitle(`Uh Oh!`)
+    .setDescription(`There was an error while executing this command!\nThe error has been sent to the developer and will be fixed as soon as possible.\nPlease try again in a few minutes.\n\nIf the problem persists you can try [re-inviting the bot](<${process.env.invite_link}>) or \nYou can report it in the [Rockstar Weekly Support Server](<${process.env.support_link}>)`);
+
 // node deploy-commands.js 
 //^^ type in shell to register a command
 
@@ -101,7 +106,7 @@ client.on('interactionCreate', async interaction => {
         console.log(`interaction error: ${error.stack}`);
         if (error.toString().includes("has not been sent")) {
             if ((error.toString().includes("50027")) || (error.toString().includes("10008"))) {
-                await interaction.reply({ embeds: [trafficError], ephemeral: true });
+                await interaction.reply({ embeds: [trafficError], ephemeral: true }).catch(error => {console.log(`unable to send error embed :( \n${error}`)});
                 console.log(`There was an error! \n${error.stack}`);
                 process.kill(1);
             }
@@ -112,23 +117,23 @@ client.on('interactionCreate', async interaction => {
         }
         else if (error.toString().includes("is not a function")) {
             if ((error.toString().includes("50027")) || (error.toString().includes("10008"))) {
-                await interaction.reply({ embeds: [trafficError], ephemeral: true });
+                await interaction.reply({ embeds: [trafficError], ephemeral: true }).catch(error => {console.log(`unable to send error embed :( \n${error}`)});
                 console.log(`There was an error! \n${error.stack}`);
                 process.kill(1);
             }
             else {
-                await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
+                await interaction.reply({ embeds: [errorEmbed], ephemeral: true }).catch(error => {console.log(`unable to send error embed :( \n${error}`)});
                 console.log(`There was an error! \n${error.stack}`);
             }
         }
         else {
             if ((error.toString().includes("50027")) || (error.toString().includes("10008"))) {
-                await interaction.editReply({ embeds: [trafficError], ephemeral: true });
+                await interaction.editReply({ embeds: [trafficError], ephemeral: true }).catch(error => {console.log(`unable to send error embed :( \n${error}`)});
                 console.log(`There was an error! \n${error.stack}`);
                 process.kill(1);
             }
             else {
-                await interaction.editReply({ embeds: [errorEmbed], ephemeral: true });
+                await interaction.editReply({ embeds: [errorEmbed], ephemeral: true }).catch(error => {console.log(`unable to send error embed :( \n${error}`)});
                 console.log(`There was an error! \n${error.stack}`);
             }
         }

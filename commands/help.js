@@ -13,7 +13,8 @@ module.exports = {
 			pl: 'pomoc',
 			fr: 'aider',
 			it: 'aiuto',
-			"zh-CN": '幫助',
+			"zh-CN": '帮助',
+			"zh-TW": '幫助',			
 			ja: 'ヘルプ',
 			ko: '돕다',
 		})

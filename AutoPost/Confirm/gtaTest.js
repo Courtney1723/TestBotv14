@@ -1,6 +1,8 @@
 const { PermissionsBitField, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const phantom = require('phantom'); //https://github.com/amir20/phantomjs-nodz
+const fetch = require("@replit/node-fetch");
 const LANG = require('../../events/LANG.js');
+const NEXT_BONUS = require("../../events/nextBonus.js");
+const THIS_BONUS = require("../../events/thisBonus.js");
 let errorText = `There was an error while executing this command!\nThe error has been sent to the developer and it will be fixed as soon as possible. \nIf the error persists you can try re-inviting the Rockstar Weekly bot by [clicking here](<${process.env.invite_link}>). \nReport the error by joining the Rockstar Weekly bot support server: [click here](<${process.env.support_link}>).`;
 
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
@@ -283,765 +285,529 @@ module.exports = {
                         //-------------------Begin GTA TEST POST---------------------//						
 
                         //Begin GTA Formatting		
-                        let gtaURL = process.env.SOCIAL_URL_GTA2;
+                        var nextBonus01 = await NEXT_BONUS.nextBonus("gta");
+                        var thisBonus01 = await THIS_BONUS.thisBonus("gta");
+                        // console.log(`next Bonus: <t:${Math.round(nextBonus01 / 1000)}>`);
 
-                        //await interaction.editReply(`Console Logged 👍`).catch(console.error);
+                        var gtaFetch = await fetch(`${process.env.gtaGraphURL1}${lang}${process.env.gtaGraphURL2}`, {
+                            "cache": "default",
+                            "credentials": "omit",
+                            "headers": {
+                                "Accept": "*/*",
+                                "Accept-Language": "en-US,en;q=0.9",
+                                "Content-Type": "application/json",
+                                "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4 Safari/605.1.15"
+                            },
+                            "method": "GET",
+                            "mode": "cors",
+                            "redirect": "follow",
+                            "referrer": "https://www.rockstargames.com/",
+                            "referrerPolicy": "strict-origin-when-cross-origin"
+                        });
 
-                        const instance = await phantom.create();
-                        const page = await instance.createPage();
+                        var getgtaJSON01 = await gtaFetch.json();
+                        var getgtaJSON = JSON.stringify(getgtaJSON01);
+                        var getgtaParse = JSON.parse(getgtaJSON);
+                        //console.log(getgtaJSON);
 
-                        await page.property('viewportSize', { width: 1024, height: 600 });
-                        const status = await page.open(gtaURL);
-                        //console.log(`Page opened with status [${status}].`);
-                        if (status === `success`) { //checks if Rockstar Social Club website is down
-                            const content = await page.property('content'); // Gets the latest gta updates
-                            //console.log(content); 
+                        var gtaImage = getgtaParse.data.posts.results[1].preview_images_parsed.newswire_block.d16x9;
+                        //console.log(`gtaImage: ${gtaImage}`);
 
-														let gtaImage01 = content.split("imgUrl\":\"");
-														//console.log(`gtaImage01: ${gtaImage01[1]}`);
-														let gtaImage = gtaImage01[1].split("\",");
-														//console.log(`gtaImage: ${gtaImage[0]}`); 													
+												function langFunction() {
+													if (supportedLanguages.indexOf(lang.substring(0, 2)) < 0) { //unsupported languages are treated as English
+														return "";
+													}		
+													if (lang.includes("en")) {
+														return "";
+													}
+													if (lang.includes("pt")) {
+														return "/br";
+													}	
+													if (lang.includes("CH")) { //simplified Chinese (China)
+														return "/zh";
+													}
+													if (lang.includes("TW")) { //traditional Chinese (Taiwan)
+														return "/tw";
+													}						
+													if (lang.includes("ko")) {
+														return "/kr";
+													}
+													if (lang.length >= 3) { //languages like "es-ES" or "pt-BR" are returnes as "es" or "pt"
+														return `/${lang.substring(0, 2)}`;
+													}
+													else {
+														return `/${lang}`;
+													}
+												}										
 
-                            let baseURL = "https://socialclub.rockstargames.com";
+                        var gtaURLHash = getgtaParse.data.posts.results[1].id;
+                        var gtaURLFull = `https://www.rockstargames.com${getgtaParse.data.posts.results[1].url}`;
+                        var fetchGTA = await fetch(`${process.env.gtaGraphURL3}${gtaURLHash}%22%2C%22locale%22%3A%22${lang}${process.env.gtaGraphURL4}`, {
+                            "cache": "default",
+                            "credentials": "omit",
+                            "headers": {
+                                "Accept": "*/*",
+                                "Accept-Language": "en-US,en;q=0.9",
+                                "Content-Type": "application/json",
+                                "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4 Safari/605.1.15"
+                            },
+                            "method": "GET",
+                            "mode": "cors",
+                            "redirect": "follow",
+                            "referrer": "https://www.rockstargames.com/",
+                            "referrerPolicy": "strict-origin-when-cross-origin"
+                        });
 
-                            let urlHash02 = content.split("urlHash\":\"");
-                            let urlHash01 = urlHash02[1].split("\"");
-                            let urlHash = urlHash01[0];
-                            //console.log(`urlHash: ${urlHash}`);
+                        var gtaPost = "";
+                        var gtaJSON01 = await fetchGTA.json();
+                        var gtaJSON = JSON.stringify(gtaJSON01);
+                        var gtaParse = JSON.parse(gtaJSON);
+                        //console.log(`gtaJSON: \n\n${gtaJSON}\n\n`);
 
-                            let urlSlug02 = content.split("slug\":\"");
-                            let urlSlug01 = urlSlug02[1].split("\"");
-                            let urlSlug = urlSlug01[0];
-                            //console.log(`urlSlug: ${urlSlug}`);
+                        var gtaMainTitle = gtaParse.data.post.title
+                        var gtaSubTitle = gtaParse.data.post.subtitle;
+                        var gtaBlurb = gtaParse.data.post.tina.variables.keys.meta.blurb;
+                        var gtaDate = gtaParse.data.post.created_formatted;
+                        //console.log(`gtaTitle: ${gtaTitle}\ngtaSubTitle: ${gtaSubTitle}\ngtaDate: ${gtaDate}`);
+                        var thisBonus = Math.round((thisBonus01) / 1000) + 21600; // plus 6 hours
+                        var nextBonus = Math.round((nextBonus01) / 1000) - 54060; // minus 15.016 hours
+                        // console.log(`thisBonus01: ${thisBonus01} - nextBonus01: ${nextBonus01}`);
+                        // console.log(`thisBonus: ${thisBonus} - nextBonus: ${nextBonus}`);
+                        gtaPost += `¶¶t:${thisBonus}:D∞∞ - ¶¶t:${nextBonus}:D∞∞\n\n• ${gtaSubTitle}\n\n• ${gtaBlurb}\n\n`;
 
-                            let urlLink02 = content.split("linkToUrl\":");
-                            let urlLink01 = urlLink02[1].split("\"");
+                        var allBonuses = gtaParse.data.post.tina.variables.keys;
+                        var gtaBonus = Object.values(allBonuses);
+                        var gtaPlusBonus = "";
+                        var gtaPlusCount = 0;
+                        var gtaPlusInsert = 0;
+                        var gtaPlusBottom = 0;
 
-                            //let urlLink = urlLink01[1];
-                            //console.log(`urlLink: ${urlLink01[1]}`);
-
-                            function urlLink() {
-                                //return `/events/e9Lot6x3/gta-online-bonuses/1`; //test for finalstring <= 4000 
-                                //return `events/B3RJmhuX/gta-online-bonuses/1`; //test for finalstring >= 4000 && <= 6000
-                                //return `events/tgHCnzSZ/gta-online-bonuses/1`; //test for finalString >= 6000							
-                                if (urlLink01[1].includes(`\?`)) {
-                                    let urlLinkFix = urlLink01[1].split(`\?`);
-                                    let urlLink = urlLinkFix[0];
-                                    return urlLink;
+                        //START Populating gtaPost
+                        for (var k = 2; k <= gtaBonus.length - 2; k++) { //first bonus is the subtitle and blurb, last bonus is the gun van inventory discounts
+                            //console.log(`${JSON.stringify(gtaBonus[k])}\n\n`);
+                            if (k === 17) { }//FIXME NEXT WEEK
+                            else if (gtaBonus[k - 1].badge !== undefined) { //Do not include description if 2x, 3x, 4x, etc... bonus
+                                if (gtaBonus[k].title !== undefined) {
+                                    gtaPost += `\n**${gtaBonus[k].title}**\n`;
                                 }
-                                else {
-                                    let urlLink = urlLink01[1];
-                                    return urlLink;
+                                else if (gtaBonus[k].description !== undefined) {
+                                    gtaPost += `• ${gtaBonus[k].description}\n`;
                                 }
                             }
-                            //console.log(`urlLink: ${urlLink()}`);		
-
-                            let langBase = `/?lang=`;
-                            let langURL = `${langBase}${lang}`;
-
-                            let url = `${baseURL}/${urlLink()}${langURL}`;
-                            //console.log(`url: ${url}`);		
-
-                            const gtaStatus = await page.open(url);
-                            if (gtaStatus === `success`) {
-                                const content = await page.property('content'); // Gets the latest gta updates
-                                //console.log(content); 
-                                let gtaString001 = content.toString(); //converts HTML to string (necessary? not sure.);
-                                //console.log(`gtaString001: ${gtaString001}`);	
-                                let gtaString01 = gtaString001.split("cm-content\">"); //splits the header from the body
-                                let gtaHeader = gtaString01[0];
-                                //console.log(`gtaHeader: ${gtaHeader}`);
-
-                                let gtaDate02 = gtaHeader.split("class=\"date\">"); //gets the event date
-                                //console.log(`${gtaDate01[1]}`);
-                                let gtaDate01 = gtaDate02[1].split("<"); //cuts off the end of the date
-                                let gtaDate = gtaDate01[0].replace(/&nbsp;/g, " ");
-                                //console.log(`Date: ${gtaDate}\n`);	
-
-                                let gtaTitleOG01 = gtaHeader.split("h1");
-                                let gtaTitleOG02 = gtaTitleOG01[1].split(">");
-                                let gtaTitleOG03 = gtaTitleOG02[1].split("<");
-                                let gtaTitleOG = gtaTitleOG03[0];
-                                //console.log(`gtaTitleOG:${gtaTitleOG}`);		
-
-                                let gtaString002 = gtaString01[1]; //Splits the header from the body
-                                //console.log(`gtaString: ${gtaString002}`)
-                                let gtaString02 = gtaString002.split("</div>"); //splits the footer from the body
-                                //console.log(`gtaString02: ${gtaString02[0]}`);
-                                let gtaStringOG = `${gtaString02[0]}<p><b>`; //the entire string before any editing w/o footer or header
-                                //console.log(`gtaStringOG: ${gtaStringOG}`);
-
-                                //Replaces or removes HTML formatting that can interfere with split functions or is constant
-                                let gtaString = gtaStringOG.replace(/<li>/g, "• ")
-                                    .replace(/<\/li>/g, "")
-                                    .replace(/<\/ul>/g, "")
-                                    .replace(/&amp;/g, "&")
-                                    .replace(/&nbsp;/g, " ") //Non breaking space
-                                    .replace(/\n<ul style=\"line-height:1.5;\">/g, "")
-                                    .replace(/<ul style="line-height:1.5;">/g, "")
-                                    .replace(/\n<p>/g, "<p>") //Removes spaces after a bonus
-                                    .replace(/<p>Only/g, "<p><b>Only")
-                                    .replace(/<\/span>/, "")							
-
-                                    //--BEGIN FOREIGN LANGUAGE FORMATTING-----//
-                                    //--RUSSIAN--//
-                                    .replace(/=\"\"/g, "")
-                                    .replace(/<liЗаработайте/g, "")
-                                    .replace(/<\/liЗаработайте>/g, "")
-                                    .replace(/< li>/g, "")
-                                    .replace(/<\/>/g, "")
-                                    .replace(/<\/strong>/g, "")
-                                    .replace(/<strong>/g, "")
-                                    .replace(/<br>/g, "")
-
-                                    //--Spanish--//
-                                    .replace(/<mq:rxt><\/mq:rxt>/g, "")
-
-                                    //German
-                                    .replace(/\" draggable=\"false/g, "")
-                                    .replace(/<p><\/p>/, "") //removes an empty paragraph in the introParas
-
-                                //-----END FOREIGN LANGUAGE FORMATTING-----//
-
-                                //console.log(`gtaString: ${gtaString}`);
-
-                                //--------------------BEGIN formatting for links--------------------//
-                                let gtaLinks001 = gtaString.split("<a href=\"");
-                                let gtaLinks = "";
-                                let gtaLinkTitles = "";
-                                for (j = 1; j <= gtaLinks001.length - 1; j++) {
-                                    let gtaLinks01 = gtaLinks001[j].split("\" target");
-                                    //console.log(`gtaLinks01 at ${j}: ${gtaLinks01[0]}`);
-                                    let gtaLinks02 = gtaLinks01[0].split("\">");
-                                    //console.log(`gtaLinks02 at ${j}: ${gtaLinks02[0]}`);
-                                    gtaLinks += `${gtaLinks02[0]},`;
-
-                                    let gtaLinkTitles01 = gtaLinks001[j].split("\">");
-                                    let gtaLinkTitles02 = gtaLinkTitles01[1].split("</a>");
-
-                                    gtaLinkTitles += `${gtaLinkTitles02[0]},`;
+                            else if (gtaBonus[k - 1].badge === undefined) { //if the bonus is not linked to another bonus
+                                if ((gtaBonus[k].text !== undefined) && (gtaPlusCount !== 1)) { //gta+ top
+                                    gtaPlusBonus += `\n**${gtaBonus[k].text}**\n`;
+                                    gtaPlusCount++;
+                                    gtaPlusInsert = gtaPost.length;
+                                    gtaPlusBottom = k + 1;
                                 }
-                                //console.log(`gtaLinks: ${gtaLinks}`);
-                                //console.log(`gtaLinkTitles: ${gtaLinkTitles}`);
-
-                                let gtaLinks002 = gtaLinks.split(",");
-                                //console.log(`gtaLinks002: ${gtaLinks002}`);
-                                let gtaLinkTitles002 = gtaLinkTitles.split(",");
-                                //console.log(`gtaLinkTitles002: ${gtaLinkTitles002}`);
-
-                                let gtaLinkFormatted = gtaString;
-                                for (m = 0; m <= gtaLinks002.length - 2; m++) { // keep - 2; the last element will always be blank
-                                    gtaLinkFormatted = gtaLinkFormatted.replace(/<a.*?a>/, `[${gtaLinkTitles002[m]}](${gtaLinks002[m]})`); //replaces each link with proper discord formatted link
-                                    //console.log(`gtaLinkFormatted at ${m}: ${gtaLinkFormatted}`);
+                                if ((gtaBonus[k].content !== undefined)) {
+                                    gtaPlusBonus += `• ${gtaBonus[k].content}\n`;
                                 }
-                                //console.log(`gtaLinkFormatted: ${gtaLinkFormatted}`);
+                                if (gtaBonus[k].title_and_description !== undefined) { //DISCOUNTS
+                                    gtaPost += `\n**${gtaBonus[k].title_and_description.title}**\n${gtaBonus[k].title_and_description.description}`;
+                                }
+                                if ((gtaBonus[k].title !== undefined)) {
+                                    gtaPost += `\n**${gtaBonus[k].title}**\n`;
+                                }
+                                if (gtaBonus[k].description !== undefined) {
+                                    gtaPost += `• ${gtaBonus[k].description}\n`;
+                                }
+                            }
+                        }
+                        //END for loop
 
-                                //--------------------END formatting for links--------------------//
+                        function gtaPlus() {
+                            gtaPlusBonus += `${gtaBonus[gtaPlusBottom].text}\n`;
+                            var gtaPost1 = gtaPost.slice(0, gtaPlusInsert);
+                            var gtaPost2 = gtaPost.slice(gtaPlusInsert, gtaPost.length);
+                            gtaPost = gtaPost1 + gtaPlusBonus + gtaPost2;
+                        }
+                        gtaPlus();
 
-                                //--------------------BEGIN checking for words that are bold at the beginning of a paragraph-------------------//
+                        function noBonus() {
+                            var noBonusRegex = /<p>.*?<\/p><h3>/g;
+                            gtaPost = gtaPost.replace(noBonusRegex, "<h3>");
+                        }
+                        noBonus();
+                        if (gtaBonus[gtaBonus.length - 1].content !== undefined) { //adds the gun van inventory discounts
+                            gtaPost += `${gtaBonus[gtaBonus.length - 1].content}\n`;
+                        }
 
-                                function notATitleIndex() {
-                                    let gtaTitles001 = gtaLinkFormatted.split("<p><b>");
+                        function replaceLinks() {
+													var gtaLinks = /<a href=\".*?<\/a>/g;
+													for (const match of gtaPost.matchAll(gtaLinks)) {
+														//console.log(match[0]);
+														var gtaLinkURL2 = match[0].toString().split("href=\"");
+														for (var j = 0; j <= gtaLinkURL2.length - 1; j++) { //iterates through all the links
+															var gtaLinkURL1 = gtaLinkURL2[j].split("\">");
+															if (gtaLinkURL1[1] !== undefined) {
+																var gtaLinkTitle1 = gtaLinkURL1[1].split("<");
+																var gtaLinkTitle = gtaLinkTitle1[0];
+																var gtaLinkURL = gtaLinkURL1[0];
+																//console.log(`match[0]: ${match[0]} - gtaLinkTitle: ${gtaLinkTitle} - gtaLinkURL: ${gtaLinkURL}`);
+																gtaPost = gtaPost.replace(match[0], `[${gtaLinkTitle}](${gtaLinkURL})`);
+															}
+														}
+													}
+												}
+												replaceLinks();
 
-                                    let notATitleIndex001 = "";
-                                    for (i = 0; i <= gtaTitles001.length - 1; i++) {
-                                        if (gtaTitles001[i].charAt(1) != gtaTitles001[i].charAt(1).toUpperCase()) {
-                                            notATitleIndex001 += `${i}`;
-                                        }
+                        var gtaReGex = /<.*?>/g;
+                        var gtaFinalString = gtaPost
+                            .replace(/<br><br>/g, "\n• ") //adds a bullet for additional paragraphs
+                            .replace(/<li>/g, "\n• ") //adds a bullet point to list items
+                            .replace(/<h3>/g, "\n\n**") //adds a newline for missed titles
+                            .replace(/<\/h3>/g, "**\n") //adds a newline for missed titles
+                            .replace(gtaReGex, "") //removes all remaining HTML
+                            .replace(/\¶\¶/g, "<") //creates timestamps for thisBonus && nextBonus
+                            .replace(/\∞\∞/g, ">")//creates timestamps for thisBonus && nextBonus
+                            .replace(/• \n/g, "") //removes extra bullet points
+                            .replace(/\n\n\n/g, "\n\n") //removes excess newlines
+
+                        //console.log(gtaFinalString);
+
+                        var constChars = (gtaMainTitle.length);
+                        function ellipsisFunction() {
+                            if (gtaFinalString.length >= (4000 - constChars)) {
+                                return "...";
+                            } else {
+                                return "";
+                            }
+                        }
+                        function ellipsisFunction2() {
+                            if (gtaFinalString.length >= (6000 - constChars - gtaImage.length)) {
+                                return "...\n";
+                            } else {
+                                return "";
+                            }
+                        }
+												function footerText() {
+													if (lang.includes("en")) {
+															return `\n** [More details](${gtaURLFull})**`;
+													}
+													else if (lang.includes("es")) {
+															return `\n** [Más detalles](${gtaURLFull})**`;
+													}
+													else if (lang.includes("pt")) {
+															return `\n** [Mais detalhes](${gtaURLFull})**`;
+													}						
+													else if (lang.includes("ru")) {
+															return `\n** [Подробнее](${gtaURLFull})**`;
+													}
+													else if (lang.includes("de")) {
+															return `\n** [Mehr Details](${gtaURLFull})**`;
+													}
+													else if (lang.includes("pl")) {
+															return `\n** [Więcej szczegółów](${gtaURLFull})**`;
+													}
+													else if (lang.includes("fr")) {
+															return `\n** [Plus de détails](${gtaURLFull})**`;
+													}
+													else if (lang.includes("it")) {
+															return `\n** [Più dettagli](${gtaURLFull})**`;
+													}
+													else if (lang.includes("CN")) {
+															return `\n** [更多细节](${gtaURLFull})**`;
+													}
+													else if (lang.includes("TW")) {
+															return `\n** [更多細節](${gtaURLFull})**`;
+													}
+													else if (lang.includes("ja")) {
+															return `\n** [자세한 내용은](${gtaURLFull})**`;
+													}
+													else if (lang.includes("ko")) {
+															return `\n** [詳細](${gtaURLFull})**`;
+													}
+													else {
+															return `\n** [More Details](${gtaURLFull})**`;
+													}					
+												}			
+								        function gtaFooterMin() {
+								            if (gtaFinalString.length < (4000 - constChars)) {
+								                return footerText();
+								            } else {
+								                return "";
+								            }
+								        }
+								        function gtaFooterMax() {
+								            if (gtaFinalString.length >= (4000 - constChars)) {
+								                return footerText();
+								            } else {
+								                return "";
+								            }
+								        }
+
+                        constChars += (gtaFooterMin().length) + (ellipsisFunction().length);
+                        var gtaNewlines = gtaFinalString.substr(0, (4000 - constChars)).split("\n\n");
+                        var tempString = gtaNewlines[gtaNewlines.length - 1];
+                        function bestBreak() {
+                            if (gtaFinalString.length <= (4000 - constChars)) {
+                                return (gtaFinalString.length);
+                            }
+                            return (4000 - constChars - tempString.length);
+                        }
+                        //console.log(`bestBreak: ${bestBreak()}`);
+
+                        var constChars1 = (gtaFooterMax().length) + (ellipsisFunction().length) + (ellipsisFunction2().length) + gtaImage.length;
+                        var gtaNewlines1 = gtaFinalString.substr(bestBreak(), (6000 - constChars - constChars1 - bestBreak())).split("\n");
+                        var tempString1 = gtaNewlines1[gtaNewlines1.length - 1];
+                        function bestEndBreak() {
+                            if (gtaFinalString.length <= (6000 - constChars - constChars1)) {
+                                return gtaFinalString.length;
+                            }
+                            return (6000 - bestBreak() - constChars - constChars1 - tempString1.length); //removes the last bonus if over 6000 chars
+                        }
+                        //console.log(`bestEndBreak:${bestEndBreak()}`);
+
+                        gtaPost = gtaFinalString.slice(0, (bestBreak()));
+                        //console.log(`gtaPost.length:${gtaPost.length || 0}`);
+                        function gtaPost2() {
+                            if (gtaPost.length < gtaFinalString.length) {
+                                let post02 = gtaFinalString.substr((bestBreak()), (bestEndBreak()));
+                                return post02;
+                            } else {
+                                return "";
+                            }
+                        }
+                        //console.log(`gtaPost2().length:${gtaPost2().length || 0}`);
+
+                        let gtaEmbed = new EmbedBuilder()
+                            .setColor(0x00CD06) //Green
+                            .setTitle(`${gtaMainTitle}`)
+                            .setDescription(`${gtaPost}${gtaFooterMin()}${ellipsisFunction()}`)
+                        let gtaEmbed2 = new EmbedBuilder()
+                            .setColor(0x00CD06) //Green
+                            .setDescription(`${ellipsisFunction()} \n${gtaPost2()} ${ellipsisFunction2()}${gtaFooterMax()}`)
+                        let gtaImageEmbed = new EmbedBuilder()
+                            .setColor(0x00CD06) //Green
+                            .setImage(`${gtaImage}`);
+
+                        //console.log(`gtaFinal.l: ${gtaFinal.length}`);
+
+
+
+                        //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
+                        //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//		
+                        //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
+
+
+                        var channelIDArray = channelIDs.split('  - ');
+                        //console.log(`channelIDArray length: ${channelIDArray.length}`);
+                        //console.log(`channelIDArray: ${channelIDArray}`);
+                        for (c = 0; c <= channelIDArray.length - 2; c++) { //last element will always be blank
+                            //console.log(`channelIDArray at ${c}: ${channelIDArray[c]}`);
+                            if (channelIDArray[c].startsWith("undefined")) { return }
+
+                            function permission() {
+                                if (!(interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.ViewChannel)) { // missing all permissions - can't send messages or embed links without view permission
+                                    if (lang === "en") {
+                                        return `View Channel, Send Messages, and Embed Links`;
                                     }
-                                    return `${notATitleIndex001}`;
-                                }
-                                //console.log(`notATitleIndex: ${notATitleIndex()}`);
-                                let notATitleIndex01 = notATitleIndex();
-                                //console.log(`notATitleIndex01: ${notATitleIndex01}`);
-
-                                function notATitleBonus() {
-                                    let gtaTitles001 = gtaLinkFormatted.split("<p><b>");
-
-                                    let notATitleBonus = "";
-                                    for (i = 0; i <= gtaTitles001.length - 1; i++) {
-                                        if (gtaTitles001[i].charAt(1) != gtaTitles001[i].charAt(1).toUpperCase()) {
-                                            notATitleBonus += `${gtaTitles001[i]}`;
-                                        }
+                                    if (lang === "es") {
+                                        return `Ver canal y Enviar mensajes y Insertar enlaces`;
                                     }
-                                    return `${notATitleBonus}`;
-                                }
-                                //console.log(`notATitleBonus: ${notATitleBonus()}`);
-                                let notATitleBonus01 = notATitleBonus();
-                                let notATitleBonusFirstWord = notATitleBonus01.split(" ");
-                                //console.log(`notATitleBonusFirstWord[0]: ${notATitleBonusFirstWord[0]}`);
-
-                                function gtaBoldFormatted() {
-                                    if (notATitleIndex01 != "") {
-                                        return gtaLinkFormatted.replace(new RegExp(`<p><b>${notATitleBonusFirstWord[0]}`, "g"), `<p>${notATitleBonusFirstWord[0]}`); //replaces any words that are bold at the beginning of a paragraph with non-bold
+                                    if (lang === "pt") {
+                                        return `Ver canal e Enviar mensagens e Inserir links`;
+                                    }
+                                    if (lang === "ru") {
+                                        return `Посмотреть каналa и Отправить сообщения и Вставить ссылки`
+                                    }
+                                    if (lang === "de") {
+                                        return `Kanal anzeigen-Berechtigung und Nachrichten senden-Berechtigung und Links einbetten-Berechtigung`;
+                                    }
+                                    else if (lang === "pl") {
+                                        return `Wyswietlanie kanalu, Wysykanie wiadomosci i Wyswietlanie podgladu linku`;
+                                    }
+                                    else if (lang === "fr") {
+                                        return `Voir le salon, Envoyer des messages et intégrer des liens`;
+                                    }
+                                    else if (lang === "it") {
+                                        return `Visualizzare il canale, Inviare i messaggi e Incorporare i link`;
+                                    }
+                                    else if (lang === "zh") {
+                                        return `查看频道、发送消息、嵌入链接`;
+                                    }
+                                    else if (lang === "ja") {
+                                        return `チャンネルを見る、メッセージを送信、埋め込みリンク`;
+                                    }
+                                    else if (lang === "ko") {
+                                        return `채널 보기、 메시지 보내기、 링크 첨부`;
                                     }
                                     else {
-                                        return gtaLinkFormatted;
+                                        return `View Channel, Send Messages, and Embed Links`;
+                                    }
+                                }
+                                else if (!((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.EmbedLinks))) {
+                                    if (lang === "en") {
+                                        return `Embed Links`;
+                                    }
+                                    if (lang === "pt") {
+                                        return `Inserir links`;
+                                    }
+                                    if (lang === "es") {
+                                        return `Insertar enlaces`;
+                                    }
+                                    if (lang === "ru") {
+                                        return `Вставить ссылки`
+                                    }
+                                    if (lang === "de") {
+                                        return `Links einbetten-Berechtigung`;
+                                    }
+                                    else if (lang === "pl") {
+                                        return `Wyswietlanie podgladu linku`;
+                                    }
+                                    else if (lang === "fr") {
+                                        return `Intégrer des liens`;
+                                    }
+                                    else if (lang === "it") {
+                                        return `Incorporare i link`;
+                                    }
+                                    else if (lang === "zh") {
+                                        return `嵌入链接`;
+                                    }
+                                    else if (lang === "ja") {
+                                        return `埋め込みリンク`;
+                                    }
+                                    else if (lang === "ko") {
+                                        return `링크 첨부`;
+                                    }
+                                    else {
+                                        return `Embed Links`;
+                                    }
+                                }
+                                else if (!(interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.SendMessages)) { //missing send messages also prevents embedding links
+                                    if (lang === "en") {
+                                        return `Send Messages and Embed Links`;
+                                    }
+                                    if (lang === "es") {
+                                        return `Enviar mensajes y Insertar enlaces`;
+                                    }
+                                    if (lang === "pt") {
+                                        return `Enviar mensagens e Inserir links`;
+                                    }
+                                    if (lang === "ru") {
+                                        return `Отправить сообщения и Вставить ссылки`
+                                    }
+                                    if (lang === "de") {
+                                        return `Nachrichten senden-Berechtigung und Links einbetten-Berechtigung`;
+                                    }
+                                    else if (lang === "pl") {
+                                        return `Wysykanie wiadomosci i Wyswietlanie podgladu linku`;
+                                    }
+                                    else if (lang === "fr") {
+                                        return `Envoyer des messages et intégrer des liens`;
+                                    }
+                                    else if (lang === "it") {
+                                        return `Inviare i messaggi e Incorporare i link`;
+                                    }
+                                    else if (lang === "zh") {
+                                        return `发送消息 和 嵌入链接`;
+                                    }
+                                    else if (lang === "ja") {
+                                        return `メッセージを送信 と 埋め込みリンク`;
+                                    }
+                                    else if (lang === "ko") {
+                                        return `메시지 보내기 그리고 링크 첨부`;
+                                    }
+                                    else {
+                                        return `Send Messages and Embed Links`;
                                     }
                                 }
 
-                                //console.log(`gtaBoldFormatted(): ${gtaBoldFormatted()}`);
+                            }	//end permission() function	
 
-                                //--------------------END checking for words that are bold at the beginning of a paragraph-------------------//
-
-
-                                //--------------------BEGIN checking for titles that include the bonus-------------------//
-
-                                function notATitle() { //</b></p> //<p><b>
-                                    let gtaTitles001 = gtaBoldFormatted().split("<p><b>");
-
-                                    let notATitle01 = `_ _</b></p>${gtaTitles001[0]}<p><b>`; //creates an empty title at the beginning so the intro paragraph is a bonus
-
-                                    for (i = 1; i <= gtaTitles001.length - 1; i++) {
-                                        let gta_titles01 = gtaTitles001[i].split("</b></p>");
-                                        let gta_titles = `${gta_titles01[0]}</b></p>`;
-                                        let gta_bonuses = `${gta_titles01[1]}<p><b>`;
-                                        if (gta_titles.includes("\n")) {
-                                            let gta_titles_01 = gta_titles.split("<");
-                                            let gta_bonuses_01 = gta_titles.split("\n");
-
-                                            gta_titles = `${gta_titles_01[0]}</b></p>`;
-                                            gta_bonuses = `${gta_bonuses_01[1]}<p><b>`;
-
-                                        }
-                                        notATitle01 += `${gta_titles}`;
-                                        notATitle01 += `${gta_bonuses}`;
-                                        //console.log(`i:${i} - gta_titles:${gta_titles}\ngta_bonuses:${gta_bonuses}\ni:${i}`);						
+                            function sentPostDesc() {
+                                if (permission() === undefined) {
+                                    if (lang === "en") {
+                                        return `• A post has been sent to <#${channelIDArray[c]}>!\n`;
                                     }
-                                    return notATitle01;
-                                }
-                                //console.log(`notATitle:${notATitle()}`);
-
-                                //--------------------END checking for titles that include the bonus-------------------//
-
-                                let GTABonuses01 = notATitle().split("<p><b>");
-                                //console.log(`GTABonuses01: ${GTABonuses01}`)
-                                let gtaFinalString01 = "";	//gtaFinalString before HTML formatting
-
-                                //-----BEGIN for loop-----//		
-
-                                //console.log(`GTABonuses01 length: ${GTABonuses01.length}`);
-                                for (i = 0; i <= GTABonuses01.length - 3; i++) { //final element will always be blank
-                                    //console.log(`GTABonuses01 at ${i}: ${GTABonuses01}`);
-                                    let GTABonuses = GTABonuses01[i].split("</b></p>");
-                                    //console.log(`GTATitles at ${i}: ${GTABonuses[0]}\nGTABonuses at ${i}: ${GTABonuses[1]}`);
-
-																		let GTA_Title = `${GTABonuses[0]} `;
-								                    let GTA_Bonus = GTABonuses[1];
-								                    //console.log(`GTA_Title at ${i}: ${GTA_Title} `);		
-								                    //console.log(`GTA_Bonus at ${i}: ${GTA_Bonus}`);
-
-                                    //----------BEGIN populating gtaFinalString01 ----------//
-                                    if ((GTA_Bonus != null) && (!GTA_Title.includes("undefined")) && (!GTA_Bonus.includes("undefined"))) {
-                                        let gtaParas = GTA_Bonus.split("<p>");
-                                        if (
-							                            (GTA_Title.toLowerCase() === "gta+ ") ||
-							                            (GTA_Title.toLowerCase() === "discounts ") ||
-																					(GTA_Title.toLowerCase() === "and more... ") ||
-							                            (GTA_Title.toLowerCase() === "descuentos ") ||
-							                            (GTA_Title.includes("СКИДКИ")) ||
-																					(GTA_Title.includes("折扣優惠")) ||
-																					(GTA_Title.includes("割引")) ||
-																					(GTA_Title.includes("할인")) ||
-							                            (GTA_Title.toLowerCase() === "rabatte ") ||
-																					(GTA_Title.toLowerCase() === "zniżki ") ||
-							                            (GTA_Title.toLowerCase() === "descontos ") ||
-																					(GTA_Title.toLowerCase() === "promotions ") ||
-																					(GTA_Title.toLowerCase() === "sconti ")
-                                        ) {
-                                            //console.log(`1 - discount`);
-                                            gtaFinalString01 += `**${GTA_Title}**\n`;
-                                            var k = 0;
-                                            while (gtaParas[k] !== undefined) {
-                                                if (gtaParas[k].includes("•")) {
-                                                    //console.log(`1 - discount includes •`);
-                                                    gtaFinalString01 += `${gtaParas[k]}`;
-                                                }
-                                                else {
-                                                    //console.log(`1 - discount does not include •`);
-                                                    gtaFinalString01 += `• ${gtaParas[k]}`;
-                                                }
-                                                k++;
-                                            }
-                                            gtaFinalString01 += "\n";
-                                        }
-                                        else if (
-                                            (GTA_Title.toLowerCase().includes("hsw")) ||
-                                            (GTA_Title.toLowerCase().includes("premium test ride")) ||
-                                            (GTA_Title.toLowerCase().includes("vehículo de prueba premium")) ||
-                                            (GTA_Title.includes("Премиум-класса")) ||
-                                            (GTA_Title.includes("Тестовый транспорт")) ||
-                                            (GTA_Title.toLowerCase().includes("premium-testfahrzeug")) ||
-                                            (GTA_Title.toLowerCase().includes("veículo de teste premium"))
-                                        ) {
-                                            //console.log(`2 - only on playstation`);
-                                            gtaFinalString01 += `• ${GTA_Title}\n`;
-                                            if (GTA_Title.toLowerCase().includes("hsw")) {
-                                                gtaFinalString01 += "\n"
-                                            }
-                                        }
-                                        else if ( //Adds only the title if the paragraph is unecessary
-							                            (GTA_Title.toLowerCase().includes("1.5x")) ||
-							                            (GTA_Title.toLowerCase().includes("1,5x")) ||
-							                            (GTA_Title.toLowerCase().includes("2x")) ||
-							                            (GTA_Title.toLowerCase().includes("2.5x")) ||
-							                            (GTA_Title.toLowerCase().includes("2,5x")) ||
-							                            (GTA_Title.toLowerCase().includes("3x")) ||
-							                            (GTA_Title.toLowerCase().includes("4x")) ||
-							                            (GTA_Title.toLowerCase().includes("40%")) ||
-							                            (GTA_Title.toLowerCase().includes("40 %")) ||
-							                            (GTA_Title.toLowerCase().includes("50%")) ||
-							                            (GTA_Title.toLowerCase().includes("50 %")) ||
-							                            (GTA_Title.toLowerCase().includes("double")) ||
-							                            (GTA_Title.toLowerCase().includes("doble")) ||
-																					(GTA_Title.toLowerCase().includes("doublés")) ||
-																					(GTA_Title.toLowerCase().includes("doppi")) ||
-							                            (GTA_Title.toLowerCase().includes("preisfahrzeug")) ||
-							                            (GTA_Title.toLowerCase().includes("veículo-prêmio")) ||
-							                            (GTA_Title.toLowerCase().includes("diamond casino")) ||
-							                            (GTA_Title.toLowerCase().includes("cassino diamond")) ||
-							                            (GTA_Title.includes("ПРИЗОВОЙ ТРАНСПОРТ")) ||
-																					(GTA_Title.includes("ВДВОЕ БОЛЬШЕ")) ||
-																					(GTA_Title.includes("ВТРОЕ БОЛЬШЕ"))
-                                        ) {
-                                            //console.log(`3 - only title`);
-                                            gtaFinalString01 += `**${GTA_Title}**\n\n`;
-                                        }
-                                        else { // only post the first paragraph
-                                            //console.log(`4 - else`);
-                                            if ((gtaParas[1] !== undefined) && (gtaParas[1] !== "")) {
-                                                //console.log(`4 - title + bonus - bonus length:${gtaParas[1].length}`);
-                                                if (gtaParas[1].length <= 510) {
-                                                    gtaFinalString01 += `**${GTA_Title}**\n• ${gtaParas[1]}\n\n`;
-                                                }
-                                                else {
-                                                    gtaFinalString01 += `**${GTA_Title}**\n\n`;
-                                                }
-                                            }
-                                            else if ((GTA_Title !== undefined) && (GTA_Title !== "")) {
-                                                //console.log(`4 - title only`);
-                                                gtaFinalString01 += `**${GTA_Title}**\n\n`;
-                                            }
-                                        }
+                                    else if (lang === "es") {
+                                        return `• El mensaje ha sido enviado a <#${channelIDArray[c]}>.\n`;
                                     }
-                                    else if ((GTA_Title != null) && (!GTA_Title.includes("undefined")) && (GTA_Title != "")) { //if the bonus is in the title
-                                        //console.log(`5 - bonusintitle`);
-                                        var bonusInTitle = GTA_Title.split("<");
-                                        var bonusInTitleBonus = bonusInTitle[1].split(">");
-                                        gtaFinalString01 += `**${bonusInTitle[0]}**\n`;
-                                        gtaFinalString01 += `• ${bonusInTitleBonus[1]}\n\n`;
+                                    else if (lang === "pt") {
+                                        return `• Uma mensagem foi enviada para <#${channelIDArray[c]}>.\n`;
                                     }
-
-                                }//end looping through bonuses - i loop
-
-                                //-----------END for loop----------//			
-                                //console.log(`gtaFinalString01: ${gtaFinalString01}`); //gtaFinalString before HTML formatting
-                                let gtaFinalString = gtaFinalString01
-                                    .replace(/<p>/g, "")
-                                    .replace(/<\/p>/g, "\n")
-                                    .replace(/<\/b>/g, "")
-                                    .replace(/<b>/g, "")
-                                    .replace(/\n\n• /g, "\n• ") //removes spaces before a list
-                                    .replace(/\n \n• /g, "\n• ") //removes spaces before a list
-                                    .replace(/• \n/g, "• ") //removes spaces after a list
-                                    .replace(/•  \n/g, "• ") //removes spaces after a list
-                                    .replace(/• •/g, "•") //removes double bullet points
-                                    .replace(/.\n\*\*/g, ".\n\n**") //fixes missing space before new title 
-                                    .replace(/        /, "")//removes the trailing spaces 
-                                    .replace(/\n\n\n/g, "\n")
-																		.replace(/ \n\*\*/g, " \n\n\*\*") //adds a space before titles if missing
-                                //console.log(`gtaFinalString: ${gtaFinalString}`); //gtaFinalString after HTML formatting
-                                //console.log(`gtaFinalString.length: ${gtaFinalString.length}`);
-
-                                var constChars = (gtaDate.length + 2) + (gtaTitleOG.length);
-                                function ellipsisFunction() {
-                                    if (gtaFinalString.length >= (4000 - constChars)) {
-                                        return "...";
-                                    } else {
-                                        return "";
+                                    else if (lang === "ru") {
+                                        return `• Cообщение было отправлено на <#${channelIDArray[c]}>.\n`;
+                                    }
+                                    else if (lang === "de") {
+                                        return `• Eine Nachricht wurde an <#${channelIDArray[c]}> gesendet.\n`;
+                                    }
+                                    else if (lang === "pl") {
+                                        return `• Wiadomość została wysłana do <#${channelIDArray[c]}>.`;
+                                    }
+                                    else if (lang === "fr") {
+                                        return `• Un message a été envoyé à <#${channelIDArray[c]}>.`;
+                                    }
+                                    else if (lang === "it") {
+                                        return `• Un messaggio è stato inviato a <#${channelIDArray[c]}>.`;
+                                    }
+                                    else if (lang === "zh") {
+                                        return `• 消息已發送至<#${channelIDArray[c]}>。`;
+                                    }
+                                    else if (lang === "ja") {
+                                        return `• メッセージが <#${channelIDArray[c]}> チャネルに送信されました。`;
+                                    }
+                                    else if (lang === "ko") {
+                                        return `• 메시지가 <#${channelIDArray[c]}>로 전송되었습니다.`;
+                                    }
+                                    else {
+                                        return `• A post has been sent to <#${channelIDArray[c]}>!\n`;
+                                    }
+                                } else {
+                                    if (lang === "en") {
+                                        return `• The bot is missing the ${permission()} permission in <#${channelIDArray[c]}>.\n`;
+                                    }
+                                    else if (lang === "es") {
+                                        return `• Al bot le falta el permiso ${permission()} en <#${channelIDArray[c]}>.\n`;
+                                    }
+                                    else if (lang === "pt") {
+                                        return `• O bot está sem a permissão ${permission()} em <#${channelIDArray[c]}>.\n`;
+                                    }
+                                    else if (lang === "ru") {
+                                        return `• У бота нет разрешения на ${permission()} в <#${channelIDArray[c]}>.\n`;
+                                    }
+                                    else if (lang === "de") {
+                                        return `• Dem Bot fehlt die ${permission()} in <#${channelIDArray[c]}>.\n`;
+                                    }
+                                    else if (lang === "pl") {
+                                        return `• Bot nie ma uprawnień ${permission()} w <#${channelIDArray[c]}>.\n`;
+                                    }
+                                    else if (lang === "fr") {
+                                        return `• Le bot n'a pas l'autorisation ${permission()} dans <#${channelIDArray[c]}>.\n`;
+                                    }
+                                    else if (lang === "it") {
+                                        return `• Al bot manca l'autorizzazione ${permission()} in <#${channelIDArray[c]}>.\n`;
+                                    }
+                                    else if (lang === "zh") {
+                                        return `• 機器人缺少 <#${channelIDArray[c]}> 中的 ${permission()} 權限.\n`;
+                                    }
+                                    else if (lang === "ja") {
+                                        return `• ボットに <#${channelIDArray[c]}> の ${permission()} 権限がありません.\n`;
+                                    }
+                                    else if (lang === "ko") {
+                                        return `• 봇에 <#${channelIDArray[c]}>의 ${permission()} 권한이 없습니다.\n`;
+                                    }
+                                    else {
+                                        return `• The bot is missing the ${permission()} permission in <#${channelIDArray[c]}>.\n`;
                                     }
                                 }
-                                function ellipsisFunction2() {
-                                    if (gtaFinalString.length >= (6000 - constChars - gtaImage[0].length)) {
-                                        return "...\n";
-                                    } else {
-                                        return "";
-                                    }
-                                }
-                                function gtaFooterMin() {
-                                    if (gtaFinalString.length < (4000 - constChars)) {
-                                        if (lang === "en") {
-                                            return `** [More details](${url})**`;
-                                        }
-                                        else if (lang === "es") {
-                                            return `** [Más detalles](${url})**`;
-                                        }
-                                        else if (lang === "ru") {
-                                            return `** [Подробнее](${url})**`;
-                                        }
-                                        else if (lang === "de") {
-                                            return `** [Mehr Details](${url})**`;
-                                        }
-                                        else if (lang === "pt") {
-                                            return `** [Mais detalhes](${url})**`;
-                                        }
-                                        else if (lang === "fr") {
-                                            return `** [Plus de détails](${url})**`;
-                                        }
-                                        else if (lang === "it") {
-                                            return `** [Più dettagli](${url})**`;
-                                        }
-                                        else if (lang === "zh") {
-                                            return `** [更多細節](${url})**`;
-                                        }
-                                        else if (lang === "pl") {
-                                            return `** [Więcej szczegółów](${url})**`;
-                                        }
-                                        else if (lang === "ko") {
-                                            return `** [자세한 내용은](${url})**`;
-                                        }
-                                        else if (lang === "ja") {
-                                            return `** [詳細](${url})**`;
-                                        }
-                                        else {
-                                            return `** [More Details](${url})**`;
-                                        }
-                                    } else {
-                                        return "";
-                                    }
-                                }
-                                function gtaFooterMax() {
-                                    if (gtaFinalString.length >= (4000 - constChars)) {
-                                        if (lang === "en") {
-                                            return `** [More details](${url})**`;
-                                        }
-                                        else if (lang === "es") {
-                                            return `** [Más detalles](${url})**`;
-                                        }
-                                        else if (lang === "ru") {
-                                            return `** [Подробнее](${url})**`;
-                                        }
-                                        else if (lang === "de") {
-                                            return `** [Mehr Details](${url})**`;
-                                        }
-                                        else if (lang === "pt") {
-                                            return `** [Mais detalhes](${url})**`;
-                                        }
-                                        else if (lang === "fr") {
-                                            return `** [Plus de détails](${url})**`;
-                                        }
-                                        else if (lang === "it") {
-                                            return `** [Più dettagli](${url})**`;
-                                        }
-                                        else if (lang === "zh") {
-                                            return `** [更多細節](${url})**`;
-                                        }
-                                        else if (lang === "pl") {
-                                            return `** [Więcej szczegółów](${url})**`;
-                                        }
-                                        else if (lang === "ko") {
-                                            return `** [자세한 내용은](${url})**`;
-                                        }
-                                        else if (lang === "ja") {
-                                            return `** [詳細](${url})**`;
-                                        }
-                                        else {
-                                            return `** [More Details](${url})**`;
-                                        }
-                                    } else {
-                                        return "";
-                                    }
-                                }
-
-                                constChars += (gtaFooterMin().length) + (ellipsisFunction().length);
-                                var gtaNewlines = gtaFinalString.substr(0, (4000 - constChars)).split("\n\n");
-                                var tempString = gtaNewlines[gtaNewlines.length - 1];
-                                function bestBreak() {
-                                    if (gtaFinalString.length <= (4000 - constChars)) {
-                                        return (gtaFinalString.length);
-                                    }
-                                    return (4000 - constChars - tempString.length);
-                                }
-                                //console.log(`bestBreak: ${bestBreak()}`);
-
-                                var constChars1 = (gtaFooterMax().length) + (ellipsisFunction().length) + (ellipsisFunction2().length) + gtaImage[0].length;
-                                var gtaNewlines1 = gtaFinalString.substr(bestBreak(), (6000 - constChars - constChars1 - bestBreak())).split("\n");
-                                var tempString1 = gtaNewlines1[gtaNewlines1.length - 1];
-                                function bestEndBreak() {
-                                    if (gtaFinalString.length <= (6000 - constChars - constChars1)) {
-                                        return gtaFinalString.length;
-                                    }
-                                    return (6000 - bestBreak() - constChars - constChars1 - tempString1.length); //removes the last bonus if over 6000 chars
-                                }
-                                //console.log(`bestEndBreak:${bestEndBreak()}`);
-
-                                function gtaPost() {
-                                    return gtaFinalString.slice(0, (bestBreak()));
-                                }
-                                //console.log(`gtaPost().length:${gtaPost().length || 0}`);
-                                function gtaPost2() {
-                                    if (gtaPost().length < gtaFinalString.length) {
-                                        let post02 = gtaFinalString.substr((bestBreak()), (bestEndBreak()));
-                                        return post02;
-                                    } else {
-                                        return "";
-                                    }
-                                }
-                                //console.log(`gtaPost2().length:${gtaPost2().length || 0}`);
-
-                                let gtaEmbed = new EmbedBuilder()
-                                    .setColor(0x00CD06) //Green
-                                    .setTitle(`${gtaTitleOG}`)
-                                    .setDescription(`${gtaDate}\n${gtaPost()}${gtaFooterMin()}${ellipsisFunction()}`)
-                                let gtaEmbed2 = new EmbedBuilder()
-                                    .setColor(0x00CD06) //Green
-                                    .setDescription(`${ellipsisFunction()} \n${gtaPost2()} ${ellipsisFunction2()}${gtaFooterMax()}`)
-                                let gtaImageEmbed = new EmbedBuilder()
-                                    .setColor(0x00CD06) //Green
-                                    .setImage(`${gtaImage[0]}`);
-
-                                // console.log(`gtaEmbed length: ${gtaEmbed.length}`); //no more than 4096 (line 199)
-                                // console.log(`gtaEmbed2 length: ${gtaEmbed2.length}`); //no more than 6000 - gtaEmbed.length (line 204)
-
-
-
-                                //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
-                                //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//		
-                                //-------------------------------------DO NOT CHANGE ANYTHING BELOW THIS-------------------------------------//
-
-
-                                var channelIDArray = channelIDs.split('  - ');
-                                //console.log(`channelIDArray length: ${channelIDArray.length}`);
-                                //console.log(`channelIDArray: ${channelIDArray}`);
-                                for (c = 0; c <= channelIDArray.length - 2; c++) { //last element will always be blank
-                                    //console.log(`channelIDArray at ${c}: ${channelIDArray[c]}`);
-                                    if (channelIDArray[c].startsWith("undefined")) { return }
-
-                                    function permission() {
-                                        if (!(interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.ViewChannel)) { // missing all permissions - can't send messages or embed links without view permission
-                                            if (lang === "en") {
-                                                return `View Channel, Send Messages, and Embed Links`;
-                                            }
-                                            if (lang === "es") {
-                                                return `Ver canal y Enviar mensajes y Insertar enlaces`;
-                                            }
-                                            if (lang === "pt") {
-                                                return `Ver canal e Enviar mensagens e Inserir links`;
-                                            }
-                                            if (lang === "ru") {
-                                                return `Посмотреть каналa и Отправить сообщения и Вставить ссылки`
-                                            }
-                                            if (lang === "de") {
-                                                return `Kanal anzeigen-Berechtigung und Nachrichten senden-Berechtigung und Links einbetten-Berechtigung`;
-                                            }
-                                            else if (lang === "pl") {
-                                                return `Wyswietlanie kanalu, Wysykanie wiadomosci i Wyswietlanie podgladu linku`;
-                                            }
-                                            else if (lang === "fr") {
-                                                return `Voir le salon, Envoyer des messages et intégrer des liens`;
-                                            }
-                                            else if (lang === "it") {
-                                                return `Visualizzare il canale, Inviare i messaggi e Incorporare i link`;
-                                            }
-                                            else if (lang === "zh") {
-                                                return `查看频道、发送消息、嵌入链接`;
-                                            }
-                                            else if (lang === "ja") {
-                                                return `チャンネルを見る、メッセージを送信、埋め込みリンク`;
-                                            }
-                                            else if (lang === "ko") {
-                                                return `채널 보기、 메시지 보내기、 링크 첨부`;
-                                            }
-                                            else {
-                                                return `View Channel, Send Messages, and Embed Links`;
-                                            }
-                                        }
-                                        else if (!((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.EmbedLinks))) {
-                                            if (lang === "en") {
-                                                return `Embed Links`;
-                                            }
-                                            if (lang === "pt") {
-                                                return `Inserir links`;
-                                            }
-                                            if (lang === "es") {
-                                                return `Insertar enlaces`;
-                                            }
-                                            if (lang === "ru") {
-                                                return `Вставить ссылки`
-                                            }
-                                            if (lang === "de") {
-                                                return `Links einbetten-Berechtigung`;
-                                            }
-                                            else if (lang === "pl") {
-                                                return `Wyswietlanie podgladu linku`;
-                                            }
-                                            else if (lang === "fr") {
-                                                return `Intégrer des liens`;
-                                            }
-                                            else if (lang === "it") {
-                                                return `Incorporare i link`;
-                                            }
-                                            else if (lang === "zh") {
-                                                return `嵌入链接`;
-                                            }
-                                            else if (lang === "ja") {
-                                                return `埋め込みリンク`;
-                                            }
-                                            else if (lang === "ko") {
-                                                return `링크 첨부`;
-                                            }
-                                            else {
-                                                return `Embed Links`;
-                                            }
-                                        }
-                                        else if (!(interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.SendMessages)) { //missing send messages also prevents embedding links
-                                            if (lang === "en") {
-                                                return `Send Messages and Embed Links`;
-                                            }
-                                            if (lang === "es") {
-                                                return `Enviar mensajes y Insertar enlaces`;
-                                            }
-                                            if (lang === "pt") {
-                                                return `Enviar mensagens e Inserir links`;
-                                            }
-                                            if (lang === "ru") {
-                                                return `Отправить сообщения и Вставить ссылки`
-                                            }
-                                            if (lang === "de") {
-                                                return `Nachrichten senden-Berechtigung und Links einbetten-Berechtigung`;
-                                            }
-                                            else if (lang === "pl") {
-                                                return `Wysykanie wiadomosci i Wyswietlanie podgladu linku`;
-                                            }
-                                            else if (lang === "fr") {
-                                                return `Envoyer des messages et intégrer des liens`;
-                                            }
-                                            else if (lang === "it") {
-                                                return `Inviare i messaggi e Incorporare i link`;
-                                            }
-                                            else if (lang === "zh") {
-                                                return `发送消息 和 嵌入链接`;
-                                            }
-                                            else if (lang === "ja") {
-                                                return `メッセージを送信 と 埋め込みリンク`;
-                                            }
-                                            else if (lang === "ko") {
-                                                return `메시지 보내기 그리고 링크 첨부`;
-                                            }
-                                            else {
-                                                return `Send Messages and Embed Links`;
-                                            }
-                                        }
-
-                                    }	//end permission() function	
-
-                                    function sentPostDesc() {
-                                        if (permission() === undefined) {
-                                            if (lang === "en") {
-                                                return `• A post has been sent to <#${channelIDArray[c]}>!\n`;
-                                            }
-                                            else if (lang === "es") {
-                                                return `• El mensaje ha sido enviado a <#${channelIDArray[c]}>.\n`;
-                                            }
-                                            else if (lang === "pt") {
-                                                return `• Uma mensagem foi enviada para <#${channelIDArray[c]}>.\n`;
-                                            }
-                                            else if (lang === "ru") {
-                                                return `• Cообщение было отправлено на <#${channelIDArray[c]}>.\n`;
-                                            }
-                                            else if (lang === "de") {
-                                                return `• Eine Nachricht wurde an <#${channelIDArray[c]}> gesendet.\n`;
-                                            }
-                                            else if (lang === "pl") {
-                                                return `• Wiadomość została wysłana do <#${channelIDArray[c]}>.`;
-                                            }
-                                            else if (lang === "fr") {
-                                                return `• Un message a été envoyé à <#${channelIDArray[c]}>.`;
-                                            }
-                                            else if (lang === "it") {
-                                                return `• Un messaggio è stato inviato a <#${channelIDArray[c]}>.`;
-                                            }
-                                            else if (lang === "zh") {
-                                                return `• 消息已發送至<#${channelIDArray[c]}>。`;
-                                            }
-                                            else if (lang === "ja") {
-                                                return `• メッセージが <#${channelIDArray[c]}> チャネルに送信されました。`;
-                                            }
-                                            else if (lang === "ko") {
-                                                return `• 메시지가 <#${channelIDArray[c]}>로 전송되었습니다.`;
-                                            }
-                                            else {
-                                                return `• A post has been sent to <#${channelIDArray[c]}>!\n`;
-                                            }
-                                        } else {
-                                            if (lang === "en") {
-                                                return `• The bot is missing the ${permission()} permission in <#${channelIDArray[c]}>.\n`;
-                                            }
-                                            else if (lang === "es") {
-                                                return `• Al bot le falta el permiso ${permission()} en <#${channelIDArray[c]}>.\n`;
-                                            }
-                                            else if (lang === "pt") {
-                                                return `• O bot está sem a permissão ${permission()} em <#${channelIDArray[c]}>.\n`;
-                                            }
-                                            else if (lang === "ru") {
-                                                return `• У бота нет разрешения на ${permission()} в <#${channelIDArray[c]}>.\n`;
-                                            }
-                                            else if (lang === "de") {
-                                                return `• Dem Bot fehlt die ${permission()} in <#${channelIDArray[c]}>.\n`;
-                                            }
-                                            else if (lang === "pl") {
-                                                return `• Bot nie ma uprawnień ${permission()} w <#${channelIDArray[c]}>.\n`;
-                                            }
-                                            else if (lang === "fr") {
-                                                return `• Le bot n'a pas l'autorisation ${permission()} dans <#${channelIDArray[c]}>.\n`;
-                                            }
-                                            else if (lang === "it") {
-                                                return `• Al bot manca l'autorizzazione ${permission()} in <#${channelIDArray[c]}>.\n`;
-                                            }
-                                            else if (lang === "zh") {
-                                                return `• 機器人缺少 <#${channelIDArray[c]}> 中的 ${permission()} 權限.\n`;
-                                            }
-                                            else if (lang === "ja") {
-                                                return `• ボットに <#${channelIDArray[c]}> の ${permission()} 権限がありません.\n`;
-                                            }
-                                            else if (lang === "ko") {
-                                                return `• 봇에 <#${channelIDArray[c]}>의 ${permission()} 권한이 없습니다.\n`;
-                                            }
-                                            else {
-                                                return `• The bot is missing the ${permission()} permission in <#${channelIDArray[c]}>.\n`;
-                                            }
-                                        }
-                                    }
-                                    //console.log(`sentPostDesc() at c${c}: ${sentPostDesc()}`);
-                                    sentPostDescString += `${sentPostDesc()}`;
-
-                                    if ((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.EmbedLinks])) {	//If the bot has all permissions
-                                        if (gtaFinalString.length < (4000 - constChars)) {
-                                            interaction.guild.channels.fetch(channelIDArray[c]).then(channel => channel.send(({ embeds: [gtaImageEmbed, gtaEmbed] }))).catch(err => console.log(`GTA Test Min Error: ${err.stack}`));
-                                        } else {
-                                            interaction.guild.channels.fetch(channelIDArray[c]).then(channel => channel.send({ embeds: [gtaImageEmbed, gtaEmbed, gtaEmbed2] })).catch(err => console.log(`GTA Test Max Error: ${err.stack}`));
-                                        }
-                                    }
-
-
-                                } //end c loop
-
                             }
-                            else {
-                                let RStarDownEmbed = new EmbedBuilder()
-                                    .setColor(0xFF0000) //RED
-                                    .setDescription(`The Rockstar Social Club website is down. \nPlease try again later.`)
-                                client.channels.fetch(process.env.logChannel2).then(channel => channel.send({ embeds: [RStarDownEmbed], ephemeral: true }));
-                                console.log(`The Rockstar Social Club website is down.`);
+                            //console.log(`sentPostDesc() at c${c}: ${sentPostDesc()}`);
+                            sentPostDescString += `${sentPostDesc()}`;
+
+                            if ((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.EmbedLinks])) {	//If the bot has all permissions
+                                if (gtaFinalString.length < (4000 - constChars)) {
+                                    interaction.guild.channels.fetch(channelIDArray[c]).then(channel => channel.send(({ embeds: [gtaImageEmbed, gtaEmbed] }))).catch(err => console.log(`GTA Test Min Error: ${err.stack}`));
+                                } else {
+                                    interaction.guild.channels.fetch(channelIDArray[c]).then(channel => channel.send({ embeds: [gtaImageEmbed, gtaEmbed, gtaEmbed2] })).catch(err => console.log(`GTA Test Max Error: ${err.stack}`));
+                                }
                             }
-                        } //end if (status === `success`)
-                        else {
-                            let RStarDownEmbed = new EmbedBuilder()
-                                .setColor(0xFF0000) //RED
-                                .setDescription(`The Rockstar Social Club website is down. \nPlease try again later.`)
-                            interaction.followUp({ embeds: [RStarDownEmbed], ephemeral: true });
-                            console.log(`The Rockstar Social Club website is down.`);
-                        }
+
+
+                        } //end c loop
+
 
 
 
