@@ -16,6 +16,9 @@ module.exports = {
         else {
 
             const data = fs.readFileSync('./LANGDataBase.txt', 'utf8');
+						if (!data.includes(interaction.guild.id)) {
+							return "";
+						}
             let lang03 = data.split("lang:");
             //console.log(`lang03.length: ${lang03.length}`);
 
@@ -55,7 +58,7 @@ module.exports = {
                     lang += `${langArray[i]}`;
                 }
             }
-            //console.log(`lang...: ${lang}`);	
+            console.log(`lang...: ${lang}`);	
             return lang;
         }
     }

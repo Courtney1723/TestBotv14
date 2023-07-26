@@ -15,6 +15,7 @@ module.exports = {
             pl: 'Premie GTA Online',
             fr: 'Bonus dans GTA Online',
             it: 'Bonus di GTA Online',
+						"zh-CN": 'GTA 线上模式奖励',
             "zh-TW": 'GTA 線上模式獎勵',
             ja: '「GTAオンライン」ボーナス',
             ko: 'GTA 온라인 보너스',
@@ -24,14 +25,14 @@ module.exports = {
         var startTime = performance.now();
 				await interaction.deferReply().catch(error => {console.log(`GTA Defer Reply Error: \n${error}`)});
 
-        var lang = interaction.locale.toString();
-        console.log(`lang:${lang}`);
+        var LANG = interaction.locale.toString();
+        	//console.log(`LANG:${LANG}`);
 
         var nextBonus01 = await NEXT_BONUS.nextBonus("gta");
         var thisBonus01 = await THIS_BONUS.thisBonus("gta");
             // console.log(`next Bonus: <t:${Math.round(nextBonus01 / 1000)}>`);
 
-        var gtaFetch = await fetch(`${process.env.gtaGraphURL1}${lang}${process.env.gtaGraphURL2}`, {
+        var gtaFetch = await fetch(`${process.env.gtaGraphURL1}${LANG}${process.env.gtaGraphURL2}`, {
             "cache": "default",
             "credentials": "omit",
             "headers": {
@@ -55,39 +56,39 @@ module.exports = {
         var gtaImage = getgtaParse.data.posts.results[1].preview_images_parsed.newswire_block.d16x9;
         //console.log(`gtaImage: ${gtaImage}`);
 
-				function langFunction() {
-					if (supportedLanguages.indexOf(lang.substring(0, 2)) < 0) { //unsupported languages are treated as English
-						return "";
-					}		
-					if (lang.includes("en")) {
+				function langFunction() {		
+					if (LANG.includes("en")) {
 						return "";
 					}
-					if (lang.includes("pt")) {
+					else if (LANG.includes("es")) {
+						return "/es"
+					}
+					else if (LANG.includes("pt")) {
 						return "/br";
 					}	
-					if (lang.includes("CH")) { //simplified Chinese (China)
+					else if (LANG.includes("CN")) { //simplified Chinese (China)
 						return "/zh";
 					}
-					if (lang.includes("TW")) { //traditional Chinese (Taiwan)
+					else if (LANG.includes("TW")) { //traditional Chinese (Taiwan)
 						return "/tw";
 					}	
-					if (lang.includes("ja")) {
+					else if (LANG.includes("ja")) {
 						return "/jp";
 					}						
-					if (lang.includes("ko")) {
+					else if (LANG.includes("ko")) {
 						return "/kr";
 					}
-					if (lang.length >= 3) { //languages like "es-ES" or "pt-BR" are returned as "es" or "pt"
-						return `/${lang.substring(0, 2)}`;
+				  else if (supportedLanguages.indexOf(LANG.substring(0, 2)) < 0) { //unsupported languages are treated as English
+						return "";
 					}
 					else {
-						return `/${lang}`;
+						return `/${LANG}`;
 					}
 				}
 
         var gtaURLHash = getgtaParse.data.posts.results[1].id;
         var gtaURLFull = `https://www.rockstargames.com${langFunction()}${getgtaParse.data.posts.results[1].url}`;
-        var fetchGTA = await fetch(`${process.env.gtaGraphURL3}${gtaURLHash}%22%2C%22locale%22%3A%22${lang}${process.env.gtaGraphURL4}`, {
+        var fetchGTA = await fetch(`${process.env.gtaGraphURL3}${gtaURLHash}%22%2C%22locale%22%3A%22${LANG}${process.env.gtaGraphURL4}`, {
             "cache": "default",
             "credentials": "omit",
             "headers": {
@@ -228,40 +229,40 @@ module.exports = {
             }
         }
 				function footerText() {
-					if (lang.includes("en")) {
+					if (LANG.includes("en")) {
 							return `\n** [More details](${gtaURLFull})**`;
 					}
-					else if (lang.includes("es")) {
+					else if (LANG.includes("es")) {
 							return `\n** [Más detalles](${gtaURLFull})**`;
 					}
-					else if (lang.includes("pt")) {
+					else if (LANG.includes("pt")) {
 							return `\n** [Mais detalhes](${gtaURLFull})**`;
 					}						
-					else if (lang.includes("ru")) {
+					else if (LANG.includes("ru")) {
 							return `\n** [Подробнее](${gtaURLFull})**`;
 					}
-					else if (lang.includes("de")) {
+					else if (LANG.includes("de")) {
 							return `\n** [Mehr Details](${gtaURLFull})**`;
 					}
-					else if (lang.includes("pl")) {
+					else if (LANG.includes("pl")) {
 							return `\n** [Więcej szczegółów](${gtaURLFull})**`;
 					}
-					else if (lang.includes("fr")) {
+					else if (LANG.includes("fr")) {
 							return `\n** [Plus de détails](${gtaURLFull})**`;
 					}
-					else if (lang.includes("it")) {
+					else if (LANG.includes("it")) {
 							return `\n** [Più dettagli](${gtaURLFull})**`;
 					}
-					else if (lang.includes("CN")) {
+					else if (LANG.includes("CN")) {
 							return `\n** [更多细节](${gtaURLFull})**`;
 					}
-					else if (lang.includes("TW")) {
+					else if (LANG.includes("TW")) {
 							return `\n** [更多細節](${gtaURLFull})**`;
 					}
-					else if (lang.includes("ja")) {
+					else if (LANG.includes("ja")) {
 							return `\n** [자세한 내용은](${gtaURLFull})**`;
 					}
-					else if (lang.includes("ko")) {
+					else if (LANG.includes("ko")) {
 							return `\n** [詳細](${gtaURLFull})**`;
 					}
 					else {

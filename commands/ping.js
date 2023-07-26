@@ -25,7 +25,8 @@ module.exports = {
             pl: 'Czas odpowiedzi w milisekundach',
             fr: 'Temps de réponse en millisecondes',
             it: 'Tempo di risposta in millisecondi',
-            "zh-CN": '以毫秒為單位的響應時間',
+            "zh-CN": '以毫秒为单位的响应时间',
+						"zh-TW": '以毫秒為單位的響應時間',
             ja: 'ミリ秒単位の応答時間',
             ko: '응답 시간(밀리초)',
         })

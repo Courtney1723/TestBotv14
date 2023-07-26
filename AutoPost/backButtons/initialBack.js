@@ -8,7 +8,7 @@ module.exports = {
     async execute(interaction) {
 
         if (!interaction.isButton()) { return };
-        if ((interaction.customId.startsWith(`startback -`)) || (interaction.customId.startsWith(`stopback -`)) || (interaction.customId.startsWith(`confirmback -`))) {
+        if ((interaction.customId.startsWith(`startback -`)) || (interaction.customId.startsWith(`stopback -`)) || (interaction.customId.startsWith(`confirmback -`)) || (interaction.customId.startsWith(`langback -`))) {
             await interaction.deferUpdate();
 
             let start_stop_confirm = "";
@@ -21,6 +21,9 @@ module.exports = {
             else if (interaction.customId.startsWith(`confirmback -`)) {
                 start_stop_confirm += 'confirm';
             }
+            else if (interaction.customId.startsWith(`langback -`)) {
+                start_stop_confirm += 'lang';
+            }					
 
             let buttonUserID01 = (interaction.customId).split(`${start_stop_confirm}back - `);
             let buttonUserID = buttonUserID01[1];
@@ -30,14 +33,40 @@ module.exports = {
 
             //--BEGIN TRANSLATIONS--//
 
-            //stored language
-            var lang = await LANG01.LANG(interaction);
-            //console.log(`LANG:${await LANG.LANG(interaction)}`);		
+           //stored language
+		       var lang = await LANG01.LANG(interaction);
+		         //console.log(`server lang: ${await LANG01.LANG(interaction)}`);
+		
+		      //user language
+		      var LANG = interaction.locale.toString();
+		         //console.log(`user LANG:${LANG}`);
 
-            //user language
-            var LANG02 = interaction.locale.toString().split("-");
-            var LANG = LANG02[0];
-            //console.log(`lang:${lang}`);	
+		        function formattedLANG() {
+		            if (LANG.includes("en")) {
+		                return "en";
+		            }
+		            if (LANG.includes("es")) {
+		                return "es";
+		            }
+		            if (LANG.includes("pt")) {
+		                return "br";
+		            }
+		            if (LANG.includes("CN")) {
+		                return "zh";
+		            }
+		            if (LANG.includes("TW")) {
+		                return "tw";
+		            }
+		            if (LANG.includes("ja")) {
+		                return "jp";
+		            }
+		            if (LANG.includes("ko")) {
+		                return "kr";
+		            }
+		            else { //ru, de, pl, fr, it
+		                return `${LANG}`;
+		            }
+		        }						
 
             function autoPostTitle() {
                 if (lang === "en") {
@@ -46,7 +75,7 @@ module.exports = {
                 else if (lang === "es") {
                     return `Configuración automática de publicaciones`;
                 }
-                else if (lang === "pt") {
+                else if (lang === "br") {
                     return `Configurações de mensagens automáticas`;
                 }
                 else if (lang === "ru") {
@@ -64,13 +93,16 @@ module.exports = {
                 else if (lang === "it") {
                     return `Impostazioni dei messaggi automatici`;
                 }
-                else if (lang === "zh") {
-                    return `自動消息設置`;
-                }
-                else if (lang === "ja") {
+		            else if (lang === "zh") {
+		                return `自动消息设置`;
+		            }
+		            else if (lang === "tw") {
+		                return `自動消息設置`;
+		            }
+                else if (lang === "jp") {
                     return `自動メッセージ設定`;
                 }
-                else if (lang === "ko") {
+                else if (lang === "kr") {
                     return `자동 메시지 설정`;
                 }
                 else {
@@ -89,7 +121,7 @@ Click **${confirm()}** to view and test current settings.`;
 Haga clic en **${stop()}** para quitar un canal.
 Haga clic en **${confirm()}** para ver y probar la configuración.`;
                 }
-                else if (lang === "pt") {
+                else if (lang === "br") {
                     return `Clique em **${start()}** para adicionar um canal.
 Clique em **${stop()}** para remover um canal.
 Clique em **${confirm()}** para exibir e testar as configurações atuais.`;
@@ -119,17 +151,22 @@ Cliquez sur **${confirm()}** pour afficher et tester les paramètres.`;
 Fai clic su **${stop()}** per rimuovere un canale di messaggio automatico.
 Fai clic su **${confirm()}** per visualizzare e testare le impostazioni.`;
                 }
-                if (lang === "zh") {
-                    return `單擊 **${start()}** 添加自動消息通道。
-單擊 **${stop()}** 刪除自動消息通道。
-單擊 **${confirm()}** 查看和測試設置。`;
-                }
-                if (lang === "ja") {
+		            if (lang === "zh") {
+		                return `单击 **${start()}** 添加自动消息通道。
+		单击 **${stop()}** 删除自动消息通道。
+		单击 **${confirm()}** 查看和测试设置。`;
+		            }
+		            if (lang === "tw") {
+		                return `單擊 **${start()}** 添加自動消息通道。
+		單擊 **${stop()}** 刪除自動消息通道。
+		單擊 **${confirm()}** 查看和測試設置。`;
+		            }
+                if (lang === "jp") {
                     return `**${start()}** をクリックして、自動メッセージ チャネルを追加します。
 **${stop()}** をクリックして、自動メッセージ チャネルを削除します。
 **${confirm()}** をクリックして、設定を確認してテストします。`;
                 }
-                if (lang === "ko") {
+                if (lang === "kr") {
                     return `자동 메시지 채널을 추가하려면 **${start()}**을(를) 클릭하십시오.
 자동 메시지 채널을 제거하려면 **${stop()}**을(를) 클릭하십시오.
 설정을 검토하고 테스트하려면 **${confirm()}**을(를) 클릭하십시오.`;
@@ -142,42 +179,45 @@ Click **Confirm** to view and test current settings.`;
             }
 
             function changeLang() {
-                if ((lang !== LANG) && (supportedLanguages.indexOf(LANG) !== -1) && (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator))) {
-                    if (LANG === "en") {
+                if ((lang !== formattedLANG()) && (supportedLanguages.indexOf(formattedLANG()) !== -1) && (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator))) {
+                    if (LANG.includes("en")) {
                         return `Click **${language()}** to change the language to ${longLang()}`;
                     }
-                    if (LANG === "es") {
+                    if (LANG.includes("es")) {
                         return `Haga clic en **${language()}** para cambiar el idioma a ${longLang()}.`;
                     }
-                    if (LANG === "pt") {
+                    if (LANG.includes("pt")) {
                         return `Clique em **${language()}** para alterar o idioma para ${longLang()}.`;
                     }
-                    if (LANG === "ru") {
+                    if (LANG.includes("ru")) {
                         return `Нажмите **${language()}**, чтобы изменить язык на ${longLang()}.`;
                     }
-                    if (LANG === "de") {
+                    if (LANG.includes("de")) {
                         return `Klicken Sie auf **${language()}**, um die Sprache auf ${longLang()} zu ändern.`;
                     }
-                    if (LANG === "pl") {
+                    if (LANG.includes("pl")) {
                         return `Kliknij **${language()}**, aby zmienić język na ${longLang()}.`;
                     }
-                    if (LANG === "fr") {
+                    if (LANG.includes("fr")) {
                         return `Cliquez sur **${language()}** pour changer la langue en ${longLang()}.`;
                     }
-                    if (LANG === "it") {
+                    if (LANG.includes("it")) {
                         return `Fare clic su **${language()}** per cambiare la lingua in ${longLang()}.`;
                     }
-                    if (LANG === "zh") {
-                        return `單擊 **${language()}** 將語言更改為 ${longLang()}。`;
+		                if (LANG.includes("CN")) {
+		                    return `单击 **${language()}** 将语言更改为 ${longLang()}。`;
+		                }
+		                if (LANG.includes("TW")) {
+		                    return `單擊 **${language()}** 將語言更改為 ${longLang()}。`;
+		                }
+                    if (LANG.includes("ja")) {
+                        return `**${language()}** をクリックして、言語を ${longLang()} に変更します。`;
                     }
-                    if (LANG === "ja") {
-                        return `**${language()}** をクリックして、言語を ${language()} に変更します。`;
-                    }
-                    if (LANG === "ko") {
-                        return `**${language()}**을(를) 클릭하여 언어를 ${language()}로 변경합니다.`;
+                    if (LANG.includes("ko")) {
+                        return `**${language()}**을(를) 클릭하여 언어를 ${longLang()}로 변경합니다.`;
                     }
                     else {
-                        return `Click ${language()} to change the language to ${language()}`;
+                        return `Click ${language()} to change the language to ${longLang()}`;
                     }
                 }
                 else {
@@ -192,7 +232,7 @@ Click **Confirm** to view and test current settings.`;
                 else if (lang === "es") {
                     return `Solo los administradores pueden iniciar o detener publicaciones automáticas.`;
                 }
-                else if (lang === "pt") {
+                else if (lang === "br") {
                     return `Somente Administradores podem iniciar ou interromper postagens automáticas.`;
                 }
                 else if (lang === "ru") {
@@ -210,13 +250,16 @@ Click **Confirm** to view and test current settings.`;
                 if (lang === "it") {
                     return `Solo gli amministratori possono avviare o interrompere i messaggi automatici.`;
                 }
-                if (lang === "zh") {
-                    return `只有管​​理員可以啟動或停止自動消息.`;
-                }
-                if (lang === "ja") {
+		            if (lang === "zh") {
+		                return `只有管理员可以启动或停止自动消息。`;
+		            }
+		            if (lang === "tw") {
+		                return `只有管理員可以啟動或停止自動消息。`;
+		            }
+                if (lang === "jp") {
                     return `管理者のみが自動メッセージを開始または停止できます.`;
                 }
-                if (lang === "ko") {
+                if (lang === "kr") {
                     return `관리자만 자동 메시지를 시작하거나 중지할 수 있습니다.`;
                 }
                 else {
@@ -231,7 +274,7 @@ Click **Confirm** to view and test current settings.`;
                 else if (lang === "es") {
                     return `Empezar`;
                 }
-                else if (lang === "pt") {
+                else if (lang === "br") {
                     return `Começar`;
                 }
                 else if (lang === "ru") {
@@ -249,13 +292,16 @@ Click **Confirm** to view and test current settings.`;
                 if (lang === "it") {
                     return `Inizio`;
                 }
-                if (lang === "zh") {
-                    return `開始`;
-                }
-                if (lang === "ja") {
+		            if (lang === "zh") {
+		                return `開始`;
+		            }
+		            if (lang === "tw") {
+		                return `开始`;
+		            }
+                if (lang === "jp") {
                     return `始める`;
                 }
-                if (lang === "ko") {
+                if (lang === "kr") {
                     return `시작`;
                 }
                 else {
@@ -270,7 +316,7 @@ Click **Confirm** to view and test current settings.`;
                 else if (lang === "es") {
                     return `Detener`;
                 }
-                else if (lang === "pt") {
+                else if (lang === "br") {
                     return `Parar`;
                 }
                 else if (lang === "ru") {
@@ -288,13 +334,16 @@ Click **Confirm** to view and test current settings.`;
                 if (lang === "it") {
                     return `Fermare`;
                 }
-                if (lang === "zh") {
-                    return `停止`;
-                }
-                if (lang === "ja") {
+		            if (lang === "zh") {
+		                return `停止`;
+		            }
+		            if (lang === "tw") {
+		                return `停止`;
+		            }
+                if (lang === "jp") {
                     return `ストップ`;
                 }
-                if (lang === "ko") {
+                if (lang === "kr") {
                     return `멈추다`;
                 }
                 else {
@@ -309,7 +358,7 @@ Click **Confirm** to view and test current settings.`;
                 else if (lang === "es") {
                     return `Confirmar`;
                 }
-                else if (lang === "pt") {
+                else if (lang === "br") {
                     return `Confirmar`;
                 }
                 else if (lang === "ru") {
@@ -327,13 +376,16 @@ Click **Confirm** to view and test current settings.`;
                 if (lang === "it") {
                     return `Confermare`;
                 }
-                if (lang === "zh") {
+		            if (lang === "zh") {
+		                return `确认`;
+		            }
+		            if (lang === "tw") {
+		                return `確認`;
+		            }
+                if (lang === "jp") {
                     return `確認`;
                 }
-                if (lang === "ja") {
-                    return `確認`;
-                }
-                if (lang === "ko") {
+                if (lang === "kr") {
                     return `확인하다`;
                 }
                 else {
@@ -342,37 +394,40 @@ Click **Confirm** to view and test current settings.`;
             }
 
             function language() {
-                if (LANG === "en") {
+                if (LANG.includes("en")) {
                     return `Language`;
                 }
-                if (LANG === "es") {
+                if (LANG.includes("es")) {
                     return `Idioma`
                 }
-                if (LANG === "pt") {
+                if (LANG.includes("pt")) {
                     return `Idioma`
                 }
-                if (LANG === "ru") {
+                if (LANG.includes("ru")) {
                     return `Язык`;
                 }
-                if (LANG === "de") {
+                if (LANG.includes("de")) {
                     return `Sprache`;
                 }
-                if (LANG === "pl") {
+                if (LANG.includes("pl")) {
                     return `Język`;
                 }
-                if (LANG === "fr") {
+                if (LANG.includes("fr")) {
                     return `Langue`;
                 }
-                if (LANG === "it") {
+                if (LANG.includes("it")) {
                     return `Lingua`;
                 }
-                if (LANG === "zh") {
-                    return `語言`;
-                }
-                if (LANG === "ja") {
+                if (LANG.includes("CN")) {
+		                return `语言`;
+		            }
+		            if (LANG.includes("TW")) {
+		                return `語言`;
+		            }
+								if (LANG.includes("jp")) {
                     return `言語`;
                 }
-                if (LANG === "ko") {
+                if (LANG.includes("ko")) {
                     return `언어`;
                 }
                 else {
@@ -380,77 +435,83 @@ Click **Confirm** to view and test current settings.`;
                 }
             }
 
-            function longLang() {
-                if (LANG === "en") {
-                    return "English";
-                }
-                if (LANG === "es") {
-                    return "español";
-                }
-                if (LANG === "pt") {
-                    return "português";
-                }
-                if (LANG === "ru") {
-                    return "русский";
-                }
-                if (LANG === "de") {
-                    return "Deutsch";
-                }
-                if (LANG === "pl") {
-                    return "polski";
-                }
-                if (LANG === "fr") {
-                    return "français";
-                }
-                if (LANG === "it") {
-                    return "italiano";
-                }
-                if (LANG === "zh") {
-                    return "中國人";
-                }
-                if (LANG === "ja") {
-                    return "日本";
-                }
-                if (LANG === "ko") {
-                    return "한국인";
-                }
-                else {
-                    return "English";
-                }
-            }
+		        function longLang() {
+		            if (LANG.includes("en")) {
+		                return `English`;
+		            }
+		            if (LANG.includes("es")) {
+		                return `Español`;
+		            }
+		            if (LANG.includes("pt")) {
+		                return `Português`;
+		            }
+		            if (LANG.includes("ru")) {
+		                return `Русский`;
+		            }
+		            if (LANG.includes("de")) {
+		                return `Deutsch`;
+		            }
+		            if (LANG.includes("pl")) {
+		                return `Polski`;
+		            }
+		            if (LANG.includes("fr")) {
+		                return `Français`;
+		            }
+		            if (LANG.includes("it")) {
+		                return `Italiano`;
+		            }
+		            if (LANG.includes("CN")) {
+		                return `中国人 （简体）`;
+		            }
+		            if (LANG.includes("TW")) {
+		                return `中國人 （傳統的）`;
+		            }					
+		            if (LANG.includes("ja")) {
+		                return `日本`;
+		            }
+		            if (LANG.includes("ko")) {
+		                return `한국인`;
+		            }
+		            else {
+		                return `English`;
+		            }
+		        }
 
             function langDuplicateTitle() {
-                if (LANG === "en") {
+                if (LANG.includes("en")) {
                     return `Change the server langage to English?`;
                 }
-                if (LANG === "es") {
+                if (LANG.includes("es")) {
                     return `¿Cambiar el idioma del servidor a español?`;
                 }
-                if (LANG === "pt") {
+                if (LANG.includes("pt")) {
                     return `Alterar o idioma do servidor para português?`;
                 }
-                if (LANG === "ru") {
+                if (LANG.includes("ru")) {
                     return `Сменить язык сервера на русский?`;
                 }
-                if (LANG === "de") {
+                if (LANG.includes("de")) {
                     return `Die Serversprache auf Deutsch ändern?`;
                 }
-                if (LANG === "pl") {
+                if (LANG.includes("pl")) {
                     return `Zmienić język serwera na polski?`;
                 }
-                if (LANG === "fr") {
+                if (LANG.includes("fr")) {
                     return `Changer la langue du serveur en français ?`;
                 }
-                if (LANG === "it") {
+                if (LANG.includes("it")) {
                     return `Cambiare la lingua del server in italiano?`;
                 }
-                if (LANG === "zh") {
-                    return `把服務器語言改成中文？`;
-                }
-                if (LANG === "ja") {
+		            if (LANG.includes("CN")) {
+		                return `把服务器语言改成中文？`;
+		            }
+		            if (LANG.includes("TW")) {
+		                return `把服務器語言改成中文？`;
+		            }
+                if (LANG.includes("ja")) {
                     return `サーバーの言語を日本語に変更しますか?`;
                 }
-                if (LANG === "ko") {
+                if (LANG.includes("ko")) {
                     return `서버 언어를 한국어로 변경하시겠습니까?`;
                 }
                 else {
@@ -459,37 +520,40 @@ Click **Confirm** to view and test current settings.`;
             }
 
             function yes() {
-                if (LANG === "en") {
+                if (LANG.includes("en")) {
                     return `Yes`;
                 }
-                if (LANG === "es") {
+                if (LANG.includes("es")) {
                     return `Sí`;
                 }
-                if (LANG === "pt") {
+                if (LANG.includes("pt")) {
                     return `Sim`;
                 }
-                if (LANG === "ru") {
+                if (LANG.includes("ru")) {
                     return `Да`;
                 }
-                if (LANG === "de") {
+                if (LANG.includes("de")) {
                     return `Ja`;
                 }
-                if (LANG === "pl") {
+                if (LANG.includes("pl")) {
                     return `Tak`;
                 }
-                if (LANG === "fr") {
+                if (LANG.includes("fr")) {
                     return `Oui`;
                 }
-                if (LANG === "it") {
+                if (LANG.includes("it")) {
                     return `Sì`;
                 }
-                if (LANG === "zh") {
-                    return `是的`;
-                }
-                if (LANG === "ja") {
+		            if (LANG.includes("CN")) {
+		                return `是的`;
+		            }
+		            if (LANG.includes("TW")) {
+		                return `是的`;
+		            }
+                if (LANG.includes("ja")) {
                     return `はい`;
                 }
-                if (LANG === "ko") {
+                if (LANG.includes("ko")) {
                     return `예`;
                 }
                 else {
@@ -498,37 +562,40 @@ Click **Confirm** to view and test current settings.`;
             }
 
             function buttonFlag() {
-                if (LANG === "en") {
+                if (LANG.includes("en")) {
                     return "\🇺🇸";
                 }
-                else if (LANG === "es") {
+                else if (LANG.includes("es")) {
                     return "\🇲🇽";
                 }
-                else if (LANG === "pt") {
+                else if (LANG.includes("pt")) {
                     return `\🇧🇷`;
                 }
-                else if (LANG === "ru") {
+                else if (LANG.includes("ru")) {
                     return `\🇷🇺`;
                 }
-                else if (LANG === "de") {
+                else if (LANG.includes("de")) {
                     return `\🇩🇪`;
                 }
-                else if (LANG === "pl") {
+                else if (LANG.includes("pl")) {
                     return `\🇵🇱`;
                 }
-                else if (LANG === "fr") {
+                else if (LANG.includes("fr")) {
                     return `\🇫🇷`;
                 }
-                else if (LANG === "it") {
+                else if (LANG.includes("it")) {
                     return `\🇮🇹`;
                 }
-                else if (LANG === "zh") {
+								else if (LANG.includes("CN")) {
                     return `\🇨🇳`;
                 }
-                else if (LANG === "ja") {
+                else if (LANG.includes("TW")) {
+                    return `\🇹🇼`;
+                }
+                else if (LANG.includes("ja")) {
                     return `\🇯🇵`;
                 }
-                else if (LANG === "ko") {
+                else if (LANG.includes("ko")) {
                     return `\🇰🇷`;
                 }
                 else {
@@ -543,7 +610,7 @@ Click **Confirm** to view and test current settings.`;
                 else if (lang === "es") {
                     return `Estos botones no son para ti.`;
                 }
-                else if (lang === "pt") {
+                else if (lang === "br") {
                     return `Esses botões não são para você.`;
                 }
                 else if (lang === "ru") {
@@ -564,16 +631,16 @@ Click **Confirm** to view and test current settings.`;
                 else if (lang === "zh") {
                     return `這些按鈕不適合您。`;
                 }
-                else if (lang === "ja") {
+                else if (lang === "jp") {
                     return `これらのボタンはあなたのためではありません。`;
                 }
-                else if (lang === "ko") {
+                else if (lang === "kr") {
                     return `이 버튼은 당신을 위한 것이 아닙니다.`;
                 }
                 else {
                     return `These buttons are not for you.`;
                 }
-            }
+            }				
 
             //--END TRANSLATIONS--//						
 
@@ -599,19 +666,22 @@ Click **Confirm** to view and test current settings.`;
                         .setStyle(ButtonStyle.Secondary),
                 );
 
-            //Initial Embed + Buttons (start, stop, confirm, configure)
-            if (interaction.user.id !== buttonUserID) {
-                await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });
-            }
-            else {
-                interaction.editReply({ embeds: [initialEmbed], components: [initialButtons] });
-            }
-
             //BEGIN ADDING A LANGAUGE
-            //console.log(`lang:${lang} - LANG:${LANG} - supported?:${(supportedLanguages.indexOf(LANG) !== -1)}`);
-            if ((lang !== LANG) && (supportedLanguages.indexOf(LANG) !== -1) && (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator))) { //if the stored language is not the same language as the user language && user language is supported && user is an admin
-
-                if ((lang === "") && (LANG === "en")) { return }
+            	//console.log(`lang: ${lang} - LANG: ${LANG} - formattedLANG: ${formattedLANG()} - supported?: ${(supportedLanguages.indexOf(formattedLANG()) !== -1)} `);
+						if ((lang === "") && (LANG.includes("en"))) {
+							if (interaction.user.id !== buttonUserID) {
+									await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });
+							}
+							else {
+								if (start_stop_confirm === "lang") {
+									interaction.followUp({ embeds: [initialEmbed], components: [initialButtons] });
+								}
+								else {
+									interaction.editReply({ embeds: [initialEmbed], components: [initialButtons] });
+								}
+							}	
+						}					
+            else if ((lang !== formattedLANG()) && (supportedLanguages.indexOf(formattedLANG()) !== -1) && (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator))) { //if the stored language is not the same language as the user language && user language is supported && user is an admin
 
                 const changeLangEmbed = new EmbedBuilder()
                     .setColor(0x00FFCC) //Seafoam green
@@ -634,7 +704,7 @@ Click **Confirm** to view and test current settings.`;
                             .setLabel(`${confirm()}`)
                             .setStyle(ButtonStyle.Secondary),
                         new ButtonBuilder()
-                            .setCustomId(`yes - ${LANG}`)
+                            .setCustomId(`yes - ${formattedLANG()}`)
                             .setLabel(`${language()}`)
                             .setStyle(ButtonStyle.Primary)
                             .setEmoji(buttonFlag()),
@@ -644,64 +714,31 @@ Click **Confirm** to view and test current settings.`;
                     await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });
                 }
                 else {
-                    interaction.editReply({ embeds: [changeLangEmbed], components: [changeLangButtons] }).catch(err => console.log(`langDupEmbed error: ${err}`));
+									if (start_stop_confirm === "lang") {
+										interaction.followUp({ embeds: [changeLangEmbed], components: [changeLangButtons] }).catch(err => console.log(`changeLangEmbed error: ${err}`));
+									}
+									else {
+										interaction.editReply({ embeds: [changeLangEmbed], components: [changeLangButtons] }).catch(err => console.log(`changeLangEmbed error: ${err}`));
+									}
                 }
 
-            };
+            }
+						else { //If the user language is the same as the server language
+	            //Initial Embed + Buttons (start, stop, confirm)
+	            if (interaction.user.id !== buttonUserID) {
+	                await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });
+	            }
+	            else {
+								if (start_stop_confirm === "lang") {
+									interaction.followUp({ embeds: [initialEmbed], components: [initialButtons] });
+								}
+								else {
+									interaction.editReply({ embeds: [initialEmbed], components: [initialButtons] });
+								}
+	            }							
+						}
             //END ADDING A LANGAUGE
 
-            function expiredDesc() {
-                if (lang === "en") {
-                    return `This interaction expired`;
-                }
-                if (lang === "es") {
-                    return `Esta interacción expiró`;
-                }
-                if (lang === "pt") {
-                    return `Esta interação expirou`;
-                }
-                if (lang === "ru") {
-                    return `Срок действия этого взаимодействия истек`;
-                }
-                if (lang === "de") {
-                    return `Diese Interaktion ist abgelaufen`;
-                }
-                if (lang === "pl") {
-                    return `Ta interakcja wygasła`;
-                }
-                if (lang === "fr") {
-                    return `Cette interaction a expiré`;
-                }
-                if (lang === "it") {
-                    return `Questa interazione è scaduta`;
-                }
-                if (lang === "zh") {
-                    return `此互動已過期`;
-                }
-                if (lang === "ja") {
-                    return `このインタラクションの有効期限が切れました`;
-                }
-                if (lang === "ko") {
-                    return `이 상호 작용이 만료되었습니다`;
-                }
-                else {
-                    return `This interaction expired`;
-                }
-            }
-
-            const expiredButton = new ActionRowBuilder()
-                .addComponents(
-                    new ButtonBuilder()
-                        .setCustomId(`expired`)
-                        .setLabel(`${expiredDesc()}`)
-                        .setStyle(ButtonStyle.Secondary)
-                        .setEmoji(':RSWeekly:1025248227248848940')
-                        .setDisabled(true),
-                );
-
-            setTimeout(() => {
-                interaction.editReply({ components: [expiredButton] });
-            }, (60000 * 5))
 
         } //end if interaction starts with startback - stopback - confirmback
 

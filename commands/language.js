@@ -3,16 +3,6 @@ const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.r
 const { exec } = require('node:child_process');
 const LANG01 = require('../events/LANG.js');
 
-const expiredButton = new ActionRowBuilder()
-    .addComponents(
-        new ButtonBuilder()
-            .setCustomId(`expired`)
-            .setLabel('This interaction timed out.')
-            .setStyle(ButtonStyle.Secondary)
-            .setEmoji(':RSWeekly:1025248227248848940')
-            .setDisabled(true),
-    );
-
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('language')
@@ -25,56 +15,60 @@ module.exports = {
             fr: 'langue',
             it: 'lingua',
             "zh-CN": '语言',
-            "zh-TW": '語言',					
+            "zh-TW": '語言',	
             ja: '言語',
             ko: '언어',
-        })
-        .setDescription('Language | Idioma | Язык | Sprache | Język | Langue | Lingua | 語言 | 言語 | 언어')
+        })			
+        .setDescription('Language | Idioma | Язык | Sprache | Język | Langue | Lingua | 语言 | 語言 | 言語 | 언어')
         .setDMPermission(false),
     async execute(interaction) {
         await interaction.deferReply().catch(console.error);
 
         //stored language
         var lang = await LANG01.LANG(interaction);
-        //console.log(`LANG:${await LANG.LANG(interaction)}`);		
+        //console.log(`LANG:${await LANG.LANG(interaction)}`);	
 
         //user language
-        var LANG02 = interaction.locale.toString().split("-");
-        var LANG = LANG02[0];
+        // var LANG02 = interaction.locale.toString().split("-");
+        // var LANG = LANG02[0];
+				var LANG = interaction.locale.toString();
         //console.log(`lang:${lang}`);	
 
         function langSettingsTitle() {
-            if (lang === "en") {
+            if (lang.includes("en")) {
                 return `Language Settings`;
             }
-            else if (lang === "es") {
+            else if (lang.includes("es")) {
                 return `Configuración de idioma`;
             }
-            else if (lang === "ru") {
+            else if (lang.includes("ru")) {
                 return `Языковые настройки`;
             }
-            else if (lang === "de") {
+            else if (lang.includes("de")) {
                 return `Spracheinstellungen`;
             }
-            else if (lang === "pt") {
+            else if (lang.includes("pt")) {
                 return `Configurações de idioma`;
             }
-            else if (lang === "pl") {
+            else if (lang.includes("pl")) {
                 return `Ustawienia języka`;
             }
-            else if (lang === "fr") {
+            else if (lang.includes("fr")) {
                 return `Paramètres de langue`;
             }
-            else if (lang === "it") {
+            else if (lang.includes("it")) {
                 return `Impostazioni della lingua`;
             }
-            else if (lang === "zh") {
-                return `語言設定`;
+            else if (lang.includes("CN")) {
+                return `语言设定`;
             }
-            else if (lang === "ja") {
+            else if (lang.includes("TW")) {
+                return `語言設定`;
+            }							
+            else if (lang.includes("ja")) {
                 return `言語設定`;
             }
-            else if (lang === "ko") {
+            else if (lang.includes("ko")) {
                 return `언어 설정`;
             }
             else {
@@ -83,7 +77,7 @@ module.exports = {
         }
 
         function longLang() {
-            if (lang === "en") {
+            if (lang === "") {
                 return `English`;
             }
             if (lang === "es") {
@@ -98,7 +92,7 @@ module.exports = {
             if (lang === "de") {
                 return `Deutsch`;
             }
-            if (lang === "pl") {
+            if (lang ===  "pl") {
                 return `polski`;
             }
             if (lang === "fr") {
@@ -108,8 +102,11 @@ module.exports = {
                 return `italiano`;
             }
             if (lang === "zh") {
-                return `中國人`;
+                return `中国人 （简体）`;
             }
+            if (lang === "tw") {
+                return `中國人 （傳統的）`;
+            }					
             if (lang === "ja") {
                 return `日本`;
             }
@@ -122,154 +119,166 @@ module.exports = {
         }
 
         function currentLanguage() {
-            if (LANG === "en") {
-                return `Your current language is ${longLang()}.`;
+            if (LANG.includes("en")) {
+                return `Your current language is __${longLang()}__.`;
             }
-            else if (LANG === "es") {
-                return `Tu idioma actual es el ${longLang()}.`;
+            else if (LANG.includes("es")) {
+                return `Tu idioma actual es el __${longLang()}__.`;
             }
-            else if (LANG === "ru") {
-                return `Ваш текущий язык - ${longLang()}.`;
+            else if (LANG.includes("ru")) {
+                return `Ваш текущий язык - __${longLang()}__.`;
             }
-            else if (LANG === "de") {
-                return `Ihre aktuelle Sprache ist ${longLang()}.`;
+            else if (LANG.includes("de")) {
+                return `Ihre aktuelle Sprache ist __${longLang()}__.`;
             }
-            else if (LANG === "pt") {
-                return `Seu idioma atual é o ${longLang()}.`;
+            else if (LANG.includes("pt")) {
+                return `Seu idioma atual é o __${longLang()}__.`;
             }
-            else if (LANG === "pl") {
-                return `Twój obecny język to ${longLang()}.`;
+            else if (LANG.includes("pl")) {
+                return `Twój obecny język to __${longLang()}__.`;
             }
-            else if (LANG === "fr") {
-                return `Votre langue actuelle est le ${longLang()}.`;
+            else if (LANG.includes("fr")) {
+                return `Votre langue actuelle est le __${longLang()}__.`;
             }
-            else if (LANG === "it") {
-                return `La tua lingua attuale è l'${longLang()}.`;
+            else if (LANG.includes("it")) {
+                return `La tua lingua attuale è l'__${longLang()}__.`;
             }
-            else if (LANG === "zh") {
-                return `您當前的語言是 ${longLang()}`;
+            else if (LANG.includes("CN")) {
+                return `您当前的语言是 __${longLang()}__`;
+            }							
+            else if (LANG.includes("TW")) {
+                return `您當前的語言是 __${longLang()}__`;
             }
-            else if (LANG === "ja") {
-                return `あなたの現在の言語は${longLang()}語です。`;
+            else if (LANG.includes("ja")) {
+                return `あなたの現在の言語は__${longLang()}__語です。`;
             }
-            else if (LANG === "ko") {
-                return `현재 언어는 ${longLang()}다.`;
+            else if (LANG.includes("ko")) {
+                return `현재 언어는 __${longLang()}__다.`;
             }
             else {
-                return `Your current language is ${longLang()}.`;
+                return `Your current language is __${longLang()}__.`;
             }
         }
 
         function languagesDesc() {
-            if (LANG === "en") {
-                return `Click the **dropdown menu** to select the language for the /autopost command.`;
+            if (LANG.includes("en")) {
+                return `Click the **dropdown menu** to select the language for the **/autopost** command.`;
             }
-            if (LANG === "es") {
+            if (LANG.includes("es")) {
                 return `Haz clic en el **menú desplegable** para seleccionar el idioma del comando /publicaciones-automáticas.`;
             }
-            if (LANG === "pt") {
+            if (LANG.includes("pt")) {
                 return `Clique no **menu suspenso** para selecionar o idioma para o comando /postagens-automáticas.`;
             }
-            if (LANG === "ru") {
+            if (LANG.includes("ru")) {
                 return `Щелкните **раскрывающееся меню**, чтобы выбрать язык для команды /автопубликации.`;
             }
-            if (LANG === "de") {
+            if (LANG.includes("de")) {
                 return `Klicken Sie auf das **Dropdown-Menü**, um die Sprache für den Befehl /automatische-veröffentlichung auszuwählen.`;
             }
-            if (LANG === "pl") {
+            if (LANG.includes("pl")) {
                 return `Kliknij **menu rozwijane**, aby wybrać język dla polecenia /zautomatyzowane-wiadomości.`;
             }
-            if (LANG === "fr") {
+            if (LANG.includes("fr")) {
                 return `Cliquez sur **le menu déroulant** pour sélectionner la langue du serveur pour la commande /messages-automatisés.`;
             }
-            if (LANG === "it") {
+            if (LANG.includes("it")) {
                 return `Fare clic sul menu a discesa per selezionare la lingua del server per il comando /messaggi-automatici.`;
             }
-            if (LANG === "zh") {
-                return `單擊下拉菜單為 /自動消息 命令選擇服務器語言。`;
+            if (LANG.includes("CN")) {
+                return `点击下拉菜单选择 /自动消息 命令的语言。`;
             }
-            if (LANG === "ja") {
+            if (LANG.includes("TW")) {
+                return `單擊下拉菜單為 /自動消息 命令選擇服務器語言。`;
+            }					
+            if (LANG.includes("ja")) {
                 return `ドロップダウン メニューをクリックして、/自動メッセージ コマンドのサーバー言語を選択します。`;
             }
-            if (LANG === "ko") {
+            if (LANG.includes("ko")) {
                 return `드롭다운 메뉴를 클릭하여 /자동화된-메시지 명령에 대한 서버 언어를 선택합니다.`;
             }
             else {
-                return `Click the **dropdown menu** to select a language.`;
+                return `Click the **dropdown menu** to select the language for the **/autopost** command.`;
             }
         }
 
         function footerText() {
-            if (LANG === "en") {
+            if (LANG.includes("en")) {
                 return `Only Administrators can change the language.`;
             }
-            else if (LANG === "es") {
+            else if (LANG.includes("es")) {
                 return `Solo los administradores pueden cambiar de idioma.`;
             }
-            else if (LANG === "pt") {
+            else if (LANG.includes("pt")) {
                 return `Somente os administradores podem alterar o idioma.`;
             }
-            else if (LANG === "ru") {
+            else if (LANG.includes("ru")) {
                 return `Только администраторы могут изменять языки.`;
             }
-            else if (LANG === "de") {
+            else if (LANG.includes("de")) {
                 return `Nur Administratoren können die Sprache ändern.`;
             }
-            else if (LANG === "pl") {
+            else if (LANG.includes("pl")) {
                 return `Tylko administratorzy mogą zmienić język.`;
             }
-            else if (LANG === "fr") {
+            else if (LANG.includes("fr")) {
                 return `Seuls les administrateurs peuvent changer la langue.`;
             }
-            else if (LANG === "it") {
+            else if (LANG.includes("it")) {
                 return `Solo gli amministratori possono cambiare la lingua.`;
             }
-            else if (LANG === "zh") {
+            else if (LANG.includes("CN")) {
+                return `只有管理员可以更改语言。`;
+            }							
+            else if (LANG.includes("TW")) {
                 return `只有管理員可以更改語言。`;
             }
-            else if (LANG === "ja") {
+            else if (LANG.includes("ja")) {
                 return `管理者のみが言語を変更できます。`;
             }
-            else if (LANG === "ko") {
+            else if (LANG.includes("ko")) {
                 return `관리자만 언어를 변경할 수 있습니다.`;
             }
             else {
-                return `Only Administrators can change language.`;
+                return `Only Administrators can change the language.`;
             }
         }
 
         function selectLanguage() {
-            if (LANG === "en") {
+            if (LANG.includes("en")) {
                 return `select a language`;
             }
-            if (LANG === "es") {
+            if (LANG.includes("es")) {
                 return `elige un idioma`;
             }
-            if (LANG === "pt") {
+            if (LANG.includes("pt")) {
                 return `escolha um idioma`;
             }
-            if (LANG === "ru") {
+            if (LANG.includes("ru")) {
                 return `выбрать язык`;
             }
-            if (LANG === "de") {
+            if (LANG.includes("de")) {
                 return `wählen Sie eine Sprache`;
             }
-            if (LANG === "pl") {
+            if (LANG.includes("pl")) {
                 return `wybierz język`;
             }
-            if (LANG === "fr") {
+            if (LANG.includes("fr")) {
                 return `choisir une langue`;
             }
-            if (LANG === "it") {
+            if (LANG.includes("it")) {
                 return `scegli una lingua`;
             }
-            if (LANG === "zh") {
+            if (LANG.includes("CN")) {
+                return `选择一种语言`;
+            }					
+            if (LANG.includes("TW")) {
                 return `選擇一種語言`;
             }
-            if (LANG === "ja") {
+            if (LANG.includes("ja")) {
                 return `言語を選択`;
             }
-            if (LANG === "ko") {
+            if (LANG.includes("ko")) {
                 return `언어를 선택하세요`;
             }
             else {
@@ -278,37 +287,40 @@ module.exports = {
         }
 
         function noLanguage() {
-            if (LANG === "en") {
+            if (LANG.includes("en")) {
                 return `no language chosen`;
             }
-            if (LANG === "es") {
+            if (LANG.includes("es")) {
                 return `ningún idioma elegido`;
             }
-            if (LANG === "pt") {
+            if (LANG.includes("pt")) {
                 return `nenhum idioma escolhido`;
             }
-            if (LANG === "ru") {
+            if (LANG.includes("ru")) {
                 return `язык не выбран`;
             }
-            if (LANG === "de") {
+            if (LANG.includes("de")) {
                 return `keine Sprache gewählt`;
             }
-            if (LANG === "pl") {
+            if (LANG.includes("pl")) {
                 return `nie wybrano języka`;
             }
-            if (LANG === "fr") {
+            if (LANG.includes("fr")) {
                 return `aucune langue choisie`;
             }
-            if (LANG === "it") {
+            if (LANG.includes("it")) {
                 return `nessuna lingua scelta`;
             }
-            if (LANG === "zh") {
+            if (LANG.includes("CN")) {
                 return `沒有選擇語言`;
             }
-            if (LANG === "ja") {
+            if (LANG.includes("TW")) {
+                return `沒有選擇語言`;
+            }
+            if (LANG.includes("ja")) {
                 return `言語が選択されていません`;
             }
-            if (LANG === "ko") {
+            if (LANG.includes("ko")) {
                 return `선택된 언어 없음`;
             }
             else {
@@ -325,7 +337,7 @@ module.exports = {
             .setDescription(`${currentLanguage()}\n${languagesDesc()}`)
             .setFooter({ text: `${footerText()}`, iconURL: process.env.logo_link })
 
-        var longLangArray = ["English", "español", "português", "русский", "Deutsch", "polski", "français", "italiano", "中國人", "日本", "한국인"];
+        var longLangArray = ["🇺🇸 English", "🇲🇽 español", "🇧🇷 português", "🇷🇺 русский", "🇩🇪 Deutsch", "🇵🇱 polski", "🇫🇷 français", "🇮🇹 italiano", "🇨🇳 中国人（简体）", "🇹🇼 中國人 （傳統的）", "🇯🇵 日本", "🇰🇷 한국인"];
         let languageMenu = new ActionRowBuilder()
             .addComponents(
                 new StringSelectMenuBuilder()
@@ -336,7 +348,7 @@ module.exports = {
                         value: `languageMenu - u:${interaction.user.id} - lang:undefinedLang`,
                     }])
             )
-        for (i = 0; i <= 10; i++) {
+        for (i = 0; i <= 11; i++) {
             if (lang !== supportedLanguages[i]) {
                 //console.log(`i:${i} - sL:${supportedLanguages[i]} - longLang:${longLangArray[i]}`);
                 if ((lang === "") && (supportedLanguages[i] === "en")) {
@@ -352,10 +364,6 @@ module.exports = {
         }
 
         await interaction.editReply({ embeds: [languageEmbed], components: [languageMenu] }).catch(err => { console.log(`language command Error: ${err.stack}`) });
-
-        setTimeout(() => {
-            interaction.editReply({ components: [expiredButton] }).catch(err => { console.log(`language command expiredButton Error: ${err.stack}`) });
-        }, (60000 * 5))
 
     },
 }

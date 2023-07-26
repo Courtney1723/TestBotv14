@@ -3,7 +3,7 @@ global.client = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions],
     partials: [Partials.Message, Partials.Channel, Partials.Reaction],
 });
-global.supportedLanguages = ["en", "es", "pt", "ru", "de", "pl", "fr", "it", "zh", "ja", "ko"];
+global.supportedLanguages = ["en", "es", "br", "ru", "de", "pl", "fr", "it", "zh", "tw", "jp", "kr"];
 const { exec } = require('node:child_process');
 const keepAlive = require('./server');
 var cron = require('node-cron'); //https://github.com/node-cron/node-cron
