@@ -75,7 +75,7 @@ module.exports = {
 				}
 
         function autoPostTitle() {
-            if (lang === "en") {
+            if (lang === "") {
                 return `Auto Post Settings`;
             }
             else if (lang === "es") {
@@ -117,7 +117,7 @@ module.exports = {
         }
 
         function autoPostDesc() {
-            if (lang === "en") {
+            if (lang === "") {
                 return `Click **${start()}** to add an auto post channel.
 Click **${stop()}** to remove an auto post channel.
 Click **${confirm()}** to view and test current settings.`;
@@ -232,7 +232,7 @@ Click **Confirm** to view and test current settings.`;
         }
 
         function footerText() {
-            if (lang === "en") {
+            if (lang === "") {
                 return `Only Administrators can start or stop auto posts.`;
             }
             else if (lang === "es") {
@@ -274,7 +274,7 @@ Click **Confirm** to view and test current settings.`;
         }
 
         function start() {
-            if (lang === "en") {
+            if (lang === "") {
                 return `Start`;
             }
             else if (lang === "es") {
@@ -316,7 +316,7 @@ Click **Confirm** to view and test current settings.`;
         }
 
         function stop() {
-            if (lang === "en") {
+            if (lang === "") {
                 return `Stop`;
             }
             else if (lang === "es") {
@@ -358,7 +358,7 @@ Click **Confirm** to view and test current settings.`;
         }
 
         function confirm() { //fixme - add translations
-            if (lang === "en") {
+            if (lang === "") {
                 return `Confirm`;
             }
             else if (lang === "es") {
@@ -609,33 +609,6 @@ Click **Confirm** to view and test current settings.`;
             }
         }
 
-				function formattedLANG() {
-					if (LANG.includes("en")) {
-						return "";
-					}
-					if (LANG.includes("es")) {
-						return "es";
-					}
-					if (LANG.includes("pt")) {
-						return "br";
-					}
-					if (LANG.includes("CN")) {
-						return "zh";
-					}
-					if (LANG.includes("TW")) {
-						return "tw";
-					}
-					if (LANG.includes("ja")) {
-						return "jp";
-					}
-					if (LANG.includes("ko")) {
-						return "kr";
-					}
-					else { //ru, de, pl, fr, it
-						return `${LANG}`;
-					}
-				}
-
         //--END TRANSLATIONS--//						
 
         const initialEmbed = new EmbedBuilder()
@@ -665,9 +638,10 @@ Click **Confirm** to view and test current settings.`;
 
         //BEGIN ADDING A LANGAUGE
         //console.log(`lang: ${lang} - LANG: ${LANG} - formatted LANG: ${formattedLANG()} - supported?: ${(supportedLanguages.indexOf(formattedLANG()) !== -1)}`);
-        if ((lang !== LANG) && (supportedLanguages.indexOf(formattedLANG()) !== -1) && (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator))) { //if the stored language is not the same language as the user language && user language is supported && user is an admin
-
-            if ( (lang === "") && (LANG.includes("en")) ) { return }
+				if ( (lang === "") && (LANG.includes("en")) ) {
+					interaction.editReply({ embeds: [initialEmbed], components: [initialButtons] });
+				}				
+        else if ((lang !== LANG) && (supportedLanguages.indexOf(formattedLANG()) !== -1) && (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator))) { //if the stored language is not the same language as the user language && user language is supported && user is an admin
 
             const changeLangEmbed = new EmbedBuilder()
                 .setColor(0x00FFCC) //Seafoam green
@@ -696,9 +670,12 @@ Click **Confirm** to view and test current settings.`;
                         .setEmoji(buttonFlag()),
                 );
 
-            await interaction.editReply({ embeds: [changeLangEmbed], components: [changeLangButtons] }).catch(err => console.log(`langDupEmbed error: ${err}`));
+            await interaction.editReply({ embeds: [changeLangEmbed], components: [changeLangButtons] }).catch(err => console.log(`changeLangEmbed error: ${err}`));
 
-        };
+        }
+				else {
+					interaction.editReply({ embeds: [initialEmbed], components: [initialButtons] });				
+				}
         //END ADDING A LANGAUGE
 
 

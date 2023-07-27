@@ -148,32 +148,14 @@ module.exports = {
                                 var getrdoParse = JSON.parse(getrdoJSON);
                                 //console.log(getrdoJSON);
 
-                                function langFunction() {
-                                    if (supportedLanguages.indexOf(lang.substring(0, 2)) < 0) { //unsupported languages are treated as English
-                                        return "";
-                                    }
-                                    if (lang === "en") {
-                                        return "";
-                                    }
-                                    if (lang === "pt") {
-                                        return "/br";
-                                    }
-                                    if (lang === "zh") { //traditional Chinese (Taiwan)
-                                        return "/tw";
-                                    }
-                                    if (lang === "ja") {
-                                        return "/jp";
-                                    }
-                                    if (lang === "ko") {
-                                        return "/kr";
-                                    }
-                                    if (lang.length >= 3) { //languages like "es-ES" or "pt-BR" are returned as "es" or "pt"
-                                        return `/${lang.substring(0, 2)}`;
-                                    }
-                                    else {
-                                        return `/${lang}`;
-                                    }
-                                }
+                                function langFunction() {		
+																	if (lang !== "") {
+																		return `/${lang}`;
+																	}
+																	else {
+																		return "";
+																	}
+																}
                                 function gold() {
                                     if (lang === "en") {
                                         return "Gold Bars";
@@ -181,7 +163,7 @@ module.exports = {
                                     if (lang === "es") {
                                         return "lingotes de oro";
                                     }
-                                    if (lang === "pt") {
+                                    if (lang === "br") {
                                         return "Barras de Ouro";
                                     }
                                     if (lang === "ru") {
@@ -199,13 +181,16 @@ module.exports = {
                                     if (lang === "it") {
                                         return "Lingotti d'Oro";
                                     }
-                                    if (lang === "zh") {
+																		if (lang === "zh") {
+                                        return "金条";
+                                    }
+                                    if (lang === "tw") {
                                         return "金條";
                                     }
-                                    if (lang === "ja") {
+                                    if (lang === "jp") {
                                         return "格のゴールド バー";
                                     }
-                                    if (lang === "ko") {
+                                    if (lang === "kr") {
                                         return "금괴";
                                     }
                                     else {
@@ -219,7 +204,7 @@ module.exports = {
                                     if (lang === "es") {
                                         return "Descuentos";
                                     }
-                                    if (lang === "pt") {
+                                    if (lang === "br") {
                                         return "Descontos";
                                     }
                                     if (lang === "ru") {
@@ -237,13 +222,16 @@ module.exports = {
                                     if (lang === "it") {
                                         return "Sconti";
                                     }
-                                    if (lang === "zh") {
+																		if (lang === "zh") {
+                                        return "折扣优惠";
+                                    }
+                                    if (lang === "tw") {
                                         return "折扣優惠";
                                     }
-                                    if (lang === "ja") {
+                                    if (lang === "jp") {
                                         return "割引";
                                     }
-                                    if (lang === "ko") {
+                                    if (lang === "kr") {
                                         return "할인";
                                     }
                                     else {
@@ -385,7 +373,7 @@ module.exports = {
                                     else if (lang === "es") {
                                         return `\n** [Más detalles](${rdoURLFull})**`;
                                     }
-                                    else if (lang === "pt") {
+                                    else if (lang === "br") {
                                         return `\n** [Mais detalhes](${rdoURLFull})**`;
                                     }
                                     else if (lang === "ru") {
@@ -403,13 +391,16 @@ module.exports = {
                                     else if (lang === "it") {
                                         return `\n** [Più dettagli](${rdoURLFull})**`;
                                     }
-                                    else if (lang === "zh") {
+																		else if (lang === "zh") {
+                                        return `\n** [更多细节](${rdoURLFull})**`;
+                                    }
+                                    else if (lang === "tw") {
                                         return `\n** [更多細節](${rdoURLFull})**`;
                                     }
-                                    else if (lang === "ja") {
+                                    else if (lang === "jp") {
                                         return `\n** [자세한 내용은](${rdoURLFull})**`;
                                     }
-                                    else if (lang === "ko") {
+                                    else if (lang === "kr") {
                                         return `\n** [詳細](${rdoURLFull})**`;
                                     }
                                     else {

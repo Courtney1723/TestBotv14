@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
-const LANG = require('../events/LANG.js');
+//const LANG = require('../events/LANG.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()

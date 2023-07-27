@@ -69,7 +69,7 @@ module.exports = {
 		        }						
 
             function autoPostTitle() {
-                if (lang === "en") {
+                if (lang === "") {
                     return `Auto Post Settings`;
                 }
                 else if (lang === "es") {
@@ -111,7 +111,7 @@ module.exports = {
             }
 
             function autoPostDesc() {
-                if (lang === "en") {
+                if (lang === "") {
                     return `Click **${start()}** to add an auto post channel.
 Click **${stop()}** to remove an auto post channel.
 Click **${confirm()}** to view and test current settings.`;
@@ -226,7 +226,7 @@ Click **Confirm** to view and test current settings.`;
             }
 
             function footerText() {
-                if (lang === "en") {
+                if (lang === "") {
                     return `Only Administrators can start or stop auto posts.`;
                 }
                 else if (lang === "es") {
@@ -268,7 +268,7 @@ Click **Confirm** to view and test current settings.`;
             }
 
             function start() {
-                if (lang === "en") {
+                if (lang === "") {
                     return `Start`;
                 }
                 else if (lang === "es") {
@@ -310,7 +310,7 @@ Click **Confirm** to view and test current settings.`;
             }
 
             function stop() {
-                if (lang === "en") {
+                if (lang === "") {
                     return `Stop`;
                 }
                 else if (lang === "es") {
@@ -352,7 +352,7 @@ Click **Confirm** to view and test current settings.`;
             }
 
             function confirm() { //fixme - add translations
-                if (lang === "en") {
+                if (lang === "") {
                     return `Confirm`;
                 }
                 else if (lang === "es") {
@@ -604,7 +604,7 @@ Click **Confirm** to view and test current settings.`;
             }
 
             function notYourButtonString() {
-                if (lang === "en") {
+                if (lang === "") {
                     return `These buttons are not for you.`;
                 }
                 else if (lang === "es") {
@@ -668,7 +668,7 @@ Click **Confirm** to view and test current settings.`;
 
             //BEGIN ADDING A LANGAUGE
             	//console.log(`lang: ${lang} - LANG: ${LANG} - formattedLANG: ${formattedLANG()} - supported?: ${(supportedLanguages.indexOf(formattedLANG()) !== -1)} `);
-						if ((lang === "") && (LANG.includes("en"))) {
+						if ( (lang === "") && (LANG.includes("en")) ) {
 							if (interaction.user.id !== buttonUserID) {
 									await interaction.followUp({ content: `${notYourButtonString()}`, ephemeral: true });
 							}
@@ -738,6 +738,62 @@ Click **Confirm** to view and test current settings.`;
 	            }							
 						}
             //END ADDING A LANGAUGE
+
+            function expiredDesc() {
+                if (lang === "") {
+                    return `This interaction expired`;
+                }
+                if (lang === "es") {
+                    return `Esta interacción expiró`;
+                }
+                if (lang === "br") {
+                    return `Esta interação expirou`;
+                }
+                if (lang === "ru") {
+                    return `Срок действия этого взаимодействия истек`;
+                }
+                if (lang === "de") {
+                    return `Diese Interaktion ist abgelaufen`;
+                }
+                if (lang === "pl") {
+                    return `Ta interakcja wygasła`;
+                }
+                if (lang === "fr") {
+                    return `Cette interaction a expiré`;
+                }
+                if (lang === "it") {
+                    return `Questa interazione è scaduta`;
+                }
+								if (lang === "zh") {
+                    return `此互动已过期`;
+                }
+                if (lang === "tw") {
+                    return `此互動已過期`;
+                }
+                if (lang === "jp") {
+                    return `このインタラクションの有効期限が切れました`;
+                }
+                if (lang === "kr") {
+                    return `이 상호 작용이 만료되었습니다`;
+                }
+                else {
+                    return `This interaction expired`;
+                }
+            }
+
+            const expiredButton = new ActionRowBuilder()
+                .addComponents(
+                    new ButtonBuilder()
+                        .setCustomId(`expired`)
+                        .setLabel(`${expiredDesc()}`)
+                        .setStyle(ButtonStyle.Secondary)
+                        .setEmoji(':RSWeekly:1025248227248848940')
+                        .setDisabled(true),
+                );
+
+            setTimeout(() => {
+                interaction.editReply({ components: [expiredButton] });
+            }, (60000 * 5))					
 
 
         } //end if interaction starts with startback - stopback - confirmback

@@ -1,4 +1,4 @@
-const { PermissionsBitField, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, ChannelType } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, ChannelType } = require('discord.js');
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
 const LANG = require('../../events/LANG.js');
 const NEXT_BONUS = require('../../events/nextBonus.js');
@@ -28,13 +28,13 @@ module.exports = {
 						//console.log(`gta: ${nextBONUSGTA} - rdo: ${nextBONUSRDO}`);					
 
             function startTitle() {
-                if (lang === "en") {
+                if (lang === "") {
                     return `Start auto posting GTA Online bonuses`;
                 }
                 if (lang === "es") {
                     return `Comience a publicar automáticamente los bonos de GTA Online`;
                 }
-                if (lang === "pt") {
+                if (lang === "br") {
                     return `Comece a postar automaticamente bônus GTA Online`;
                 }
                 if (lang === "ru") {
@@ -52,13 +52,16 @@ module.exports = {
                 else if (lang === "it") {
                     return `Inizia a inviare automaticamente i bonus di GTA Online`;
                 }
-                else if (lang === "zh") {
+								else if (lang === "zh") {
+                    return `开始自动发送 GTA 在线模式奖励`;
+                }
+                else if (lang === "tw") {
                     return `開始自動發送 GTA 在線模式獎勵`;
                 }
-                else if (lang === "ja") {
+                else if (lang === "jp") {
                     return `GTAオンラインボーナスの自動送信を開始`;
                 }
-                else if (lang === "ko") {
+                else if (lang === "kr") {
                     return `GTA 온라인 보너스 자동 전송 시작`;
                 }
                 else {
@@ -67,13 +70,13 @@ module.exports = {
             }
 
             function startDesc() {
-                if (lang === "en") {
+                if (lang === "") {
                     return `Click **the dropdown menu** to confirm the channel you want to send GTA Online auto posts to every week. \nNext Update: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
                 }
                 if (lang === "es") {
                     return `Hage clic en **el menú desplegable** para confirmar el canal al que desea enviar publicaciones automáticas de GTA Online todas las semanas.\n**Próxima actualización:** <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
                 }
-                if (lang === "pt") {
+                if (lang === "br") {
                     return `Clique **o menu suspenso** para confirmar o canal que você deseja enviar GTA Online toda semana.\nPróxima atualização: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
                 }
                 if (lang === "ru") {
@@ -91,13 +94,16 @@ module.exports = {
                 else if (lang === "it") {
                     return `Fai clic sul **menu a discesa** per confermare il canale a cui desideri che vengano inviati gli aggiornamenti automatici di GTA Online ogni settimana.\nProssimo aggiornamento: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
                 }
-                else if (lang === "zh") {
+								else if (lang === "zh") {
+                    return `单击菜单以确认您希望 GTA 在线模式每周自动发送更新的频道\n下次更新：<t:${Math.round(nextBONUSGTA / 1000)}:F>`;
+                }
+                else if (lang === "tw") {
                     return `單擊菜單以確認您希望 GTA 在線模式每周自動發送更新的頻道\n下次更新：<t:${Math.round(nextBONUSGTA / 1000)}:F>`;
                 }
-                else if (lang === "ja") {
+                else if (lang === "jp") {
                     return `メニューをクリックして、「GTA オンライン」自動アップデートを毎週送信するチャンネルを確認します\n次回の更新: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
                 }
-                else if (lang === "ko") {
+                else if (lang === "kr") {
                     return `매주 GTA 온라인 자동 업데이트를 보낼 채널을 확인하려면 메뉴를 클릭하십시오.\n다음 업데이트: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
                 }
                 else {
@@ -106,52 +112,55 @@ module.exports = {
             }
 
             function startFooter() {
-                if (lang === "en") {
-                    return `Auto posts can only be sent to text channels the bot has permission to \'Send Messages\' in.`;
+                if (lang === "") {
+                    return `Auto posts can only be sent to text channels.`;
                 }
                 if (lang === "es") {
-                    return `Las publicaciones automáticas solo se pueden enviar a canales de texto en los que el bot tiene permiso para \'Enviar mensajes\'.`;
+                    return `Los mensajes automatizados solo se pueden enviar a canales de texto.`;
                 }
-                if (lang === "pt") {
-                    return `Autoposts só podem ser enviados para canais de texto que o bot tenha permissão de \'Enviar mensagens\'.`;
+                if (lang === "br") {
+                    return `As mensagens automáticas só podem ser enviadas para canais de texto.`;
                 }
                 if (lang === "ru") {
-                    return `Автоматические сообщения могут быть отправлены только на текстовые каналы, на которые бот имеет разрешение \'Отправить сообщения\'.`;
+                    return `Автоматические сообщения можно отправлять только в текстовые каналы.`;
                 }
                 if (lang === "de") {
-                    return `Automatische Posts können nur an Textkanäle gesendet werden, in denen der Bot die Berechtigung zum \'Senden von Nachrichten\' hat.`;
+                    return `Automatisierte Nachrichten können nur an Textkanäle gesendet werden.`;
                 }
                 else if (lang === "pl") {
-                    return `Automatyczne wiadomości mogą być wysyłane tylko do kanałów tekstowych, w których bot ma uprawnienia do wysyłania wiadomości.`;
+                    return `Automatyczne wiadomości mogą być wysyłane tylko do kanałów tekstowych.`;
                 }
                 else if (lang === "fr") {
-                    return `Les messages automatiques ne peuvent être envoyés qu'aux canaux de texte où le bot est autorisé à envoyer des messages.`;
+                    return `Les messages automatisés ne peuvent être envoyés qu'aux canaux de texte.`;
                 }
                 else if (lang === "it") {
-                    return `I messaggi automatici possono essere inviati solo ai canali di testo in cui il bot ha il permesso di inviare messaggi.`;
+                    return `I messaggi automatici possono essere inviati solo ai canali di testo.`;
                 }
-                else if (lang === "zh") {
-                    return `自動消息只能發送到機器人有權發送消息的文本通道。`;
+								else if (lang === "zh") {
+                    return `自动消息只能发送到文本渠道。`;
                 }
-                else if (lang === "ja") {
-                    return `自動メッセージは、ボットがメッセージを送信する権限を持つテキスト チャネルにのみ送信できます。`;
+                else if (lang === "tw") {
+                    return `自動消息只能發送到文本渠道。`;
                 }
-                else if (lang === "ko") {
-                    return `자동 메시지는 봇이 메시지를 보낼 수 있는 권한이 있는 텍스트 채널로만 보낼 수 있습니다.`;
+                else if (lang === "jp") {
+                    return `自動メッセージはテキスト チャネルにのみ送信できます。`;
+                }
+                else if (lang === "kr") {
+                    return `자동 메시지는 텍스트 채널로만 보낼 수 있습니다.`;
                 }
                 else {
-                    return `Auto posts can only be sent to text channels the bot has permission to \'Send Messages\' in.`;
+                    return `Auto posts can only be sent to text channels.`;
                 }
             }
 
             function goBack() {
-                if (lang === "en") {
+                if (lang === "") {
                     return `Go Back`;
                 }
                 else if (lang === "es") {
                     return `Volver`;
                 }
-                else if (lang === "pt") {
+                else if (lang === "br") {
                     return `Voltar`;
                 }
                 else if (lang === "ru") {
@@ -169,13 +178,16 @@ module.exports = {
                 else if (lang === "it") {
                     return `Torna all'ultima`;
                 }
-                else if (lang === "zh") {
+								else if (lang === "zh") {
                     return `回去`;
                 }
-                else if (lang === "ja") {
+                else if (lang === "tw") {
+                    return `回去`;
+                }
+                else if (lang === "jp") {
                     return `戻る`;
                 }
-                else if (lang === "ko") {
+                else if (lang === "kr") {
                     return `돌아가다`;
                 }
                 else {
@@ -184,13 +196,13 @@ module.exports = {
             }
 
             function notYourButtonString() {
-                if (lang === "en") {
+                if (lang === "") {
                     return `These buttons are not for you.`;
                 }
                 else if (lang === "es") {
                     return `Estos botones no son para ti.`;
                 }
-                else if (lang === "pt") {
+                else if (lang === "br") {
                     return `Esses botões não são para você.`;
                 }
                 else if (lang === "ru") {
@@ -208,13 +220,16 @@ module.exports = {
                 else if (lang === "it") {
                     return `Questi pulsanti non fanno per te.`;
                 }
-                else if (lang === "zh") {
+								else if (lang === "zh") {
+                    return `这些按钮不适合您。`;
+                }
+                else if (lang === "tw") {
                     return `這些按鈕不適合您。`;
                 }
-                else if (lang === "ja") {
+                else if (lang === "jp") {
                     return `これらのボタンはあなたのためではありません。`;
                 }
-                else if (lang === "ko") {
+                else if (lang === "kr") {
                     return `이 버튼은 당신을 위한 것이 아닙니다.`;
                 }
                 else {
@@ -223,13 +238,13 @@ module.exports = {
             }
 
             function selectChannel() {
-                if (lang === "en") {
+                if (lang === "") {
                     return `Select A Channel`;
                 }
                 else if (lang === "es") {
                     return `Elige un canal`;
                 }
-                else if (lang === "pt") {
+                else if (lang === "br") {
                     return `Escolha um canal`;
                 }
                 else if (lang === "ru") {
@@ -247,13 +262,16 @@ module.exports = {
                 else if (lang === "it") {
                     return `Seleziona un canale`;
                 }
-                else if (lang === "zh") {
+								else if (lang === "zh") {
+                    return `选择频道`;
+                }
+                else if (lang === "tw") {
                     return `選擇頻道`;
                 }
-                else if (lang === "ja") {
+                else if (lang === "jp") {
                     return `チャンネルを選択`;
                 }
-                else if (lang === "ko") {
+                else if (lang === "kr") {
                     return `채널 선택`;
                 }
                 else {
@@ -262,13 +280,13 @@ module.exports = {
             }
 
             function noChannel() {
-                if (lang === "en") {
+                if (lang === "") {
                     return `No Channel Selected`;
                 }
                 else if (lang === "es") {
                     return `Ningún canal elegido`;
                 }
-                else if (lang === "pt") {
+                else if (lang === "br") {
                     return `Nenhum canal escolhido`;
                 }
                 else if (lang === "ru") {
@@ -286,13 +304,16 @@ module.exports = {
                 else if (lang === "it") {
                     return `nessun canale`;
                 }
-                else if (lang === "zh") {
+								else if (lang === "zh") {
+                    return `没有频道`;
+                }
+                else if (lang === "tw") {
                     return `沒有頻道`;
                 }
-                else if (lang === "ja") {
+                else if (lang === "jp") {
                     return `チャンネルなし`;
                 }
-                else if (lang === "ko") {
+                else if (lang === "kr") {
                     return `채널 없음`;
                 }
                 else {
@@ -321,7 +342,7 @@ module.exports = {
 
                 let gtaChannelCount = 0;
                 interaction.guild.channels.cache.forEach(channel => {
-                    if (((channel.type === ChannelType.GuildText) || (channel.type === ChannelType.GuildAnnouncement)) && (!data.includes(channel.id)) && (channel.permissionsFor(process.env.CLIENT_ID).has(PermissionsBitField.Flags.SendMessages)) && (channel.permissionsFor(interaction.user.id).has(PermissionsBitField.Flags.ViewChannel))) {
+                    if (((channel.type === ChannelType.GuildText) || (channel.type === ChannelType.GuildAnnouncement)) && (!data.includes(channel.id))) {
                         gtaChannelCount += 1;
                     }
                 })
@@ -329,7 +350,7 @@ module.exports = {
                 var gtaChannelIDs = new Array(gtaChannelCount);
                 var gtaChannelTypes = new Array(gtaChannelCount);
                 interaction.guild.channels.cache.forEach(channel => {
-                    if (((channel.type === 0) || (channel.type === 5)) && (!data.includes(channel.id)) && (channel.permissionsFor(process.env.CLIENT_ID).has(PermissionsBitField.Flags.SendMessages)) && (channel.permissionsFor(interaction.user.id).has(PermissionsBitField.Flags.ViewChannel))) {
+                    if (((channel.type === 0) || (channel.type === 5)) && (!data.includes(channel.id))) {
                         gtaChannelNames.splice((channel.rawPosition), 1, channel.name);   //gtaChannelNames.push(channel.name); 
                         gtaChannelIDs.splice((channel.rawPosition), 1, channel.id); 	//gtaChannelIDs.push(channel.id);
                         gtaChannelTypes.splice((channel.rawPosition), 1, channel.type);	//gtaChannelTypes.push(channel.type);
@@ -406,13 +427,13 @@ module.exports = {
                 } //end if there are fewer than 23 channels
 
                 function expiredDesc() {
-                    if (lang === "en") {
+                    if (lang === "") {
                         return `This interaction expired`;
                     }
                     if (lang === "es") {
                         return `Esta interacción expiró`;
                     }
-                    if (lang === "pt") {
+                    if (lang === "br") {
                         return `Esta interação expirou`;
                     }
                     if (lang === "ru") {
@@ -430,13 +451,16 @@ module.exports = {
                     if (lang === "it") {
                         return `Questa interazione è scaduta`;
                     }
-                    if (lang === "zh") {
+										if (lang === "zh") {
+                        return `此互动已过期`;
+                    }
+                    if (lang === "tw") {
                         return `此互動已過期`;
                     }
-                    if (lang === "ja") {
+                    if (lang === "jp") {
                         return `このインタラクションの有効期限が切れました`;
                     }
-                    if (lang === "ko") {
+                    if (lang === "kr") {
                         return `이 상호 작용이 만료되었습니다`;
                     }
                     else {
@@ -456,7 +480,7 @@ module.exports = {
 
                 setTimeout(() => {
                     interaction.editReply({ components: [expiredButton] });
-                }, (60000 * 5))
+                }, (60000 * 15))
 
             }); //end fs.readFile for GTADataBase.txt
 

@@ -178,7 +178,7 @@ module.exports = {
                 else if (chosenLang === "es") {
                     return `Éxito`;
                 }
-                else if (chosenLang === "pt") {
+                else if (chosenLang === "br") {
                     return `Éxito`;
                 }
                 else if (chosenLang === "ru") {
@@ -202,10 +202,10 @@ module.exports = {
                 else if (chosenLang === "tw") {
                     return `成功`;
                 }
-                else if (chosenLang === "ja") {
+                else if (chosenLang === "jp") {
                     return `成功`;
                 }
-                else if (chosenLang === "ko") {
+                else if (chosenLang === "kr") {
                     return `성공`;
                 }
                 else {
@@ -220,7 +220,7 @@ module.exports = {
                 if (chosenLang === "es") {
                     return `El idioma de este servidor se ha cambiado al español.`;
                 }
-                if (chosenLang === "pt") {
+                if (chosenLang === "br") {
                     return `O idioma deste servidor foi alterado para português.`;
                 }
                 if (chosenLang === "ru") {
@@ -244,10 +244,10 @@ module.exports = {
                 if (chosenLang === "tw") {
                     return `此服務器的語言已更改為中文（繁體）。`;
                 }							
-                if (chosenLang === "ja") {
+                if (chosenLang === "jp") {
                     return `このサーバーの言語は日本語に変更されました。`;
                 }
-                if (chosenLang === "ko") {
+                if (chosenLang === "kr") {
                     return `이 서버의 언어가 한국어로 변경되었습니다.`;
                 }
                 else {
@@ -262,7 +262,7 @@ module.exports = {
                 if (chosenLang === "es") {
                     return `El idioma predeterminado es el inglés. Es posible que falte alguna información o que esté mal traducida.`;
                 }
-                if (chosenLang === "pt") {
+                if (chosenLang === "br") {
                     return `O idioma padrão para este bot é o inglês. Algumas informações podem estar faltando ou mal traduzidas.`;
                 }
                 if (chosenLang === "ru") {
@@ -286,10 +286,10 @@ module.exports = {
 								if (chosenLang === "tw") {
 									return `此機器人的默認語言是英語。某些信息可能丟失或翻譯錯誤。`;
 								}
-                if (chosenLang === "ja") {
+                if (chosenLang === "jp") {
                     return `このボットのデフォルト言語は英語です。一部の情報が欠落しているか、誤訳されている可能性があります。`;
                 }
-                if (chosenLang === "ko") {
+                if (chosenLang === "kr") {
                     return `이 봇의 기본 언어는 영어입니다. 일부 정보가 누락되었거나 잘못 번역되었을 수 있습니다.`;
                 }
                 else {
@@ -340,7 +340,7 @@ module.exports = {
             }
 
 						function tryAuto() {
-							if (chosenLang === "") {
+							if (chosenLang === "en") {
 								return `/Autopost`;
 							}
 							if (chosenLang === "es") {
@@ -469,6 +469,62 @@ module.exports = {
             }
 
 				}
+
+            function expiredDesc() {
+                if (lang === "") {
+                    return `This interaction expired`;
+                }
+                if (lang === "es") {
+                    return `Esta interacción expiró`;
+                }
+                if (lang === "br") {
+                    return `Esta interação expirou`;
+                }
+                if (lang === "ru") {
+                    return `Срок действия этого взаимодействия истек`;
+                }
+                if (lang === "de") {
+                    return `Diese Interaktion ist abgelaufen`;
+                }
+                if (lang === "pl") {
+                    return `Ta interakcja wygasła`;
+                }
+                if (lang === "fr") {
+                    return `Cette interaction a expiré`;
+                }
+                if (lang === "it") {
+                    return `Questa interazione è scaduta`;
+                }
+								if (lang === "zh") {
+                    return `此互动已过期`;
+                }
+                if (lang === "tw") {
+                    return `此互動已過期`;
+                }
+                if (lang === "jp") {
+                    return `このインタラクションの有効期限が切れました`;
+                }
+                if (lang === "kr") {
+                    return `이 상호 작용이 만료되었습니다`;
+                }
+                else {
+                    return `This interaction expired`;
+                }
+            }
+
+            const expiredButton = new ActionRowBuilder()
+                .addComponents(
+                    new ButtonBuilder()
+                        .setCustomId(`expired`)
+                        .setLabel(`${expiredDesc()}`)
+                        .setStyle(ButtonStyle.Secondary)
+                        .setEmoji(':RSWeekly:1025248227248848940')
+                        .setDisabled(true),
+                );
+
+            setTimeout(() => {
+                interaction.editReply({ components: [expiredButton] });
+            }, (60000 * 15))
 
         } // end if languageMenu button
 

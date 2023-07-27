@@ -8,10 +8,8 @@ module.exports = {
     LANG: async function (interaction) {
 
         if (interaction.channel.type === ChannelType.DM) {
-            var LANG02 = interaction.locale.toString().split("-");
-            var lang = LANG02[0];
-            //console.log(`lang:${lang}`);			
-            return lang;
+            var LANG = interaction.locale.toString();		
+            return LANG;
         }
         else {
 
@@ -58,7 +56,7 @@ module.exports = {
                     lang += `${langArray[i]}`;
                 }
             }
-            console.log(`lang...: ${lang}`);	
+            //console.log(`LANG.js: lang: ${lang}`);	
             return lang;
         }
     }

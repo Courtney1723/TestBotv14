@@ -26,13 +26,13 @@ module.exports = {
             //console.log(`LANG:${await LANG.LANG(interaction)}`);				
 
             function thinking() {
-                if (lang === "en") {
+                if (lang === "") {
                     return `Thinking...`;
                 }
                 else if (lang === "es") {
                     return `Pensando...`;
                 }
-                else if (lang === "pt") {
+                else if (lang === "br") {
                     return `Pensamento...`;
                 }
                 else if (lang === "ru") {
@@ -50,13 +50,16 @@ module.exports = {
                 else if (lang === "it") {
                     return `Pensando...`;
                 }
-                else if (lang === "zh") {
+								else if (lang === "zh") {
                     return `我在想...`;
                 }
-                else if (lang === "ja") {
+								else if (lang === "tw") {
+                    return `我在想...`;
+                }
+                else if (lang === "jp") {
                     return `考えています...`;
                 }
-                else if (lang === "ko") {
+                else if (lang === "kr") {
                     return `나는 생각 중입니다...`;
                 }
                 else {
@@ -66,13 +69,13 @@ module.exports = {
 
 
             function testGTAButtonString() {
-                if (lang === "en") {
+                if (lang === "") {
                     return `Test GTA`;
                 }
                 else if (lang === "es") {
                     return `Prueba GTA`;
                 }
-                else if (lang === "pt") {
+                else if (lang === "br") {
                     return `Testar GTA`;
                 }
                 else if (lang === "ru") {
@@ -90,13 +93,16 @@ module.exports = {
                 else if (lang === "it") {
                     return `Prova GTA`;
                 }
-                else if (lang === "zh") {
+								else if (lang === "zh") {
+                    return `测试 GTA`;
+                }
+                else if (lang === "tw") {
                     return `測試 GTA`;
                 }
-                else if (lang === "ja") {
+                else if (lang === "jp") {
                     return `テストGTA`;
                 }
-                else if (lang === "ko") {
+                else if (lang === "kr") {
                     return `테스트 GTA`;
                 }
                 else {
@@ -105,13 +111,13 @@ module.exports = {
             }
 
             function testRDOButtonString() {
-                if (lang === "en") {
+                if (lang === "") {
                     return `Test RDO`;
                 }
                 else if (lang === "es") {
                     return `Prueba RDO`;
                 }
-                else if (lang === "pt") {
+                else if (lang === "br") {
                     return `Testar RDO`;
                 }
                 else if (lang === "ru") {
@@ -129,13 +135,16 @@ module.exports = {
                 else if (lang === "it") {
                     return `Prova RDO`;
                 }
-                else if (lang === "zh") {
+								else if (lang === "zh") {
+                    return `测试 RDO`;
+                }
+                else if (lang === "tw") {
                     return `測試 RDO`;
                 }
-                else if (lang === "ja") {
+                else if (lang === "jp") {
                     return `テストRDO`;
                 }
-                else if (lang === "ko") {
+                else if (lang === "kr") {
                     return `테스트 RDO`;
                 }
                 else {
@@ -144,13 +153,13 @@ module.exports = {
             }
 
             function goBack() {
-                if (lang === "en") {
+                if (lang === "") {
                     return `Go Back`;
                 }
                 else if (lang === "es") {
                     return `Volver`;
                 }
-                else if (lang === "pt") {
+                else if (lang === "br") {
                     return `Voltar`;
                 }
                 else if (lang === "ru") {
@@ -168,13 +177,16 @@ module.exports = {
                 else if (lang === "it") {
                     return `Torna all'ultima`;
                 }
-                else if (lang === "zh") {
+								else if (lang === "zh") {
                     return `回去`;
                 }
-                else if (lang === "ja") {
+                else if (lang === "tw") {
+                    return `回去`;
+                }
+                else if (lang === "jp") {
                     return `戻る`;
                 }
-                else if (lang === "ko") {
+                else if (lang === "kr") {
                     return `돌아가다`;
                 }
                 else {
@@ -310,38 +322,20 @@ module.exports = {
                         var getgtaParse = JSON.parse(getgtaJSON);
                         //console.log(getgtaJSON);
 
-                        var gtaImage = getgtaParse.data.posts.results[1].preview_images_parsed.newswire_block.d16x9;
-                        //console.log(`gtaImage: ${gtaImage}`);
-
-												function langFunction() {
-													if (supportedLanguages.indexOf(lang.substring(0, 2)) < 0) { //unsupported languages are treated as English
-														return "";
-													}		
-													if (lang.includes("en")) {
-														return "";
-													}
-													if (lang.includes("pt")) {
-														return "/br";
-													}	
-													if (lang.includes("CH")) { //simplified Chinese (China)
-														return "/zh";
-													}
-													if (lang.includes("TW")) { //traditional Chinese (Taiwan)
-														return "/tw";
-													}						
-													if (lang.includes("ko")) {
-														return "/kr";
-													}
-													if (lang.length >= 3) { //languages like "es-ES" or "pt-BR" are returnes as "es" or "pt"
-														return `/${lang.substring(0, 2)}`;
-													}
-													else {
+												function langFunction() {		
+													if (lang !== "") {
 														return `/${lang}`;
 													}
-												}										
+													else {
+														return "";
+													}
+												}											
+
+                        var gtaImage = getgtaParse.data.posts.results[1].preview_images_parsed.newswire_block.d16x9;
+                        //console.log(`gtaImage: ${gtaImage}`);									
 
                         var gtaURLHash = getgtaParse.data.posts.results[1].id;
-                        var gtaURLFull = `https://www.rockstargames.com${getgtaParse.data.posts.results[1].url}`;
+                        var gtaURLFull = `https://www.rockstargames.com${langFunction()}${getgtaParse.data.posts.results[1].url}`;
                         var fetchGTA = await fetch(`${process.env.gtaGraphURL3}${gtaURLHash}%22%2C%22locale%22%3A%22${lang}${process.env.gtaGraphURL4}`, {
                             "cache": "default",
                             "credentials": "omit",
@@ -483,41 +477,41 @@ module.exports = {
                             }
                         }
 												function footerText() {
-													if (lang.includes("en")) {
+													if (lang === "") {
 															return `\n** [More details](${gtaURLFull})**`;
 													}
-													else if (lang.includes("es")) {
+													else if (lang === "es") {
 															return `\n** [Más detalles](${gtaURLFull})**`;
 													}
-													else if (lang.includes("pt")) {
+													else if (lang === "br") {
 															return `\n** [Mais detalhes](${gtaURLFull})**`;
 													}						
-													else if (lang.includes("ru")) {
+													else if (lang === "ru") {
 															return `\n** [Подробнее](${gtaURLFull})**`;
 													}
-													else if (lang.includes("de")) {
+													else if (lang === "de") {
 															return `\n** [Mehr Details](${gtaURLFull})**`;
 													}
-													else if (lang.includes("pl")) {
+													else if (lang === "pl") {
 															return `\n** [Więcej szczegółów](${gtaURLFull})**`;
 													}
-													else if (lang.includes("fr")) {
+													else if (lang === "fr") {
 															return `\n** [Plus de détails](${gtaURLFull})**`;
 													}
-													else if (lang.includes("it")) {
+													else if (lang === "it") {
 															return `\n** [Più dettagli](${gtaURLFull})**`;
 													}
-													else if (lang.includes("CN")) {
+													else if (lang === "zh") {
 															return `\n** [更多细节](${gtaURLFull})**`;
 													}
-													else if (lang.includes("TW")) {
+													else if (lang === "tw") {
 															return `\n** [更多細節](${gtaURLFull})**`;
 													}
-													else if (lang.includes("ja")) {
-															return `\n** [자세한 내용은](${gtaURLFull})**`;
+													else if (lang === "jp") {
+															return `\n** [さらに詳しく](${gtaURLFull})**`;
 													}
-													else if (lang.includes("ko")) {
-															return `\n** [詳細](${gtaURLFull})**`;
+													else if (lang === "kr") {
+															return `\n** [자세한 내용은](${gtaURLFull})**`;
 													}
 													else {
 															return `\n** [More Details](${gtaURLFull})**`;
@@ -601,13 +595,13 @@ module.exports = {
 
                             function permission() {
                                 if (!(interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.ViewChannel)) { // missing all permissions - can't send messages or embed links without view permission
-                                    if (lang === "en") {
+                                    if (lang === "") {
                                         return `View Channel, Send Messages, and Embed Links`;
                                     }
                                     if (lang === "es") {
                                         return `Ver canal y Enviar mensajes y Insertar enlaces`;
                                     }
-                                    if (lang === "pt") {
+                                    if (lang === "br") {
                                         return `Ver canal e Enviar mensagens e Inserir links`;
                                     }
                                     if (lang === "ru") {
@@ -625,13 +619,16 @@ module.exports = {
                                     else if (lang === "it") {
                                         return `Visualizzare il canale, Inviare i messaggi e Incorporare i link`;
                                     }
-                                    else if (lang === "zh") {
+																		else if (lang === "zh") {
                                         return `查看频道、发送消息、嵌入链接`;
                                     }
-                                    else if (lang === "ja") {
+                                    else if (lang === "tw") {
+                                        return `查看頻道、發送消息、嵌入鏈接`;
+                                    }
+                                    else if (lang === "jp") {
                                         return `チャンネルを見る、メッセージを送信、埋め込みリンク`;
                                     }
-                                    else if (lang === "ko") {
+                                    else if (lang === "kr") {
                                         return `채널 보기、 메시지 보내기、 링크 첨부`;
                                     }
                                     else {
@@ -639,10 +636,10 @@ module.exports = {
                                     }
                                 }
                                 else if (!((interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.EmbedLinks))) {
-                                    if (lang === "en") {
+                                    if (lang === "") {
                                         return `Embed Links`;
                                     }
-                                    if (lang === "pt") {
+                                    if (lang === "br") {
                                         return `Inserir links`;
                                     }
                                     if (lang === "es") {
@@ -663,13 +660,16 @@ module.exports = {
                                     else if (lang === "it") {
                                         return `Incorporare i link`;
                                     }
-                                    else if (lang === "zh") {
+																		else if (lang === "zh") {
                                         return `嵌入链接`;
                                     }
-                                    else if (lang === "ja") {
+                                    else if (lang === "tw") {
+                                        return `嵌入鏈接`;
+                                    }
+                                    else if (lang === "jp") {
                                         return `埋め込みリンク`;
                                     }
-                                    else if (lang === "ko") {
+                                    else if (lang === "kr") {
                                         return `링크 첨부`;
                                     }
                                     else {
@@ -677,13 +677,13 @@ module.exports = {
                                     }
                                 }
                                 else if (!(interaction.guild.members.me).permissionsIn(channelIDArray[c]).has(PermissionsBitField.Flags.SendMessages)) { //missing send messages also prevents embedding links
-                                    if (lang === "en") {
+                                    if (lang === "") {
                                         return `Send Messages and Embed Links`;
                                     }
                                     if (lang === "es") {
                                         return `Enviar mensajes y Insertar enlaces`;
                                     }
-                                    if (lang === "pt") {
+                                    if (lang === "br") {
                                         return `Enviar mensagens e Inserir links`;
                                     }
                                     if (lang === "ru") {
@@ -701,13 +701,16 @@ module.exports = {
                                     else if (lang === "it") {
                                         return `Inviare i messaggi e Incorporare i link`;
                                     }
-                                    else if (lang === "zh") {
+																		else if (lang === "zh") {
                                         return `发送消息 和 嵌入链接`;
                                     }
-                                    else if (lang === "ja") {
+                                    else if (lang === "tw") {
+                                        return `發送消息 和 嵌入鏈接`;
+                                    }
+                                    else if (lang === "jp") {
                                         return `メッセージを送信 と 埋め込みリンク`;
                                     }
-                                    else if (lang === "ko") {
+                                    else if (lang === "kr") {
                                         return `메시지 보내기 그리고 링크 첨부`;
                                     }
                                     else {
@@ -719,13 +722,13 @@ module.exports = {
 
                             function sentPostDesc() {
                                 if (permission() === undefined) {
-                                    if (lang === "en") {
+                                    if (lang === "") {
                                         return `• A post has been sent to <#${channelIDArray[c]}>!\n`;
                                     }
                                     else if (lang === "es") {
                                         return `• El mensaje ha sido enviado a <#${channelIDArray[c]}>.\n`;
                                     }
-                                    else if (lang === "pt") {
+                                    else if (lang === "br") {
                                         return `• Uma mensagem foi enviada para <#${channelIDArray[c]}>.\n`;
                                     }
                                     else if (lang === "ru") {
@@ -743,26 +746,29 @@ module.exports = {
                                     else if (lang === "it") {
                                         return `• Un messaggio è stato inviato a <#${channelIDArray[c]}>.`;
                                     }
-                                    else if (lang === "zh") {
+																		else if (lang === "zh") {
+                                        return `• 消息已发送至<#${channelIDArray[c]}>。`;
+                                    }
+                                    else if (lang === "tw") {
                                         return `• 消息已發送至<#${channelIDArray[c]}>。`;
                                     }
-                                    else if (lang === "ja") {
+                                    else if (lang === "jp") {
                                         return `• メッセージが <#${channelIDArray[c]}> チャネルに送信されました。`;
                                     }
-                                    else if (lang === "ko") {
+                                    else if (lang === "kr") {
                                         return `• 메시지가 <#${channelIDArray[c]}>로 전송되었습니다.`;
                                     }
                                     else {
                                         return `• A post has been sent to <#${channelIDArray[c]}>!\n`;
                                     }
                                 } else {
-                                    if (lang === "en") {
+                                    if (lang === "") {
                                         return `• The bot is missing the ${permission()} permission in <#${channelIDArray[c]}>.\n`;
                                     }
                                     else if (lang === "es") {
                                         return `• Al bot le falta el permiso ${permission()} en <#${channelIDArray[c]}>.\n`;
                                     }
-                                    else if (lang === "pt") {
+                                    else if (lang === "br") {
                                         return `• O bot está sem a permissão ${permission()} em <#${channelIDArray[c]}>.\n`;
                                     }
                                     else if (lang === "ru") {
@@ -780,13 +786,16 @@ module.exports = {
                                     else if (lang === "it") {
                                         return `• Al bot manca l'autorizzazione ${permission()} in <#${channelIDArray[c]}>.\n`;
                                     }
-                                    else if (lang === "zh") {
+																		else if (lang === "zh") {
+                                        return `• 机器人缺少 <#${channelIDArray[c]}> 中的 ${permission()} 权限.\n`;
+                                    }
+                                    else if (lang === "tw") {
                                         return `• 機器人缺少 <#${channelIDArray[c]}> 中的 ${permission()} 權限.\n`;
                                     }
-                                    else if (lang === "ja") {
+                                    else if (lang === "jp") {
                                         return `• ボットに <#${channelIDArray[c]}> の ${permission()} 権限がありません.\n`;
                                     }
-                                    else if (lang === "ko") {
+                                    else if (lang === "kr") {
                                         return `• 봇에 <#${channelIDArray[c]}>의 ${permission()} 권한이 없습니다.\n`;
                                     }
                                     else {
@@ -838,45 +847,48 @@ module.exports = {
 
                         function success() {
                             if (successCount === gtaChannelIds.length) {
-                                if (lang === "en") {
-                                    return `Success`;
-                                }
-                                else if (lang === "es") {
-                                    return `Éxito`;
-                                }
-                                else if (lang === "pt") {
-                                    return `Éxito`;
-                                }
-                                else if (lang === "ru") {
-                                    return `Успех`;
-                                }
-                                else if (lang === "de") {
-                                    return `Erfolg`;
-                                }
-                                else if (lang === "pl") {
-                                    return `Powodzenie`;
-                                }
-                                else if (lang === "fr") {
-                                    return `Succès`;
-                                }
-                                else if (lang === "it") {
-                                    return `Successo`;
-                                }
-                                else if (lang === "zh") {
-                                    return `成功`;
-                                }
-                                else if (lang === "ja") {
-                                    return `成功`;
-                                }
-                                else if (lang === "ko") {
-                                    return `성공`;
-                                }
-                                else {
-                                    return `Success`;
-                                }
-                            } //enf if (successCount === gtaChannelIds.length)
+															if (lang === "") {
+																	return `Success`;
+															}
+															else if (lang === "es") {
+																	return `Éxito`;
+															}
+															else if (lang === "br") {
+																	return `Éxito`;
+															}
+															else if (lang === "ru") {
+																	return `Успех`;
+															}
+															else if (lang === "de") {
+																	return `Erfolg`;
+															}
+															else if (lang === "pl") {
+																	return `Powodzenie`;
+															}
+															else if (lang === "fr") {
+																	return `Succès`;
+															}
+															else if (lang === "it") {
+																	return `Successo`;
+															}
+															else if (lang === "zh") {
+																	return `成功`;
+															}
+															else if (lang === "tw") {
+																	return `成功`;
+															}
+															else if (lang === "jp") {
+																	return `成功`;
+															}
+															else if (lang === "kr") {
+																	return `성공`;
+															}
+															else {
+																	return `Success`;
+															}
+                            } //end if (successCount === gtaChannelIds.length)
                             else {
-                                if (lang === "en") {
+                                if (lang === "") {
                                     return `Missing Permisions`;
                                 }
                                 else if (lang === "es") {
@@ -897,13 +909,16 @@ module.exports = {
                                 else if (lang === "it") {
                                     return `Autorizzazioni Mancanti`;
                                 }
-                                else if (lang === "zh") {
+																else if (lang === "zh") {
+                                    return `缺少权限`;
+                                }
+                                else if (lang === "tw") {
                                     return `缺少權限`;
                                 }
-                                else if (lang === "ja") {
+                                else if (lang === "jp") {
                                     return `権限がありません`;
                                 }
-                                else if (lang === "ko") {
+                                else if (lang === "kr") {
                                     return `権限がありません`;
                                 }
                                 else {
@@ -939,13 +954,13 @@ module.exports = {
                     //--BEGIN TRANSLATIONS--//		
 
                     function notYourButtonString() {
-                        if (lang === "en") {
+                        if (lang === "") {
                             return `These buttons are not for you.`;
                         }
                         else if (lang === "es") {
                             return `Estos botones no son para ti.`;
                         }
-                        else if (lang === "pt") {
+                        else if (lang === "br") {
                             return `Esses botões não são para você.`;
                         }
                         else if (lang === "ru") {
@@ -963,13 +978,16 @@ module.exports = {
                         else if (lang === "it") {
                             return `Questi pulsanti non fanno per te.`;
                         }
-                        else if (lang === "zh") {
+												else if (lang === "zh") {
+                            return `这些按钮不适合您。`;
+                        }
+                        else if (lang === "tw") {
                             return `這些按鈕不適合您。`;
                         }
-                        else if (lang === "ja") {
+                        else if (lang === "jp") {
                             return `これらのボタンはあなたのためではありません。`;
                         }
-                        else if (lang === "ko") {
+                        else if (lang === "kr") {
                             return `이 버튼은 당신을 위한 것이 아닙니다.`;
                         }
                         else {
@@ -978,13 +996,13 @@ module.exports = {
                     }
 
                     function missingPermissions() {
-                        if (LANG === "en") {
+                        if (lang === "") {
                             return `You do not have the required permissions to do that.`;
                         }
                         else if (LANG === "es") {
                             return `No tienes permiso para hacer eso.`;
                         }
-                        else if (LANG === "pt") {
+                        else if (LANG === "br") {
                             return `Você não tem permissão para fazer isso.`;
                         }
                         else if (LANG === "ru") {
@@ -1002,13 +1020,16 @@ module.exports = {
                         else if (LANG === "it") {
                             return `Non hai le autorizzazioni necessarie.`;
                         }
-                        else if (LANG === "zh") {
+												else if (LANG === "zh") {
+                            return `您没有所需的权限。`;
+                        }
+                        else if (LANG === "tw") {
                             return `您沒有所需的權限。`;
                         }
-                        else if (LANG === "ja") {
+                        else if (LANG === "jp") {
                             return `必要な権限がありません。`;
                         }
-                        else if (LANG === "ko") {
+                        else if (LANG === "kr") {
                             return `필요한 권한이 없습니다.`;
                         }
                         else {
@@ -1017,13 +1038,13 @@ module.exports = {
                     }
 
                     function noSubscriptions() {
-                        if (lang === "en") {
+                        if (lang === "") {
                             return `There are no channels subscribed to GTA Online.\n`;
                         }
                         else if (lang === "es") {
                             return `No hay canales suscritos a GTA Online.\n`;
                         }
-                        else if (lang === "pt") {
+                        else if (lang === "br") {
                             return `Não há canais inscritos no GTA Online.\n`;
                         }
                         else if (lang === "ru") {
@@ -1041,13 +1062,16 @@ module.exports = {
                         else if (lang === "it") {
                             return `Non ci sono canali abbonati a GTA Online.\n`;
                         }
-                        else if (lang === "zh") {
+												else if (lang === "zh") {
+                            return `没有订阅 GTA 在线模式的频道。\n`;
+                        }
+                        else if (lang === "tw") {
                             return `沒有訂閱 GTA 在線模式的頻道。\n`;
                         }
-                        else if (lang === "ja") {
+                        else if (lang === "jp") {
                             return `GTA Online に登録しているチャンネルはありません。\n`;
                         }
-                        else if (lang === "ko") {
+                        else if (lang === "kr") {
                             return `GTA 온라인을 구독하는 채널이 없습니다.\n`;
                         }
                         else {
@@ -1147,13 +1171,13 @@ module.exports = {
             }); //end fs.readFile for GTADataBase.txt
 
             function expiredDesc() {
-                if (lang === "en") {
+                if (lang === "") {
                     return `This interaction expired`;
                 }
                 if (lang === "es") {
                     return `Esta interacción expiró`;
                 }
-                if (lang === "pt") {
+                if (lang === "br") {
                     return `Esta interação expirou`;
                 }
                 if (lang === "ru") {
@@ -1171,13 +1195,16 @@ module.exports = {
                 if (lang === "it") {
                     return `Questa interazione è scaduta`;
                 }
-                if (lang === "zh") {
+								if (lang === "zh") {
+                    return `此互动已过期`;
+                }
+                if (lang === "tw") {
                     return `此互動已過期`;
                 }
-                if (lang === "ja") {
+                if (lang === "jp") {
                     return `このインタラクションの有効期限が切れました`;
                 }
-                if (lang === "ko") {
+                if (lang === "kr") {
                     return `이 상호 작용이 만료되었습니다`;
                 }
                 else {
@@ -1197,7 +1224,7 @@ module.exports = {
 
             setTimeout(() => {
                 interaction.editReply({ components: [expiredButton] });
-            }, (60000 * 5))
+            }, (60000 * 15))
 
         }
     },

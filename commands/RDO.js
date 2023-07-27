@@ -26,14 +26,14 @@ module.exports = {
         var startTime = performance.now();
 				await interaction.deferReply().catch(error => {console.log(`RDO Defer Reply Error: \n${error}`)});
 
-        var lang = interaction.locale.toString();
-        	//console.log(`lang:${lang}`);
+        var LANG = interaction.locale.toString();
+        	//console.log(`LANG: ${LANG}`);
 
         var nextBonus01 = await NEXT_BONUS.nextBonus("rdo");
         var thisBonus01 = await THIS_BONUS.thisBonus("rdo");
             // console.log(`next Bonus: <t:${Math.round(nextBonus01 / 1000)}>`);
 
-        var rdoFetch = await fetch(`${process.env.rdoGraphURL1}${lang}${process.env.rdoGraphURL2}`, {
+        var rdoFetch = await fetch(`${process.env.rdoGraphURL1}${LANG}${process.env.rdoGraphURL2}`, {
             "cache": "default",
             "credentials": "omit",
             "headers": {
@@ -54,70 +54,70 @@ module.exports = {
         var getrdoParse = JSON.parse(getrdoJSON);
             //console.log(getrdoJSON);
 
-				function langFunction() {
-					if (supportedLanguages.indexOf(lang.substring(0, 2)) < 0) { //unsupported languages are treated as English
-						return "";
-					}		
-					if (lang.includes("en")) {
+				function langFunction() {	
+					if (LANG.includes("en")) {
 						return "";
 					}
-					if (lang.includes("pt")) {
+					if (LANG.includes("es")) {
+						return "es";
+					}
+					if (LANG.includes("pt")) {
 						return "/br";
 					}	
-					if (lang.includes("CN")) { //simplified Chinese (China)
+					if (LANG.includes("CN")) { //simplified Chinese (China)
 						return "/zh";
 					}
-					if (lang.includes("TW")) { //traditional Chinese (Taiwan)
+					if (LANG.includes("TW")) { //traditional Chinese (Taiwan)
 						return "/tw";
 					}	
-					if (lang.includes("ja")) {
+					if (LANG.includes("ja")) {
 						return "/jp";
 					}					
-					if (lang.includes("ko")) {
+					if (LANG.includes("ko")) {
 						return "/kr";
 					}
-					if (lang.length >= 3) { //languages like "es-ES" or "pt-BR" are returned as "es" or "pt"
-						return `/${lang.substring(0, 2)}`;
-					}
-					else {
-						return `/${lang}`;
+					if (supportedLanguages.indexOf(LANG.substring(0, 2)) < 0) { //unsupported languages are treated as English
+						return "";
+					}	
+					else { //ru, de, pl, fr, it
+						return `/${LANG}`;
 					}
 				}
 				function gold() {
-					if (lang.includes("en")) {
+					if (LANG.includes("en")) {
 						return "Gold Bars";
 					}
-					if (lang.includes("es")) {
+					if (LANG.includes("es")) {
 						return "lingotes de oro";
 					}
-					if (lang.includes("pt")) {
+					if (LANG.includes("pt")) {
 						return "Barras de Ouro";
 					}
-					if (lang.includes("ru")) {
+					if (LANG.includes("ru")) {
 						return "золотых слитков";
 					}	
-					if (lang.includes("de")) {
+					if (LANG.includes("de")) {
 						return "Goldbarren";
 					}	
-					if (lang.includes("pl")) {
+					if (LANG.includes("pl")) {
 						return "sztabek złota";
 					}			
-					if (lang.includes("fr")) {
+					if (LANG.includes("fr")) {
 						return "lingots d'or";
 					}	
-					if (lang.includes("it")) {
+					if (LANG.includes("it")) {
 						return "Lingotti d'Oro";
 					}	
-					if (lang.includes("CN")) {
+					if (LANG.includes("CN")) {
 						return "金条";
 					}					
-					if (lang.includes("TW")) {
+					if (LANG.includes("TW")) {
 						return "金條";
 					}	
-					if (lang.includes("ja")) {
+					if (LANG.includes("ja")) {
 						return "格のゴールド バー";
 					}	
-					if (lang.includes("ko")) {
+					if (LANG.includes("ko")) {
 						return "금괴";
 					}
 					else {
@@ -125,40 +125,40 @@ module.exports = {
 					}
 				}
 				function discounts() {
-					if (lang.includes("en")) {
+					if (LANG.includes("en")) {
 						return "Discounts";
 					}
-					if (lang.includes("es")) {
+					if (LANG.includes("es")) {
 						return "Descuentos";
 					}
-					if (lang.includes("pt")) {
+					if (LANG.includes("pt")) {
 						return "Descontos";
 					}
-					if (lang.includes("ru")) {
+					if (LANG.includes("ru")) {
 						return "Скидки";
 					}	
-					if (lang.includes("de")) {
+					if (LANG.includes("de")) {
 						return "Rabatte";
 					}	
-					if (lang.includes("pl")) {
+					if (LANG.includes("pl")) {
 						return "Zniżki";
 					}			
-					if (lang.includes("fr")) {
+					if (LANG.includes("fr")) {
 						return "Promotions";
 					}	
-					if (lang.includes("it")) {
+					if (LANG.includes("it")) {
 						return "Sconti";
 					}	
-					if (lang.includes("CN")) {
+					if (LANG.includes("CN")) {
 						return "折扣优惠";
 					}
-					if (lang.includes("TW")) {
+					if (LANG.includes("TW")) {
 						return "折扣優惠";
 					}	
-					if (lang.includes("ja")) {
+					if (LANG.includes("ja")) {
 						return "割引";
 					}	
-					if (lang.includes("ko")) {
+					if (LANG.includes("ko")) {
 						return "할인";
 					}
 					else {
@@ -170,7 +170,7 @@ module.exports = {
         	//console.log(`rdoImage: ${rdoImage}`);			
         var rdoURLHash = getrdoParse.data.posts.results[0].id;
         var rdoURLFull = `https://www.rockstargames.com${langFunction()}${getrdoParse.data.posts.results[0].url}`;
-        var fetchRDO = await fetch(`${process.env.rdoGraphURL3}${rdoURLHash}%22%2C%22locale%22%3A%22${lang}${process.env.rdoGraphURL4}`, {
+        var fetchRDO = await fetch(`${process.env.rdoGraphURL3}${rdoURLHash}%22%2C%22locale%22%3A%22${LANG}${process.env.rdoGraphURL4}`, {
             "cache": "default",
             "credentials": "omit",
             "headers": {
@@ -294,40 +294,40 @@ module.exports = {
             }
         }
 				function footerText() {
-					if (lang.includes("en")) {
+					if (LANG.includes("en")) {
 							return `\n** [More details](${rdoURLFull})**`;
 					}
-					else if (lang.includes("es")) {
+					else if (LANG.includes("es")) {
 							return `\n** [Más detalles](${rdoURLFull})**`;
 					}
-					else if (lang.includes("pt")) {
+					else if (LANG.includes("pt")) {
 							return `\n** [Mais detalhes](${rdoURLFull})**`;
 					}						
-					else if (lang.includes("ru")) {
+					else if (LANG.includes("ru")) {
 							return `\n** [Подробнее](${rdoURLFull})**`;
 					}
-					else if (lang.includes("de")) {
+					else if (LANG.includes("de")) {
 							return `\n** [Mehr Details](${rdoURLFull})**`;
 					}
-					else if (lang.includes("pl")) {
+					else if (LANG.includes("pl")) {
 							return `\n** [Więcej szczegółów](${rdoURLFull})**`;
 					}
-					else if (lang.includes("fr")) {
+					else if (LANG.includes("fr")) {
 							return `\n** [Plus de détails](${rdoURLFull})**`;
 					}
-					else if (lang.includes("it")) {
+					else if (LANG.includes("it")) {
 							return `\n** [Più dettagli](${rdoURLFull})**`;
 					}
-					else if (lang.includes("CN")) {
+					else if (LANG.includes("CN")) {
 							return `\n** [更多细节](${rdoURLFull})**`;
 					}
-					else if (lang.includes("TW")) {
+					else if (LANG.includes("TW")) {
 							return `\n** [更多細節](${rdoURLFull})**`;
 					}
-					else if (lang.includes("ja")) {
+					else if (LANG.includes("ja")) {
 							return `\n** [자세한 내용은](${rdoURLFull})**`;
 					}
-					else if (lang.includes("ko")) {
+					else if (LANG.includes("ko")) {
 							return `\n** [詳細](${rdoURLFull})**`;
 					}
 					else {

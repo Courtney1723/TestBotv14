@@ -35,40 +35,40 @@ module.exports = {
         //console.log(`lang:${lang}`);	
 
         function langSettingsTitle() {
-            if (lang.includes("en")) {
+            if (lang === "en") {
                 return `Language Settings`;
             }
-            else if (lang.includes("es")) {
+            else if (lang === "es") {
                 return `Configuración de idioma`;
             }
-            else if (lang.includes("ru")) {
+            else if (lang === "ru") {
                 return `Языковые настройки`;
             }
-            else if (lang.includes("de")) {
+            else if (lang === "de") {
                 return `Spracheinstellungen`;
             }
-            else if (lang.includes("pt")) {
+            else if (lang === "br") {
                 return `Configurações de idioma`;
             }
-            else if (lang.includes("pl")) {
+            else if (lang === "pl") {
                 return `Ustawienia języka`;
             }
-            else if (lang.includes("fr")) {
+            else if (lang === "fr") {
                 return `Paramètres de langue`;
             }
-            else if (lang.includes("it")) {
+            else if (lang === "it") {
                 return `Impostazioni della lingua`;
             }
-            else if (lang.includes("CN")) {
+            else if (lang === "zh") {
                 return `语言设定`;
             }
-            else if (lang.includes("TW")) {
+            else if (lang === "tw") {
                 return `語言設定`;
             }							
-            else if (lang.includes("ja")) {
+            else if (lang === "jp") {
                 return `言語設定`;
             }
-            else if (lang.includes("ko")) {
+            else if (lang === "kr") {
                 return `언어 설정`;
             }
             else {
@@ -83,7 +83,7 @@ module.exports = {
             if (lang === "es") {
                 return `español`;
             }
-            if (lang === "pt") {
+            if (lang === "br") {
                 return `português`;
             }
             if (lang === "ru") {
@@ -107,10 +107,10 @@ module.exports = {
             if (lang === "tw") {
                 return `中國人 （傳統的）`;
             }					
-            if (lang === "ja") {
+            if (lang === "jp") {
                 return `日本`;
             }
-            if (lang === "ko") {
+            if (lang === "kr") {
                 return `한국인`;
             }
             else {

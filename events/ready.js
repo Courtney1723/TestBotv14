@@ -11,7 +11,7 @@ module.exports = {
         console.log(`Logged in as ${client.user.tag}`);
         client.user.setPresence({ activities: [{ name: 'Bonuses', type: ActivityType.Watching }] });
 
-        async function newBonusPresence() {
+        async function newBonusPresence() { //fixme - switch to new source
             let gtaURL = process.env.SOCIAL_URL_GTA2;
             //console.log(`gtaURL: ${gtaURL}`);
 

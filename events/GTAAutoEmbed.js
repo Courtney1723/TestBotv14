@@ -154,32 +154,14 @@ module.exports = {
                                 var gtaImage = getgtaParse.data.posts.results[1].preview_images_parsed.newswire_block.d16x9;
                                 //console.log(`gtaImage: ${gtaImage}`);
 
-																function langFunction() {
-																	if (supportedLanguages.indexOf(lang.substring(0, 2)) < 0) { //unsupported languages are treated as English
-																		return "";
-																	}		
-																	if (lang.includes("en")) {
-																		return "";
-																	}
-																	if (lang.includes("pt")) {
-																		return "/br";
-																	}	
-																	if (lang.includes("CH")) { //simplified Chinese (China)
-																		return "/zh";
-																	}
-																	if (lang.includes("TW")) { //traditional Chinese (Taiwan)
-																		return "/tw";
-																	}						
-																	if (lang.includes("ko")) {
-																		return "/kr";
-																	}
-																	if (lang.length >= 3) { //languages like "es-ES" or "pt-BR" are returnes as "es" or "pt"
-																		return `/${lang.substring(0, 2)}`;
-																	}
-																	else {
+																function langFunction() {		
+																	if (lang !== "") {
 																		return `/${lang}`;
 																	}
-																}
+																	else {
+																		return "";
+																	}
+																}	
 
                                 var gtaURLHash = getgtaParse.data.posts.results[1].id;
                                 var gtaURLFull = `https://www.rockstargames.com${langFunction()}${getgtaParse.data.posts.results[1].url}`;
@@ -324,41 +306,41 @@ module.exports = {
                                     }
                                 }
 																function footerText() {
-																	if (lang.includes("en")) {
+																	if (lang === "") {
 																			return `\n** [More details](${gtaURLFull})**`;
 																	}
-																	else if (lang.includes("es")) {
+																	else if (lang === "es") {
 																			return `\n** [Más detalles](${gtaURLFull})**`;
 																	}
-																	else if (lang.includes("pt")) {
+																	else if (lang === "br") {
 																			return `\n** [Mais detalhes](${gtaURLFull})**`;
 																	}						
-																	else if (lang.includes("ru")) {
+																	else if (lang === "ru") {
 																			return `\n** [Подробнее](${gtaURLFull})**`;
 																	}
-																	else if (lang.includes("de")) {
+																	else if (lang === "de") {
 																			return `\n** [Mehr Details](${gtaURLFull})**`;
 																	}
-																	else if (lang.includes("pl")) {
+																	else if (lang === "pl") {
 																			return `\n** [Więcej szczegółów](${gtaURLFull})**`;
 																	}
-																	else if (lang.includes("fr")) {
+																	else if (lang === "fr") {
 																			return `\n** [Plus de détails](${gtaURLFull})**`;
 																	}
-																	else if (lang.includes("it")) {
+																	else if (lang === "it") {
 																			return `\n** [Più dettagli](${gtaURLFull})**`;
 																	}
-																	else if (lang.includes("CN")) {
+																	else if (lang === "zh") {
 																			return `\n** [更多细节](${gtaURLFull})**`;
 																	}
-																	else if (lang.includes("TW")) {
+																	else if (lang === "tw") {
 																			return `\n** [更多細節](${gtaURLFull})**`;
 																	}
-																	else if (lang.includes("ja")) {
-																			return `\n** [자세한 내용은](${gtaURLFull})**`;
+																	else if (lang === "jp") {
+																			return `\n** [さらに詳しく](${gtaURLFull})**`;
 																	}
-																	else if (lang.includes("ko")) {
-																			return `\n** [詳細](${gtaURLFull})**`;
+																	else if (lang === "kr") {
+																			return `\n** [자세한 내용은](${gtaURLFull})**`;
 																	}
 																	else {
 																			return `\n** [More Details](${gtaURLFull})**`;
@@ -434,7 +416,6 @@ module.exports = {
                                 //console.log(`channelIDArray[c] at c${c}: ${channelIDArray[c]}`);
                                 //console.log(`gtaFinalString.length: ${gtaFinalString.length}`)
                                 if (channelIDArray[c].includes("undefined")) { return; }
-                                else if (lang === "") { c++ }
                                 else {
                                     if (gtaFinalString.length < (4000 - constChars)) {
                                         client.channels.fetch(channelIDArray[c]).then(channel => channel.send(({ embeds: [gtaImageEmbed, gtaEmbed] }))).then(c++).catch(err => console.log(`Min Error: ${err.stack}\nChannel ID: ${channelIDArray[c]}`));

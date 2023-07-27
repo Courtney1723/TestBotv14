@@ -48,7 +48,7 @@ module.exports = {
                 var subscriptionCheckGTA = false;
                 if (!GTAConfirmString.includes('• ')) {
                     var subscriptionCheckGTA = true;
-                    if (lang === "en") {
+                    if (lang === "") {
                         GTAConfirmString += `• There are no channels subscribed to GTA Online.\n`;
                     }
                     else if (lang === "es") {
@@ -106,7 +106,7 @@ module.exports = {
                     var subscriptionCheckRDO = false;
                     if (!RDOConfirmString.includes('• ')) {
                         var subscriptionCheckRDO = true;
-                        if (lang === "en") {
+                        if (lang === "") {
                             RDOConfirmString += `• There are no channels in this server subscribed to Red Dead Online.\n`;
                         }
                         else if (lang === "es") {
@@ -148,7 +148,7 @@ module.exports = {
                     }
 
                     function confirmTitleString() {
-                        if (lang === "en") {
+                        if (lang === "") {
                             return `Auto Posts`;
                         }
                         else if (lang === "es") {
@@ -191,7 +191,7 @@ module.exports = {
 
                     function everyThursday() {
                         if (subscriptionCheckGTA === false) {
-													if (lang === "en") {
+													if (lang === "") {
 															return `\nNext Update: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
 													}
 													else if (lang === "es") {
@@ -238,7 +238,7 @@ module.exports = {
 
                     function firstTuesday() {
                         if (subscriptionCheckRDO === false) {
-													if (lang === "en") {
+													if (lang === "") {
 													    return `\nNext Update: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
 													}
 													else if (lang === "es") {
@@ -284,7 +284,7 @@ module.exports = {
                     }
 
                     function testTitleString() {
-                        if (lang === "en") {
+                        if (lang === "") {
                             return `Test Auto Posts`;
                         }
                         else if (lang === "es") {
@@ -326,7 +326,7 @@ module.exports = {
                     }
 
                     function testGTAString() {
-                        if (lang === "en") {
+                        if (lang === "") {
                             return `Click **Test GTA** to send a test post to your subscribed GTA Online channels.`;
                         }
                         else if (lang === "es") {
@@ -368,7 +368,7 @@ module.exports = {
                     }
 
                     function testRDOString() {
-                        if (lang === "en") {
+                        if (lang === "") {
                             return `Click **Test RDO** to send a test post to your subscribed Red Dead Online channels.`;
                         }
                         else if (lang === "es") {
@@ -410,7 +410,7 @@ module.exports = {
                     }
 
                     function footerString() {
-                        if (lang === "en") {
+                        if (lang === "") {
                             return `Only administrators can test auto posts.`;
                         }
                         else if (lang === "es") {
@@ -452,7 +452,7 @@ module.exports = {
                     }
 
                     function testGTAButtonString() {
-                        if (lang === "en") {
+                        if (lang === "") {
                             return `Test GTA`;
                         }
                         else if (lang === "es") {
@@ -494,7 +494,7 @@ module.exports = {
                     }
 
                     function testRDOButtonString() {
-                        if (lang === "en") {
+                        if (lang === "") {
                             return `Test RDO`;
                         }
                         else if (lang === "es") {
@@ -536,7 +536,7 @@ module.exports = {
                     }
 
                     function backButtonString() {
-                        if (lang === "en") {
+                        if (lang === "") {
                             return `Go Back`;
                         }
                         else if (lang === "es") {
@@ -578,7 +578,7 @@ module.exports = {
                     }
 
                     function notYourButtonString() {
-                        if (lang === "en") {
+                        if (lang === "") {
                             return `These buttons are not for you.`;
                         }
                         else if (lang === "es") {
@@ -666,7 +666,7 @@ ${RDOConfirmString}
             }); //end fs.readFile GTADataBase	
 
             function expiredDesc() {
-                if (lang === "en") {
+                if (lang === "") {
                     return `This interaction expired`;
                 }
                 if (lang === "es") {
@@ -719,7 +719,7 @@ ${RDOConfirmString}
 
             setTimeout(() => {
                 interaction.editReply({ components: [expiredButton] });
-            }, (60000 * 5))
+            }, (60000 * 15))
 
         } //end if interaction starts with initialback
 

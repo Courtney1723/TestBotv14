@@ -24,13 +24,13 @@ module.exports = {
             //console.log(`LANG:${await LANG.LANG(interaction)}`);	
 
             function duplicateTitle() {
-                if (lang === "en") {
+                if (lang === "") {
                     return `Please Try Again`;
                 }
                 else if (lang === "es") {
                     return `Por favor, inténtalo de nuevo`;
                 }
-                else if (lang === "pt") {
+                else if (lang === "br") {
                     return `Por favor, tente novamente`;
                 }
                 else if (lang === "ru") {
@@ -48,13 +48,16 @@ module.exports = {
                 else if (lang === "it") {
                     return `Per favore riprova`;
                 }
-                else if (lang === "zh") {
+								else if (lang === "zh") {
+                    return `请再试一次`;
+                }
+                else if (lang === "tw") {
                     return `請再試一次`;
                 }
-                else if (lang === "ja") {
+                else if (lang === "jp") {
                     return `もう一度お試しください`;
                 }
-                else if (lang === "ko") {
+                else if (lang === "kr") {
                     return `다시 시도해 주세요`;
                 }
                 else {
@@ -63,13 +66,13 @@ module.exports = {
             }
 
             function invalidResponse() {
-                if (lang === "en") {
+                if (lang === "") {
                     return `You selected an invalid response.`;
                 }
                 else if (lang === "es") {
                     return `Seleccionó una respuesta no válida.`;
                 }
-                else if (lang === "pt") {
+                else if (lang === "br") {
                     return `Você selecionou uma resposta inválida.`;
                 }
                 else if (lang === "ru") {
@@ -87,13 +90,16 @@ module.exports = {
                 else if (lang === "it") {
                     return `Hai selezionato una risposta non valida.`;
                 }
-                else if (lang === "zh") {
+								else if (lang === "zh") {
+                    return `您选择了无效的回复。`;
+                }
+                else if (lang === "tw") {
                     return `您選擇了無效的回复。`;
                 }
-                else if (lang === "ja") {
+                else if (lang === "jp") {
                     return `無効な応答を選択しました。`;
                 }
-                else if (lang === "ko") {
+                else if (lang === "kr") {
                     return `잘못된 응답을 선택했습니다.`;
                 }
                 else {
@@ -120,13 +126,13 @@ module.exports = {
             else { //remove a channel from RDODataBase.txt		
 
                 function notYourOption() {
-                    if (lang === "en") {
+                    if (lang === "") {
                         return `These options aren't for you.`;
                     }
                     else if (lang === "es") {
                         return `Estas opciones no son para ti.`;
                     }
-                    else if (lang === "pt") {
+                    else if (lang === "br") {
                         return `Essas opções não são para você.`;
                     }
                     else if (lang === "ru") {
@@ -144,13 +150,16 @@ module.exports = {
                     else if (lang === "it") {
                         return `Queste opzioni non fanno per te.`;
                     }
-                    else if (lang === "zh") {
+										else if (lang === "zh") {
+                        return `这些选项不适合您。`;
+                    }
+                    else if (lang === "tw") {
                         return `這些選項不適合您。`;
                     }
-                    else if (lang === "ja") {
+                    else if (lang === "jp") {
                         return `これらのオプションはあなたのためではありません。`;
                     }
-                    else if (lang === "ko") {
+                    else if (lang === "kr") {
                         return `이러한 옵션은 귀하를 위한 것이 아닙니다.`;
                     }
                     else {
@@ -174,13 +183,13 @@ module.exports = {
                             else {
 
                                 function success() {
-                                    if (lang === "en") {
+                                    if (lang === "") {
                                         return `Success`;
                                     }
                                     else if (lang === "es") {
                                         return `Éxito`;
                                     }
-                                    else if (lang === "pt") {
+                                    else if (lang === "br") {
                                         return `Éxito`;
                                     }
                                     else if (lang === "ru") {
@@ -198,13 +207,16 @@ module.exports = {
                                     else if (lang === "it") {
                                         return `Successo`;
                                     }
-                                    else if (lang === "zh") {
+																		else if (lang === "zh") {
                                         return `成功`;
                                     }
-                                    else if (lang === "ja") {
+                                    else if (lang === "tw") {
                                         return `成功`;
                                     }
-                                    else if (lang === "ko") {
+                                    else if (lang === "jp") {
+                                        return `成功`;
+                                    }
+                                    else if (lang === "kr") {
                                         return `성공`;
                                     }
                                     else {
@@ -213,13 +225,13 @@ module.exports = {
                                 }
 
                                 function rdoRemoveDesc() {
-                                    if (lang === "en") {
+                                    if (lang === "") {
                                         return `You will now no longer get Red Dead Online auto posts in the <#${menuChannelID}> channel.`;
                                     }
                                     else if (lang === "es") {
                                         return `Ahora ya no obtendrá publicaciones automáticas de Red Dead en el canal <#${menuChannelID}>.`;
                                     }
-                                    else if (lang === "pt") {
+                                    else if (lang === "br") {
                                         return `Agora você não receberá mais postagens automáticas do Red Dead no canal <#${menuChannelID}>.`;
                                     }
                                     else if (lang === "ru") {
@@ -237,13 +249,16 @@ module.exports = {
                                     else if (lang === "it") {
                                         return `Non riceverai più messaggi automatici di Red Dead Online nel canale <#${menuChannelID}>.`;
                                     }
-                                    else if (lang === "zh") {
+																		else if (lang === "zh") {
+                                        return `您将不会再在 <#${menuChannelID}> 频道中收到 Red Dead 在线模式的自动消息。`;
+                                    }
+                                    else if (lang === "tw") {
                                         return `您將不會再在 <#${menuChannelID}> 頻道中收到 Red Dead 在線模式的自動消息。`;
                                     }
-                                    else if (lang === "ja") {
+                                    else if (lang === "jp") {
                                         return `<#${menuChannelID}> チャンネルで Red Dead Online の自動メッセージが表示されなくなります。`;
                                     }
-                                    else if (lang === "ko") {
+                                    else if (lang === "kr") {
                                         return `더 이상 <#${menuChannelID}> 채널에서 Red Dead 온라인 자동 메시지를 받지 않습니다.`;
                                     }
                                     else {
@@ -252,13 +267,13 @@ module.exports = {
                                 }
 
                                 function notYourOption() {
-                                    if (lang === "en") {
+                                    if (lang === "") {
                                         return `These options aren't for you.`;
                                     }
                                     else if (lang === "es") {
                                         return `Estas opciones no son para ti.`;
                                     }
-                                    else if (lang === "pt") {
+                                    else if (lang === "br") {
                                         return `Essas opções não são para você.`;
                                     }
                                     else if (lang === "ru") {
@@ -276,13 +291,16 @@ module.exports = {
                                     else if (lang === "it") {
                                         return `Queste opzioni non fanno per te.`;
                                     }
-                                    else if (lang === "zh") {
+																		else if (lang === "zh") {
+                                        return `这些选项不适合您。`;
+                                    }
+                                    else if (lang === "tw") {
                                         return `這些選項不適合您。`;
                                     }
-                                    else if (lang === "ja") {
+                                    else if (lang === "jp") {
                                         return `これらのオプションはあなたのためではありません。`;
                                     }
-                                    else if (lang === "ko") {
+                                    else if (lang === "kr") {
                                         return `이러한 옵션은 귀하를 위한 것이 아닙니다.`;
                                     }
                                     else {
@@ -291,13 +309,13 @@ module.exports = {
                                 }
 
                                 function confirmSettingsString() {
-                                    if (lang === "en") {
+                                    if (lang === "") {
                                         return `Confirm Settings`;
                                     }
                                     else if (lang === "es") {
                                         return `Confirmar la configuración`;
                                     }
-                                    else if (lang === "pt") {
+                                    else if (lang === "br") {
                                         return `Confirmar configurações`;
                                     }
                                     else if (lang === "ru") {
@@ -315,13 +333,16 @@ module.exports = {
                                     else if (lang === "it") {
                                         return `Conferma impostazioni`;
                                     }
-                                    else if (lang === "zh") {
+																		else if (lang === "zh") {
+                                        return `确认设置`;
+                                    }
+                                    else if (lang === "tw") {
                                         return `確認設置`;
                                     }
-                                    else if (lang === "ja") {
+                                    else if (lang === "jp") {
                                         return `設定を確認する`;
                                     }
-                                    else if (lang === "ko") {
+                                    else if (lang === "kr") {
                                         return `설정 확인`;
                                     }
                                     else {
@@ -356,13 +377,13 @@ module.exports = {
                                 }
 
                                 function expiredDesc() {
-                                    if (lang === "en") {
+                                    if (lang === "") {
                                         return `This interaction expired`;
                                     }
                                     if (lang === "es") {
                                         return `Esta interacción expiró`;
                                     }
-                                    if (lang === "pt") {
+                                    if (lang === "br") {
                                         return `Esta interação expirou`;
                                     }
                                     if (lang === "ru") {
@@ -380,13 +401,16 @@ module.exports = {
                                     if (lang === "it") {
                                         return `Questa interazione è scaduta`;
                                     }
-                                    if (lang === "zh") {
+																		if (lang === "zh") {
+                                        return `此互动已过期`;
+                                    }
+                                    if (lang === "tw") {
                                         return `此互動已過期`;
                                     }
-                                    if (lang === "ja") {
+                                    if (lang === "jp") {
                                         return `このインタラクションの有効期限が切れました`;
                                     }
-                                    if (lang === "ko") {
+                                    if (lang === "kr") {
                                         return `이 상호 작용이 만료되었습니다`;
                                     }
                                     else {
@@ -406,7 +430,7 @@ module.exports = {
 
                                 setTimeout(() => {
                                     interaction.editReply({ components: [expiredButton] });
-                                }, (60000 * 5))
+                                }, (60000 * 15))
 
                             }
                         }); //end fs.writeFile for RDODataBase.txt

@@ -260,10 +260,10 @@ module.exports = {
 							return `\n** [更多細節](${gtaURLFull})**`;
 					}
 					else if (LANG.includes("ja")) {
-							return `\n** [자세한 내용은](${gtaURLFull})**`;
+							return `\n** [さらに詳しく](${gtaURLFull})**`;
 					}
 					else if (LANG.includes("ko")) {
-							return `\n** [詳細](${gtaURLFull})**`;
+							return `\n** [자세한 내용은](${gtaURLFull})**`;
 					}
 					else {
 							return `\n** [More Details](${gtaURLFull})**`;
