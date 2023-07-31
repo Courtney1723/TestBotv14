@@ -53,7 +53,7 @@ module.exports = {
         var getgtaParse = JSON.parse(getgtaJSON);
             //console.log(getgtaJSON);
 
-        var gtaImage = getgtaParse.data.posts.results[1].preview_images_parsed.newswire_block.d16x9;
+        var gtaImage = getgtaParse.data.posts.results[0].preview_images_parsed.newswire_block.d16x9;
         //console.log(`gtaImage: ${gtaImage}`);
 
 				function langFunction() {		
@@ -86,8 +86,8 @@ module.exports = {
 					}
 				}
 
-        var gtaURLHash = getgtaParse.data.posts.results[1].id;
-        var gtaURLFull = `https://www.rockstargames.com${langFunction()}${getgtaParse.data.posts.results[1].url}`;
+        var gtaURLHash = getgtaParse.data.posts.results[0].id;
+        var gtaURLFull = `https://www.rockstargames.com${langFunction()}${getgtaParse.data.posts.results[0].url}`;
         var fetchGTA = await fetch(`${process.env.gtaGraphURL3}${gtaURLHash}%22%2C%22locale%22%3A%22${LANG}${process.env.gtaGraphURL4}`, {
             "cache": "default",
             "credentials": "omit",
@@ -112,14 +112,14 @@ module.exports = {
 
         var gtaMainTitle = gtaParse.data.post.title
         var gtaSubTitle = gtaParse.data.post.subtitle;
-        var gtaBlurb = gtaParse.data.post.tina.variables.keys.meta.blurb;
+        //var gtaBlurb = gtaParse.data.post.tina.variables.keys.meta.blurb;
         var gtaDate = gtaParse.data.post.created_formatted;
             //console.log(`gtaTitle: ${gtaTitle}\ngtaSubTitle: ${gtaSubTitle}\ngtaDate: ${gtaDate}`);
         var thisBonus = Math.round((thisBonus01) / 1000) + 21600; // plus 6 hours
         var nextBonus = Math.round((nextBonus01) / 1000) - 54060; // minus 15.016 hours
             // console.log(`thisBonus01: ${thisBonus01} - nextBonus01: ${nextBonus01}`);
             // console.log(`thisBonus: ${thisBonus} - nextBonus: ${nextBonus}`);
-        gtaPost += `¶¶t:${thisBonus}:D∞∞ - ¶¶t:${nextBonus}:D∞∞\n\n• ${gtaSubTitle}\n\n• ${gtaBlurb}\n\n`;
+        gtaPost += `¶¶t:${thisBonus}:D∞∞ - ¶¶t:${nextBonus}:D∞∞\n\n• ${gtaSubTitle}\n\n`; //• ${gtaBlurb}\n\n
 
         var allBonuses = gtaParse.data.post.tina.variables.keys;
         var gtaBonus = Object.values(allBonuses);
@@ -129,53 +129,52 @@ module.exports = {
         var gtaPlusBottom = 0;
 
         //START Populating gtaPost
+				var misplacedBonus = "";
         for (var k = 2; k <= gtaBonus.length - 2; k++) { //first bonus is the subtitle and blurb, last bonus is the gun van inventory discounts
+							//console.log(`${k}: \n${JSON.stringify(gtaBonus[k])}`);
+						if (k === 11) { //fixme - luxury autos was in the wrong order this week
+							if (gtaBonus[k].content !== undefined) {
+								misplacedBonus = `${gtaBonus[k].content}`;
+							}
+						}
+						if (k === 12) {
+							if (gtaBonus[k].title !== undefined) {
+								gtaPost += `\n**${gtaBonus[k].title}**\n• ${misplacedBonus}\n`;
+							}
+						}
             //console.log(`${JSON.stringify(gtaBonus[k])}\n\n`);
-						if (k === 17) { }//FIXME NEXT WEEK
-            else if (gtaBonus[k - 1].badge !== undefined) { //Do not include description if 2x, 3x, 4x, etc... bonus
-                if (gtaBonus[k].title !== undefined) {
-                    gtaPost += `\n**${gtaBonus[k].title}**\n`;
-                }
-                else if (gtaBonus[k].description !== undefined) {
-                    gtaPost += `• ${gtaBonus[k].description}\n`;
-                }
-            }
-            else if (gtaBonus[k - 1].badge === undefined) { //if the bonus is not linked to another bonus
-                if ((gtaBonus[k].text !== undefined) && (gtaPlusCount !== 1)){ //gta+ top
-                    gtaPlusBonus += `\n**${gtaBonus[k].text}**\n`;
-                    gtaPlusCount++;
-                    gtaPlusInsert = gtaPost.length;
-                    gtaPlusBottom = k + 1;
-                }
-                if ((gtaBonus[k].content !== undefined)) {
-                    gtaPlusBonus += `• ${gtaBonus[k].content}\n`;
-                }
-                if (gtaBonus[k].title_and_description !== undefined) { //DISCOUNTS
-                    gtaPost += `\n**${gtaBonus[k].title_and_description.title}**\n${gtaBonus[k].title_and_description.description}`;
-                }
-                if ((gtaBonus[k].title !== undefined)) {
-                    gtaPost += `\n**${gtaBonus[k].title}**\n`;
-                }
-                if (gtaBonus[k].description !== undefined) {
-                    gtaPost += `• ${gtaBonus[k].description}\n`;
-                }
-            }
+						else if ((gtaBonus[k].text !== undefined) && (gtaPlusCount !== 1)){ //gta+ top
+								gtaPlusBonus += `\n**${gtaBonus[k].text}**\n`;
+								gtaPlusCount++;
+								gtaPlusInsert = gtaPost.length;
+								gtaPlusBottom = k + 1;
+						}
+						else if (gtaBonus[k].title !== undefined) {
+							gtaPost += `\n**${gtaBonus[k].title}**\n`; 
+						}
+						else if (gtaBonus[k].description !== undefined) {
+								gtaPost += `• ${gtaBonus[k].description}\n`;
+						}
+						else if ((gtaBonus[k].content !== undefined) && (k !== 11)) { //fixme next week 
+								gtaPost += `• ${gtaBonus[k].content}\n`;
+						}
         }
         //END for loop
 
         function gtaPlus() {
-            gtaPlusBonus += `${gtaBonus[gtaPlusBottom].text}\n`;
+            gtaPlusBonus += `${gtaBonus[gtaPlusBottom].text}\n`; //adds the GTA+ bottom text
             var gtaPost1 = gtaPost.slice(0, gtaPlusInsert);
             var gtaPost2 = gtaPost.slice(gtaPlusInsert, gtaPost.length);
             gtaPost = gtaPost1 + gtaPlusBonus + gtaPost2;
         }
         gtaPlus();
+				function noBonus() { //fixme - next week
+					gtaPost = gtaPost
+						.replace(/<p>.*?<h3><br>/, "<h3>")
+						.replace(/<\/h3><p>.*?<\/p>/, "</h3>")
+				}
+				noBonus();
 
-        function noBonus() {
-            var noBonusRegex = /<p>.*?<\/p><h3>/g;
-            gtaPost = gtaPost.replace(noBonusRegex, "<h3>");
-        }
-        noBonus();
 				if (gtaBonus[gtaBonus.length - 1].content !== undefined) { //adds the gun van inventory discounts
 						gtaPost += `${gtaBonus[gtaBonus.length - 1].content}\n`;
 				}			

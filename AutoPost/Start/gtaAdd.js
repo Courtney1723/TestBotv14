@@ -2,6 +2,7 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
 const LANG = require('../../events/LANG.js');
 const NEXT_BONUS = require('../../events/nextBonus.js');
+const THIS_BONUS = require('../../events/thisBonus.js');
 
 module.exports = {
     name: 'interactionCreate',
@@ -31,8 +32,25 @@ module.exports = {
             var lang = await LANG.LANG(interaction);
             //console.log(`LANG:${await LANG.LANG(interaction)}`);	
 
+						var thisBONUSGTA = await THIS_BONUS.thisBonus("gta");
 						var nextBONUSGTA = await NEXT_BONUS.nextBonus("gta");
-						//console.log(`gta: ${nextBONUSGTA}`);					
+
+						var nowDay = new Date();
+						var GTADayOf = thisBONUSGTA.setHours(21, 00, 00); //sets the time to 3:00 PM MTN
+						var checkDayOfGTA = GTADayOf - nowDay;
+						
+						// console.log(`nextBonus: \ngta: ${nextBONUSGTA}`);
+						// console.log(`thisBonus: \ngta: ${thisBONUSGTA}`);
+						// console.log(`checkDayOfGTA ${checkDayOfGTA}`);
+
+						function thisGtaOrNext() {
+							if (checkDayOfGTA > 0) {
+								return GTADayOf;
+							}
+							else {
+								return nextBONUSGTA;
+							}
+						}				
 
             function notYourOption() {
                 if (lang === "") {
@@ -120,43 +138,43 @@ module.exports = {
 
             function gtaAddDesc() {
                 if (lang === "") {
-                    return `You will now get GTA Online auto posts to the <#${menuChannelID}> channel every week. \nNext Update: <t:${Math.round(nextBONUSGTA / 1000)}:F>.`;
+                    return `You will now get GTA Online auto posts to the <#${menuChannelID}> channel every week. \nNext Update: <t:${Math.round(thisGtaOrNext() / 1000)}:F>.`;
                 }
                 else if (lang === "es") {
-                    return `Ahora recibirá actualizaciones automáticas de GTA Online en el canal <#${menuChannelID}> todas las semanas.\nPróxima actualización: <t:${Math.round(nextBONUSGTA / 1000)}:F>.`;
+                    return `Ahora recibirá actualizaciones automáticas de GTA Online en el canal <#${menuChannelID}> todas las semanas.\nPróxima actualización: <t:${Math.round(thisGtaOrNext() / 1000)}:F>.`;
                 }
                 else if (lang === "br") {
-                    return `Agora você receberá atualizações automáticas do GTA Online no canal <#${menuChannelID}> toda semana.\n Próxima atualização: <t:${Math.round(nextBONUSGTA / 1000)}:F>.`;
+                    return `Agora você receberá atualizações automáticas do GTA Online no canal <#${menuChannelID}> toda semana.\n Próxima atualização: <t:${Math.round(thisGtaOrNext() / 1000)}:F>.`;
                 }
                 else if (lang === "ru") {
-                    return `Теперь вы будете получать автоматические обновления GTA Online на канале <#${menuChannelID}> каждую неделю.\nСледующее обновление: <t:${Math.round(nextBONUSGTA / 1000)}:F>.`;
+                    return `Теперь вы будете получать автоматические обновления GTA Online на канале <#${menuChannelID}> каждую неделю.\nСледующее обновление: <t:${Math.round(thisGtaOrNext() / 1000)}:F>.`;
                 }
                 else if (lang === "de") {
-                    return `Sie erhalten jetzt jede Woche automatische GTA Online-Updates für den <#${menuChannelID}>-Kanal.\nNächstes Update: <t:${Math.round(nextBONUSGTA / 1000)}:F>.`;
+                    return `Sie erhalten jetzt jede Woche automatische GTA Online-Updates für den <#${menuChannelID}>-Kanal.\nNächstes Update: <t:${Math.round(thisGtaOrNext() / 1000)}:F>.`;
                 }
                 else if (lang === "pl") {
-                    return `Będziesz teraz otrzymywać co tydzień automatyczne aktualizacje GTA Online na kanale <#${menuChannelID}>.\nNastępna aktualizacja: <t:${Math.round(nextBONUSGTA / 1000)}:F>.`;
+                    return `Będziesz teraz otrzymywać co tydzień automatyczne aktualizacje GTA Online na kanale <#${menuChannelID}>.\nNastępna aktualizacja: <t:${Math.round(thisGtaOrNext() / 1000)}:F>.`;
                 }
                 else if (lang === "fr") {
-                    return `Vous recevrez désormais des mises à jour automatiques de GTA Online pour la chaîne <#${menuChannelID}> chaque semaine.\nProchaine mise à jour : <t:${Math.round(nextBONUSGTA / 1000)}:F>.`;
+                    return `Vous recevrez désormais des mises à jour automatiques de GTA Online pour la chaîne <#${menuChannelID}> chaque semaine.\nProchaine mise à jour : <t:${Math.round(thisGtaOrNext() / 1000)}:F>.`;
                 }
                 else if (lang === "it") {
-                    return `Ora riceverai aggiornamenti automatici di GTA Online per il canale <#${menuChannelID}> ogni settimana.\n Prossimo aggiornamento: <t:${Math.round(nextBONUSGTA / 1000)}:F>.`;
+                    return `Ora riceverai aggiornamenti automatici di GTA Online per il canale <#${menuChannelID}> ogni settimana.\n Prossimo aggiornamento: <t:${Math.round(thisGtaOrNext() / 1000)}:F>.`;
                 }
 								else if (lang === "zh") {
-                    return `现在，您每周都会获得 <#${menuChannelID}> 频道的 GTA 在线模式自动更新。 \n下次更新： <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
+                    return `现在，您每周都会获得 <#${menuChannelID}> 频道的 GTA 在线模式自动更新。 \n下次更新： <t:${Math.round(thisGtaOrNext() / 1000)}:F>`;
                 }
                 else if (lang === "tw") {
-                    return `現在，您每週都會獲得 <#${menuChannelID}> 頻道的 GTA 在線模式自動更新。\n下次更新： <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
+                    return `現在，您每週都會獲得 <#${menuChannelID}> 頻道的 GTA 在線模式自動更新。\n下次更新： <t:${Math.round(thisGtaOrNext() / 1000)}:F>`;
                 }
                 else if (lang === "jp") {
-                    return `「GTA オンライン」では毎週 <#${menuChannelID}> チャンネルの自動アップデートを受け取ることができます。\n次回の更新: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
+                    return `「GTA オンライン」では毎週 <#${menuChannelID}> チャンネルの自動アップデートを受け取ることができます。\n次回の更新: <t:${Math.round(thisGtaOrNext() / 1000)}:F>`;
                 }
                 else if (lang === "kr") {
-                    return `이제 매주 <#${menuChannelID}> 채널에 대한 GTA 온라인 자동 업데이트를 받게 됩니다.\n다음 업데이트: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
+                    return `이제 매주 <#${menuChannelID}> 채널에 대한 GTA 온라인 자동 업데이트를 받게 됩니다.\n다음 업데이트: <t:${Math.round(thisGtaOrNext() / 1000)}:F>`;
                 }
                 else {
-                    return `You will now get GTA Online auto posts to the <#${menuChannelID}> channel every week.\nNext Update: <t:${Math.round(nextBONUSGTA / 1000)}:F>.`;
+                    return `You will now get GTA Online auto posts to the <#${menuChannelID}> channel every week.\nNext Update: <t:${Math.round(thisGtaOrNext() / 1000)}:F>.`;
                 }
             }
 

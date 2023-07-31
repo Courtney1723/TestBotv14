@@ -18,8 +18,8 @@ module.exports = {
             "zh-TW": '語言',	
             ja: '言語',
             ko: '언어',
-        })			
-        .setDescription('Language | Idioma | Язык | Sprache | Język | Langue | Lingua | 语言 | 語言 | 言語 | 언어')
+        })
+        .setDescription('🇺🇸 🇲🇽 🇧🇷 🇷🇺 🇩🇪 🇵🇱 🇫🇷 🇮🇹 🇨🇳 🇹🇼 🇯🇵 🇰🇷')
         .setDMPermission(false),
     async execute(interaction) {
         await interaction.deferReply().catch(console.error);
@@ -337,7 +337,7 @@ module.exports = {
             .setDescription(`${currentLanguage()}\n${languagesDesc()}`)
             .setFooter({ text: `${footerText()}`, iconURL: process.env.logo_link })
 
-        var longLangArray = ["🇺🇸 English", "🇲🇽 español", "🇧🇷 português", "🇷🇺 русский", "🇩🇪 Deutsch", "🇵🇱 polski", "🇫🇷 français", "🇮🇹 italiano", "🇨🇳 中国人（简体）", "🇹🇼 中國人 （傳統的）", "🇯🇵 日本", "🇰🇷 한국인"];
+        var longLangArray = ["🇺🇸 English", "🇲🇽 Español", "🇧🇷 Português", "🇷🇺 Pусский", "🇩🇪 Deutsch", "🇵🇱 Polski", "🇫🇷 Français", "🇮🇹 Italiano", "🇨🇳 中国人（简体）", "🇹🇼 中國人 （傳統的）", "🇯🇵 日本", "🇰🇷 한국인"];
         let languageMenu = new ActionRowBuilder()
             .addComponents(
                 new StringSelectMenuBuilder()

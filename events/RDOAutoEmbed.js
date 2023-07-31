@@ -98,8 +98,9 @@ module.exports = {
                             //console.log(`guildIDsArray: ${guildIDsArray}`);
                             //console.log(`guildIDLangArray: ${guildIDLangArray}`);
                             //console.log(`channelIDArray: ${channelIDArray}`);
-                            var c = 0;
-                            while (c <= channelIDArray.length - 2) { //first & last elements will always be undefined	
+                          var c = 0;
+													async function sendPosts() {
+                            if (c <= channelIDArray.length - 2) { //first & last elements will always be undefined	
                                 let lang = "";
 
                                 for (langCheck = 0; langCheck <= langArray.length - 1; langCheck++) { //iterates through all the languages
@@ -481,16 +482,18 @@ module.exports = {
                                 if (channelIDArray[c].startsWith("undefined")) { }
                                 else {
                                     if (rdoPost2() === "") {
-                                        await client.channels.fetch(channelIDArray[c]).then(channel => channel.send(({ embeds: [rdoImageEmbed, rdoEmbed] }))).then(c++).catch(err => console.log(`Min Error: ${err}\nChannel ID: ${channelIDArray[c]}`));
+                                        await client.channels.fetch(channelIDArray[c]).then(channel => channel.send(({ embeds: [rdoImageEmbed, rdoEmbed] }))).catch(err => console.log(`Min Error: ${err}\nChannel ID: ${channelIDArray[c]}`));
                                     }
                                     else {
-                                        await client.channels.fetch(channelIDArray[c]).then(channel => channel.send({ embeds: [rdoImageEmbed, rdoEmbed, rdoEmbed2] })).then(c++).catch(err => console.log(`Max Error: ${err}\nChannel ID: ${channelIDArray[c]}`));
+                                        await client.channels.fetch(channelIDArray[c]).then(channel => channel.send({ embeds: [rdoImageEmbed, rdoEmbed, rdoEmbed2] })).catch(err => console.log(`Max Error: ${err}\nChannel ID: ${channelIDArray[c]}`));
                                     }
+																	c++;
                                 }
                             } //end c loop
+													}
+													setInterval(sendPosts, 5000); //prevents 429 errors
                         }
-                    }); //end fs.readFile for RDODataBase? 
-                    Å
+                    }); //end fs.readFile for RDODataBase?
                 }
             }); //end fs.readFile for LANGDataBase
         }, {

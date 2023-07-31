@@ -3,6 +3,8 @@ const phantom = require('phantom'); //https://github.com/amir20/phantomjs-node
 var cron = require('node-cron'); //https://github.com/node-cron/node-cron
 const fetch = require("@replit/node-fetch");
 const os = require("os");
+const NEXT_BONUS = require('../events/nextBonus.js');
+const THIS_BONUS = require('../events/thisBonus.js');
 
 module.exports = {
     name: 'ready',
@@ -12,61 +14,42 @@ module.exports = {
         client.user.setPresence({ activities: [{ name: 'Bonuses', type: ActivityType.Watching }] });
 
         async function newBonusPresence() { //fixme - switch to new source
-            let gtaURL = process.env.SOCIAL_URL_GTA2;
-            //console.log(`gtaURL: ${gtaURL}`);
 
-            const instance = await phantom.create();
-            const page = await instance.createPage();
+						var thisBONUSGTA = await THIS_BONUS.thisBonus("gta");
+						var thisBONUSRDO = await THIS_BONUS.thisBonus("rdo");
+						var nextBONUSGTA = await NEXT_BONUS.nextBonus("gta");
+						var nextBONUSRDO = await NEXT_BONUS.nextBonus("rdo");
 
-            await page.property('viewportSize', { width: 1024, height: 600 });
-            const status = await page.open(gtaURL);
-            //console.log(`Page opened with status [${status}].`);
-            if (status === `success`) { //checks if Rockstar Social Club website is down
-                const content = await page.property('content'); // Gets the latest gta updates
-                //console.log(content); 
+						var nowDate = new Date();
+						var nowLocalDate = new Date(nowDate.toLocaleString("en-US", { timeZone: 'America/Denver' }));
+						var nowDay = nowLocalDate.getDay();
+						var nowDate = nowLocalDate.getDate();
+						var gtaLocalDate = thisBONUSGTA.getDate();
+						var rdoLocalDate = thisBONUSRDO.getDate();
+						var checkDayOfGTA = nextBONUSGTA - nowDate;
+						var checkDayOfRDO = nextBONUSRDO - nowDate;
+						
+						// console.log(`nextBonus: \ngta: ${nextBONUSGTA} - \nrdo: ${nextBONUSRDO}`);
+						// console.log(`thisBonus: \ngta: ${thisBONUSGTA} - \nrdo: ${thisBONUSRDO}`);
+						// console.log(`nowDate: \ngta: ${nowLocalDate} - \nday: ${nowDay} - date: ${nowDate} && ${gtaLocalDate} && ${rdoLocalDate}`);
+						// console.log(`checkDayOfGTA ${checkDayOfGTA} \ncheckDayOfRDO ${checkDayOfRDO}`);
 
-                function isPast() {
-                    let isPast003 = content.split("isPast\":");
-                    let isPast002 = isPast003[2].split(",\"");
-
-                    return isPast002[0];
-                }
-                //console.log(`isPast: ${isPast()}`);
-
-                if (isPast() === "false") {
-                    //console.log(`live`);
-
-                    const aDate = new Date();
-                    const aDay = aDate.getDay(); //Day of the Week
-                    //console.log(`aDay: ${aDay}`);
-                    const aHour = aDate.getHours(); //Time of Day UTC (+6 MST; +4 EST)
-                    //console.log(`aHour: ${aHour}`);		
-
-                    var mtDate = aDate.toLocaleString("en-US", {
-                        timeZone: "America/Denver"
-                    });
-                    var mtDay = new Date().toLocaleString('en-us', {timeZone: "America/Denver", weekday:'long'});
-                    var mtTime = mtDate.split(", ");
-                    var mtDateNum02 = mtDate.split("/");
-                    var mtDateNum01 = mtDateNum02[1].split("/");
-                    var mtDateNum = mtDateNum01[0];
-                    var mtHourMinute = mtTime[1].split(":");
-                    var mtHour = mtHourMinute[0];
-                    var mtMinute = mtHourMinute[1];
-
-                    var amPM01 = mtHourMinute[2].split(" ");
-                    var amPM = amPM01[1];
-
-                    //console.log(`${mtDateNum} ${mtHour}:${mtMinute} ${amPM} - \n${mtDate}\n${mtDay}-`);	
-
-                    if ((mtDay === "Thursday") && (((mtHour >= 11) && (amPM === "AM")) || (amPM === "PM"))) { //New GTA Bonuses
-                        client.user.setPresence({ activities: [{ name: 'NEW GTA Bonuses', type: ActivityType.Watching }] });
-                    }
-                    else if ((mtDay === "Tuesday") && (((mtHour >= 11) && (amPM === "AM")) || (amPM === "PM")) && (mtDateNum <= 7)) { //New RDO Bonuses
-                        client.user.setPresence({ activities: [{ name: 'New RDO Bonuses', type: ActivityType.Watching }] });
-                    }
-                }
-            };
+						function thisGtaOrNext() {
+							if (checkDayOfGTA > 0) { //if latest bonus is live
+								if ((nowDay === 4) && (gtaLocalDate === nowDate)) { //if latest bonus is same day
+									client.user.setPresence({ activities: [{ name: 'NEW GTA Bonuses', type: ActivityType.Watching }] });
+								}
+							}
+						}
+						thisGtaOrNext();
+						function thisRdoOrNext() {
+							if (checkDayOfRDO > 0) { //if latest bonus is live
+								if ((nowDay === 2) && (rdoLocalDate === nowDate)) { //if latest bonus is same day
+									client.user.setPresence({ activities: [{ name: 'NEW RDO Bonuses', type: ActivityType.Watching }] });
+								}
+							}
+						}					
+						thisRdoOrNext()
         };
         newBonusPresence(); //checks for new bonuses on startup
 

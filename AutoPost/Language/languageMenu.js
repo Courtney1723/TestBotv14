@@ -21,7 +21,7 @@ module.exports = {
             //chosen language
             var chosenLang01 = (interaction.values).toString().split("lang:");
             var chosenLang = chosenLang01[1];
-            //console.log(`chosenLang: ${chosenLang}`);
+            console.log(`chosenLang: ${chosenLang}`);
 
             let menuUserID02 = interaction.customId.split(`u:`);
             let menuUserID01 = menuUserID02[1].split(" -");

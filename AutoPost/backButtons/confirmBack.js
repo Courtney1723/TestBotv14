@@ -2,6 +2,7 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType 
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
 const LANG = require('../../events/LANG.js');
 const NEXT_BONUS = require('../../events/nextBonus.js');
+const THIS_BONUS = require('../../events/thisBonus.js');
 
 module.exports = {
     name: 'interactionCreate',
@@ -19,9 +20,37 @@ module.exports = {
             var lang = await LANG.LANG(interaction);
             //console.log(`LANG:${await LANG.LANG(interaction)}`);	
 
+						var thisBONUSGTA = await THIS_BONUS.thisBonus("gta");
+						var thisBONUSRDO = await THIS_BONUS.thisBonus("rdo");
 						var nextBONUSGTA = await NEXT_BONUS.nextBonus("gta");
 						var nextBONUSRDO = await NEXT_BONUS.nextBonus("rdo");
-						//console.log(`gta: ${nextBONUSGTA} - rdo: ${nextBONUSRDO}`);					
+
+						var nowDay = new Date();
+						var GTADayOf = thisBONUSGTA.setHours(21, 00, 00); //sets the time to 3:00 PM MTN
+						var RDODayOf = thisBONUSRDO.setHours(21, 00, 00); //sets the time to 3:00 PM MTN
+						var checkDayOfGTA = GTADayOf - nowDay;
+						var checkDayOfRDO = RDODayOf - nowDay;
+						
+						// console.log(`nextBonus: \ngta: ${nextBONUSGTA} - \nrdo: ${nextBONUSRDO}`);
+						// console.log(`thisBonus: \ngta: ${thisBONUSGTA} - \nrdo: ${thisBONUSRDO}`);
+						// console.log(`checkDayOfGTA ${checkDayOfGTA} \ncheckDayOfRDO ${checkDayOfRDO}`);
+
+						function thisGtaOrNext() {
+							if (checkDayOfGTA > 0) {
+								return GTADayOf;
+							}
+							else {
+								return nextBONUSGTA;
+							}
+						}
+						function thisRdoOrNext() {
+							if (checkDayOfRDO > 0) {
+								return RDODayOf;
+							}
+							else {
+								return nextBONUSRDO;
+							}
+						}			
 
             let channelIDArray = [];
             interaction.guild.channels.cache.forEach(channel => { //populates channelIDArray with the server text channels
@@ -192,43 +221,43 @@ module.exports = {
                     function everyThursday() {
                         if (subscriptionCheckGTA === false) {
 													if (lang === "") {
-															return `\nNext Update: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
+															return `\nNext Update: <t:${Math.round(thisGtaOrNext() / 1000)}:F>`;
 													}
 													else if (lang === "es") {
-															return `\nPróxima actualización: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
+															return `\nPróxima actualización: <t:${Math.round(thisGtaOrNext() / 1000)}:F>`;
 													}
 													else if (lang === "br") {
-															return `\nPróxima atualização: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
+															return `\nPróxima atualização: <t:${Math.round(thisGtaOrNext() / 1000)}:F>`;
 													}
 													else if (lang === "ru") {
-															return `\nСледующее обновление: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
+															return `\nСледующее обновление: <t:${Math.round(thisGtaOrNext() / 1000)}:F>`;
 													}
 													else if (lang === "de") {
-															return `\nNächstes Update: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
+															return `\nNächstes Update: <t:${Math.round(thisGtaOrNext() / 1000)}:F>`;
 													}
 													else if (lang === "pl") {
-															return `\nNastępna aktualizacja: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
+															return `\nNastępna aktualizacja: <t:${Math.round(thisGtaOrNext() / 1000)}:F>`;
 													}
 													else if (lang === "fr") {
-															return `\nProchaine mise à jour: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
+															return `\nProchaine mise à jour: <t:${Math.round(thisGtaOrNext() / 1000)}:F>`;
 													}
 													else if (lang === "it") {
-															return `\nProssimo aggiornamento: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
+															return `\nProssimo aggiornamento: <t:${Math.round(thisGtaOrNext() / 1000)}:F>`;
 													}
 													else if (lang === "zh") {
-															return `\n下次更新：<t:${Math.round(nextBONUSGTA / 1000)}:F>`;
+															return `\n下次更新：<t:${Math.round(thisGtaOrNext() / 1000)}:F>`;
 													}
 													else if (lang === "tw") {
-															return `\n下一個更新：<t:${Math.round(nextBONUSGTA / 1000)}:F>`;
+															return `\n下一個更新：<t:${Math.round(thisGtaOrNext() / 1000)}:F>`;
 													}
 													else if (lang === "jp") {
-															return `\n次回の更新: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
+															return `\n次回の更新: <t:${Math.round(thisGtaOrNext() / 1000)}:F>`;
 													}
 													else if (lang === "kr") {
-															return `\n다음 업데이트: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
+															return `\n다음 업데이트: <t:${Math.round(thisGtaOrNext() / 1000)}:F>`;
 													}
 													else {
-															return `\nNext Update: <t:${Math.round(nextBONUSGTA / 1000)}:F>`;
+															return `\nNext Update: <t:${Math.round(thisGtaOrNext() / 1000)}:F>`;
 													}
                         }
                         else {
@@ -239,43 +268,43 @@ module.exports = {
                     function firstTuesday() {
                         if (subscriptionCheckRDO === false) {
 													if (lang === "") {
-													    return `\nNext Update: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+													    return `\nNext Update: <t:${Math.round(thisRdoOrNext() / 1000)}:F>`;
 													}
 													else if (lang === "es") {
-													    return `\nPróxima actualización: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+													    return `\nPróxima actualización: <t:${Math.round(thisRdoOrNext() / 1000)}:F>`;
 													}
 													else if (lang === "br") {
-													    return `\nPróxima atualização: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+													    return `\nPróxima atualização: <t:${Math.round(thisRdoOrNext() / 1000)}:F>`;
 													}
 													else if (lang === "ru") {
-													    return `\nСледующее обновление: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+													    return `\nСледующее обновление: <t:${Math.round(thisRdoOrNext() / 1000)}:F>`;
 													}
 													else if (lang === "de") {
-													    return `\nNächstes Update: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+													    return `\nNächstes Update: <t:${Math.round(thisRdoOrNext() / 1000)}:F>`;
 													}
 													else if (lang === "pl") {
-													    return `\nNastępna aktualizacja: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+													    return `\nNastępna aktualizacja: <t:${Math.round(thisRdoOrNext() / 1000)}:F>`;
 													}
 													else if (lang === "fr") {
-													    return `\nProchaine mise à jour: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+													    return `\nProchaine mise à jour: <t:${Math.round(thisRdoOrNext() / 1000)}:F>`;
 													}
 													else if (lang === "it") {
-													    return `\nProssimo aggiornamento: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+													    return `\nProssimo aggiornamento: <t:${Math.round(thisRdoOrNext() / 1000)}:F>`;
 													}
 													else if (lang === "zh") {
-													    return `\n下次更新：<t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+													    return `\n下次更新：<t:${Math.round(thisRdoOrNext() / 1000)}:F>`;
 													}
 													else if (lang === "tw") {
-													    return `\n下一個更新：<t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+													    return `\n下一個更新：<t:${Math.round(thisRdoOrNext() / 1000)}:F>`;
 													}
 													else if (lang === "jp") {
-													    return `\n次回の更新: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+													    return `\n次回の更新: <t:${Math.round(thisRdoOrNext() / 1000)}:F>`;
 													}
 													else if (lang === "kr") {
-													    return `\n다음 업데이트: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+													    return `\n다음 업데이트: <t:${Math.round(thisRdoOrNext() / 1000)}:F>`;
 													}
 													else {
-													    return `\nNext Update: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+													    return `\nNext Update: <t:${Math.round(thisRdoOrNext() / 1000)}:F>`;
 													}
                         }
                         else {

@@ -26,18 +26,10 @@ module.exports = {
 				var date = new Date();
 				var nextBonus1 = getgtaParse.data.posts.results[0].created_formatted;
 				var nextBonus = new Date(`${nextBonus1} 21:00:00`);
-				var checkUpcoming = nextBonus - date;
 
-				if (checkUpcoming >= 0) {
-					var nextBonus = new Date(`${nextBonus1} 21:00:00`); //returns the current bonus if same day before 3:00
-					return nextBonus;
-				}
-				else {
-					var nextBonus01 = new Date(`${nextBonus1} 21:00:00`);
-					var nextBonusPlus = (nextBonus01.setDate(nextBonus01.getDate()+7));
-					var nextBonus = new Date(nextBonusPlus);
-					return nextBonus;
-				}				
+				var nextBonusPlus = (nextBonus.setDate(nextBonus.getDate()+7));
+				var nextBonus = new Date(nextBonusPlus);
+				return nextBonus;				
 			}
 			else {
 				var rdoFetch = await fetch(process.env.rdoGraphURL, {

@@ -101,7 +101,8 @@ module.exports = {
                             //console.log(`channelIDArray: ${channelIDArray}`);
 
                             c = 0;
-                            while (c <= channelIDArray.length - 2) { //first & last elements will always be undefined	
+														async function sendPosts() {
+                            if (c <= channelIDArray.length - 2) { //first & last elements will always be undefined	
                                 let lang = "";
 
                                 for (langCheck = 0; langCheck <= langArray.length - 1; langCheck++) { //iterates through all the languages
@@ -151,7 +152,7 @@ module.exports = {
                                 var getgtaParse = JSON.parse(getgtaJSON);
                                 //console.log(getgtaJSON);
 
-                                var gtaImage = getgtaParse.data.posts.results[1].preview_images_parsed.newswire_block.d16x9;
+                                var gtaImage = getgtaParse.data.posts.results[0].preview_images_parsed.newswire_block.d16x9;
                                 //console.log(`gtaImage: ${gtaImage}`);
 
 																function langFunction() {		
@@ -163,8 +164,8 @@ module.exports = {
 																	}
 																}	
 
-                                var gtaURLHash = getgtaParse.data.posts.results[1].id;
-                                var gtaURLFull = `https://www.rockstargames.com${langFunction()}${getgtaParse.data.posts.results[1].url}`;
+                                var gtaURLHash = getgtaParse.data.posts.results[0].id;
+                                var gtaURLFull = `https://www.rockstargames.com${langFunction()}${getgtaParse.data.posts.results[0].url}`;
                                 var fetchGTA = await fetch(`${process.env.gtaGraphURL3}${gtaURLHash}%22%2C%22locale%22%3A%22${lang}${process.env.gtaGraphURL4}`, {
                                     "cache": "default",
                                     "credentials": "omit",
@@ -205,54 +206,52 @@ module.exports = {
                                 var gtaPlusInsert = 0;
                                 var gtaPlusBottom = 0;
 
-                                //START Populating gtaPost
-                                for (var k = 2; k <= gtaBonus.length - 2; k++) { //first bonus is the subtitle and blurb, last bonus is the gun van inventory discounts
-                                    //console.log(`${JSON.stringify(gtaBonus[k])}\n\n`);
-                                    if (k === 17) { }//FIXME NEXT WEEK
-                                    else if (gtaBonus[k - 1].badge !== undefined) { //Do not include description if 2x, 3x, 4x, etc... bonus
-                                        if (gtaBonus[k].title !== undefined) {
-                                            gtaPost += `\n**${gtaBonus[k].title}**\n`;
-                                        }
-                                        else if (gtaBonus[k].description !== undefined) {
-                                            gtaPost += `• ${gtaBonus[k].description}\n`;
-                                        }
-                                    }
-                                    else if (gtaBonus[k - 1].badge === undefined) { //if the bonus is not linked to another bonus
-                                        if ((gtaBonus[k].text !== undefined) && (gtaPlusCount !== 1)) { //gta+ top
-                                            gtaPlusBonus += `\n**${gtaBonus[k].text}**\n`;
-                                            gtaPlusCount++;
-                                            gtaPlusInsert = gtaPost.length;
-                                            gtaPlusBottom = k + 1;
-                                        }
-                                        if ((gtaBonus[k].content !== undefined)) {
-                                            gtaPlusBonus += `• ${gtaBonus[k].content}\n`;
-                                        }
-                                        if (gtaBonus[k].title_and_description !== undefined) { //DISCOUNTS
-                                            gtaPost += `\n**${gtaBonus[k].title_and_description.title}**\n${gtaBonus[k].title_and_description.description}`;
-                                        }
-                                        if ((gtaBonus[k].title !== undefined)) {
-                                            gtaPost += `\n**${gtaBonus[k].title}**\n`;
-                                        }
-                                        if (gtaBonus[k].description !== undefined) {
-                                            gtaPost += `• ${gtaBonus[k].description}\n`;
-                                        }
-                                    }
-                                }
-                                //END for loop
-
-                                function gtaPlus() {
-                                    gtaPlusBonus += `${gtaBonus[gtaPlusBottom].text}\n`;
-                                    var gtaPost1 = gtaPost.slice(0, gtaPlusInsert);
-                                    var gtaPost2 = gtaPost.slice(gtaPlusInsert, gtaPost.length);
-                                    gtaPost = gtaPost1 + gtaPlusBonus + gtaPost2;
-                                }
-                                gtaPlus();
-
-                                function noBonus() {
-                                    var noBonusRegex = /<p>.*?<\/p><h3>/g;
-                                    gtaPost = gtaPost.replace(noBonusRegex, "<h3>");
-                                }
-                                noBonus();
+																//START Populating gtaPost
+																var misplacedBonus = "";
+																for (var k = 2; k <= gtaBonus.length - 2; k++) { //first bonus is the subtitle and blurb, last bonus is the gun van inventory discounts
+																			//console.log(`${k}: \n${JSON.stringify(gtaBonus[k])}`);
+																		if (k === 11) { //fixme - luxury autos was in the wrong order this week
+																			if (gtaBonus[k].content !== undefined) {
+																				misplacedBonus = `${gtaBonus[k].content}`;
+																			}
+																		}
+																		if (k === 12) {
+																			if (gtaBonus[k].title !== undefined) {
+																				gtaPost += `\n**${gtaBonus[k].title}**\n• ${misplacedBonus}\n`;
+																			}
+																		}
+																		//console.log(`${JSON.stringify(gtaBonus[k])}\n\n`);
+																		else if ((gtaBonus[k].text !== undefined) && (gtaPlusCount !== 1)){ //gta+ top
+																				gtaPlusBonus += `\n**${gtaBonus[k].text}**\n`;
+																				gtaPlusCount++;
+																				gtaPlusInsert = gtaPost.length;
+																				gtaPlusBottom = k + 1;
+																		}
+																		else if (gtaBonus[k].title !== undefined) {
+																			gtaPost += `\n**${gtaBonus[k].title}**\n`; 
+																		}
+																		else if (gtaBonus[k].description !== undefined) {
+																				gtaPost += `• ${gtaBonus[k].description}\n`;
+																		}
+																		else if ((gtaBonus[k].content !== undefined) && (k !== 11)) { //fixme next week 
+																				gtaPost += `• ${gtaBonus[k].content}\n`;
+																		}
+																}
+																//END for loop
+												
+																function gtaPlus() {
+																		gtaPlusBonus += `${gtaBonus[gtaPlusBottom].text}\n`; //adds the GTA+ bottom text
+																		var gtaPost1 = gtaPost.slice(0, gtaPlusInsert);
+																		var gtaPost2 = gtaPost.slice(gtaPlusInsert, gtaPost.length);
+																		gtaPost = gtaPost1 + gtaPlusBonus + gtaPost2;
+																}
+																gtaPlus();
+																function noBonus() { //fixme - next week
+																	gtaPost = gtaPost
+																		.replace(/<p>.*?<h3><br>/, "<h3>")
+																		.replace(/<\/h3><p>.*?<\/p>/, "</h3>")
+																}
+																noBonus();
                                 if (gtaBonus[gtaBonus.length - 1].content !== undefined) { //adds the gun van inventory discounts
                                     gtaPost += `${gtaBonus[gtaBonus.length - 1].content}\n`;
                                 }
@@ -418,13 +417,17 @@ module.exports = {
                                 if (channelIDArray[c].includes("undefined")) { return; }
                                 else {
                                     if (gtaFinalString.length < (4000 - constChars)) {
-                                        client.channels.fetch(channelIDArray[c]).then(channel => channel.send(({ embeds: [gtaImageEmbed, gtaEmbed] }))).then(c++).catch(err => console.log(`Min Error: ${err.stack}\nChannel ID: ${channelIDArray[c]}`));
+                                        client.channels.fetch(channelIDArray[c]).then(channel => channel.send(({ embeds: [gtaImageEmbed, gtaEmbed] }))).catch(err => console.log(`Min Error: ${err.stack}\nChannel ID: ${channelIDArray[c]}`));
                                     }
                                     else {
-                                        client.channels.fetch(channelIDArray[c]).then(channel => channel.send({ embeds: [gtaImageEmbed, gtaEmbed, gtaEmbed2] })).then(c++).catch(err => console.log(`Max Error: ${err.stack}\nChannel ID: ${channelIDArray[c]}`));
+                                        client.channels.fetch(channelIDArray[c]).then(channel => channel.send({ embeds: [gtaImageEmbed, gtaEmbed, gtaEmbed2] })).catch(err => console.log(`Max Error: ${err.stack}\nChannel ID: ${channelIDArray[c]}`));
                                     }
+																		c++;
                                 } //end if not undefined channel
                             }
+														
+														}
+														setInterval(sendPosts, 5000); //prevents 429 errors
                         }
                     });
                 }

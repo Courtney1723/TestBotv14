@@ -2,6 +2,7 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelect
 const fs = require('node:fs'); //https://nodejs.org/docs/v0.3.1/api/fs.html#fs.readFile
 const LANG = require('../../events/LANG.js');
 const NEXT_BONUS = require('../../events/nextBonus.js');
+const THIS_BONUS = require('../../events/thisBonus.js');
 
 module.exports = {
     name: 'interactionCreate',
@@ -20,8 +21,26 @@ module.exports = {
 
             var lang = await LANG.LANG(interaction);
             //console.log(`LANG:${await LANG.LANG(interaction)}`);	
+
+						var thisBONUSRDO = await THIS_BONUS.thisBonus("rdo");
 						var nextBONUSRDO = await NEXT_BONUS.nextBonus("rdo");
-						//console.log(`rdo: ${nextBONUSRDO}`);						
+
+						var nowDay = new Date();
+						var RDODayOf = thisBONUSRDO.setHours(21, 00, 00); //sets the time to 3:00 PM MTN
+						var checkDayOfRDO = RDODayOf - nowDay;
+						
+						// console.log(`nextBonus: \nrdo: ${nextBONUSRDO}`);
+						// console.log(`thisBonus: \nrdo: ${thisBONUSRDO}`);
+						// console.log(`checkDayOfRDO ${checkDayOfRDO}`);
+
+						function thisRdoOrNext() {
+							if (checkDayOfRDO > 0) {
+								return RDODayOf;
+							}
+							else {
+								return nextBONUSRDO;
+							}
+						}							
 
             function rdoStartTitle() {
                 if (lang === "") {
@@ -67,43 +86,43 @@ module.exports = {
 
             function rdoStartDesc() {
                 if (lang === "") {
-                    return `Click **the dropdown menu** to confirm the channel you want to send Red Dead Online Auto Posts to every month.\nNext Update: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+                    return `Click **the dropdown menu** to confirm the channel you want to send Red Dead Online Auto Posts to every month.\nNext Update: <t:${Math.round(thisRdoOrNext() / 1000)}:F>`;
                 }
                 if (lang === "es") {
-                    return `Haga clic en el menú desplegable para confirmar el canal al que desea enviar actualizaciones automáticas de Red Dead Online cada mes.\nPróxima actualización: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+                    return `Haga clic en el menú desplegable para confirmar el canal al que desea enviar actualizaciones automáticas de Red Dead Online cada mes.\nPróxima actualización: <t:${Math.round(thisRdoOrNext() / 1000)}:F>`;
                 }
                 if (lang === "br") {
-                    return `Clique no menu suspenso para confirmar o canal para o qual você deseja enviar atualizações automáticas do Red Dead Online a cada mês.\nPróxima atualização: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+                    return `Clique no menu suspenso para confirmar o canal para o qual você deseja enviar atualizações automáticas do Red Dead Online a cada mês.\nPróxima atualização: <t:${Math.round(thisRdoOrNext() / 1000)}:F>`;
                 }
                 if (lang === "ru") {
-                    return `Щелкните раскрывающееся меню, чтобы подтвердить канал, на который вы хотите ежемесячно отправлять автоматические обновления Red Dead Online.\nСледующее обновление: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+                    return `Щелкните раскрывающееся меню, чтобы подтвердить канал, на который вы хотите ежемесячно отправлять автоматические обновления Red Dead Online.\nСледующее обновление: <t:${Math.round(thisRdoOrNext() / 1000)}:F>`;
                 }
                 if (lang === "de") {
-                    return `Klicken Sie auf das Dropdown-Menü, um den Kanal zu bestätigen, an den Sie jeden Monat automatische Red Dead Online-Updates senden möchten.\nNächstes Update: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+                    return `Klicken Sie auf das Dropdown-Menü, um den Kanal zu bestätigen, an den Sie jeden Monat automatische Red Dead Online-Updates senden möchten.\nNächstes Update: <t:${Math.round(thisRdoOrNext() / 1000)}:F>`;
                 }
                 else if (lang === "pl") {
-                    return `Kliknij menu rozwijane, aby potwierdzić kanał, na który chcesz co miesiąc wysyłać automatyczne aktualizacje Red Dead Online.\nNastępna aktualizacja: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+                    return `Kliknij menu rozwijane, aby potwierdzić kanał, na który chcesz co miesiąc wysyłać automatyczne aktualizacje Red Dead Online.\nNastępna aktualizacja: <t:${Math.round(thisRdoOrNext() / 1000)}:F>`;
                 }
                 else if (lang === "fr") {
-                    return `Cliquez sur le menu déroulant pour confirmer la chaîne à laquelle vous souhaitez envoyer des mises à jour automatiques de Red Dead Online chaque mois.\nProchaine mise à jour : <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+                    return `Cliquez sur le menu déroulant pour confirmer la chaîne à laquelle vous souhaitez envoyer des mises à jour automatiques de Red Dead Online chaque mois.\nProchaine mise à jour : <t:${Math.round(thisRdoOrNext() / 1000)}:F>`;
                 }
                 else if (lang === "it") {
-                    return `Fai clic sul menu a discesa per confermare il canale a cui desideri inviare gli aggiornamenti automatici di Red Dead Online ogni mese.\nProssimo aggiornamento: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+                    return `Fai clic sul menu a discesa per confermare il canale a cui desideri inviare gli aggiornamenti automatici di Red Dead Online ogni mese.\nProssimo aggiornamento: <t:${Math.round(thisRdoOrNext() / 1000)}:F>`;
                 }
 								else if (lang === "zh") {
-                    return `单击下拉菜单确认您想要每月自动发送 Red Dead 在线模式更新的频道。\n下次更新：<t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+                    return `单击下拉菜单确认您想要每月自动发送 Red Dead 在线模式更新的频道。\n下次更新：<t:${Math.round(thisRdoOrNext() / 1000)}:F>`;
                 }
                 else if (lang === "tw") {
-                    return `單擊下拉菜單確認您想要每月自動發送 Red Dead 在線模式更新的頻道。\n下次更新：<t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+                    return `單擊下拉菜單確認您想要每月自動發送 Red Dead 在線模式更新的頻道。\n下次更新：<t:${Math.round(thisRdoOrNext() / 1000)}:F>`;
                 }
                 else if (lang === "jp") {
-                    return `ドロップダウン メニューをクリックして、レッド デッド オンラインの自動アップデートを毎月送信するチャネルを確認します。\n次回の更新: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+                    return `ドロップダウン メニューをクリックして、レッド デッド オンラインの自動アップデートを毎月送信するチャネルを確認します。\n次回の更新: <t:${Math.round(thisRdoOrNext() / 1000)}:F>`;
                 }
                 else if (lang === "kr") {
-                    return `드롭다운 메뉴를 클릭하여 매달 자동 Red Dead 온라인 업데이트를 보낼 채널을 확인하세요.\n다음 업데이트: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+                    return `드롭다운 메뉴를 클릭하여 매달 자동 Red Dead 온라인 업데이트를 보낼 채널을 확인하세요.\n다음 업데이트: <t:${Math.round(thisRdoOrNext() / 1000)}:F>`;
                 }
                 else {
-                    return `Click **the dropdown menu** to confirm the channel you want to send Red Dead Online Auto Posts to every month.\nNext Update: <t:${Math.round(nextBONUSRDO / 1000)}:F>`;
+                    return `Click **the dropdown menu** to confirm the channel you want to send Red Dead Online Auto Posts to every month.\nNext Update: <t:${Math.round(thisRdoOrNext() / 1000)}:F>`;
                 }
             }
 
