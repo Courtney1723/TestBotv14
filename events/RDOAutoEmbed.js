@@ -87,7 +87,7 @@ module.exports = {
                             }
 
                             //console.log(`guildIDs: ${guildIDs}`);
-                            console.log(`channelIDs: ${channelIDs.length}`); //do not comment out
+                            //console.log(`channelIDs: ${channelIDs.length}`); //do not comment out
                             //console.log(`rdo_gtaIDs: ${rdo_gtaIDs}`);
 
                             let guildIDsArray = guildIDs.split('  - ');
@@ -97,7 +97,7 @@ module.exports = {
                             let guildLangs = guildIDLangArray.join(` - `);
                             //console.log(`guildIDsArray: ${guildIDsArray}`);
                             //console.log(`guildIDLangArray: ${guildIDLangArray}`);
-                            //console.log(`channelIDArray: ${channelIDArray}`);
+                            console.log(`channelIDArray length: ${channelIDArray.length}`);
                           var c = 0;
 													async function sendPosts() {
                             if (c <= channelIDArray.length - 2) { //first & last elements will always be undefined	
@@ -198,6 +198,47 @@ module.exports = {
                                         return "Gold Bars";
                                     }
                                 }
+																function free() {
+                                    if (lang === "en") {
+                                        return "Free";
+                                    }
+                                    if (lang === "es") {
+                                        return "Gratis";
+                                    }
+                                    if (lang === "br") {
+                                        return "Livre";
+                                    }
+                                    if (lang === "ru") {
+                                        return "Бесплатно";
+                                    }
+                                    if (lang === "de") {
+                                        return "Frei";
+                                    }
+                                    if (lang === "pl") {
+                                        return "Bezpłatny";
+                                    }
+                                    if (lang === "fr") {
+                                        return "Gratuite";
+                                    }
+                                    if (lang === "it") {
+                                        return "Gratuita";
+                                    }
+																		if (lang === "zh") {
+                                        return "自由的";
+                                    }
+                                    if (lang === "tw") {
+                                        return "自由的";
+                                    }
+                                    if (lang === "jp") {
+                                        return "無料";
+                                    }
+                                    if (lang === "kr") {
+                                        return "무료";
+                                    }
+                                    else {
+                                        return "Free";
+                                    }
+																}																
                                 function discounts() {
                                     if (lang === "en") {
                                         return "Discounts";
@@ -266,26 +307,33 @@ module.exports = {
                                 var rdoParse = JSON.parse(rdoJSON);
                                 //console.log(`rdoJSON: \n\n${rdoJSON}\n\n`);
 
-                                var rdoMainTitle = rdoParse.data.post.title
-                                var rdoSubTitle = rdoParse.data.post.subtitle;
-                                var rdoDate = rdoParse.data.post.created_formatted;
-                                //console.log(`rdoTitle: ${rdoTitle}\nrdoSubTitle: ${rdoSubTitle}\nrdoDate: ${rdoDate}`);
-                                var thisBonus = Math.round((thisBonus01) / 1000) + 21600; // plus 6 hours
-                                var nextBonus = Math.round((nextBonus01) / 1000) - 54060; // minus 15.016 hours
-                                // console.log(`thisBonus01: ${thisBonus01} - nextBonus01: ${nextBonus01}`);
-                                // console.log(`thisBonus: ${thisBonus} - nextBonus: ${nextBonus}`);
-                                rdoPost += `¶¶t:${thisBonus}:D∞∞ - ¶¶t:${nextBonus}:D∞∞\n\n• ${rdoSubTitle}\n\n`;
+												        var rdoMainTitle = rdoParse.data.post.title
+												        var rdoSubTitle = rdoParse.data.post.subtitle;
+												        var rdoDate = rdoParse.data.post.created_formatted;
+												            //console.log(`rdoTitle: ${rdoTitle}\nrdoSubTitle: ${rdoSubTitle}\nrdoDate: ${rdoDate}`);
+												        var thisBonus = Math.round((thisBonus01) / 1000) + 21600; // plus 6 hours
+																if (thisBonus01.getDate() === nextBonus01.getDate()) { //same day
+																	var nextBonus02 = nextBonus01.setMonth(8); //fixme next month
+																	var nextBonus03 = new Date(nextBonus02).setDate(5); //fixme next month
+																	var nextBonus = Math.round((nextBonus03) / 1000) - 54060;
+																}
+																else {
+																	var nextBonus = Math.round((nextBonus01) / 1000) - 54060; // minus 15.016 hours
+																}
+												            // console.log(`thisBonus01: ${thisBonus01} - nextBonus01: ${nextBonus01}`);
+												            // console.log(`thisBonus: ${thisBonus} - nextBonus: ${nextBonus}`);
+												        rdoPost += `¶¶t:${thisBonus}:D∞∞ - ¶¶t:${nextBonus}:D∞∞\n\n• ${rdoSubTitle}\n\n`;
 
                                 var allBonuses = rdoParse.data.post.tina.variables.keys;
                                 var rdoBonus = Object.values(allBonuses);
 
-                                var rdoDiscountPercent = [`-10 ${gold()}`, "-30%", "-30%", "-40%", "-35%", "-40%", "-30%", "-40%", "-40%", "-30%"]; //FIXME next month
+                                var rdoDiscountPercent = [`-30%`, `${free()}`, "-40%", "-40%", "-40%", "-30%", "-30%", "-40%"]; //FIXME next month
                                 var discountElementCount = 0;
 
                                 //START Populating rdoPost
                                 for (var i = 2; i <= rdoBonus.length - 1; i++) { //first bonus is the subtitle
                                     //console.log(`${JSON.stringify(rdoBonus[k])}\n\n`);
-                                    var noBonusArray = ["1.5X", "1.5x", "1,5X", "1,5x", "2X", "2x", "2.5X", "2.5x", "2,5X", "2,5x", "3X", "3x", "4X", "4x", "40%", "40 %", "50%", "50 %", "Double", "Doble", "RDO$"];
+                                    var noBonusArray = ["1.5X", "1.5x", "1,5X", "1,5x", "2X", "2x", "2.5X", "2.5x", "2,5X", "2,5x", "3X", "3x", "4X", "4x", "40%", "40 %", "50%", "50 %", "Double", "Doble", "RDO$", "Вдвое"];
                                     if (rdoBonus[i].text !== undefined) {
                                         rdoPost += `\n**${rdoBonus[i].text}**\n`;
                                     }
@@ -399,10 +447,10 @@ module.exports = {
                                         return `\n** [更多細節](${rdoURLFull})**`;
                                     }
                                     else if (lang === "jp") {
-                                        return `\n** [자세한 내용은](${rdoURLFull})**`;
+                                        return `\n** [さらに詳しく](${rdoURLFull})**`;
                                     }
                                     else if (lang === "kr") {
-                                        return `\n** [詳細](${rdoURLFull})**`;
+                                        return `\n** [자세한 내용은](${rdoURLFull})**`;
                                     }
                                     else {
                                         return `\n** [More Details](${rdoURLFull})**`;

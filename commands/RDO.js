@@ -124,6 +124,47 @@ module.exports = {
 						return "Gold Bars";
 					}
 				}
+				function free() {
+					if (LANG.includes("en")) {
+						return "Free";
+					}
+					if (LANG.includes("es")) {
+						return "Gratis";
+					}
+					if (LANG.includes("pt")) {
+						return "Livre";
+					}
+					if (LANG.includes("ru")) {
+						return "Бесплатно";
+					}	
+					if (LANG.includes("de")) {
+						return "Frei";
+					}	
+					if (LANG.includes("pl")) {
+						return "Bezpłatny";
+					}			
+					if (LANG.includes("fr")) {
+						return "Gratuite";
+					}	
+					if (LANG.includes("it")) {
+						return "Gratuita";
+					}	
+					if (LANG.includes("CN")) {
+						return "自由的";
+					}
+					if (LANG.includes("TW")) {
+						return "自由的";
+					}	
+					if (LANG.includes("ja")) {
+						return "無料";
+					}	
+					if (LANG.includes("ko")) {
+						return "무료";
+					}
+					else {
+						return "Free";
+					}
+				}
 				function discounts() {
 					if (LANG.includes("en")) {
 						return "Discounts";
@@ -197,7 +238,14 @@ module.exports = {
         var rdoDate = rdoParse.data.post.created_formatted;
             //console.log(`rdoTitle: ${rdoTitle}\nrdoSubTitle: ${rdoSubTitle}\nrdoDate: ${rdoDate}`);
         var thisBonus = Math.round((thisBonus01) / 1000) + 21600; // plus 6 hours
-        var nextBonus = Math.round((nextBonus01) / 1000) - 54060; // minus 15.016 hours
+				if (thisBonus01.getDate() === nextBonus01.getDate()) { //same day
+					var nextBonus02 = nextBonus01.setMonth(8); //fixme next month
+					var nextBonus03 = new Date(nextBonus02).setDate(5); //fixme next month
+					var nextBonus = Math.round((nextBonus03) / 1000) - 54060;
+				}
+				else {
+					var nextBonus = Math.round((nextBonus01) / 1000) - 54060; // minus 15.016 hours
+				}
             // console.log(`thisBonus01: ${thisBonus01} - nextBonus01: ${nextBonus01}`);
             // console.log(`thisBonus: ${thisBonus} - nextBonus: ${nextBonus}`);
         rdoPost += `¶¶t:${thisBonus}:D∞∞ - ¶¶t:${nextBonus}:D∞∞\n\n• ${rdoSubTitle}\n\n`;
@@ -205,13 +253,13 @@ module.exports = {
         var allBonuses = rdoParse.data.post.tina.variables.keys;
         var rdoBonus = Object.values(allBonuses);
 
-				var rdoDiscountPercent = [`-10 ${gold()}`, "-30%", "-30%", "-40%", "-35%", "-40%", "-30%", "-40%", "-40%", "-30%"]; //FIXME next month
+				var rdoDiscountPercent = [`-30%`, `${free()}`, "-40%", "-40%", "-40%", "-30%", "-30%", "-40%"]; //FIXME next month
 				var discountElementCount = 0;
 
         //START Populating rdoPost
         for (var i = 2; i <= rdoBonus.length - 1; i++) { //first bonus is the subtitle
 					    //console.log(`${JSON.stringify(rdoBonus[k])}\n\n`);
-						var noBonusArray = ["1.5X", "1.5x", "1,5X", "1,5x", "2X", "2x", "2.5X", "2.5x", "2,5X", "2,5x", "3X", "3x", "4X", "4x", "40%", "40 %", "50%", "50 %", "Double", "Doble", "RDO$"];
+						var noBonusArray = ["1.5X", "1.5x", "1,5X", "1,5x", "2X", "2x", "2.5X", "2.5x", "2,5X", "2,5x", "3X", "3x", "4X", "4x", "40%", "40 %", "50%", "50 %", "Double", "Doble", "RDO$", "Вдвое"];
 						if (rdoBonus[i].text !== undefined) {
 								rdoPost += `\n**${rdoBonus[i].text}**\n`;
 						}
@@ -325,10 +373,10 @@ module.exports = {
 							return `\n** [更多細節](${rdoURLFull})**`;
 					}
 					else if (LANG.includes("ja")) {
-							return `\n** [자세한 내용은](${rdoURLFull})**`;
+							return `\n** [さらに詳しく](${rdoURLFull})**`;
 					}
 					else if (LANG.includes("ko")) {
-							return `\n** [詳細](${rdoURLFull})**`;
+							return `\n** [자세한 내용은](${rdoURLFull})**`; 
 					}
 					else {
 							return `\n** [More Details](${rdoURLFull})**`;

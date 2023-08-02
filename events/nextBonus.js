@@ -29,7 +29,7 @@ module.exports = {
 
 				var nextBonusPlus = (nextBonus.setDate(nextBonus.getDate()+7));
 				var nextBonus = new Date(nextBonusPlus);
-				return nextBonus;				
+				return nextBonus;
 			}
 			else {
 				var rdoFetch = await fetch(process.env.rdoGraphURL, {
@@ -62,10 +62,10 @@ module.exports = {
 				}
 				else {
 					var nextRDOBonus01 = new Date(`${nextRDOBonus1} 21:00:00`);
-					var nextRDOBonusPlus = (nextRDOBonus01.setDate(nextRDOBonus01.getDate()+21)); //adds three weeks to last bonus - FIXME - change next month
+					var nextRDOBonusPlus = (nextRDOBonus01.setDate(nextRDOBonus01.getDate()+35)); //fixme next month + 28 days
 					var nextRDOBonus = new Date(nextRDOBonus01);
 					return nextRDOBonus;
-				}					
+				}	
 				
 			}		
 

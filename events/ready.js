@@ -94,7 +94,7 @@ module.exports = {
 				  return (num / Math.pow(1024,3));
 				}
 				function freeRAM() {
-					if (bTG(os.freemem) <= 1) {
+					if (bTG(os.freemem) <= 2) {
 						console.log(`Ran out of RAM. Restarting...`);
 						setTimeout(() => {
 							process.kill(1);
