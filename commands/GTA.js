@@ -130,34 +130,43 @@ module.exports = {
 
         //START Populating gtaPost
 				var misplacedBonus = "";
+				var noBonusArray = ["1.5X", "1.5x", "1,5X", "1,5x", "2X", "2x", "2.5X", "2.5x", "2,5X", "2,5x", "3X", "3x", "4X", "4x", "40%", "40 %", "50%", "50 %", "Double", "Doble", "RDO$", "Вдвое", "GTA$", "Gains"];	
+				var noBonus = [];
         for (var k = 2; k <= gtaBonus.length - 2; k++) { //first bonus is the subtitle and blurb, last bonus is the gun van inventory discounts
 							//console.log(`${k}: \n${JSON.stringify(gtaBonus[k])}`);
-						if (k === 11) { //fixme - luxury autos was in the wrong order this week
-							if (gtaBonus[k].content !== undefined) {
-								misplacedBonus = `${gtaBonus[k].content}`;
+						if ((gtaBonus[k].badge !== undefined) && (gtaBonus[k].badge !== null)) {
+							var joinTitle = gtaBonus[k].badge.split(" ")[0]; //first word of badge
+							if (noBonusArray.indexOf(joinTitle) >= 0) {
+								noBonus.push(k+1);
 							}
 						}
-						if (k === 12) {
-							if (gtaBonus[k].title !== undefined) {
-								gtaPost += `\n**${gtaBonus[k].title}**\n• ${misplacedBonus}\n`;
-							}
-						}
-            //console.log(`${JSON.stringify(gtaBonus[k])}\n\n`);
-						else if ((gtaBonus[k].text !== undefined) && (gtaPlusCount !== 1)){ //gta+ top
+						if ((gtaBonus[k].text !== undefined) && (gtaPlusCount !== 1)){ //gta+ top
 								gtaPlusBonus += `\n**${gtaBonus[k].text}**\n`;
 								gtaPlusCount++;
 								gtaPlusInsert = gtaPost.length;
 								gtaPlusBottom = k + 1;
 						}
-						else if (gtaBonus[k].title !== undefined) {
+						if (gtaBonus[k].title !== undefined) {
 							gtaPost += `\n**${gtaBonus[k].title}**\n`; 
+							var joinTitle = gtaBonus[k].title.split(" ")[0]; //first word of title
+							if (noBonusArray.indexOf(joinTitle) >= 0) {
+								noBonus.push(k+1);
+							}							
 						}
-						else if (gtaBonus[k].description !== undefined) {
+						if (gtaBonus[k].description !== undefined) {
 								gtaPost += `• ${gtaBonus[k].description}\n`;
 						}
-						else if ((gtaBonus[k].content !== undefined) && (k !== 11)) { //fixme next week 
+						if ((gtaBonus[k].content !== undefined) && (noBonus.indexOf(k) < 0)) { //adds description if not a 2x, 3x, etc bonus
 								gtaPost += `• ${gtaBonus[k].content}\n`;
 						}
+						if (gtaBonus[k].title_and_description !== undefined) { //DISCOUNTS
+								if (gtaBonus[k].title_and_description.title !== undefined) {
+									gtaPost += `\n**${gtaBonus[k].title_and_description.title}**\n`;
+								}
+								if (gtaBonus[k].title_and_description.description !== undefined) {
+									gtaPost += `• ${gtaBonus[k].title_and_description.description}\n`;
+								}
+						}					
         }
         //END for loop
 
@@ -168,12 +177,6 @@ module.exports = {
             gtaPost = gtaPost1 + gtaPlusBonus + gtaPost2;
         }
         gtaPlus();
-				function noBonus() { //fixme - next week
-					gtaPost = gtaPost
-						.replace(/<p>.*?<h3><br>/, "<h3>")
-						.replace(/<\/h3><p>.*?<\/p>/, "</h3>")
-				}
-				noBonus();
 
 				if (gtaBonus[gtaBonus.length - 1].content !== undefined) { //adds the gun van inventory discounts
 						gtaPost += `${gtaBonus[gtaBonus.length - 1].content}\n`;

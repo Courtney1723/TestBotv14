@@ -1,5 +1,4 @@
 const { ActivityType } = require('discord.js');
-const phantom = require('phantom'); //https://github.com/amir20/phantomjs-node
 var cron = require('node-cron'); //https://github.com/node-cron/node-cron
 const fetch = require("@replit/node-fetch");
 const os = require("os");
