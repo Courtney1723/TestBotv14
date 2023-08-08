@@ -301,7 +301,7 @@ module.exports = {
                         var thisBonus01 = await THIS_BONUS.thisBonus("gta");
                         // console.log(`next Bonus: <t:${Math.round(nextBonus01 / 1000)}>`);
 
-                        var gtaFetch = await fetch(`${process.env.gtaGraphURL1}${lang}${process.env.gtaGraphURL2}`, {
+                        var gtaFetch = await fetch(process.env.gtaGraphURL, {
                             "cache": "default",
                             "credentials": "omit",
                             "headers": {

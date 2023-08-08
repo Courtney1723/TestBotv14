@@ -33,7 +33,7 @@ module.exports = {
         var thisBonus01 = await THIS_BONUS.thisBonus("rdo");
             // console.log(`next Bonus: <t:${Math.round(nextBonus01 / 1000)}>`);
 
-        var rdoFetch = await fetch(`${process.env.rdoGraphURL1}${LANG}${process.env.rdoGraphURL2}`, {
+        var rdoFetch = await fetch(process.env.rdoGraphURL, {
             "cache": "default",
             "credentials": "omit",
             "headers": {
@@ -208,13 +208,14 @@ module.exports = {
 				}
 
 				function latestBonus() {
-					var rdoCheckDate = new Date(getrdoParse.data.posts.results[0].created_formatted).toString().substring(0, 3);
+					var rdoCheckDate = new Date(getrdoParse.data.posts.results[0].created).toString().substring(0, 3);
 					var rdoCheckTime = new Date(getrdoParse.data.posts.results[0].created).toString().includes("10:00");
+					console.log(`rdoCheckDate: ${rdoCheckDate}\nrdoCheckTime: ${rdoCheckTime}`);
 					if ((rdoCheckDate !== "Tue") || (rdoCheckTime === false)) { //if post 0 is not a weekly bonus check post 1
-						var rdoCheckDate2 = new Date(getrdoParse.data.posts.results[1].created_formatted).toString().substring(0, 3);
+						var rdoCheckDate2 = new Date(getrdoParse.data.posts.results[1].created).toString().substring(0, 3);
 						var rdoCheckTime2 = new Date(getrdoParse.data.posts.results[0].created).toString().includes("10:00");						
 						if ((rdoCheckDate2 !== "Tue") || (rdoCheckTime === false)) { //if post 1 is not a weekly bonus check post 2
-							var rdoCheckDate3 = new Date(getrdoParse.data.posts.results[2].created_formatted).toString().substring(0, 3);
+							var rdoCheckDate3 = new Date(getrdoParse.data.posts.results[2].created).toString().substring(0, 3);
 							var rdoCheckTime3 = new Date(getrdoParse.data.posts.results[0].created).toString().includes("10:00");							
 							if ((rdoCheckDate3 !== "Tue") || (rdoCheckTime === false)) { //if post 2 is not a weekly bonus return post 3
 								return 3
@@ -230,7 +231,8 @@ module.exports = {
 					else {
 						return 0;
 					}
-				}			
+				}	
+				latestBonus();
 
         var rdoImage = getrdoParse.data.posts.results[latestBonus()].preview_images_parsed.newswire_block.d16x9;
         	//console.log(`rdoImage: ${rdoImage}`);			

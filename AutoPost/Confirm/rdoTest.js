@@ -280,7 +280,7 @@ module.exports = {
                         var thisBonus01 = await THIS_BONUS.thisBonus("rdo");
                         // console.log(`next Bonus: <t:${Math.round(nextBonus01 / 1000)}>`);
 
-                        var rdoFetch = await fetch(`${process.env.rdoGraphURL1}${lang}${process.env.rdoGraphURL2}`, {
+                        var rdoFetch = await fetch(process.env.rdoGraphURL, {
                             "cache": "default",
                             "credentials": "omit",
                             "headers": {
