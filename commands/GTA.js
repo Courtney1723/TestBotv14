@@ -156,7 +156,7 @@ module.exports = {
 
         //START Populating gtaPost
 				var misplacedBonus = "";
-				var noBonusArray = ["1.5X", "1.5x", "1,5X", "1,5x", "2X", "2x", "2.5X", "2.5x", "2,5X", "2,5x", "3X", "3x", "4X", "4x", "40%", "40 %", "50%", "50 %", "Double", "Doble", "RDO$", "Вдвое", "GTA$", "Gains"];	
+				var noBonusArray = ["1.5X", "1.5x", "1,5X", "1,5x", "2X", "2x", "2.5X", "2.5x", "2,5X", "2,5x", "3X", "3x", "4X", "4x", "40%", "40 %", "50%", "50 %", "Double", "Doble", "Triple", "RDO$", "Вдвое", "GTA$", "Gains"];	
 				var noBonus = [];
         for (var k = 2; k <= gtaBonus.length - 2; k++) { //first bonus is the subtitle and blurb, last bonus is the gun van inventory discounts
 							//console.log(`${k}: \n${JSON.stringify(gtaBonus[k])}`);
@@ -355,7 +355,7 @@ module.exports = {
             .setDescription(`${ellipsisFunction()} \n${gtaPost2()} ${ellipsisFunction2()}${gtaFooterMax()}`)
         let gtaImageEmbed = new EmbedBuilder()
             .setColor(0x00CD06) //Green
-            .setImage(`${gtaImage}`);               
+            .setImage(`${gtaImage}`);
 
         //console.log(`gtaFinal.l: ${gtaFinal.length}`);
 
