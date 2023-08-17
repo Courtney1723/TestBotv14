@@ -430,7 +430,9 @@ module.exports = {
 																gtaPost += `• ${gtaBonus[k].description}\n`;
 														}
 														if ((gtaBonus[k].content !== undefined) && (noBonus.indexOf(k) < 0)) { //adds description if not a 2x, 3x, etc bonus
+															if (gtaBonus[k].content.length < 500) {
 																gtaPost += `• ${gtaBonus[k].content}\n`;
+															}	
 														}
 														if (gtaBonus[k].title_and_description !== undefined) { //DISCOUNTS
 																if (gtaBonus[k].title_and_description.title !== undefined) {
