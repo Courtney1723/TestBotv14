@@ -88,7 +88,7 @@ module.exports = {
 
                             //console.log(`guildIDs: ${guildIDs}`);
                             var channelIDLength = channelIDs.split("-")
-                            console.log(`channelIDs: ${channelIDLength.length}`); //do not comment out
+                            console.log(`channelIDs: ${channelIDLength.length - 2}`); //do not comment out
                             //console.log(`rdo_gtaIDs: ${rdo_gtaIDs}`);
 
                             let guildIDsArray = guildIDs.split('  - ');
@@ -100,10 +100,11 @@ module.exports = {
                             //console.log(`guildIDLangArray: ${guildIDLangArray}`);
                             //console.log(`channelIDArray: ${channelIDArray}`);
 
-                            c = 0;
+                          	c = -1;
 														async function sendPosts() {
-                            if (c <= channelIDArray.length - 2) { //first & last elements will always be undefined	
+                            if (c <= channelIDArray.length - 2) { //first & last 3 elements will always be undefined	
                                 let lang = "";
+																c++;
 
                                 for (langCheck = 0; langCheck <= langArray.length - 1; langCheck++) { //iterates through all the languages
                                     // console.log(`guildIDsArray[c] === guildIDLangArray[langCheck]? ${guildIDsArray[c] === guildIDLangArray[langCheck]}`);
@@ -119,7 +120,7 @@ module.exports = {
                                         lang = langArray[langCheck];
                                     }
                                 }
-                                console.log(`lang: ${lang} - channelID: ${channelIDArray[c]}`);
+                                console.log(`lang: ${lang} - channelID: ${channelIDArray[c]} - ${c}/${channelIDArray.length - 2} - (${((c/(channelIDArray.length - 2))*100).toFixed(2)}%)`);
 
                                 //----------END Formatting GuildIds, ChannelIds, rdo_gtaIDs, and language-----------//	
 
@@ -162,15 +163,17 @@ module.exports = {
 																}	
 
 																function latestBonus() {
-																	var gtaCheckDate = new Date(getgtaParse.data.posts.results[0].created_formatted).toString().substring(0, 3);
-																	var gtaCheckTime = new Date(getgtaParse.data.posts.results[0].created).toString().includes("10:00");
-																	if ((gtaCheckDate !== "Thu") || (gtaCheckTime === false)) { //if post 0 is not a weekly bonus check post 1
-																		var gtaCheckDate2 = new Date(getgtaParse.data.posts.results[1].created_formatted).toString().substring(0, 3);
-																		var gtaCheckTime2 = new Date(getgtaParse.data.posts.results[0].created).toString().includes("10:00");						
-																		if ((gtaCheckDate2 !== "Thu") || (gtaCheckTime === false)) { //if post 1 is not a weekly bonus check post 2
-																			var gtaCheckDate3 = new Date(getgtaParse.data.posts.results[2].created_formatted).toString().substring(0, 3);
-																			var gtaCheckTime3 = new Date(getgtaParse.data.posts.results[0].created).toString().includes("10:00");							
-																			if ((gtaCheckDate3 !== "Thu") || (gtaCheckTime === false)) { //if post 2 is not a weekly bonus return post 3
+																	var gtaCheckDate = new Date(getgtaParse.data.posts.results[0].created).toString().substring(0, 3);
+																	var gtaPlusCheck = getgtaParse.data.posts.results[0].title.toString().includes("GTA+");
+																		//console.log(`gtaCheckDate: ${gtaCheckDate} \gtaPlusCheck: ${gtaPlusCheck}`);
+																	if ((gtaCheckDate !== "Thu") || (gtaPlusCheck === true)) { //if post 0 is not a weekly bonus check post 1
+																		var gtaCheckDate2 = new Date(getgtaParse.data.posts.results[1].created).toString().substring(0, 3);
+																		var gtaPlusCheck2 = getgtaParse.data.posts.results[1].title.toString().includes("GTA+");	
+																			//console.log(`gtaCheckDate2: ${gtaCheckDate2} \gtaPlusCheck2: ${gtaPlusCheck2}`);
+																		if ((gtaCheckDate2 !== "Thu") || (gtaPlusCheck === true)) { //if post 1 is not a weekly bonus check post 2
+																			var gtaCheckDate3 = new Date(getgtaParse.data.posts.results[2].created).toString().substring(0, 3);
+																			var gtaPlusCheck3 = getgtaParse.data.posts.results[2].title.toString().includes("GTA+");						
+																			if ((gtaCheckDate3 !== "Thu") || (gtaPlusCheck === false)) { //if post 2 is not a weekly bonus return post 3
 																				return 3
 																			}
 																			else {
@@ -184,12 +187,12 @@ module.exports = {
 																	else {
 																		return 0;
 																	}
-																}	
+																}		
 
-                                var gtaImage = getgtaParse.data.posts.results[latestBonus()].preview_images_parsed.newswire_block.d16x9;
+                                var gtaImage = getgtaParse.data.posts.results[1].preview_images_parsed.newswire_block.d16x9;//FIXME NEXT WEEK
                                 	//console.log(`gtaImage: ${gtaImage}`);															
-                                var gtaURLHash = getgtaParse.data.posts.results[latestBonus()].id;
-                                var gtaURLFull = `https://www.rockstargames.com${langFunction()}${getgtaParse.data.posts.results[latestBonus()].url}`;
+                                var gtaURLHash = getgtaParse.data.posts.results[1].id;//FIXME NEXT WEEK
+                                var gtaURLFull = `https://www.rockstargames.com${langFunction()}${getgtaParse.data.posts.results[1].url}`;//FIXME NEXT WEEK
                                 var fetchGTA = await fetch(`${process.env.gtaGraphURL3}${gtaURLHash}%22%2C%22locale%22%3A%22${lang}${process.env.gtaGraphURL4}`, {
                                     "cache": "default",
                                     "credentials": "omit",
@@ -451,7 +454,6 @@ module.exports = {
                                     else {
                                         client.channels.fetch(channelIDArray[c]).then(channel => channel.send({ embeds: [gtaImageEmbed, gtaEmbed, gtaEmbed2] })).catch(err => console.log(`Max Error: ${err.stack}\nChannel ID: ${channelIDArray[c]}`));
                                     }
-																		c++;
                                 } //end if not undefined channel
                             }
 														

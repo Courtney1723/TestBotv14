@@ -24,15 +24,17 @@ module.exports = {
 				var getgtaParse = JSON.parse(getgtaJSON);
 
 				function latestBonus() {
-					var gtaCheckDate = new Date(getgtaParse.data.posts.results[0].created_formatted).toString().substring(0, 3);
-					var gtaCheckTime = new Date(getgtaParse.data.posts.results[0].created).toString().includes("12:00");
-					if ((gtaCheckDate !== "Thu") || (gtaCheckTime === false)) { //if post 0 is not a weekly bonus check post 1
-						var gtaCheckDate2 = new Date(getgtaParse.data.posts.results[1].created_formatted).toString().substring(0, 3);
-						var gtaCheckTime2 = new Date(getgtaParse.data.posts.results[0].created).toString().includes("12:00");						
-						if ((gtaCheckDate2 !== "Thu") || (gtaCheckTime === false)) { //if post 1 is not a weekly bonus check post 2
-							var gtaCheckDate3 = new Date(getgtaParse.data.posts.results[2].created_formatted).toString().substring(0, 3);
-							var gtaCheckTime3 = new Date(getgtaParse.data.posts.results[0].created).toString().includes("12:00");							
-							if ((gtaCheckDate3 !== "Thu") || (gtaCheckTime === false)) { //if post 2 is not a weekly bonus return post 3
+					var gtaCheckDate = new Date(getgtaParse.data.posts.results[0].created).toString().substring(0, 3);
+					var gtaPlusCheck = getgtaParse.data.posts.results[0].title.toString().includes("GTA+");
+						//console.log(`gtaCheckDate: ${gtaCheckDate} \gtaPlusCheck: ${gtaPlusCheck}`);
+					if ((gtaCheckDate !== "Thu") || (gtaPlusCheck === true)) { //if post 0 is not a weekly bonus check post 1
+						var gtaCheckDate2 = new Date(getgtaParse.data.posts.results[1].created).toString().substring(0, 3);
+						var gtaPlusCheck2 = getgtaParse.data.posts.results[1].title.toString().includes("GTA+");	
+							//console.log(`gtaCheckDate2: ${gtaCheckDate2} \gtaPlusCheck2: ${gtaPlusCheck2}`);
+						if ((gtaCheckDate2 !== "Thu") || (gtaPlusCheck === true)) { //if post 1 is not a weekly bonus check post 2
+							var gtaCheckDate3 = new Date(getgtaParse.data.posts.results[2].created).toString().substring(0, 3);
+							var gtaPlusCheck3 = getgtaParse.data.posts.results[2].title.toString().includes("GTA+");						
+							if ((gtaCheckDate3 !== "Thu") || (gtaPlusCheck === false)) { //if post 2 is not a weekly bonus return post 3
 								return 3
 							}
 							else {
@@ -46,10 +48,10 @@ module.exports = {
 					else {
 						return 0;
 					}
-				}				
+				}					
 
 				var date = new Date();
-				var thisBonus1 = getgtaParse.data.posts.results[latestBonus()].created_formatted;
+				var thisBonus1 = getgtaParse.data.posts.results[1].created_formatted;//FIXME NEXT WEEK
 				var thisBonus = new Date(`${thisBonus1} 00:00:00`);
                 return thisBonus;			
 			}

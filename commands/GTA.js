@@ -85,16 +85,18 @@ module.exports = {
 
 				function latestBonus() {
 					var gtaCheckDate = new Date(getgtaParse.data.posts.results[0].created).toString().substring(0, 3);
-					var gtaCheckTime = new Date(getgtaParse.data.posts.results[0].created).toString().includes("12:00");
-						//console.log(`gtaCheckDate: ${gtaCheckDate} \ngtaCheckTime: ${gtaCheckTime}`);
-					if ((gtaCheckDate !== "Thu") || (gtaCheckTime === false)) { //if post 0 is not a weekly bonus check post 1
+					var gtaPlusCheck = getgtaParse.data.posts.results[0].title.toString().includes("GTA+");
+						//console.log(`title1: ${getgtaParse.data.posts.results[0].title.toString()}`);
+						//console.log(`gtaCheckDate: ${gtaCheckDate} \gtaPlusCheck: ${gtaPlusCheck}`);
+					if ((gtaCheckDate !== "Thu") || (gtaPlusCheck === true)) { //if post 0 is not a weekly bonus check post 1
 						var gtaCheckDate2 = new Date(getgtaParse.data.posts.results[1].created).toString().substring(0, 3);
-						var gtaCheckTime2 = new Date(getgtaParse.data.posts.results[1].created).toString().includes("12:00");	
-							//console.log(`gtaCheckDate2: ${gtaCheckDate2} \ngtaCheckTime2: ${gtaCheckTime2}`);
-						if ((gtaCheckDate2 !== "Thu") || (gtaCheckTime === false)) { //if post 1 is not a weekly bonus check post 2
+						var gtaPlusCheck2 = getgtaParse.data.posts.results[1].title.toString().includes("GTA+");	
+							//console.log(`title2: ${getgtaParse.data.posts.results[2].title.toString()}`);
+							//console.log(`gtaCheckDate2: ${gtaCheckDate2} \gtaPlusCheck2: ${gtaPlusCheck2}`);
+						if ((gtaCheckDate2 !== "Thu") || (gtaPlusCheck === true)) { //if post 1 is not a weekly bonus check post 2
 							var gtaCheckDate3 = new Date(getgtaParse.data.posts.results[2].created).toString().substring(0, 3);
-							var gtaCheckTime3 = new Date(getgtaParse.data.posts.results[2].created).toString().includes("12:00");							
-							if ((gtaCheckDate3 !== "Thu") || (gtaCheckTime === false)) { //if post 2 is not a weekly bonus return post 3
+							var gtaPlusCheck3 = getgtaParse.data.posts.results[2].title.toString().includes("GTA+");						
+							if ((gtaCheckDate3 !== "Thu") || (gtaPlusCheck === true)) { //if post 2 is not a weekly bonus return post 3
 								return 3
 							}
 							else {
@@ -110,10 +112,10 @@ module.exports = {
 					}
 				}			
 
-        var gtaImage = getgtaParse.data.posts.results[latestBonus()].preview_images_parsed.newswire_block.d16x9;
+        var gtaImage = getgtaParse.data.posts.results[1].preview_images_parsed.newswire_block.d16x9; //FIXME NEXT WEEK
         	//console.log(`gtaImage: ${gtaImage}`);			
-        var gtaURLHash = getgtaParse.data.posts.results[latestBonus()].id;
-        var gtaURLFull = `https://www.rockstargames.com${langFunction()}${getgtaParse.data.posts.results[latestBonus()].url}`;
+        var gtaURLHash = getgtaParse.data.posts.results[1].id;//FIXME NEXT WEEK
+        var gtaURLFull = `https://www.rockstargames.com${langFunction()}${getgtaParse.data.posts.results[1].url}`;//FIXME NEXT WEEK
         var fetchGTA = await fetch(`${process.env.gtaGraphURL3}${gtaURLHash}%22%2C%22locale%22%3A%22${LANG}${process.env.gtaGraphURL4}`, {
             "cache": "default",
             "credentials": "omit",
