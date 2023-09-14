@@ -352,7 +352,7 @@ module.exports = {
                                 var allBonuses = rdoParse.data.post.tina.variables.keys;
                                 var rdoBonus = Object.values(allBonuses);
 
-                                var rdoDiscountPercent = [`-30%`, `${free()}`, "-40%", "-40%", "-40%", "-30%", "-30%", "-40%"]; //FIXME next month
+                                var rdoDiscountPercent = [`-5 ${gold()}`, `-10 ${gold()}`, "-30%", "-40%", "-40%", "-30%", "-30%", "-30%", `-50%`, `-30%`]; //FIXME next month
                                 var discountElementCount = 0;
 
                                 //START Populating rdoPost
