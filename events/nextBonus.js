@@ -25,7 +25,7 @@ module.exports = {
 
 				var date = new Date();
 				var nextBonus1 = getgtaParse.data.posts.results[0].created_formatted;
-				var nextBonus = new Date(`${nextBonus1} 21:00:00`);
+				var nextBonus = new Date(`${nextBonus1} 22:00:00`);
 
 				var nextBonusPlus = (nextBonus.setDate(nextBonus.getDate()+7));
 				var nextBonus = new Date(nextBonusPlus);
@@ -49,21 +49,21 @@ module.exports = {
 				});
 				var getrdoJSON01 = await rdoFetch.json();
 				var getrdoJSON = JSON.stringify(getrdoJSON01);
-				var getrdoParse = JSON.parse(getrdoJSON);	
+				var getrdoParse = JSON.parse(getrdoJSON);
 				
 				var date = new Date();
 				var nextRDOBonus1 = getrdoParse.data.posts.results[0].created_formatted;
-				var nextRDOBonus = new Date(`${nextRDOBonus1} 21:00:00`);
+				var nextRDOBonus = new Date(`${nextRDOBonus1} 22:00:00`);
 				var checkRDOUpcoming = nextRDOBonus - date;
 				
 				if (checkRDOUpcoming >= 0) {
-					var nextRDOBonus = new Date(`${nextRDOBonus1} 21:00:00`); //returns the current bonus if same day before 3:00
+					var nextRDOBonus = new Date(`${nextRDOBonus1} 22:00:00`); //returns the current bonus if same day before 3:00
 					return nextRDOBonus;
 				}
 				else {
-					var nextRDOBonus01 = new Date(`${nextRDOBonus1} 21:00:00`);
+					var nextRDOBonus01 = new Date(`${nextRDOBonus1} 22:00:00`);
 					var nextRDOBonusPlus = (nextRDOBonus01.setDate(nextRDOBonus01.getDate()+28)); //fixme next month
-					var nextRDOBonus = new Date(nextRDOBonus01);
+					var nextRDOBonus = new Date(nextRDOBonusPlus);
 					return nextRDOBonus;
 				}	
 				

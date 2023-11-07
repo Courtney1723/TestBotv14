@@ -441,7 +441,9 @@ module.exports = {
 																	}
 																}
 															else {
-																gtaPost += `• ${gtaBonus[k].content}\n`;
+                                if (gtaBonus[k].content.length < 650) {
+																  gtaPost += `• ${gtaBonus[k].content}\n`;
+                                }
 															}
 														}	
 								        }

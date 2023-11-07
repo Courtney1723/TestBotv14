@@ -163,10 +163,10 @@ module.exports = {
 																}	
 
 
-                                var gtaImage = getgtaParse.data.posts.results[1].preview_images_parsed.newswire_block.d16x9;
+                                var gtaImage = getgtaParse.data.posts.results[0].preview_images_parsed.newswire_block.d16x9;
                                 	//console.log(`gtaImage: ${gtaImage}`);															
-                                var gtaURLHash = getgtaParse.data.posts.results[1].id;
-                                var gtaURLFull = `https://www.rockstargames.com${langFunction()}${getgtaParse.data.posts.results[1].url}`;
+                                var gtaURLHash = getgtaParse.data.posts.results[0].id;
+                                var gtaURLFull = `https://www.rockstargames.com${langFunction()}${getgtaParse.data.posts.results[0].url}`;
                                 var fetchGTA = await fetch(`${process.env.gtaGraphURL3}${gtaURLHash}%22%2C%22locale%22%3A%22${lang}${process.env.gtaGraphURL4}`, {
                                     "cache": "default",
                                     "credentials": "omit",
@@ -272,8 +272,9 @@ module.exports = {
 																					}
 																				}
 																			else {
+                                        if (gtaBonus[k].content.length < 650) {
 																				gtaPost += `• ${gtaBonus[k].content}\n`;
-																			}
+                                        }}
 																		}		
 												        }
 												        //END for loop

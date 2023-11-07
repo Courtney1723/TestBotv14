@@ -27,8 +27,8 @@ module.exports = {
 						var nextBONUSRDO = await NEXT_BONUS.nextBonus("rdo");
 
 						var nowDay = new Date();
-						var GTADayOf = thisBONUSGTA.setHours(21, 00, 00); //sets the time to 3:00 PM MTN
-						var RDODayOf = thisBONUSRDO.setHours(21, 00, 00); //sets the time to 3:00 PM MTN
+						var GTADayOf = thisBONUSGTA.setHours(22, 00, 00); //sets the time to 3:00 PM MTN
+						var RDODayOf = thisBONUSRDO.setHours(22, 00, 00); //sets the time to 3:00 PM MTN
 						var checkDayOfGTA = GTADayOf - nowDay;
 						var checkDayOfRDO = RDODayOf - nowDay;
 						

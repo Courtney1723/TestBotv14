@@ -237,14 +237,15 @@ module.exports = {
         var rdoSubTitle = rdoParse.data.post.subtitle;
         var rdoDate = rdoParse.data.post.created_formatted;
             //console.log(`rdoTitle: ${rdoTitle}\nrdoSubTitle: ${rdoSubTitle}\nrdoDate: ${rdoDate}`);
-        var thisBonus = Math.round((thisBonus01) / 1000) + 21600; // plus 6 hours
+        console.log(`nextBonus01: ${Math.round((nextBonus01) / 1000)}`);
+        var thisBonus = Math.round((thisBonus01) / 1000) + 25240; // 21600 for Daylight savings - 25240 for standard time
 				if (thisBonus01.getDate() === nextBonus01.getDate()) { //same day
-					var nextBonus02 = nextBonus01.setMonth(10); //fixme next month
-					var nextBonus03 = new Date(nextBonus02).setDate(3); //fixme next month
-					var nextBonus = Math.round((nextBonus03) / 1000) - 54060;
+					var nextBonus02 = nextBonus01.setMonth(11); //fixme next month
+					var nextBonus03 = new Date(nextBonus02).setDate(4); //fixme next month
+					var nextBonus = Math.round((nextBonus03) / 1000) - 50420; //54060 for Daylight savings - 50420 for standard time
 				}
 				else {
-					var nextBonus = Math.round((nextBonus01) / 1000) - 54060; // minus 15.016 hours
+					var nextBonus = Math.round((nextBonus01) / 1000) - 50420; //54060 for Daylight savings - 50420 for standard time
 				}
             // console.log(`thisBonus01: ${thisBonus01} - nextBonus01: ${nextBonus01}`);
             // console.log(`thisBonus: ${thisBonus} - nextBonus: ${nextBonus}`);
@@ -253,7 +254,7 @@ module.exports = {
         var allBonuses = rdoParse.data.post.tina.variables.keys;
         var rdoBonus = Object.values(allBonuses);
 
-				var rdoDiscountPercent = [`-5 ${gold()}`, `-10 ${gold()}`, "-30%", "-40%", "-40%", "-30%", "-30%", "-30%", `-50%`, `-30%`]; //FIXME next month
+				var rdoDiscountPercent = [`-5 ${gold()}`, `-30%`, "-30%", "-30%", "-30%", "-30%", "-30%", "-40%", `-40%`, `-40%`]; //FIXME next month
 				var discountElementCount = 0;
 
         //START Populating rdoPost
@@ -283,11 +284,15 @@ module.exports = {
 										i++;
 									}
 									else {
-										rdoPost += `• ${rdoBonus[i].description}\n`;
+                    if (rdoBonus[i].description.length < 2000) {
+                      rdoPost += `• ${rdoBonus[i].description}\n`;
+                    }
 									}
 								} 
 								else {
-									rdoPost += `• ${rdoBonus[i].description}\n`;
+                  if (rdoBonus[i].description.length < 2000) {
+                    rdoPost += `• ${rdoBonus[i].description}\n`;
+                  }
 								}
 						}
         }

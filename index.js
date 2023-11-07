@@ -5,7 +5,7 @@ global.client = new Client({
 });
 global.supportedLanguages = ["en", "es", "br", "ru", "de", "pl", "fr", "it", "zh", "tw", "jp", "kr"];
 const { exec } = require('node:child_process');
-const keepAlive = require('./server');
+//const keepAlive = require('./server');
 var cron = require('node-cron'); //https://github.com/node-cron/node-cron
 const { get } = require("https");
 const fetch = require("@replit/node-fetch");
@@ -260,5 +260,5 @@ for (const file of autoLanguageFiles) {
     }
 }
 
-keepAlive();
+//keepAlive();
 client.login(process.env.DISCORD_TOKEN).catch(err => console.log(`Login Error: ${err.stack}`));
