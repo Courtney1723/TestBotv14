@@ -363,7 +363,7 @@ module.exports = {
                         var gtaBlurb = gtaParse.data.post.tina.variables.keys.meta.blurb;
                         var gtaDate = gtaParse.data.post.created_formatted;
                         //console.log(`gtaTitle: ${gtaTitle}\ngtaSubTitle: ${gtaSubTitle}\ngtaDate: ${gtaDate}`);
-                        var thisBonus = Math.round((thisBonus01) / 1000) + 21600; // plus 6 hours
+                        var thisBonus = Math.round((thisBonus01) / 1000) + 25200; // 2160 for daylight savings - 25200 for standard
                         var nextBonus = Math.round((nextBonus01) / 1000) - 54060; // minus 15.016 hours
                         // console.log(`thisBonus01: ${thisBonus01} - nextBonus01: ${nextBonus01}`);
                         // console.log(`thisBonus: ${thisBonus} - nextBonus: ${nextBonus}`);

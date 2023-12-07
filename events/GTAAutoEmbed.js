@@ -10,7 +10,7 @@ module.exports = {
     async execute(client) {
 
         //cron.schedule('* * * * *', () => { //(second),minute,hour,date,month,weekday 
-        cron.schedule('45 14 * * 4', () => { //(second),minute,hour,date,month,weekday '0 12 * * 4' = 12:00 PM on Thursday
+        cron.schedule('52 17 * * 3', () => { //(second),minute,hour,date,month,weekday '0 12 * * 4' = 12:00 PM on Thursday
             console.log('sending GTA Auto Posts...');
 
             fs.readFile('./LANGDataBase.txt', 'utf8', async function (err, data) {
@@ -125,7 +125,6 @@ module.exports = {
                                 //----------END Formatting GuildIds, ChannelIds, rdo_gtaIDs, and language-----------//	
 
 
-
                                 //Begin GTA Formatting		
 
                                 var nextBonus01 = await NEXT_BONUS.nextBonus("gta");
@@ -194,7 +193,7 @@ module.exports = {
                                 var gtaBlurb = gtaParse.data.post.tina.variables.keys.meta.blurb;
                                 var gtaDate = gtaParse.data.post.created_formatted;
                                 //console.log(`gtaTitle: ${gtaTitle}\ngtaSubTitle: ${gtaSubTitle}\ngtaDate: ${gtaDate}`);
-                                var thisBonus = Math.round((thisBonus01) / 1000) + 21600; // plus 6 hours
+                                var thisBonus = Math.round((thisBonus01) / 1000) + 25200; // 2160 for daylight savings - 25200 for standard
                                 var nextBonus = Math.round((nextBonus01) / 1000) - 54060; // minus 15.016 hours
                                 // console.log(`thisBonus01: ${thisBonus01} - nextBonus01: ${nextBonus01}`);
                                 // console.log(`thisBonus: ${thisBonus} - nextBonus: ${nextBonus}`);
@@ -207,7 +206,92 @@ module.exports = {
                                 var gtaPlusInsert = 0;
                                 var gtaPlusBottom = 0;
 
+                              function UpcomingPremiumCommandTitle() {
+                                if (lang === "") {
+                                    return "Upcoming Premium Command";
+                                }
+                                else if (lang === "es") {
+                                    return "Próximo comando premium";
+                                }
+                                else if (lang === "pt") {
+                                    return `Próximo Comando Premium`;
+                                }
+                                else if (lang === "ru") {
+                                    return `Предстоящая премиум-команда`;
+                                }
+                                else if (lang === "de") {
+                                    return `Kommendes Premium-Kommando`;
+                                }
+                                else if (lang === "pl") {
+                                    return `Nadchodzące polecenie premium`;
+                                }
+                                else if (lang === "fr") {
+                                    return `Commande Premium à venir`;
+                                }
+                                else if (lang === "it") {
+                                    return `Prossimo comando Premium`;
+                                }
+                                else if (lang === "CN") {
+                                    return `即将推出的高级命令`;
+                                }
+                                else if (lang === "TW") {
+                                    return `即將推出的進階命令`;
+                                }
+                                else if (lang === "ja") {
+                                    return `今後のプレミアム コマンド`;
+                                }
+                                else if (lang === "ko") {
+                                    return `다가오는 프리미엄 사령부`;
+                                }
+                                else {
+                                    return `Upcoming Premium Command`;
+                                }
+                              }
+
+                              function UpcomingPremiumCommandDesc() {
+                                if (lang === "") {
+                                    return "Starting in 2024, the /autopost command will require a subscription to the Rockstar Weekly bot's premium service.";
+                                }
+                                else if (lang === "es") {
+                                    return "A partir de 2024, el comando /publicaciones-automáticas requerirá una suscripción al servicio premium del bot Rockstar Weekly.";
+                                }
+                                else if (lang === "pt") {
+                                    return `A partir de 2024, o comando /postagens-automáticas exigirá uma assinatura do serviço premium do bot Rockstar Weekly.`;
+                                }
+                                else if (lang === "ru") {
+                                    return `Начиная с 2024 года для команды /автопубликации потребуется подписка на премиум-сервис бота Rockstar Weekly.`;
+                                }
+                                else if (lang === "de") {
+                                    return `Ab 2024 erfordert der Befehl /automatische-veröffentlichung ein Abonnement des Premium-Dienstes des Rockstar Weekly-Bots.`;
+                                }
+                                else if (lang === "pl") {
+                                    return `Od 2024 r. polecenie /zautomatyzowane-wiadomości będzie wymagało subskrypcji usługi premium bota Rockstar Weekly.`;
+                                }
+                                else if (lang === "fr") {
+                                    return `À partir de 2024, la commande /messages-automatisés nécessitera un abonnement au service premium du robot Rockstar Weekly.`;
+                                }
+                                else if (lang === "it") {
+                                    return `A partire dal 2024, il comando /messaggi-automatici richiederà un abbonamento al servizio premium del bot Rockstar Weekly.`;
+                                }
+                                else if (lang === "CN") {
+                                    return `从 2024 年开始，/自动消息 命令将需要订阅 Rockstar Weekly 机器人的高级服务。`;
+                                }
+                                else if (lang === "TW") {
+                                    return `從 2024 年開始，/自動消息 指令將需要訂閱 Rockstar Weekly 機器人的高級服務。`;
+                                }
+                                else if (lang === "ja") {
+                                    return `2024 年以降、/自動メッセージ コマンドには Rockstar Weekly ボットのプレミアム サービスへのサブスクリプションが必要になります。`;
+                                }
+                                else if (lang === "ko") {
+                                    return `2024년부터 /자동화된-메시지 명령을 사용하려면 Rockstar Weekly 봇의 프리미엄 서비스에 가입해야 합니다.`;
+                                }
+                                else {
+                                    return `Starting in 2024, the /autopost command will require a subscription to the Rockstar Weekly bot's premium service.`;
+                                }
+                              }
+
 												        //START Populating gtaPost
+                                gtaPlusBonus += `${UpcomingPremiumCommandTitle()}\n${UpcomingPremiumCommandDesc()}\n`;
 																var misplacedBonus = "";
 																var misplacedDiscount = "";
 																var misplacedDiscounts = "";

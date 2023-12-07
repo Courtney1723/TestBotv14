@@ -83,10 +83,10 @@ module.exports = {
 					}
 				}
 
-        var gtaImage = getgtaParse.data.posts.results[0].preview_images_parsed.newswire_block.d16x9; //FIXME NEXT WEEK
+        var gtaImage = getgtaParse.data.posts.results[1].preview_images_parsed.newswire_block.d16x9; //FIXME NEXT WEEK
         	//console.log(`gtaImage: ${gtaImage}`);			
-        var gtaURLHash = getgtaParse.data.posts.results[0].id;//FIXME NEXT WEEK
-        var gtaURLFull = `https://www.rockstargames.com${langFunction()}${getgtaParse.data.posts.results[0].url}`;//FIXME NEXT WEEK
+        var gtaURLHash = getgtaParse.data.posts.results[1].id;//FIXME NEXT WEEK
+        var gtaURLFull = `https://www.rockstargames.com${langFunction()}${getgtaParse.data.posts.results[1].url}`;//FIXME NEXT WEEK
         var fetchGTA = await fetch(`${process.env.gtaGraphURL3}${gtaURLHash}%22%2C%22locale%22%3A%22${LANG}${process.env.gtaGraphURL4}`, {
             "cache": "default",
             "credentials": "omit",
@@ -114,7 +114,7 @@ module.exports = {
         var gtaBlurb = gtaParse.data.post.tina.variables.keys.meta.blurb;
         //var gtaDate = gtaParse.data.post.created_formatted;
             //console.log(`gtaTitle: ${gtaTitle}\ngtaSubTitle: ${gtaSubTitle}\ngtaDate: ${gtaDate}`);
-        var thisBonus = Math.round((thisBonus01) / 1000) + 21600; // plus 6 hours
+        var thisBonus = Math.round((thisBonus01) / 1000) + 25200; // 21600 for daylight savings - 25200 for standard time
         var nextBonus = Math.round((nextBonus01) / 1000) - 54060; // minus 15.016 hours
             // console.log(`thisBonus01: ${thisBonus01} - nextBonus01: ${nextBonus01}`);
             // console.log(`thisBonus: ${thisBonus} - nextBonus: ${nextBonus}`);

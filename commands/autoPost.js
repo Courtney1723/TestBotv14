@@ -609,6 +609,90 @@ Click **Confirm** to view and test current settings.`;
             }
         }
 
+      function UpcomingPremiumCommandTitle() {
+        if (LANG.includes("en")) {
+            return "Upcoming Premium Command";
+        }
+        else if (LANG.includes("es")) {
+            return "Próximo comando premium";
+        }
+        else if (LANG.includes("pt")) {
+            return `Próximo Comando Premium`;
+        }
+        else if (LANG.includes("ru")) {
+            return `Предстоящая премиум-команда`;
+        }
+        else if (LANG.includes("de")) {
+            return `Kommendes Premium-Kommando`;
+        }
+        else if (LANG.includes("pl")) {
+            return `Nadchodzące polecenie premium`;
+        }
+        else if (LANG.includes("fr")) {
+            return `Commande Premium à venir`;
+        }
+        else if (LANG.includes("it")) {
+            return `Prossimo comando Premium`;
+        }
+        else if (LANG.includes("CN")) {
+            return `即将推出的高级命令`;
+        }
+        else if (LANG.includes("TW")) {
+            return `即將推出的進階命令`;
+        }
+        else if (LANG.includes("ja")) {
+            return `今後のプレミアム コマンド`;
+        }
+        else if (LANG.includes("ko")) {
+            return `다가오는 프리미엄 사령부`;
+        }
+        else {
+            return `Upcoming Premium Command`;
+        }
+      }
+
+      function UpcomingPremiumCommandDesc() {
+        if (LANG.includes("en")) {
+            return "Starting in 2024, the /autopost command will require a subscription to the Rockstar Weekly bot's premium service.";
+        }
+        else if (LANG.includes("es")) {
+            return "A partir de 2024, el comando /publicaciones-automáticas requerirá una suscripción al servicio premium del bot Rockstar Weekly.";
+        }
+        else if (LANG.includes("pt")) {
+            return `A partir de 2024, o comando /postagens-automáticas exigirá uma assinatura do serviço premium do bot Rockstar Weekly.`;
+        }
+        else if (LANG.includes("ru")) {
+            return `Начиная с 2024 года для команды /автопубликации потребуется подписка на премиум-сервис бота Rockstar Weekly.`;
+        }
+        else if (LANG.includes("de")) {
+            return `Ab 2024 erfordert der Befehl /automatische-veröffentlichung ein Abonnement des Premium-Dienstes des Rockstar Weekly-Bots.`;
+        }
+        else if (LANG.includes("pl")) {
+            return `Od 2024 r. polecenie /zautomatyzowane-wiadomości będzie wymagało subskrypcji usługi premium bota Rockstar Weekly.`;
+        }
+        else if (LANG.includes("fr")) {
+            return `À partir de 2024, la commande /messages-automatisés nécessitera un abonnement au service premium du robot Rockstar Weekly.`;
+        }
+        else if (LANG.includes("it")) {
+            return `A partire dal 2024, il comando /messaggi-automatici richiederà un abbonamento al servizio premium del bot Rockstar Weekly.`;
+        }
+        else if (LANG.includes("CN")) {
+            return `从 2024 年开始，/自动消息 命令将需要订阅 Rockstar Weekly 机器人的高级服务。`;
+        }
+        else if (LANG.includes("TW")) {
+            return `從 2024 年開始，/自動消息 指令將需要訂閱 Rockstar Weekly 機器人的高級服務。`;
+        }
+        else if (LANG.includes("ja")) {
+            return `2024 年以降、/自動メッセージ コマンドには Rockstar Weekly ボットのプレミアム サービスへのサブスクリプションが必要になります。`;
+        }
+        else if (LANG.includes("ko")) {
+            return `2024년부터 /자동화된-메시지 명령을 사용하려면 Rockstar Weekly 봇의 프리미엄 서비스에 가입해야 합니다.`;
+        }
+        else {
+            return `Starting in 2024, the /autopost command will require a subscription to the Rockstar Weekly bot's premium service.`;
+        }
+      }
+
         //--END TRANSLATIONS--//						
 
         const initialEmbed = new EmbedBuilder()
@@ -616,6 +700,11 @@ Click **Confirm** to view and test current settings.`;
             .setTitle(`${autoPostTitle()}`)
             .setDescription(`${autoPostDesc()}`)
             .setFooter({ text: `${footerText()}`, iconURL: process.env.logo_link })
+
+      const subscriptionEmbed = new EmbedBuilder()
+          .setColor(0xCDFFD3) //light green
+          .setTitle(`${UpcomingPremiumCommandTitle()}`)
+          .setDescription(`${UpcomingPremiumCommandDesc()}`)
 
         const initialButtons = new ActionRowBuilder()
             .addComponents(
@@ -634,12 +723,12 @@ Click **Confirm** to view and test current settings.`;
             );
 
         //Initial Embed + Buttons (start, stop, confirm, configure)
-        interaction.editReply({ embeds: [initialEmbed], components: [initialButtons] });
+        interaction.editReply({ embeds: [initialEmbed, subscriptionEmbed], components: [initialButtons] });
 
         //BEGIN ADDING A LANGAUGE
         //console.log(`lang: ${lang} - LANG: ${LANG} - formatted LANG: ${formattedLANG()} - supported?: ${(supportedLanguages.indexOf(formattedLANG()) !== -1)}`);
 				if ( (lang === "") && (LANG.includes("en")) ) {
-					interaction.editReply({ embeds: [initialEmbed], components: [initialButtons] });
+					interaction.editReply({ embeds: [initialEmbed, subscriptionEmbed], components: [initialButtons] });
 				}				
         else if ((lang !== LANG) && (supportedLanguages.indexOf(formattedLANG()) !== -1) && (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator))) { //if the stored language is not the same language as the user language && user language is supported && user is an admin
 
@@ -674,7 +763,7 @@ Click **Confirm** to view and test current settings.`;
 
         }
 				else {
-					interaction.editReply({ embeds: [initialEmbed], components: [initialButtons] });				
+					interaction.editReply({ embeds: [initialEmbed, subscriptionEmbed], components: [initialButtons] });				
 				}
         //END ADDING A LANGAUGE
 
